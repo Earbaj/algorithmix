@@ -650,7 +650,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     );
   }
 
-  // TAB 2: Dynamic Input & 2D Scrollable Visualizer (Expanded Width: 1280.0)
+  // TAB 2: Dynamic Input & 2D Scrollable Visualizer (Expanded Code Trace Width: 580px)
   Widget _buildVisualizerTab(double hPadding) {
     final isMobile = Responsive.isMobile(context);
     final step = _steps.isEmpty
@@ -754,12 +754,12 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
             ),
             const SizedBox(height: 20),
 
-            // Step Visualization Section (Support both 2D Vertical & Horizontal Scroll)
+            // Step Visualization Section (Expanded Code Trace Width: 580px)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal, // Left-to-Right scroll support for wide screens / trace
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minWidth: isMobile ? MediaQuery.of(context).size.width - (hPadding * 2) : 950.0,
+                  minWidth: isMobile ? MediaQuery.of(context).size.width - (hPadding * 2) : 1150.0,
                 ),
                 child: isMobile
                     ? Column(
@@ -773,12 +773,12 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: 480,
+                            width: 580, // Expanded width for C++ Execution Trace
                             child: _buildCodeTraceWidget(step.activeLine),
                           ),
                           const SizedBox(width: 16),
                           SizedBox(
-                            width: 480,
+                            width: 550, // Array Visualization Box width
                             child: _buildArrayVisualizationBox(step),
                           ),
                         ],
@@ -1238,7 +1238,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     );
   }
 
-  /// Granular Line-by-Line Code Snippet Highlight Widget with COPY CODE BUTTON
+  /// Expanded & Ultra-Clear Line-by-Line Code Snippet Highlight Widget (Width 580px)
   Widget _buildCodeTraceWidget(int activeLine) {
     final codeLines = const [
       "vector<int> twoSum(vector<int>& numbers, int target) {",
@@ -1261,11 +1261,12 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     final fullCodeText = codeLines.join('\n');
 
     return Container(
-      padding: EdgeInsets.all(Responsive.sp(context, 12)),
+      width: double.infinity,
+      padding: EdgeInsets.all(Responsive.sp(context, 14)),
       decoration: BoxDecoration(
         color: const Color(0xFF090D16),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFF1E293B)),
+        border: Border.all(color: const Color(0xFF1E293B), width: 1.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1274,23 +1275,29 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "C++ Execution Trace",
-                style: TextStyle(
-                  color: AppTheme.accentNeonCyan,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Responsive.sp(context, 12.5),
-                ),
+              Row(
+                children: [
+                  const Icon(Icons.code_rounded, color: AppTheme.accentNeonCyan, size: 18),
+                  const SizedBox(width: 6),
+                  Text(
+                    "C++ Execution Trace",
+                    style: TextStyle(
+                      color: AppTheme.accentNeonCyan,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.sp(context, 13.5),
+                    ),
+                  ),
+                ],
               ),
               InkWell(
                 onTap: () => _copyToClipboard(fullCodeText, "C++ Visualizer Code"),
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: AppTheme.accentPurple.withOpacity(0.2),
+                    color: AppTheme.accentPurple.withOpacity(0.25),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
+                    border: Border.all(color: AppTheme.accentPurple.withOpacity(0.5)),
                   ),
                   child: Row(
                     children: [
@@ -1300,7 +1307,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                         _isEnglish ? "Copy" : "কপি",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: Responsive.sp(context, 11),
+                          fontSize: Responsive.sp(context, 11.5),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -1310,9 +1317,9 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
 
-          // Code Trace Lines (Scrollable Left-to-Right)
+          // Code Trace Lines (Scrollable Left-to-Right with expanded width)
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Column(
@@ -1323,8 +1330,8 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
 
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  margin: const EdgeInsets.symmetric(vertical: 2),
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  margin: const EdgeInsets.symmetric(vertical: 2.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                   decoration: BoxDecoration(
                     color: isActive ? AppTheme.accentPurple.withOpacity(0.35) : Colors.transparent,
                     borderRadius: BorderRadius.circular(6),
@@ -1333,12 +1340,12 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 24,
+                        width: 28,
                         child: Text(
                           '$lineNum',
                           style: TextStyle(
                             fontFamily: 'monospace',
-                            fontSize: Responsive.sp(context, 11),
+                            fontSize: Responsive.sp(context, 12),
                             color: isActive ? AppTheme.accentNeonCyan : AppTheme.textMuted,
                             fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                           ),
@@ -1348,7 +1355,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                         codeLines[idx],
                         style: TextStyle(
                           fontFamily: 'monospace',
-                          fontSize: Responsive.sp(context, 12.5),
+                          fontSize: Responsive.sp(context, 13),
                           color: isActive ? Colors.white : const Color(0xFF94A3B8),
                           fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                         ),
@@ -1366,6 +1373,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
 
   Widget _buildArrayVisualizationBox(TwoSumIIStep step) {
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.all(Responsive.sp(context, 16)),
       decoration: BoxDecoration(
         color: AppTheme.surfaceDark,
