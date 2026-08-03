@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 
-class VisualizerStep {
+class DebugVisualizerStep {
   final int left;
   final int right;
   final int? fixed;
+  final int activeLineIndex;
   final List<int> arrayState;
   final String explanationEn;
   final String explanationBn;
   final bool isMatch;
 
-  const VisualizerStep({
+  const DebugVisualizerStep({
     required this.left,
     required this.right,
     this.fixed,
+    required this.activeLineIndex,
     required this.arrayState,
     required this.explanationEn,
     required this.explanationBn,
@@ -38,115 +40,303 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
   bool _isPlaying = false;
   Timer? _timer;
 
-  // Template 1 Data (Two Sum II: target = 10)
-  final List<VisualizerStep> _template1Steps = const [
-    VisualizerStep(
+  // Code snippets split into lines for line-by-line debugging
+  final List<List<String>> _codeTemplates = const [
+    // Template 1: Opposite Direction (Two Sum II)
+    [
+      "vector<int> twoSum(vector<int>& arr, int target) {",
+      "    int left = 0, right = arr.size() - 1;",
+      "    while (left < right) {",
+      "        int curr_sum = arr[left] + arr[right];",
+      "        if (curr_sum == target) return {left, right};",
+      "        else if (curr_sum < target) left++;",
+      "        else right--;",
+      "    }",
+      "    return {-1, -1};",
+      "}",
+    ],
+    // Template 2: Same Direction (Move Zeroes)
+    [
+      "void moveZeroes(vector<int>& nums) {",
+      "    int slow = 0;",
+      "    for (int fast = 0; fast < nums.size(); fast++) {",
+      "        if (nums[fast] != 0) {",
+      "            swap(nums[slow], nums[fast]);",
+      "            slow++;",
+      "        }",
+      "    }",
+      "}",
+    ],
+    // Template 3: Fixed + Two Pointer (3Sum)
+    [
+      "vector<vector<int>> threeSum(vector<int>& nums) {",
+      "    sort(nums.begin(), nums.end());",
+      "    for (int i = 0; i < n - 2; i++) {",
+      "        if (i > 0 && nums[i] == nums[i-1]) continue;",
+      "        int left = i + 1, right = n - 1;",
+      "        while (left < right) {",
+      "            int sum = nums[i] + nums[left] + nums[right];",
+      "            if (sum == 0) return {nums[i], nums[left], nums[right]};",
+      "            else if (sum < 0) left++;",
+      "            else right--;",
+      "        }",
+      "    }",
+      "}",
+    ],
+  ];
+
+  // Template 1: Two Sum II steps
+  final List<DebugVisualizerStep> _template1Steps = const [
+    DebugVisualizerStep(
       left: 0,
       right: 6,
+      activeLineIndex: 1,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Start: left=0 (1), right=6 (15). Sum = 1 + 15 = 16 > 10. Sum is too large, move right--",
-      explanationBn: "শুরু: left=0 (1), right=6 (15)। Sum = 1 + 15 = 16 > 10। Sum বড়, তাই right-- করতে হবে।",
+      explanationEn: "Line 2: Initialize left = 0 (val 1) and right = 6 (val 15). Target = 10.",
+      explanationBn: "লাইন ২: সূচনা left = 0 (মান 1) এবং right = 6 (মান 15)। Target = 10।",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
+      left: 0,
+      right: 6,
+      activeLineIndex: 3,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 4: Calculate curr_sum = arr[0] + arr[6] = 1 + 15 = 16.",
+      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[0] + arr[6] = 1 + 15 = 16।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 6,
+      activeLineIndex: 6,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 7: curr_sum (16) > target (10). Execute right-- (right becomes 5).",
+      explanationBn: "লাইন ৭: curr_sum (16) > target (10)। right-- চালান (right হবে 5)।",
+    ),
+    DebugVisualizerStep(
       left: 0,
       right: 5,
+      activeLineIndex: 3,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "left=0 (1), right=5 (11). Sum = 1 + 11 = 12 > 10. Still too large, move right--",
-      explanationBn: "left=0 (1), right=5 (11)। Sum = 1 + 11 = 12 > 10। এখনও বড়, তাই right-- করুন।",
+      explanationEn: "Line 4: Calculate curr_sum = arr[0] + arr[5] = 1 + 11 = 12.",
+      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[0] + arr[5] = 1 + 11 = 12।",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
+      left: 0,
+      right: 5,
+      activeLineIndex: 6,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 7: curr_sum (12) > target (10). Execute right-- (right becomes 4).",
+      explanationBn: "লাইন ৭: curr_sum (12) > target (10)। right-- চালান (right হবে 4)।",
+    ),
+    DebugVisualizerStep(
       left: 0,
       right: 4,
+      activeLineIndex: 3,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "left=0 (1), right=4 (8). Sum = 1 + 8 = 9 < 10. Sum is too small, move left++",
-      explanationBn: "left=0 (1), right=4 (8)। Sum = 1 + 8 = 9 < 10। Sum ছোট, তাই left++ করতে হবে।",
+      explanationEn: "Line 4: Calculate curr_sum = arr[0] + arr[4] = 1 + 8 = 9.",
+      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[0] + arr[4] = 1 + 8 = 9।",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
+      left: 0,
+      right: 4,
+      activeLineIndex: 5,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 6: curr_sum (9) < target (10). Execute left++ (left becomes 1).",
+      explanationBn: "লাইন ৬: curr_sum (9) < target (10)। left++ চালান (left হবে 1)।",
+    ),
+    DebugVisualizerStep(
       left: 1,
       right: 4,
+      activeLineIndex: 3,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "🎉 TARGET FOUND! left=1 (2), right=4 (8). Sum = 2 + 8 = 10 == Target 10!",
-      explanationBn: "🎉 টার্গেট পাওয়া গেছে! left=1 (2), right=4 (8)। Sum = 2 + 8 = 10 == Target 10!",
+      explanationEn: "Line 4: Calculate curr_sum = arr[1] + arr[4] = 2 + 8 = 10.",
+      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[1] + arr[4] = 2 + 8 = 10।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 4,
+      activeLineIndex: 4,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "🎉 Line 5: MATCH! curr_sum (10) == target (10). Return {1, 4}!",
+      explanationBn: "🎉 লাইন ৫: ম্যাচ হয়েছে! curr_sum (10) == target (10)। Return {1, 4}!",
       isMatch: true,
     ),
   ];
 
-  // Template 2 Data (Move Zeroes)
-  final List<VisualizerStep> _template2Steps = const [
-    VisualizerStep(
+  // Template 2: Move Zeroes steps
+  final List<DebugVisualizerStep> _template2Steps = const [
+    DebugVisualizerStep(
       left: 0,
       right: 0,
+      activeLineIndex: 1,
       arrayState: [0, 1, 0, 3, 12],
-      explanationEn: "Start: slow=0 (val 0), fast=0 (val 0). Element is 0, fast moves ahead.",
-      explanationBn: "শুরু: slow=0, fast=0। মান 0, তাই fast আগাবে।",
+      explanationEn: "Line 2: Initialize slow = 0. Loop fast from 0 to 4.",
+      explanationBn: "লাইন ২: সূচনা slow = 0। লুপ fast = 0 থেকে 4 পর্যন্ত।",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
+      left: 0,
+      right: 0,
+      activeLineIndex: 3,
+      arrayState: [0, 1, 0, 3, 12],
+      explanationEn: "Line 4: fast=0 (nums[0] == 0). Condition false, skip swap.",
+      explanationBn: "লাইন ৪: fast=0 (nums[0] == 0)। শর্ত মিথ্যা, swap স্কিপ করুন।",
+    ),
+    DebugVisualizerStep(
       left: 0,
       right: 1,
+      activeLineIndex: 3,
       arrayState: [0, 1, 0, 3, 12],
-      explanationEn: "fast=1 (val 1 != 0). Swap arr[slow] and arr[fast], then slow++",
-      explanationBn: "fast=1 (মান 1 != 0)। slow ও fast এর মান swap করুন, slow++ করুন।",
+      explanationEn: "Line 4: fast=1 (nums[1] == 1 != 0). Condition true!",
+      explanationBn: "লাইন ৪: fast=1 (nums[1] == 1 != 0)। শর্ত সত্য!",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
+      left: 0,
+      right: 1,
+      activeLineIndex: 4,
+      arrayState: [1, 0, 0, 3, 12],
+      explanationEn: "Line 5: Swap nums[slow] and nums[fast] -> array: [1, 0, 0, 3, 12]",
+      explanationBn: "লাইন ৫: swap(nums[0], nums[1]) -> অ্যারে: [1, 0, 0, 3, 12]",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 1,
+      activeLineIndex: 5,
+      arrayState: [1, 0, 0, 3, 12],
+      explanationEn: "Line 6: Execute slow++ (slow becomes 1).",
+      explanationBn: "লাইন ৬: slow++ চালান (slow হবে 1)।",
+    ),
+    DebugVisualizerStep(
       left: 1,
       right: 2,
+      activeLineIndex: 3,
       arrayState: [1, 0, 0, 3, 12],
-      explanationEn: "fast=2 (val 0). Is zero, fast moves ahead.",
-      explanationBn: "fast=2 (মান 0)। zero পাওয়া গেছে, fast আগাবে।",
+      explanationEn: "Line 4: fast=2 (nums[2] == 0). Condition false, skip swap.",
+      explanationBn: "লাইন ৪: fast=2 (nums[2] == 0)। শর্ত মিথ্যা, swap স্কিপ করুন।",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
       left: 1,
       right: 3,
+      activeLineIndex: 3,
       arrayState: [1, 0, 0, 3, 12],
-      explanationEn: "fast=3 (val 3 != 0). Swap arr[1] and arr[3], then slow++",
-      explanationBn: "fast=3 (মান 3 != 0)। arr[1] ও arr[3] swap করুন, slow++ করুন।",
+      explanationEn: "Line 4: fast=3 (nums[3] == 3 != 0). Condition true!",
+      explanationBn: "লাইন ৪: fast=3 (nums[3] == 3 != 0)। শর্ত সত্য!",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
+      left: 1,
+      right: 3,
+      activeLineIndex: 4,
+      arrayState: [1, 3, 0, 0, 12],
+      explanationEn: "Line 5: Swap nums[1] and nums[3] -> array: [1, 3, 0, 0, 12]",
+      explanationBn: "লাইন ৫: swap(nums[1], nums[3]) -> অ্যারে: [1, 3, 0, 0, 12]",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 3,
+      activeLineIndex: 5,
+      arrayState: [1, 3, 0, 0, 12],
+      explanationEn: "Line 6: Execute slow++ (slow becomes 2).",
+      explanationBn: "লাইন ৬: slow++ চালান (slow হবে 2)।",
+    ),
+    DebugVisualizerStep(
       left: 2,
       right: 4,
-      arrayState: [1, 3, 0, 0, 12],
-      explanationEn: "fast=4 (val 12 != 0). Swap arr[2] and arr[4], then slow++",
-      explanationBn: "fast=4 (মান 12 != 0)। arr[2] ও arr[4] swap করুন, slow++ করুন।",
+      activeLineIndex: 4,
+      arrayState: [1, 3, 12, 0, 0],
+      explanationEn: "Line 5: Swap nums[2] and nums[4] -> array: [1, 3, 12, 0, 0]",
+      explanationBn: "লাইন ৫: swap(nums[2], nums[4]) -> অ্যারে: [1, 3, 12, 0, 0]",
     ),
-    VisualizerStep(
+    DebugVisualizerStep(
       left: 3,
       right: 4,
+      activeLineIndex: 5,
       arrayState: [1, 3, 12, 0, 0],
-      explanationEn: "🎉 DONE! All non-zero elements moved to front: [1, 3, 12, 0, 0]",
-      explanationBn: "🎉 কাজ শেষ! সব non-zero মান সামনে চলে এসেছে: [1, 3, 12, 0, 0]",
+      explanationEn: "🎉 Line 6: DONE! All non-zero elements moved to front.",
+      explanationBn: "🎉 লাইন ৬: সম্পন্ন! সব non-zero মান সামনে আনা হয়েছে।",
       isMatch: true,
     ),
   ];
 
-  List<VisualizerStep> get _currentSteps {
-    return _selectedTemplateIndex == 0 ? _template1Steps : _template2Steps;
-  }
-
-  final List<String> _codes = const [
-    '''
-// Template 1: Opposite Direction (C++ Two Sum II)
-vector<int> twoSum(vector<int>& arr, int target) {
-    int left = 0, right = arr.size() - 1;
-    while (left < right) {
-        int curr_sum = arr[left] + arr[right];
-        if (curr_sum == target) return {left, right};
-        else if (curr_sum < target) left++;
-        else right--;
-    }
-    return {-1, -1};
-}''',
-    '''
-// Template 2: Same Direction (C++ Move Zeroes)
-void moveZeroes(vector<int>& nums) {
-    int slow = 0;
-    for (int fast = 0; fast < nums.size(); fast++) {
-        if (nums[fast] != 0) {
-            swap(nums[slow], nums[fast]);
-            slow++;
-        }
-    }
-}''',
+  // Template 3: 3Sum Triplets steps
+  final List<DebugVisualizerStep> _template3Steps = const [
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 2,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 3: Loop i=0 (val -4). Fixed element is nums[0] = -4.",
+      explanationBn: "লাইন ৩: লুপ i=0 (মান -4)। ফিক্সড মান nums[0] = -4।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 4,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 5: Set left = 1 (val -1) and right = 5 (val 2).",
+      explanationBn: "লাইন ৫: সেট করুন left = 1 (মান -1) এবং right = 5 (মান 2)।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 6,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 7: Calculate sum = nums[0] + nums[1] + nums[5] = -4 + (-1) + 2 = -3.",
+      explanationBn: "লাইন ৭: হিসাব করুন sum = nums[0] + nums[1] + nums[5] = -4 + (-1) + 2 = -3।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 8,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 9: sum (-3) < 0. Execute left++ (left becomes 2).",
+      explanationBn: "লাইন ৯: sum (-3) < 0। left++ চালান (left হবে 2)।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 5,
+      fixed: 1,
+      activeLineIndex: 2,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 3: Advance loop to i=1 (val -1). Fixed element nums[1] = -1.",
+      explanationBn: "লাইন ৩: লুপ i=1 (মান -1) এ নিয়ে যান। ফিক্সড মান nums[1] = -1।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 5,
+      fixed: 1,
+      activeLineIndex: 4,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 5: Set left = 2 (val -1) and right = 5 (val 2).",
+      explanationBn: "লাইন ৫: সেট করুন left = 2 (মান -1) এবং right = 5 (মান 2)।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 5,
+      fixed: 1,
+      activeLineIndex: 6,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 7: Calculate sum = nums[1] + nums[2] + nums[5] = -1 + (-1) + 2 = 0.",
+      explanationBn: "লাইন ৭: হিসাব করুন sum = nums[1] + nums[2] + nums[5] = -1 + (-1) + 2 = 0।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 5,
+      fixed: 1,
+      activeLineIndex: 7,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "🎉 Line 8: TRIPLET MATCH! [-1, -1, 2] sums to 0! Return triplet.",
+      explanationBn: "🎉 লাইন ৮: ট্রিপলেট ম্যাচ হয়েছে! [-1, -1, 2] এর যোগফল 0!",
+      isMatch: true,
+    ),
   ];
+
+  List<DebugVisualizerStep> get _currentSteps {
+    if (_selectedTemplateIndex == 0) return _template1Steps;
+    if (_selectedTemplateIndex == 1) return _template2Steps;
+    return _template3Steps;
+  }
 
   @override
   void dispose() {
@@ -160,7 +350,7 @@ void moveZeroes(vector<int>& nums) {
     });
 
     if (_isPlaying) {
-      _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      _timer = Timer.periodic(const Duration(milliseconds: 1800), (timer) {
         if (_currentStepIndex < _currentSteps.length - 1) {
           setState(() {
             _currentStepIndex++;
@@ -204,6 +394,7 @@ void moveZeroes(vector<int>& nums) {
   @override
   Widget build(BuildContext context) {
     final step = _currentSteps[_currentStepIndex];
+    final codeLines = _codeTemplates[_selectedTemplateIndex];
     final isMobile = Responsive.isMobile(context);
 
     return Container(
@@ -212,7 +403,7 @@ void moveZeroes(vector<int>& nums) {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -220,27 +411,35 @@ void moveZeroes(vector<int>& nums) {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                widget.isEnglish ? "C++ Code & Visualizer" : "C++ কোড ও ভিজ্যুয়ালাইজার",
-                style: TextStyle(
-                  fontSize: Responsive.sp(context, 16),
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+              Expanded(
+                child: Text(
+                  widget.isEnglish
+                      ? "C++ Line-by-Line Debugger"
+                      : "C++ লাইন-বাই-লাইন ডিবাগার",
+                  style: TextStyle(
+                    fontSize: Responsive.sp(context, 16),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               DropdownButton<int>(
                 value: _selectedTemplateIndex,
                 dropdownColor: AppTheme.primaryDark,
-                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
                 underline: Container(),
                 items: [
                   DropdownMenuItem(
                     value: 0,
-                    child: Text(widget.isEnglish ? "Opposite Direction (C++)" : "Opposite Direction (C++)"),
+                    child: Text(widget.isEnglish ? "1. Opposite Direction" : "১. বিপরীত দিক (Opposite)"),
                   ),
                   DropdownMenuItem(
                     value: 1,
-                    child: Text(widget.isEnglish ? "Same Direction (C++)" : "Same Direction (C++)"),
+                    child: Text(widget.isEnglish ? "2. Same Direction" : "২. একই দিক (Same Dir)"),
+                  ),
+                  DropdownMenuItem(
+                    value: 2,
+                    child: Text(widget.isEnglish ? "3. Fixed + 2 Pointers" : "৩. Fixed + Two Pointers"),
                   ),
                 ],
                 onChanged: (val) {
@@ -260,7 +459,7 @@ void moveZeroes(vector<int>& nums) {
           if (isMobile)
             Column(
               children: [
-                _buildCodeSnippet(_codes[_selectedTemplateIndex]),
+                _buildCodeSnippetWithHighlight(codeLines, step.activeLineIndex),
                 const SizedBox(height: 16),
                 _buildVisualizerBox(step),
               ],
@@ -269,7 +468,7 @@ void moveZeroes(vector<int>& nums) {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(child: _buildCodeSnippet(_codes[_selectedTemplateIndex])),
+                Expanded(child: _buildCodeSnippetWithHighlight(codeLines, step.activeLineIndex)),
                 const SizedBox(width: 16),
                 Expanded(child: _buildVisualizerBox(step)),
               ],
@@ -319,31 +518,68 @@ void moveZeroes(vector<int>& nums) {
     );
   }
 
-  Widget _buildCodeSnippet(String code) {
+  /// Highlight active line during execution
+  Widget _buildCodeSnippetWithHighlight(List<String> codeLines, int activeLineIndex) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: const Color(0xFF090D16),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: const Color(0xFF1E293B)),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Text(
-          code,
-          style: const TextStyle(
-            fontFamily: 'monospace',
-            fontSize: 13,
-            color: Color(0xFF38BDF8),
-            height: 1.4,
-          ),
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(codeLines.length, (idx) {
+          final isActive = idx == activeLineIndex;
+
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            decoration: BoxDecoration(
+              color: isActive ? AppTheme.accentPurple.withOpacity(0.35) : Colors.transparent,
+              borderRadius: BorderRadius.circular(6),
+              border: isActive
+                  ? const Border(left: BorderSide(color: AppTheme.accentNeonCyan, width: 3))
+                  : null,
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 24,
+                  child: Text(
+                    '${idx + 1}',
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 11,
+                      color: isActive ? AppTheme.accentNeonCyan : AppTheme.textMuted,
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      codeLines[idx],
+                      style: TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 12,
+                        color: isActive ? Colors.white : const Color(0xFF94A3B8),
+                        fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
 
-  Widget _buildVisualizerBox(VisualizerStep step) {
+  Widget _buildVisualizerBox(DebugVisualizerStep step) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -357,48 +593,60 @@ void moveZeroes(vector<int>& nums) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Pointer Variables Badge Legend
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (step.fixed != null) ...[
+                _buildPointerBadge('i (fixed)', AppTheme.accentAmber, step.fixed!),
+                const SizedBox(width: 8),
+              ],
+              _buildPointerBadge(
+                _selectedTemplateIndex == 1 ? 'slow' : 'left',
+                AppTheme.accentNeonCyan,
+                step.left,
+              ),
+              const SizedBox(width: 8),
+              _buildPointerBadge(
+                _selectedTemplateIndex == 1 ? 'fast' : 'right',
+                AppTheme.accentPink,
+                step.right,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
           // Visual Array Elements
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(step.arrayState.length, (idx) {
+                final isFixed = step.fixed == idx;
                 final isLeft = idx == step.left;
                 final isRight = idx == step.right;
 
                 Color boxBg = const Color(0xFF1E293B);
                 Color borderColor = const Color(0xFF334155);
-                String tag = "";
 
-                if (isLeft && isRight) {
+                if (isFixed) {
+                  boxBg = AppTheme.accentAmber.withOpacity(0.3);
+                  borderColor = AppTheme.accentAmber;
+                } else if (isLeft && isRight) {
                   boxBg = AppTheme.accentPurple.withOpacity(0.3);
                   borderColor = AppTheme.accentPurple;
-                  tag = "L/R";
                 } else if (isLeft) {
                   boxBg = AppTheme.accentNeonCyan.withOpacity(0.3);
                   borderColor = AppTheme.accentNeonCyan;
-                  tag = _selectedTemplateIndex == 0 ? "L" : "Slow";
                 } else if (isRight) {
                   boxBg = AppTheme.accentPink.withOpacity(0.3);
                   borderColor = AppTheme.accentPink;
-                  tag = _selectedTemplateIndex == 0 ? "R" : "Fast";
                 }
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Column(
                     children: [
-                      Text(
-                        tag,
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: isLeft
-                              ? AppTheme.accentNeonCyan
-                              : (isRight ? AppTheme.accentPink : Colors.transparent),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
                         width: 42,
@@ -406,7 +654,10 @@ void moveZeroes(vector<int>& nums) {
                         decoration: BoxDecoration(
                           color: boxBg,
                           borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: borderColor, width: (isLeft || isRight) ? 2.0 : 1.0),
+                          border: Border.all(
+                            color: borderColor,
+                            width: (isLeft || isRight || isFixed) ? 2.0 : 1.0,
+                          ),
                         ),
                         child: Center(
                           child: Text(
@@ -452,6 +703,21 @@ void moveZeroes(vector<int>& nums) {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPointerBadge(String label, Color color, int value) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: color.withOpacity(0.5)),
+      ),
+      child: Text(
+        '$label = $value',
+        style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color),
       ),
     );
   }
