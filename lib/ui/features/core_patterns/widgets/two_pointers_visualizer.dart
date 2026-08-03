@@ -124,22 +124,27 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
 
   final List<String> _codes = const [
     '''
-// Template 1: Opposite Direction (Two Sum II)
-int left = 0, right = arr.length - 1;
-while (left < right) {
-  int sum = arr[left] + arr[right];
-  if (sum == target) return [left, right];
-  else if (sum < target) left++;
-  else right--;
+// Template 1: Opposite Direction (C++ Two Sum II)
+vector<int> twoSum(vector<int>& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    while (left < right) {
+        int curr_sum = arr[left] + arr[right];
+        if (curr_sum == target) return {left, right};
+        else if (curr_sum < target) left++;
+        else right--;
+    }
+    return {-1, -1};
 }''',
     '''
-// Template 2: Same Direction (Move Zeroes)
-int slow = 0;
-for (int fast = 0; fast < arr.length; fast++) {
-  if (arr[fast] != 0) {
-    swap(arr, slow, fast);
-    slow++;
-  }
+// Template 2: Same Direction (C++ Move Zeroes)
+void moveZeroes(vector<int>& nums) {
+    int slow = 0;
+    for (int fast = 0; fast < nums.size(); fast++) {
+        if (nums[fast] != 0) {
+            swap(nums[slow], nums[fast]);
+            slow++;
+        }
+    }
 }''',
   ];
 
@@ -216,7 +221,7 @@ for (int fast = 0; fast < arr.length; fast++) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                widget.isEnglish ? "Interactive Code & Visualizer" : "কোড ও ইন্টারঅ্যাক্টিভ ভিজ্যুয়ালাইজার",
+                widget.isEnglish ? "C++ Code & Visualizer" : "C++ কোড ও ভিজ্যুয়ালাইজার",
                 style: TextStyle(
                   fontSize: Responsive.sp(context, 16),
                   fontWeight: FontWeight.bold,
@@ -231,11 +236,11 @@ for (int fast = 0; fast < arr.length; fast++) {
                 items: [
                   DropdownMenuItem(
                     value: 0,
-                    child: Text(widget.isEnglish ? "Opposite Direction" : "Opposite Direction (দুই দিক থেকে)"),
+                    child: Text(widget.isEnglish ? "Opposite Direction (C++)" : "Opposite Direction (C++)"),
                   ),
                   DropdownMenuItem(
                     value: 1,
-                    child: Text(widget.isEnglish ? "Same Direction" : "Same Direction (একই দিকে)"),
+                    child: Text(widget.isEnglish ? "Same Direction (C++)" : "Same Direction (C++)"),
                   ),
                 ],
                 onChanged: (val) {

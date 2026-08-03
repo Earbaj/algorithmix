@@ -20,7 +20,7 @@ class TwoPointersData {
   static Map<String, String> getConceptIntro(bool isEnglish) {
     if (isEnglish) {
       return {
-        "title": "Two Pointers — Complete Deep Dive (FAANG Focus)",
+        "title": "Two Pointers — Complete Deep Dive (C++ & FAANG Focus)",
         "summary": "Two Pointers is a technique using two indices to traverse an array or string simultaneously, reducing O(n²) brute force solutions down to linear O(n) time.",
         "whenToUseTitle": "When to Use Two Pointers?",
         "whenToUse1": "The array or string is sorted (or can be sorted).",
@@ -38,7 +38,7 @@ class TwoPointersData {
       };
     } else {
       return {
-        "title": "Two Pointers — সম্পূর্ণ গাইড (FAANG ইন্টারভিউ ফোকাস)",
+        "title": "Two Pointers — সম্পূর্ণ গাইড (C++ ও FAANG ইন্টারভিউ ফোকাস)",
         "summary": "Two Pointers মানে দুইটা index/pointer ব্যবহার করে array বা string traverse করা, যাতে O(n²) brute force কে O(n) এ নামানো যায়।",
         "whenToUseTitle": "কখন বুঝবা Two Pointers লাগবে?",
         "whenToUse1": "Array/String sorted থাকে (বা sort করা যায়)",
@@ -218,11 +218,11 @@ class TwoPointersData {
       return [
         {
           "title": "1. Forgetting to Sort First",
-          "desc": "Opposite direction pointers require a sorted array. Without sorting, condition checks like sum < target won't guide pointer movement reliably."
+          "desc": "Opposite direction pointers require a sorted array. Without sorting, condition checks like `curr_sum < target` won't guide pointer movement reliably."
         },
         {
           "title": "2. Missing Duplicate Skips",
-          "desc": "In problems like 3Sum, failure to skip identical elements using `while (left < right && arr[left] == arr[left-1]) left++` produces duplicate answers."
+          "desc": "In problems like 3Sum, failure to skip identical elements using `while (left < right && arr[left] == arr[left-1]) left++;` produces duplicate answers."
         },
         {
           "title": "3. Infinite Loop Hazards",
@@ -230,7 +230,7 @@ class TwoPointersData {
         },
         {
           "title": "4. Off-by-One Boundary Errors",
-          "desc": "Initializing right pointer to `arr.length` instead of `arr.length - 1` triggers IndexOutOfBounds Exception."
+          "desc": "Initializing right pointer to `arr.size()` instead of `arr.size() - 1` triggers Out of Range segmentation fault."
         },
         {
           "title": "5. Order Destruction",
@@ -245,7 +245,7 @@ class TwoPointersData {
         },
         {
           "title": "২. Duplicate Skip করতে ভুলে যাওয়া",
-          "desc": "3Sum এ ডুপ্লিকেট স্কিপ না করলে `while (left < right && arr[left] == arr[left-1]) left++` একই আউটপুট একাধিকবার আসবে।"
+          "desc": "3Sum এ ডুপ্লিকেট স্কিপ না করলে `while (left < right && arr[left] == arr[left-1]) left++;` একই আউটপুট একাধিকবার আসবে।"
         },
         {
           "title": "৩. Infinite Loop এ পড়ে যাওয়া",
@@ -253,7 +253,7 @@ class TwoPointersData {
         },
         {
           "title": "৪. Off-by-One Boundary Error",
-          "desc": "Right pointer কে `arr.length - 1` না দিয়ে `arr.length` দিলে IndexOutOfBounds error হবে।"
+          "desc": "Right pointer কে `arr.size() - 1` না দিয়ে `arr.size()` দিলে Out of Range segmentation error হবে।"
         },
         {
           "title": "৫. Original Order নষ্ট করা",

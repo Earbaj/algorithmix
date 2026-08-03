@@ -35,7 +35,7 @@ class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
     return Scaffold(
       backgroundColor: AppTheme.primaryDark,
       appBar: AppBar(
-        title: Text(_isEnglish ? 'Two Pointers Deep Dive' : 'টু পয়েন্টারস গাইড'),
+        title: Text(_isEnglish ? 'Two Pointers Deep Dive (C++)' : 'টু পয়েন্টারস গাইড (C++)'),
         centerTitle: true,
         actions: [
           // Language Switcher Button
@@ -70,7 +70,7 @@ class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
           unselectedLabelColor: AppTheme.textSecondary,
           isScrollable: true,
           tabs: [
-            Tab(text: _isEnglish ? 'Concept & Code' : 'ধারণা ও কোড'),
+            Tab(text: _isEnglish ? 'Concept & C++ Code' : 'ধারণা ও C++ কোড'),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? 'FAANG Problems' : 'FAANG প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
@@ -89,7 +89,7 @@ class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
     );
   }
 
-  // TAB 1: Concept & Templates
+  // TAB 1: Concept & C++ Templates
   Widget _buildConceptTab(Map<String, String> intro) {
     final hPadding = Responsive.horizontalPadding(context);
 
@@ -170,9 +170,9 @@ class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
             _buildTypeCard(intro["type3Title"]!, intro["type3Desc"]!, AppTheme.accentPink),
             const SizedBox(height: 24),
 
-            // Code Templates
+            // C++ Code Templates
             Text(
-              _isEnglish ? "🧠 Python/Dart Boilerplate Templates" : "🧠 স্ট্যান্ডার্ড টেমপ্লেট কোড",
+              _isEnglish ? "🧠 C++ Boilerplate Templates" : "🧠 C++ টেমপ্লেট কোড (মুখস্থ রাখার মতো)",
               style: TextStyle(
                 fontSize: Responsive.sp(context, 18),
                 fontWeight: FontWeight.bold,
@@ -180,46 +180,58 @@ class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
               ),
             ),
             const SizedBox(height: 12),
-            _buildCodeBox("Template 1: Opposite Direction (Pair Sum)", """
-def two_pointer_opposite(arr, target):
-    left, right = 0, len(arr) - 1
-    while left < right:
-        curr_sum = arr[left] + arr[right]
-        if curr_sum == target:
-            return [left, right]
-        elif curr_sum < target:
-            left += 1   # Increase sum
-        else:
-            right -= 1  # Decrease sum
-    return [-1, -1]"""),
+            _buildCodeBox("Template 1: Opposite Direction (C++ Two Sum II)", """
+vector<int> two_pointer_opposite(vector<int>& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    while (left < right) {
+        int curr_sum = arr[left] + arr[right];
+        if (curr_sum == target) {
+            return {left, right};
+        } else if (curr_sum < target) {
+            left++;   // sum বাড়াতে হবে
+        } else {
+            right--;  // sum কমাতে হবে
+        }
+    }
+    return {-1, -1};
+}"""),
             const SizedBox(height: 16),
-            _buildCodeBox("Template 2: Same Direction (In-Place Modify)", """
-def two_pointer_same_direction(arr):
-    slow = 0
-    for fast in range(len(arr)):
-        if condition(arr[fast]):
-            arr[slow], arr[fast] = arr[fast], arr[slow]
-            slow += 1
-    return slow  # New valid length"""),
+            _buildCodeBox("Template 2: Same Direction (C++ In-place modify)", """
+int two_pointer_same_direction(vector<int>& arr) {
+    int slow = 0;
+    for (int fast = 0; fast < arr.size(); fast++) {
+        if (condition(arr[fast])) {
+            swap(arr[slow], arr[fast]);
+            slow++;
+        }
+    }
+    return slow;  // new length
+}"""),
             const SizedBox(height: 16),
-            _buildCodeBox("Template 3: Fixed + Two Pointer (3Sum Triplets)", """
-def three_sum(arr):
-    arr.sort()
-    result = []
-    for i in range(len(arr) - 2):
-        if i > 0 and arr[i] == arr[i-1]:
-            continue  # Skip duplicate fixed element
-        left, right = i + 1, len(arr) - 1
-        while left < right:
-            total = arr[i] + arr[left] + arr[right]
-            if total == 0:
-                result.append([arr[i], arr[left], arr[right]])
-                left += 1; right -= 1
-                while left < right and arr[left] == arr[left-1]: left += 1
-                while left < right and arr[right] == arr[right+1]: right -= 1
-            elif total < 0: left += 1
-            else: right -= 1
-    return result"""),
+            _buildCodeBox("Template 3: Fixed + Two Pointer (C++ 3Sum Triplets)", """
+vector<vector<int>> three_sum(vector<int>& arr) {
+    sort(arr.begin(), arr.end());
+    vector<vector<int>> result;
+    int n = arr.size();
+    for (int i = 0; i < n - 2; i++) {
+        if (i > 0 && arr[i] == arr[i - 1]) continue;  // duplicate skip
+        int left = i + 1, right = n - 1;
+        while (left < right) {
+            int total = arr[i] + arr[left] + arr[right];
+            if (total == 0) {
+                result.push_back({arr[i], arr[left], arr[right]});
+                left++; right--;
+                while (left < right && arr[left] == arr[left - 1]) left++;
+                while (left < right && arr[right] == arr[right + 1]) right--;
+            } else if (total < 0) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+    }
+    return result;
+}"""),
             const SizedBox(height: 24),
           ],
         ),
@@ -253,7 +265,7 @@ def three_sum(arr):
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEnglish ? "📋 FAANG Interview Problems (Categorized)" : "📋 FAANG ইন্টারভিউ প্রবলেমস",
+              _isEnglish ? "📋 FAANG Interview Problems (C++ Focus)" : "📋 FAANG ইন্টারভিউ প্রবলেমস",
               style: TextStyle(
                 fontSize: Responsive.sp(context, 18),
                 fontWeight: FontWeight.bold,
