@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 
@@ -79,6 +80,30 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     super.dispose();
   }
 
+  void _copyToClipboard(String text, String label) {
+    Clipboard.setData(ClipboardData(text: text.trim()));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white, size: 18),
+            const SizedBox(width: 8),
+            Text(
+              _isEnglish
+                  ? '$label copied to clipboard!'
+                  : '$label কোড ক্লিপবোর্ডে কপি হয়েছে!',
+              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+          ],
+        ),
+        backgroundColor: AppTheme.accentGreen,
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
+
   void _rebuildSteps() {
     _timer?.cancel();
     _isPlaying = false;
@@ -120,18 +145,6 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
   }
 
   /// Granular Line-by-Line Dynamic Step Generation
-  /// Line 1: Function Header
-  /// Line 2: int left = 0;
-  /// Line 3: int right = numbers.size() - 1;
-  /// Line 4: while (left < right)
-  /// Line 5: int sum = numbers[left] + numbers[right];
-  /// Line 6: if (sum == target)
-  /// Line 7: return {left + 1, right + 1};
-  /// Line 8: else if (sum < target)
-  /// Line 9: left++;
-  /// Line 10: else
-  /// Line 11: right--;
-  /// Line 14: return {};
   List<TwoSumIIStep> _generateSteps(List<int> arr, int target) {
     List<TwoSumIIStep> steps = [];
     int l = 0;
@@ -443,6 +456,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
   // TAB 1: Problem Description & Key Intuition
   Widget _buildProblemDescriptionTab(double hPadding) {
     return ResponsiveCenter(
+      maxWidth: 1280.0, // Expanded width
       padding: EdgeInsets.all(hPadding),
       child: SingleChildScrollView(
         child: Column(
@@ -636,7 +650,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     );
   }
 
-  // TAB 2: Dynamic Input & Granular Line-by-Line Visualizer
+  // TAB 2: Dynamic Input & 2D Scrollable Visualizer (Expanded Width: 1280.0)
   Widget _buildVisualizerTab(double hPadding) {
     final isMobile = Responsive.isMobile(context);
     final step = _steps.isEmpty
@@ -652,8 +666,10 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
         : _steps[_currentStepIndex];
 
     return ResponsiveCenter(
+      maxWidth: 1280.0, // Expanded width for visualizer
       padding: EdgeInsets.all(hPadding),
       child: SingleChildScrollView(
+        scrollDirection: Axis.vertical, // Top-to-bottom scroll
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -711,7 +727,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
 
                   // Preset buttons
                   SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.horizontal, // Left-to-right scroll
                     child: Row(
                       children: [
                         Text('Presets: ', style: TextStyle(color: AppTheme.textMuted, fontSize: Responsive.sp(context, 12))),
@@ -738,24 +754,37 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
             ),
             const SizedBox(height: 20),
 
-            // Step Visualization Section (Responsive Row or Column)
-            if (isMobile)
-              Column(
-                children: [
-                  _buildCodeTraceWidget(step.activeLine),
-                  const SizedBox(height: 16),
-                  _buildArrayVisualizationBox(step),
-                ],
-              )
-            else
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(child: _buildCodeTraceWidget(step.activeLine)),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildArrayVisualizationBox(step)),
-                ],
+            // Step Visualization Section (Support both 2D Vertical & Horizontal Scroll)
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal, // Left-to-Right scroll support for wide screens / trace
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: isMobile ? MediaQuery.of(context).size.width - (hPadding * 2) : 950.0,
+                ),
+                child: isMobile
+                    ? Column(
+                        children: [
+                          _buildCodeTraceWidget(step.activeLine),
+                          const SizedBox(height: 16),
+                          _buildArrayVisualizationBox(step),
+                        ],
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 480,
+                            child: _buildCodeTraceWidget(step.activeLine),
+                          ),
+                          const SizedBox(width: 16),
+                          SizedBox(
+                            width: 480,
+                            child: _buildArrayVisualizationBox(step),
+                          ),
+                        ],
+                      ),
               ),
+            ),
             const SizedBox(height: 16),
 
             // Playback Controls Bar
@@ -813,11 +842,12 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     );
   }
 
-  // TAB 3: Interactive Practice & Full Solution
+  // TAB 3: Interactive Practice & Full Solution (Expanded Width: 1280.0)
   Widget _buildPracticeAndAnswerTab(double hPadding) {
     final currSum = _currentArray[_userLeft] + _currentArray[_userRight];
 
     return ResponsiveCenter(
+      maxWidth: 1280.0, // Expanded width
       padding: EdgeInsets.all(hPadding),
       child: SingleChildScrollView(
         child: Column(
@@ -861,7 +891,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                   ),
                   const SizedBox(height: 16),
 
-                  // Pointer Array View
+                  // Pointer Array View (Scrollable Left-to-Right)
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -1097,7 +1127,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                     ),
                     const SizedBox(height: 12),
 
-                    // Full Code Box Solution
+                    // Full Code Box Solution (With Copy Option)
                     _buildFullCodeSnippet(_selectedCodeLang),
                     const SizedBox(height: 16),
 
@@ -1208,8 +1238,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     );
   }
 
-  /// Granular Line-by-Line Code Snippet Highlight Widget
-  /// Beginner-friendly: left and right initialized on SEPARATE lines (Line 2 & Line 3)
+  /// Granular Line-by-Line Code Snippet Highlight Widget with COPY CODE BUTTON
   Widget _buildCodeTraceWidget(int activeLine) {
     final codeLines = const [
       "vector<int> twoSum(vector<int>& numbers, int target) {",
@@ -1229,6 +1258,8 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
       "}",
     ];
 
+    final fullCodeText = codeLines.join('\n');
+
     return Container(
       padding: EdgeInsets.all(Responsive.sp(context, 12)),
       decoration: BoxDecoration(
@@ -1238,51 +1269,97 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(codeLines.length, (idx) {
-          final lineNum = idx + 1;
-          final isActive = lineNum == activeLine;
-
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            margin: const EdgeInsets.symmetric(vertical: 2),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-            decoration: BoxDecoration(
-              color: isActive ? AppTheme.accentPurple.withOpacity(0.35) : Colors.transparent,
-              borderRadius: BorderRadius.circular(6),
-              border: isActive ? const Border(left: BorderSide(color: AppTheme.accentNeonCyan, width: 4)) : null,
-            ),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 24,
-                  child: Text(
-                    '$lineNum',
-                    style: TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: Responsive.sp(context, 11),
-                      color: isActive ? AppTheme.accentNeonCyan : AppTheme.textMuted,
-                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                    ),
-                  ),
+        children: [
+          // Header with Copy Code Button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "C++ Execution Trace",
+                style: TextStyle(
+                  color: AppTheme.accentNeonCyan,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.sp(context, 12.5),
                 ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Text(
-                      codeLines[idx],
-                      style: TextStyle(
-                        fontFamily: 'monospace',
-                        fontSize: Responsive.sp(context, 12.5),
-                        color: isActive ? Colors.white : const Color(0xFF94A3B8),
-                        fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+              ),
+              InkWell(
+                onTap: () => _copyToClipboard(fullCodeText, "C++ Visualizer Code"),
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentPurple.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.copy, size: Responsive.sp(context, 13), color: AppTheme.accentNeonCyan),
+                      const SizedBox(width: 4),
+                      Text(
+                        _isEnglish ? "Copy" : "কপি",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Responsive.sp(context, 11),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+
+          // Code Trace Lines (Scrollable Left-to-Right)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: List.generate(codeLines.length, (idx) {
+                final lineNum = idx + 1;
+                final isActive = lineNum == activeLine;
+
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  margin: const EdgeInsets.symmetric(vertical: 2),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: isActive ? AppTheme.accentPurple.withOpacity(0.35) : Colors.transparent,
+                    borderRadius: BorderRadius.circular(6),
+                    border: isActive ? const Border(left: BorderSide(color: AppTheme.accentNeonCyan, width: 4)) : null,
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 24,
+                        child: Text(
+                          '$lineNum',
+                          style: TextStyle(
+                            fontFamily: 'monospace',
+                            fontSize: Responsive.sp(context, 11),
+                            color: isActive ? AppTheme.accentNeonCyan : AppTheme.textMuted,
+                            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        codeLines[idx],
+                        style: TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: Responsive.sp(context, 12.5),
+                          color: isActive ? Colors.white : const Color(0xFF94A3B8),
+                          fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ),
-          );
-        }),
+          ),
+        ],
       ),
     );
   }
@@ -1324,7 +1401,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
           ),
           const SizedBox(height: 16),
 
-          // Array Box Animation View
+          // Array Box Animation View (Scrollable Left-to-Right)
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -1438,6 +1515,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
     );
   }
 
+  /// Solution Code Box with COPY CODE BUTTON
   Widget _buildFullCodeSnippet(String lang) {
     String code = "";
     if (lang == "C++") {
@@ -1524,17 +1602,49 @@ List<int> twoSum(List<int> numbers, int target) {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFF1E293B)),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Text(
-          code,
-          style: TextStyle(
-            fontFamily: 'monospace',
-            fontSize: Responsive.sp(context, 12.5),
-            color: const Color(0xFF38BDF8),
-            height: 1.4,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with Language & Copy Code Button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "$lang Solution Code",
+                style: TextStyle(
+                  color: AppTheme.accentNeonCyan,
+                  fontWeight: FontWeight.bold,
+                  fontSize: Responsive.sp(context, 13),
+                ),
+              ),
+              ElevatedButton.icon(
+                onPressed: () => _copyToClipboard(code, "$lang Solution"),
+                icon: Icon(Icons.copy_all, size: Responsive.sp(context, 14)),
+                label: Text(
+                  _isEnglish ? "Copy Code" : "কোড কপি করুন",
+                  style: TextStyle(fontSize: Responsive.sp(context, 12), fontWeight: FontWeight.bold),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.accentPurple,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+              ),
+            ],
           ),
-        ),
+          const SizedBox(height: 10),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(
+              code.trim(),
+              style: TextStyle(
+                fontFamily: 'monospace',
+                fontSize: Responsive.sp(context, 12.5),
+                color: const Color(0xFF38BDF8),
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
