@@ -40,7 +40,7 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
   bool _isPlaying = false;
   Timer? _timer;
 
-  // Code snippets split into lines for line-by-line debugging
+  // Code snippets split into exact lines for 100% granular line-by-line debugging
   final List<List<String>> _codeTemplates = const [
     // Template 1: Opposite Direction (Two Sum II)
     [
@@ -85,15 +85,23 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     ],
   ];
 
-  // Template 1: Two Sum II steps
+  // Template 1 Granular Line-by-Line Debugging Steps (Two Sum II)
   final List<DebugVisualizerStep> _template1Steps = const [
     DebugVisualizerStep(
       left: 0,
       right: 6,
       activeLineIndex: 1,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 2: Initialize left = 0 (val 1) and right = 6 (val 15). Target = 10.",
-      explanationBn: "লাইন ২: সূচনা left = 0 (মান 1) এবং right = 6 (মান 15)। Target = 10।",
+      explanationEn: "Line 2: Initialize variables -> left = 0 (val 1), right = 6 (val 15). Target = 10.",
+      explanationBn: "লাইন ২: ভ্যারিয়েবল ডিক্লেয়ার -> left = 0 (মান 1), right = 6 (মান 15)। Target = 10।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 6,
+      activeLineIndex: 2,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 3: Check while (left < right) -> (0 < 6) is TRUE. Enter loop.",
+      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (0 < 6) সত্য! লুপে প্রবেশ করুন।",
     ),
     DebugVisualizerStep(
       left: 0,
@@ -106,10 +114,34 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     DebugVisualizerStep(
       left: 0,
       right: 6,
+      activeLineIndex: 4,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 5: Check if (curr_sum == target) -> (16 == 10) is FALSE.",
+      explanationBn: "লাইন ৫: চেক if (curr_sum == target) -> (16 == 10) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 6,
+      activeLineIndex: 5,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 6: Check else if (curr_sum < target) -> (16 < 10) is FALSE.",
+      explanationBn: "লাইন ৬: চেক else if (curr_sum < target) -> (16 < 10) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 5,
       activeLineIndex: 6,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 7: curr_sum (16) > target (10). Execute right-- (right becomes 5).",
-      explanationBn: "লাইন ৭: curr_sum (16) > target (10)। right-- চালান (right হবে 5)।",
+      explanationEn: "Line 7: Execute else right-- -> right decreases from 6 to 5.",
+      explanationBn: "লাইন ৭: else এক্সিকিউট right-- -> right কমে 6 থেকে 5 হলো।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 5,
+      activeLineIndex: 2,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 3: Check while (left < right) -> (0 < 5) is TRUE. Continue loop.",
+      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (0 < 5) সত্য! লুপ চলবে।",
     ),
     DebugVisualizerStep(
       left: 0,
@@ -122,10 +154,34 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     DebugVisualizerStep(
       left: 0,
       right: 5,
+      activeLineIndex: 4,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 5: Check if (curr_sum == target) -> (12 == 10) is FALSE.",
+      explanationBn: "লাইন ৫: চেক if (curr_sum == target) -> (12 == 10) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 5,
+      activeLineIndex: 5,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 6: Check else if (curr_sum < target) -> (12 < 10) is FALSE.",
+      explanationBn: "লাইন ৬: চেক else if (curr_sum < target) -> (12 < 10) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 4,
       activeLineIndex: 6,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 7: curr_sum (12) > target (10). Execute right-- (right becomes 4).",
-      explanationBn: "লাইন ৭: curr_sum (12) > target (10)। right-- চালান (right হবে 4)।",
+      explanationEn: "Line 7: Execute else right-- -> right decreases from 5 to 4.",
+      explanationBn: "লাইন ৭: else এক্সিকিউট right-- -> right কমে 5 থেকে 4 হলো।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 4,
+      activeLineIndex: 2,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 3: Check while (left < right) -> (0 < 4) is TRUE.",
+      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (0 < 4) সত্য।",
     ),
     DebugVisualizerStep(
       left: 0,
@@ -138,10 +194,34 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     DebugVisualizerStep(
       left: 0,
       right: 4,
+      activeLineIndex: 4,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 5: Check if (curr_sum == target) -> (9 == 10) is FALSE.",
+      explanationBn: "লাইন ৫: চেক if (curr_sum == target) -> (9 == 10) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 4,
       activeLineIndex: 5,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 6: curr_sum (9) < target (10). Execute left++ (left becomes 1).",
-      explanationBn: "লাইন ৬: curr_sum (9) < target (10)। left++ চালান (left হবে 1)।",
+      explanationEn: "Line 6: Check else if (curr_sum < target) -> (9 < 10) is TRUE! Execute left++.",
+      explanationBn: "লাইন ৬: চেক else if (curr_sum < target) -> (9 < 10) সত্য! left++ চালান।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 4,
+      activeLineIndex: 5,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 6: left++ executed -> left is now 1 (val 2).",
+      explanationBn: "লাইন ৬: left++ সফল হলো -> left এখন 1 (মান 2)।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 4,
+      activeLineIndex: 2,
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 3: Check while (left < right) -> (1 < 4) is TRUE.",
+      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (1 < 4) সত্য।",
     ),
     DebugVisualizerStep(
       left: 1,
@@ -156,115 +236,189 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
       right: 4,
       activeLineIndex: 4,
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "🎉 Line 5: MATCH! curr_sum (10) == target (10). Return {1, 4}!",
-      explanationBn: "🎉 লাইন ৫: ম্যাচ হয়েছে! curr_sum (10) == target (10)। Return {1, 4}!",
+      explanationEn: "🎉 Line 5: MATCH FOUND! (10 == 10) is TRUE! Return {1, 4}!",
+      explanationBn: "🎉 লাইন ৫: ম্যাচ পাওয়া গেছে! (10 == 10) সত্য! Return {1, 4}!",
       isMatch: true,
     ),
   ];
 
-  // Template 2: Move Zeroes steps
+  // Template 2 Granular Line-by-Line Debugging Steps (Move Zeroes)
   final List<DebugVisualizerStep> _template2Steps = const [
     DebugVisualizerStep(
       left: 0,
       right: 0,
       activeLineIndex: 1,
       arrayState: [0, 1, 0, 3, 12],
-      explanationEn: "Line 2: Initialize slow = 0. Loop fast from 0 to 4.",
-      explanationBn: "লাইন ২: সূচনা slow = 0। লুপ fast = 0 থেকে 4 পর্যন্ত।",
+      explanationEn: "Line 2: Initialize slow = 0.",
+      explanationBn: "লাইন ২: সূচনা slow = 0।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 0,
+      activeLineIndex: 2,
+      arrayState: [0, 1, 0, 3, 12],
+      explanationEn: "Line 3: Check for loop: fast = 0 (0 < 5 is TRUE).",
+      explanationBn: "লাইন ৩: for লুপ চেক: fast = 0 (0 < 5 সত্য)।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 0,
       activeLineIndex: 3,
       arrayState: [0, 1, 0, 3, 12],
-      explanationEn: "Line 4: fast=0 (nums[0] == 0). Condition false, skip swap.",
-      explanationBn: "লাইন ৪: fast=0 (nums[0] == 0)। শর্ত মিথ্যা, swap স্কিপ করুন।",
+      explanationEn: "Line 4: Check if (nums[0] != 0) -> (0 != 0) is FALSE. Skip if block.",
+      explanationBn: "লাইন ৪: চেক if (nums[0] != 0) -> (0 != 0) মিথ্যা। swap স্কিপ করুন।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 1,
+      activeLineIndex: 2,
+      arrayState: [0, 1, 0, 3, 12],
+      explanationEn: "Line 3: Loop increment fast++ -> fast is now 1.",
+      explanationBn: "লাইন ৩: fast++ ইনক্রিমেন্ট -> fast এখন 1।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 1,
       activeLineIndex: 3,
       arrayState: [0, 1, 0, 3, 12],
-      explanationEn: "Line 4: fast=1 (nums[1] == 1 != 0). Condition true!",
-      explanationBn: "লাইন ৪: fast=1 (nums[1] == 1 != 0)। শর্ত সত্য!",
+      explanationEn: "Line 4: Check if (nums[1] != 0) -> (1 != 0) is TRUE! Enter if block.",
+      explanationBn: "লাইন ৪: চেক if (nums[1] != 0) -> (1 != 0) সত্য! if ব্লকে ঢুকুন।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 1,
       activeLineIndex: 4,
       arrayState: [1, 0, 0, 3, 12],
-      explanationEn: "Line 5: Swap nums[slow] and nums[fast] -> array: [1, 0, 0, 3, 12]",
-      explanationBn: "লাইন ৫: swap(nums[0], nums[1]) -> অ্যারে: [1, 0, 0, 3, 12]",
+      explanationEn: "Line 5: Execute swap(nums[0], nums[1]) -> array: [1, 0, 0, 3, 12].",
+      explanationBn: "লাইন ৫: swap(nums[0], nums[1]) চালান -> অ্যারে: [1, 0, 0, 3, 12]।",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 1,
       activeLineIndex: 5,
       arrayState: [1, 0, 0, 3, 12],
-      explanationEn: "Line 6: Execute slow++ (slow becomes 1).",
-      explanationBn: "লাইন ৬: slow++ চালান (slow হবে 1)।",
+      explanationEn: "Line 6: Execute slow++ -> slow is now 1.",
+      explanationBn: "লাইন ৬: slow++ চালান -> slow এখন 1।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 2,
+      activeLineIndex: 2,
+      arrayState: [1, 0, 0, 3, 12],
+      explanationEn: "Line 3: Loop increment fast++ -> fast is now 2.",
+      explanationBn: "লাইন ৩: fast++ ইনক্রিমেন্ট -> fast এখন 2।",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 2,
       activeLineIndex: 3,
       arrayState: [1, 0, 0, 3, 12],
-      explanationEn: "Line 4: fast=2 (nums[2] == 0). Condition false, skip swap.",
-      explanationBn: "লাইন ৪: fast=2 (nums[2] == 0)। শর্ত মিথ্যা, swap স্কিপ করুন।",
+      explanationEn: "Line 4: Check if (nums[2] != 0) -> (0 != 0) is FALSE. Skip if block.",
+      explanationBn: "লাইন ৪: চেক if (nums[2] != 0) -> (0 != 0) মিথ্যা। swap স্কিপ করুন।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 3,
+      activeLineIndex: 2,
+      arrayState: [1, 0, 0, 3, 12],
+      explanationEn: "Line 3: Loop increment fast++ -> fast is now 3.",
+      explanationBn: "লাইন ৩: fast++ ইনক্রিমেন্ট -> fast এখন 3।",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 3,
       activeLineIndex: 3,
       arrayState: [1, 0, 0, 3, 12],
-      explanationEn: "Line 4: fast=3 (nums[3] == 3 != 0). Condition true!",
-      explanationBn: "লাইন ৪: fast=3 (nums[3] == 3 != 0)। শর্ত সত্য!",
+      explanationEn: "Line 4: Check if (nums[3] != 0) -> (3 != 0) is TRUE!",
+      explanationBn: "লাইন ৪: চেক if (nums[3] != 0) -> (3 != 0) সত্য!",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 3,
       activeLineIndex: 4,
       arrayState: [1, 3, 0, 0, 12],
-      explanationEn: "Line 5: Swap nums[1] and nums[3] -> array: [1, 3, 0, 0, 12]",
-      explanationBn: "লাইন ৫: swap(nums[1], nums[3]) -> অ্যারে: [1, 3, 0, 0, 12]",
+      explanationEn: "Line 5: Execute swap(nums[1], nums[3]) -> array: [1, 3, 0, 0, 12].",
+      explanationBn: "লাইন ৫: swap(nums[1], nums[3]) চালান -> অ্যারে: [1, 3, 0, 0, 12]।",
     ),
     DebugVisualizerStep(
       left: 2,
       right: 3,
       activeLineIndex: 5,
       arrayState: [1, 3, 0, 0, 12],
-      explanationEn: "Line 6: Execute slow++ (slow becomes 2).",
-      explanationBn: "লাইন ৬: slow++ চালান (slow হবে 2)।",
+      explanationEn: "Line 6: Execute slow++ -> slow is now 2.",
+      explanationBn: "লাইন ৬: slow++ চালান -> slow এখন 2।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 4,
+      activeLineIndex: 2,
+      arrayState: [1, 3, 0, 0, 12],
+      explanationEn: "Line 3: Loop increment fast++ -> fast is now 4.",
+      explanationBn: "লাইন ৩: fast++ ইনক্রিমেন্ট -> fast এখন 4।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 4,
+      activeLineIndex: 3,
+      arrayState: [1, 3, 0, 0, 12],
+      explanationEn: "Line 4: Check if (nums[4] != 0) -> (12 != 0) is TRUE!",
+      explanationBn: "লাইন ৪: চেক if (nums[4] != 0) -> (12 != 0) সত্য!",
     ),
     DebugVisualizerStep(
       left: 2,
       right: 4,
       activeLineIndex: 4,
       arrayState: [1, 3, 12, 0, 0],
-      explanationEn: "Line 5: Swap nums[2] and nums[4] -> array: [1, 3, 12, 0, 0]",
-      explanationBn: "লাইন ৫: swap(nums[2], nums[4]) -> অ্যারে: [1, 3, 12, 0, 0]",
+      explanationEn: "Line 5: Execute swap(nums[2], nums[4]) -> array: [1, 3, 12, 0, 0].",
+      explanationBn: "লাইন ৫: swap(nums[2], nums[4]) চালান -> অ্যারে: [1, 3, 12, 0, 0]।",
     ),
     DebugVisualizerStep(
       left: 3,
       right: 4,
       activeLineIndex: 5,
       arrayState: [1, 3, 12, 0, 0],
-      explanationEn: "🎉 Line 6: DONE! All non-zero elements moved to front.",
-      explanationBn: "🎉 লাইন ৬: সম্পন্ন! সব non-zero মান সামনে আনা হয়েছে।",
+      explanationEn: "Line 6: Execute slow++ -> slow is now 3.",
+      explanationBn: "লাইন ৬: slow++ চালান -> slow এখন 3।",
+    ),
+    DebugVisualizerStep(
+      left: 3,
+      right: 4,
+      activeLineIndex: 8,
+      arrayState: [1, 3, 12, 0, 0],
+      explanationEn: "🎉 Line 9: Loop finished! All zeroes moved to back: [1, 3, 12, 0, 0].",
+      explanationBn: "🎉 লাইন ৯: লুপ সম্পন্ন! সব zero পেছনে নিয়ে নেওয়া হয়েছে: [1, 3, 12, 0, 0]।",
       isMatch: true,
     ),
   ];
 
-  // Template 3: 3Sum Triplets steps
+  // Template 3 Granular Line-by-Line Debugging Steps (3Sum Triplets)
   final List<DebugVisualizerStep> _template3Steps = const [
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 1,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 2: Sort input array: [-4, -1, -1, 0, 1, 2].",
+      explanationBn: "লাইন ২: ইনপুট অ্যারে সর্ট করুন: [-4, -1, -1, 0, 1, 2]।",
+    ),
     DebugVisualizerStep(
       left: 1,
       right: 5,
       fixed: 0,
       activeLineIndex: 2,
       arrayState: [-4, -1, -1, 0, 1, 2],
-      explanationEn: "Line 3: Loop i=0 (val -4). Fixed element is nums[0] = -4.",
-      explanationBn: "লাইন ৩: লুপ i=0 (মান -4)। ফিক্সড মান nums[0] = -4।",
+      explanationEn: "Line 3: Start outer loop i = 0 (nums[0] = -4).",
+      explanationBn: "লাইন ৩: আউটার লুপ শুরু i = 0 (nums[0] = -4)।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 3,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 4: Check duplicate (i > 0 && nums[i] == nums[i-1]) -> (0 > 0 is FALSE).",
+      explanationBn: "লাইন ৪: ডুপ্লিকেট চেক (i > 0 && nums[i] == nums[i-1]) -> (0 > 0 মিথ্যা)।",
     ),
     DebugVisualizerStep(
       left: 1,
@@ -272,8 +426,17 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
       fixed: 0,
       activeLineIndex: 4,
       arrayState: [-4, -1, -1, 0, 1, 2],
-      explanationEn: "Line 5: Set left = 1 (val -1) and right = 5 (val 2).",
+      explanationEn: "Line 5: Set left = i+1 = 1 (val -1) and right = n-1 = 5 (val 2).",
       explanationBn: "লাইন ৫: সেট করুন left = 1 (মান -1) এবং right = 5 (মান 2)।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 5,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 6: Check while (left < right) -> (1 < 5) is TRUE. Enter inner loop.",
+      explanationBn: "লাইন ৬: শর্ত চেক while (left < right) -> (1 < 5) সত্য! ইনার লুপে প্রবেশ।",
     ),
     DebugVisualizerStep(
       left: 1,
@@ -288,10 +451,28 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
       left: 1,
       right: 5,
       fixed: 0,
+      activeLineIndex: 7,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 8: Check if (sum == 0) -> (-3 == 0) is FALSE.",
+      explanationBn: "লাইন ৮: চেক if (sum == 0) -> (-3 == 0) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 1,
+      right: 5,
+      fixed: 0,
       activeLineIndex: 8,
       arrayState: [-4, -1, -1, 0, 1, 2],
-      explanationEn: "Line 9: sum (-3) < 0. Execute left++ (left becomes 2).",
-      explanationBn: "লাইন ৯: sum (-3) < 0। left++ চালান (left হবে 2)।",
+      explanationEn: "Line 9: Check else if (sum < 0) -> (-3 < 0) is TRUE! Execute left++.",
+      explanationBn: "লাইন ৯: চেক else if (sum < 0) -> (-3 < 0) সত্য! left++ বলুন।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 5,
+      fixed: 0,
+      activeLineIndex: 8,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 9: left++ executed -> left is now 2 (val -1).",
+      explanationBn: "লাইন ৯: left++ সম্পাদন করা হলো -> left এখন 2 (মান -1)।",
     ),
     DebugVisualizerStep(
       left: 2,
@@ -299,8 +480,17 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
       fixed: 1,
       activeLineIndex: 2,
       arrayState: [-4, -1, -1, 0, 1, 2],
-      explanationEn: "Line 3: Advance loop to i=1 (val -1). Fixed element nums[1] = -1.",
-      explanationBn: "লাইন ৩: লুপ i=1 (মান -1) এ নিয়ে যান। ফিক্সড মান nums[1] = -1।",
+      explanationEn: "Line 3: Outer loop advances i = 1 (nums[1] = -1).",
+      explanationBn: "লাইন ৩: আউটার লুপ পরিবর্তন i = 1 (nums[1] = -1)।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 5,
+      fixed: 1,
+      activeLineIndex: 3,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 4: Check duplicate (1 > 0 && nums[1] == nums[0]) -> (-1 == -4 is FALSE).",
+      explanationBn: "লাইন ৪: ডুপ্লিকেট চেক (-1 == -4 মিথ্যা)।",
     ),
     DebugVisualizerStep(
       left: 2,
@@ -308,8 +498,17 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
       fixed: 1,
       activeLineIndex: 4,
       arrayState: [-4, -1, -1, 0, 1, 2],
-      explanationEn: "Line 5: Set left = 2 (val -1) and right = 5 (val 2).",
+      explanationEn: "Line 5: Set left = i+1 = 2 (val -1) and right = n-1 = 5 (val 2).",
       explanationBn: "লাইন ৫: সেট করুন left = 2 (মান -1) এবং right = 5 (মান 2)।",
+    ),
+    DebugVisualizerStep(
+      left: 2,
+      right: 5,
+      fixed: 1,
+      activeLineIndex: 5,
+      arrayState: [-4, -1, -1, 0, 1, 2],
+      explanationEn: "Line 6: Check while (left < right) -> (2 < 5) is TRUE.",
+      explanationBn: "লাইন ৬: শর্ত চেক while (left < right) -> (2 < 5) সত্য।",
     ),
     DebugVisualizerStep(
       left: 2,
@@ -326,8 +525,8 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
       fixed: 1,
       activeLineIndex: 7,
       arrayState: [-4, -1, -1, 0, 1, 2],
-      explanationEn: "🎉 Line 8: TRIPLET MATCH! [-1, -1, 2] sums to 0! Return triplet.",
-      explanationBn: "🎉 লাইন ৮: ট্রিপলেট ম্যাচ হয়েছে! [-1, -1, 2] এর যোগফল 0!",
+      explanationEn: "🎉 Line 8: TRIPLET MATCH FOUND! (0 == 0) is TRUE! Return {-1, -1, 2}!",
+      explanationBn: "🎉 লাইন ৮: ট্রিপলেট ম্যাচ পাওয়া গেছে! (0 == 0) সত্য! Return {-1, -1, 2}!",
       isMatch: true,
     ),
   ];
@@ -533,14 +732,15 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
         children: List.generate(codeLines.length, (idx) {
           final isActive = idx == activeLineIndex;
 
-          return Container(
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
             margin: const EdgeInsets.symmetric(vertical: 2),
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             decoration: BoxDecoration(
               color: isActive ? AppTheme.accentPurple.withOpacity(0.35) : Colors.transparent,
               borderRadius: BorderRadius.circular(6),
               border: isActive
-                  ? const Border(left: BorderSide(color: AppTheme.accentNeonCyan, width: 3))
+                  ? const Border(left: BorderSide(color: AppTheme.accentNeonCyan, width: 4))
                   : null,
             ),
             child: Row(
@@ -683,7 +883,7 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
           ),
           const SizedBox(height: 16),
 
-          // Explanation Banner
+          // Detailed Explanation Banner
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(12),
