@@ -470,7 +470,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 480,
-              mainAxisExtent: 140,
+              mainAxisExtent: 165, // Increased height to prevent grid card overflow
               crossAxisSpacing: 14,
               mainAxisSpacing: 14,
             ),
@@ -492,6 +492,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
@@ -512,19 +513,26 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           const SizedBox(height: 6),
           Text(
             _isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
-            style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12)),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12), height: 1.3),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: problem.companyTags.map((tag) {
-                return Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: Chip(
-                    label: Text(tag, style: const TextStyle(fontSize: 10, color: Colors.white)),
-                    backgroundColor: AppTheme.primaryDark,
-                    visualDensity: VisualDensity.compact,
+                return Container(
+                  margin: const EdgeInsets.only(right: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryDark,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFF334155)),
+                  ),
+                  child: Text(
+                    tag,
+                    style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w500),
                   ),
                 );
               }).toList(),
