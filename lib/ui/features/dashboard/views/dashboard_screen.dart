@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:algorithmix/data/repositories/pattern_repository.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/core_patterns_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/pattern_detail_modal.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
@@ -84,233 +85,286 @@ class _DashboardHomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final patterns = PatternRepository.getCorePatterns();
     final dpPattern = patterns.firstWhere((p) => p.id == 18);
+    final hPadding = Responsive.horizontalPadding(context);
+    final vPadding = Responsive.verticalPadding(context);
+    final isMobile = Responsive.isMobile(context);
 
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // User Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Welcome Back, Developer 👋',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+      child: ResponsiveCenter(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: vPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // User Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Welcome Back, Developer 👋',
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 20),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Master patterns to solve any DSA problem.',
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 13),
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppTheme.accentPurple.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppTheme.accentPurple),
                     ),
-                    SizedBox(height: 4),
-                    Text(
-                      'Master patterns to solve any DSA problem.',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppTheme.textSecondary,
-                      ),
+                    child: const Icon(Icons.person, color: Colors.white, size: 24),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              // Progress Banner
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(isMobile ? 20 : 28),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF6366F1).withOpacity(0.4),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppTheme.accentPurple.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppTheme.accentPurple),
-                  ),
-                  child: const Icon(Icons.person, color: Colors.white, size: 24),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Progress Banner
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF6366F1).withOpacity(0.4),
-                    blurRadius: 15,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Text(
-                          'FEATURED ROADMAP',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const Icon(Icons.stars, color: Colors.amber, size: 24),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    '25 Core Patterns Mastery',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  const Text(
-                    'Learn the top 25 coding patterns used by Big Tech interviewers.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.white70,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: const [
-                      Icon(Icons.check_circle_outline, color: Colors.white, size: 16),
-                      SizedBox(width: 6),
-                      Text(
-                        '25 Interactive Cards Available',
-                        style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 28),
-
-            // Daily Spotlight Card (DP)
-            const Text(
-              '⭐ Most Important Pattern',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 12),
-            GestureDetector(
-              onTap: () {
-                PatternDetailModal.show(context, dpPattern);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  color: AppTheme.surfaceDark,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppTheme.accentPink, width: 1.5),
-                ),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: AppTheme.accentPink.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(Icons.stars, color: AppTheme.accentPink, size: 32),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Dynamic Programming (DP)',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Text(
+                            'FEATURED ROADMAP',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 11,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            dpPattern.description,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: AppTheme.textSecondary,
-                            ),
-                          ),
-                        ],
+                        ),
+                        const Icon(Icons.stars, color: Colors.amber, size: 24),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      '25 Core Patterns Mastery',
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 22),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
-                    const Icon(Icons.arrow_forward_ios_rounded, color: AppTheme.textMuted, size: 16),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Learn the top 25 coding patterns used by Big Tech interviewers.',
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 13),
+                        color: Colors.white70,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        const Icon(Icons.check_circle_outline, color: Colors.white, size: 16),
+                        const SizedBox(width: 6),
+                        Text(
+                          '25 Interactive Cards Available',
+                          style: TextStyle(
+                            fontSize: Responsive.sp(context, 12),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 28),
+              const SizedBox(height: 28),
 
-            // Explore Categories Title
-            const Text(
-              'Explore Topics',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              // Daily Spotlight Card (DP)
+              Text(
+                '⭐ Most Important Pattern',
+                style: TextStyle(
+                  fontSize: Responsive.sp(context, 18),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            const SizedBox(height: 14),
+              const SizedBox(height: 12),
+              GestureDetector(
+                onTap: () {
+                  PatternDetailModal.show(context, dpPattern);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceDark,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppTheme.accentPink, width: 1.5),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: AppTheme.accentPink.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Icon(Icons.stars, color: AppTheme.accentPink, size: 32),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Dynamic Programming (DP)',
+                              style: TextStyle(
+                                fontSize: Responsive.sp(context, 16),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              dpPattern.description,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: Responsive.sp(context, 12),
+                                color: AppTheme.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios_rounded, color: AppTheme.textMuted, size: 16),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 28),
 
-            // 3 Action Cards (Core Patterns, Algorithms, DSA)
-            _buildCategoryCard(
-              context,
-              title: '25 Core Patterns',
-              subtitle: 'Two Pointers, Sliding Window, DP, Trees & Graphs',
-              countText: '25 Cards',
-              icon: Icons.grid_view_rounded,
-              color: AppTheme.accentPurple,
-              onTap: () => onSelectTab(1),
-            ),
-            const SizedBox(height: 14),
-            _buildCategoryCard(
-              context,
-              title: 'Algorithms Catalog',
-              subtitle: 'Sorting, Searching, Shortest Path, KMP',
-              countText: '4 Categories',
-              icon: Icons.code_rounded,
-              color: AppTheme.accentNeonCyan,
-              onTap: () => onSelectTab(2),
-            ),
-            const SizedBox(height: 14),
-            _buildCategoryCard(
-              context,
-              title: 'Data Structures (DSA)',
-              subtitle: 'Arrays, Linked Lists, Trees, Heaps, Graphs',
-              countText: '4 Types',
-              icon: Icons.dataset_rounded,
-              color: AppTheme.accentGreen,
-              onTap: () => onSelectTab(3),
-            ),
-            const SizedBox(height: 20),
-          ],
+              // Explore Categories Title
+              Text(
+                'Explore Topics',
+                style: TextStyle(
+                  fontSize: Responsive.sp(context, 18),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 14),
+
+              // Responsive Action Cards
+              if (isMobile) ...[
+                _buildCategoryCard(
+                  context,
+                  title: '25 Core Patterns',
+                  subtitle: 'Two Pointers, Sliding Window, DP, Trees & Graphs',
+                  countText: '25 Cards',
+                  icon: Icons.grid_view_rounded,
+                  color: AppTheme.accentPurple,
+                  onTap: () => onSelectTab(1),
+                ),
+                const SizedBox(height: 14),
+                _buildCategoryCard(
+                  context,
+                  title: 'Algorithms Catalog',
+                  subtitle: 'Sorting, Searching, Shortest Path, KMP',
+                  countText: '4 Categories',
+                  icon: Icons.code_rounded,
+                  color: AppTheme.accentNeonCyan,
+                  onTap: () => onSelectTab(2),
+                ),
+                const SizedBox(height: 14),
+                _buildCategoryCard(
+                  context,
+                  title: 'Data Structures (DSA)',
+                  subtitle: 'Arrays, Linked Lists, Trees, Heaps, Graphs',
+                  countText: '4 Types',
+                  icon: Icons.dataset_rounded,
+                  color: AppTheme.accentGreen,
+                  onTap: () => onSelectTab(3),
+                ),
+              ] else ...[
+                // Grid layout for Tablet / Desktop
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildCategoryCard(
+                        context,
+                        title: '25 Core Patterns',
+                        subtitle: 'Two Pointers, Sliding Window, DP, Trees & Graphs',
+                        countText: '25 Cards',
+                        icon: Icons.grid_view_rounded,
+                        color: AppTheme.accentPurple,
+                        onTap: () => onSelectTab(1),
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: _buildCategoryCard(
+                        context,
+                        title: 'Algorithms Catalog',
+                        subtitle: 'Sorting, Searching, Shortest Path, KMP',
+                        countText: '4 Categories',
+                        icon: Icons.code_rounded,
+                        color: AppTheme.accentNeonCyan,
+                        onTap: () => onSelectTab(2),
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: _buildCategoryCard(
+                        context,
+                        title: 'Data Structures (DSA)',
+                        subtitle: 'Arrays, Linked Lists, Trees, Heaps, Graphs',
+                        countText: '4 Types',
+                        icon: Icons.dataset_rounded,
+                        color: AppTheme.accentGreen,
+                        onTap: () => onSelectTab(3),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
@@ -356,15 +410,16 @@ class _DashboardHomeView extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: TextStyle(
+                                fontSize: Responsive.sp(context, 16),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                          const Spacer(),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
@@ -374,7 +429,7 @@ class _DashboardHomeView extends StatelessWidget {
                             child: Text(
                               countText,
                               style: TextStyle(
-                                fontSize: 11,
+                                fontSize: Responsive.sp(context, 11),
                                 fontWeight: FontWeight.bold,
                                 color: color,
                               ),
@@ -385,8 +440,8 @@ class _DashboardHomeView extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         subtitle,
-                        style: const TextStyle(
-                          fontSize: 12,
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 12),
                           color: AppTheme.textSecondary,
                         ),
                       ),

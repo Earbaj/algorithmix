@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:algorithmix/data/repositories/pattern_repository.dart';
 import 'package:algorithmix/domain/models/pattern_model.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/pattern_card.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/pattern_detail_modal.dart';
 
@@ -51,6 +52,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Responsive.isMobile(context);
+    final hPadding = Responsive.horizontalPadding(context);
+
     return Scaffold(
       backgroundColor: AppTheme.primaryDark,
       appBar: AppBar(
@@ -61,69 +65,72 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
         children: [
           // Search & Filter Box
           Container(
-            padding: const EdgeInsets.all(16),
+            width: double.infinity,
             decoration: const BoxDecoration(
               color: AppTheme.surfaceDark,
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
             ),
-            child: Column(
-              children: [
-                // Search Input
-                TextField(
-                  onChanged: (val) {
-                    _searchQuery = val;
-                    _filterPatterns();
-                  },
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                    hintText: 'Search patterns (e.g. Dynamic Programming, Sliding Window)...',
-                    prefixIcon: Icon(Icons.search, color: AppTheme.accentNeonCyan),
+            child: ResponsiveCenter(
+              padding: EdgeInsets.all(hPadding < 20 ? 16 : hPadding),
+              child: Column(
+                children: [
+                  // Search Input
+                  TextField(
+                    onChanged: (val) {
+                      _searchQuery = val;
+                      _filterPatterns();
+                    },
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      hintText: 'Search patterns (e.g. Dynamic Programming, Sliding Window)...',
+                      prefixIcon: Icon(Icons.search, color: AppTheme.accentNeonCyan),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
+                  const SizedBox(height: 12),
 
-                // Category Chips
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: ["All", "Easy", "Medium", "Hard", "⭐ Hot"].map((category) {
-                      final isSelected = _selectedCategory == category;
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8),
-                        child: FilterChip(
-                          label: Text(category),
-                          selected: isSelected,
-                          selectedColor: AppTheme.accentPurple,
-                          backgroundColor: AppTheme.primaryDark,
-                          labelStyle: TextStyle(
-                            color: isSelected ? Colors.white : AppTheme.textSecondary,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  // Category Chips
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: ["All", "Easy", "Medium", "Hard", "⭐ Hot"].map((category) {
+                        final isSelected = _selectedCategory == category;
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: FilterChip(
+                            label: Text(category),
+                            selected: isSelected,
+                            selectedColor: AppTheme.accentPurple,
+                            backgroundColor: AppTheme.primaryDark,
+                            labelStyle: TextStyle(
+                              color: isSelected ? Colors.white : AppTheme.textSecondary,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                            onSelected: (selected) {
+                              setState(() {
+                                _selectedCategory = category;
+                                _filterPatterns();
+                              });
+                            },
                           ),
-                          onSelected: (selected) {
-                            setState(() {
-                              _selectedCategory = category;
-                              _filterPatterns();
-                            });
-                          },
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
 
           // Count summary
-          Padding(
+          ResponsiveCenter(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'Showing ${_filteredPatterns.length} of ${_allPatterns.length} Patterns',
-                  style: const TextStyle(
-                    fontSize: 13,
+                  style: TextStyle(
+                    fontSize: Responsive.sp(context, 13),
                     color: AppTheme.textMuted,
                     fontWeight: FontWeight.w600,
                   ),
@@ -133,20 +140,41 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
             ),
           ),
 
-          // Pattern List
+          // Pattern List / Grid
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: _filteredPatterns.length,
-              itemBuilder: (context, index) {
-                final pattern = _filteredPatterns[index];
-                return PatternCard(
-                  pattern: pattern,
-                  onTap: () {
-                    PatternDetailModal.show(context, pattern);
-                  },
-                );
-              },
+            child: ResponsiveCenter(
+              padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: 8),
+              child: isMobile
+                  ? ListView.builder(
+                      itemCount: _filteredPatterns.length,
+                      itemBuilder: (context, index) {
+                        final pattern = _filteredPatterns[index];
+                        return PatternCard(
+                          pattern: pattern,
+                          onTap: () {
+                            PatternDetailModal.show(context, pattern);
+                          },
+                        );
+                      },
+                    )
+                  : GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 480,
+                        mainAxisExtent: 220,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                      ),
+                      itemCount: _filteredPatterns.length,
+                      itemBuilder: (context, index) {
+                        final pattern = _filteredPatterns[index];
+                        return PatternCard(
+                          pattern: pattern,
+                          onTap: () {
+                            PatternDetailModal.show(context, pattern);
+                          },
+                        );
+                      },
+                    ),
             ),
           ),
         ],
