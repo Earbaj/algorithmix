@@ -5,6 +5,7 @@ import 'package:algorithmix/ui/features/auth/views/register_screen.dart';
 import 'package:algorithmix/ui/features/dashboard/views/dashboard_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/core_patterns_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/two_pointers_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/two_sum_ii_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -15,6 +16,7 @@ class AppRoutes {
   static const String dashboard = '/dashboard';
   static const String corePatterns = '/core-patterns';
   static const String twoPointersDetail = '/two-pointers-detail';
+  static const String twoSumII = '/two-sum-ii';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -26,8 +28,10 @@ class AppRoutes {
       dashboard: (context) => const DashboardScreen(),
       corePatterns: (context) => const CorePatternsScreen(),
       twoPointersDetail: (context) => const TwoPointersDetailScreen(),
+      twoSumII: (context) => const TwoSumIIDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };
   }
 }
+

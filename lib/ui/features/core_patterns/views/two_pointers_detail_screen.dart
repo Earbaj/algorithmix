@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:algorithmix/domain/models/two_pointers_data.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
+import 'package:algorithmix/ui/core/navigation/app_routes.dart';
 import '../widgets/two_pointers_visualizer.dart';
 
 class TwoPointersDetailScreen extends StatefulWidget {
@@ -264,6 +265,72 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Featured Card for Two Sum II Page
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppTheme.accentPurple.withOpacity(0.3),
+                    AppTheme.accentNeonCyan.withOpacity(0.2),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.5), width: 1.5),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.accentNeonCyan.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.bolt, color: AppTheme.accentNeonCyan, size: 28),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _isEnglish ? "⚡ Two Sum II (Sorted Array) Deep Dive" : "⚡ টু সাম ২ (Sorted Array) স্পেশাল পেজ",
+                          style: TextStyle(
+                            fontSize: Responsive.sp(context, 16),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _isEnglish
+                              ? "Interactive visualizer, dynamic custom test cases, practice mode & full code answers."
+                              : "ইন্টারেক্টিভ ভিজ্যুয়ালাইজার, কাস্টম টেস্ট কেস, প্র্যাকটিস মোড ও উত্তর সহ সম্পূর্ণ পেজ।",
+                          style: TextStyle(
+                            fontSize: Responsive.sp(context, 12),
+                            color: AppTheme.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(AppRoutes.twoSumII);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.accentNeonCyan,
+                      foregroundColor: AppTheme.primaryDark,
+                    ),
+                    child: Text(_isEnglish ? "Open" : "খুলুন"),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
             Text(
               _isEnglish ? "📋 FAANG Interview Problems (C++ Focus)" : "📋 FAANG ইন্টারভিউ প্রবলেমস",
               style: TextStyle(
@@ -482,63 +549,80 @@ vector<vector<int>> three_sum(vector<int>& arr) {
   }
 
   Widget _buildProblemCard(TwoPointersProblem problem, Color color) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: problem.isPopular ? AppTheme.accentPink : const Color(0xFF334155)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  problem.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 15)),
-                ),
-              ),
-              if (problem.isPopular)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: AppTheme.accentPink.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
-                  child: const Text('⭐ FAANG', style: TextStyle(fontSize: 10, color: AppTheme.accentPink, fontWeight: FontWeight.bold)),
-                ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            _isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12), height: 1.3),
-          ),
-          const SizedBox(height: 10),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: problem.companyTags.map((tag) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 6),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryDark,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFF334155)),
-                  ),
+    final isTwoSum = problem.title.contains("Two Sum II");
+
+    return InkWell(
+      onTap: () {
+        if (isTwoSum) {
+          Navigator.of(context).pushNamed(AppRoutes.twoSumII);
+        }
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceDark,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: isTwoSum ? AppTheme.accentNeonCyan : (problem.isPopular ? AppTheme.accentPink : const Color(0xFF334155))),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
                   child: Text(
-                    tag,
-                    style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w500),
+                    problem.title,
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 15)),
                   ),
-                );
-              }).toList(),
+                ),
+                if (isTwoSum)
+                  Container(
+                    margin: const EdgeInsets.only(right: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(color: AppTheme.accentNeonCyan.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
+                    child: const Text('🚀 Try Page', style: TextStyle(fontSize: 10, color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold)),
+                  ),
+                if (problem.isPopular)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(color: AppTheme.accentPink.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
+                    child: const Text('⭐ FAANG', style: TextStyle(fontSize: 10, color: AppTheme.accentPink, fontWeight: FontWeight.bold)),
+                  ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 6),
+            Text(
+              _isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12), height: 1.3),
+            ),
+            const SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: problem.companyTags.map((tag) {
+                  return Container(
+                    margin: const EdgeInsets.only(right: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryDark,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: const Color(0xFF334155)),
+                    ),
+                    child: Text(
+                      tag,
+                      style: const TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.w500),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
