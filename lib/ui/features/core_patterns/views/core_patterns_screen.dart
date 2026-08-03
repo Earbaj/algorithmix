@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:algorithmix/data/repositories/pattern_repository.dart';
 import 'package:algorithmix/domain/models/pattern_model.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/core/navigation/app_routes.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/pattern_card.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/pattern_detail_modal.dart';
@@ -48,6 +49,15 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
         return matchesQuery;
       }).toList();
     });
+  }
+
+  void _handlePatternTap(PatternModel pattern) {
+    if (pattern.id == 4) {
+      // Two Pointers dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.twoPointersDetail);
+    } else {
+      PatternDetailModal.show(context, pattern);
+    }
   }
 
   @override
@@ -151,9 +161,7 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
                         final pattern = _filteredPatterns[index];
                         return PatternCard(
                           pattern: pattern,
-                          onTap: () {
-                            PatternDetailModal.show(context, pattern);
-                          },
+                          onTap: () => _handlePatternTap(pattern),
                         );
                       },
                     )
@@ -169,9 +177,7 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
                         final pattern = _filteredPatterns[index];
                         return PatternCard(
                           pattern: pattern,
-                          onTap: () {
-                            PatternDetailModal.show(context, pattern);
-                          },
+                          onTap: () => _handlePatternTap(pattern),
                         );
                       },
                     ),

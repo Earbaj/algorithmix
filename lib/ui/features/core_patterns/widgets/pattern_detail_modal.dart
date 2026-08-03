@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:algorithmix/domain/models/pattern_model.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/core/navigation/app_routes.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 
 class PatternDetailModal extends StatelessWidget {
@@ -109,7 +110,31 @@ class PatternDetailModal extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
+
+                    // Launch Deep Dive Button if Two Pointers (id 4)
+                    if (pattern.id == 4) ...[
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushNamed(AppRoutes.twoPointersDetail);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.accentNeonCyan,
+                            foregroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          icon: const Icon(Icons.rocket_launch, size: 20),
+                          label: const Text(
+                            'Launch Full Interactive Deep Dive 🚀',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
 
                     // Complexity Badges Box
                     Container(

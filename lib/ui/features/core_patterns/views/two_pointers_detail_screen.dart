@@ -1,0 +1,550 @@
+import 'package:flutter/material.dart';
+import 'package:algorithmix/domain/models/two_pointers_data.dart';
+import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/core/utils/responsive.dart';
+import '../widgets/two_pointers_visualizer.dart';
+
+class TwoPointersDetailScreen extends StatefulWidget {
+  const TwoPointersDetailScreen({super.key});
+
+  @override
+  State<TwoPointersDetailScreen> createState() => _TwoPointersDetailScreenState();
+}
+
+class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
+    with SingleTickerProviderStateMixin {
+  bool _isEnglish = true;
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final intro = TwoPointersData.getConceptIntro(_isEnglish);
+
+    return Scaffold(
+      backgroundColor: AppTheme.primaryDark,
+      appBar: AppBar(
+        title: Text(_isEnglish ? 'Two Pointers Deep Dive' : 'টু পয়েন্টারস গাইড'),
+        centerTitle: true,
+        actions: [
+          // Language Switcher Button
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: TextButton.icon(
+              style: TextButton.styleFrom(
+                backgroundColor: AppTheme.accentPurple.withOpacity(0.2),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              ),
+              icon: Icon(
+                Icons.language,
+                color: _isEnglish ? AppTheme.accentNeonCyan : AppTheme.accentPink,
+                size: 18,
+              ),
+              label: Text(
+                _isEnglish ? 'EN' : 'BN',
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              onPressed: () {
+                setState(() {
+                  _isEnglish = !_isEnglish;
+                });
+              },
+            ),
+          ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: AppTheme.accentNeonCyan,
+          labelColor: AppTheme.accentNeonCyan,
+          unselectedLabelColor: AppTheme.textSecondary,
+          isScrollable: true,
+          tabs: [
+            Tab(text: _isEnglish ? 'Concept & Code' : 'ধারণা ও কোড'),
+            Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
+            Tab(text: _isEnglish ? 'FAANG Problems' : 'FAANG প্রবলেমস'),
+            Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildConceptTab(intro),
+          _buildVisualizerTab(),
+          _buildProblemsTab(),
+          _buildMistakesTab(),
+        ],
+      ),
+    );
+  }
+
+  // TAB 1: Concept & Templates
+  Widget _buildConceptTab(Map<String, String> intro) {
+    final hPadding = Responsive.horizontalPadding(context);
+
+    return ResponsiveCenter(
+      padding: EdgeInsets.all(hPadding),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title & Summary
+            Text(
+              intro["title"]!,
+              style: TextStyle(
+                fontSize: Responsive.sp(context, 22),
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              intro["summary"]!,
+              style: TextStyle(
+                fontSize: Responsive.sp(context, 14),
+                color: AppTheme.textSecondary,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // When to use card
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceDark,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFF334155)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.vpn_key_outlined, color: AppTheme.accentAmber, size: 22),
+                      const SizedBox(width: 8),
+                      Text(
+                        intro["whenToUseTitle"]!,
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 16),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  _buildCheckPoint(intro["whenToUse1"]!),
+                  _buildCheckPoint(intro["whenToUse2"]!),
+                  _buildCheckPoint(intro["whenToUse3"]!),
+                  _buildCheckPoint(intro["whenToUse4"]!),
+                  _buildCheckPoint(intro["whenToUse5"]!),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // 3 Main Types
+            Text(
+              intro["typesTitle"]!,
+              style: TextStyle(
+                fontSize: Responsive.sp(context, 18),
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildTypeCard(intro["type1Title"]!, intro["type1Desc"]!, AppTheme.accentNeonCyan),
+            _buildTypeCard(intro["type2Title"]!, intro["type2Desc"]!, AppTheme.accentPurple),
+            _buildTypeCard(intro["type3Title"]!, intro["type3Desc"]!, AppTheme.accentPink),
+            const SizedBox(height: 24),
+
+            // Code Templates
+            Text(
+              _isEnglish ? "🧠 Python/Dart Boilerplate Templates" : "🧠 স্ট্যান্ডার্ড টেমপ্লেট কোড",
+              style: TextStyle(
+                fontSize: Responsive.sp(context, 18),
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 12),
+            _buildCodeBox("Template 1: Opposite Direction (Pair Sum)", """
+def two_pointer_opposite(arr, target):
+    left, right = 0, len(arr) - 1
+    while left < right:
+        curr_sum = arr[left] + arr[right]
+        if curr_sum == target:
+            return [left, right]
+        elif curr_sum < target:
+            left += 1   # Increase sum
+        else:
+            right -= 1  # Decrease sum
+    return [-1, -1]"""),
+            const SizedBox(height: 16),
+            _buildCodeBox("Template 2: Same Direction (In-Place Modify)", """
+def two_pointer_same_direction(arr):
+    slow = 0
+    for fast in range(len(arr)):
+        if condition(arr[fast]):
+            arr[slow], arr[fast] = arr[fast], arr[slow]
+            slow += 1
+    return slow  # New valid length"""),
+            const SizedBox(height: 16),
+            _buildCodeBox("Template 3: Fixed + Two Pointer (3Sum Triplets)", """
+def three_sum(arr):
+    arr.sort()
+    result = []
+    for i in range(len(arr) - 2):
+        if i > 0 and arr[i] == arr[i-1]:
+            continue  # Skip duplicate fixed element
+        left, right = i + 1, len(arr) - 1
+        while left < right:
+            total = arr[i] + arr[left] + arr[right]
+            if total == 0:
+                result.append([arr[i], arr[left], arr[right]])
+                left += 1; right -= 1
+                while left < right and arr[left] == arr[left-1]: left += 1
+                while left < right and arr[right] == arr[right+1]: right -= 1
+            elif total < 0: left += 1
+            else: right -= 1
+    return result"""),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // TAB 2: Visualizer
+  Widget _buildVisualizerTab() {
+    final hPadding = Responsive.horizontalPadding(context);
+
+    return ResponsiveCenter(
+      padding: EdgeInsets.all(hPadding),
+      child: SingleChildScrollView(
+        child: TwoPointersVisualizer(isEnglish: _isEnglish),
+      ),
+    );
+  }
+
+  // TAB 3: FAANG Problems
+  Widget _buildProblemsTab() {
+    final hPadding = Responsive.horizontalPadding(context);
+    final easy = TwoPointersData.getEasyProblems();
+    final medium = TwoPointersData.getMediumProblems();
+    final hard = TwoPointersData.getHardProblems();
+
+    return ResponsiveCenter(
+      padding: EdgeInsets.all(hPadding),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _isEnglish ? "📋 FAANG Interview Problems (Categorized)" : "📋 FAANG ইন্টারভিউ প্রবলেমস",
+              style: TextStyle(
+                fontSize: Responsive.sp(context, 18),
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // EASY Section
+            _buildDifficultySection("🟢 EASY", AppTheme.accentGreen, easy),
+            const SizedBox(height: 24),
+
+            // MEDIUM Section
+            _buildDifficultySection("🟡 MEDIUM", AppTheme.accentAmber, medium),
+            const SizedBox(height: 24),
+
+            // HARD Section
+            _buildDifficultySection("🔴 HARD", const Color(0xFFEF4444), hard),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // TAB 4: Mistakes & Practice Roadmap
+  Widget _buildMistakesTab() {
+    final hPadding = Responsive.horizontalPadding(context);
+    final mistakes = TwoPointersData.getCommonMistakes(_isEnglish);
+
+    return ResponsiveCenter(
+      padding: EdgeInsets.all(hPadding),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header
+            Row(
+              children: [
+                const Icon(Icons.warning_amber_rounded, color: Color(0xFFEF4444), size: 24),
+                const SizedBox(width: 8),
+                Text(
+                  _isEnglish ? "⚠️ Common Interview Mistakes" : "⚠️ সাধারণ ইন্টারভিউ ভুলসমূহ",
+                  style: TextStyle(
+                    fontSize: Responsive.sp(context, 18),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            ...mistakes.map((m) => Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceDark,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: const Color(0xFFEF4444).withOpacity(0.4)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        m["title"]!,
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 15),
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFFEF4444),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        m["desc"]!,
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 13),
+                          color: AppTheme.textSecondary,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+            const SizedBox(height: 28),
+
+            // Practice Order Roadmap
+            Row(
+              children: [
+                const Icon(Icons.alt_route, color: AppTheme.accentNeonCyan, size: 24),
+                const SizedBox(width: 8),
+                Text(
+                  _isEnglish ? "🎯 Recommended Practice Order" : "🎯 প্র্যাকটিস করার সঠিক ধাপ",
+                  style: TextStyle(
+                    fontSize: Responsive.sp(context, 18),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _buildRoadmapStep(1, "Two Sum II → Valid Palindrome → Move Zeroes → Remove Duplicates"),
+            _buildRoadmapStep(2, "Container With Most Water → 3Sum → 3Sum Closest"),
+            _buildRoadmapStep(3, "Sort Colors (Dutch National Flag) → 4Sum"),
+            _buildRoadmapStep(4, "Trapping Rain Water (Must-Do FAANG Problem ⭐)"),
+            _buildRoadmapStep(5, "Minimum Window Substring (Sliding Window Transition)"),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Helpers
+  Widget _buildCheckPoint(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.check_circle_outline, color: AppTheme.accentGreen, size: 16),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(fontSize: Responsive.sp(context, 13), color: AppTheme.textPrimary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTypeCard(String title, String desc, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceDark,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: color.withOpacity(0.4)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(color: color.withOpacity(0.15), borderRadius: BorderRadius.circular(12)),
+            child: Icon(Icons.swap_horiz_rounded, color: color, size: 24),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 15))),
+                const SizedBox(height: 4),
+                Text(desc, style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12), height: 1.3)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCodeBox(String title, String code) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan, fontSize: 13)),
+          const SizedBox(height: 8),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(code, style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: Color(0xFF38BDF8), height: 1.4)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDifficultySection(String label, Color badgeColor, List<TwoPointersProblem> problems) {
+    final isMobile = Responsive.isMobile(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: badgeColor)),
+        const SizedBox(height: 12),
+        if (isMobile)
+          Column(children: problems.map((p) => _buildProblemCard(p, badgeColor)).toList())
+        else
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 480,
+              mainAxisExtent: 140,
+              crossAxisSpacing: 14,
+              mainAxisSpacing: 14,
+            ),
+            itemCount: problems.length,
+            itemBuilder: (context, index) => _buildProblemCard(problems[index], badgeColor),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildProblemCard(TwoPointersProblem problem, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceDark,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: problem.isPopular ? AppTheme.accentPink : const Color(0xFF334155)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  problem.title,
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 15)),
+                ),
+              ),
+              if (problem.isPopular)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(color: AppTheme.accentPink.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
+                  child: const Text('⭐ FAANG', style: TextStyle(fontSize: 10, color: AppTheme.accentPink, fontWeight: FontWeight.bold)),
+                ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
+            style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12)),
+          ),
+          const SizedBox(height: 8),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: problem.companyTags.map((tag) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 6),
+                  child: Chip(
+                    label: Text(tag, style: const TextStyle(fontSize: 10, color: Colors.white)),
+                    backgroundColor: AppTheme.primaryDark,
+                    visualDensity: VisualDensity.compact,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRoadmapStep(int stepNum, String text) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceDark,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF334155)),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 14,
+            backgroundColor: AppTheme.accentPurple,
+            child: Text('$stepNum', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(text, style: TextStyle(color: Colors.white, fontSize: Responsive.sp(context, 13), fontWeight: FontWeight.w600)),
+          ),
+        ],
+      ),
+    );
+  }
+}
