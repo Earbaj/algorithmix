@@ -1,0 +1,156 @@
+import 'package:flutter/material.dart';
+import 'package:algorithmix/data/repositories/pattern_repository.dart';
+import 'package:algorithmix/domain/models/pattern_model.dart';
+import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/features/core_patterns/widgets/pattern_card.dart';
+import 'package:algorithmix/ui/features/core_patterns/widgets/pattern_detail_modal.dart';
+
+class CorePatternsScreen extends StatefulWidget {
+  const CorePatternsScreen({super.key});
+
+  @override
+  State<CorePatternsScreen> createState() => _CorePatternsScreenState();
+}
+
+class _CorePatternsScreenState extends State<CorePatternsScreen> {
+  final List<PatternModel> _allPatterns = PatternRepository.getCorePatterns();
+  List<PatternModel> _filteredPatterns = [];
+  String _searchQuery = "";
+  String _selectedCategory = "All";
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredPatterns = _allPatterns;
+  }
+
+  void _filterPatterns() {
+    setState(() {
+      _filteredPatterns = _allPatterns.where((pattern) {
+        final matchesQuery = pattern.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+            pattern.description.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+            pattern.category.toLowerCase().contains(_searchQuery.toLowerCase());
+
+        if (_selectedCategory == "All") return matchesQuery;
+        if (_selectedCategory == "Easy") {
+          return matchesQuery && pattern.difficulty == PatternDifficulty.beginner;
+        }
+        if (_selectedCategory == "Medium") {
+          return matchesQuery && pattern.difficulty == PatternDifficulty.intermediate;
+        }
+        if (_selectedCategory == "Hard") {
+          return matchesQuery && pattern.difficulty == PatternDifficulty.advanced;
+        }
+        if (_selectedCategory == "⭐ Hot") {
+          return matchesQuery && pattern.isHot;
+        }
+        return matchesQuery;
+      }).toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppTheme.primaryDark,
+      appBar: AppBar(
+        title: const Text('25 Core Patterns'),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          // Search & Filter Box
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: const BoxDecoration(
+              color: AppTheme.surfaceDark,
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                // Search Input
+                TextField(
+                  onChanged: (val) {
+                    _searchQuery = val;
+                    _filterPatterns();
+                  },
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    hintText: 'Search patterns (e.g. Dynamic Programming, Sliding Window)...',
+                    prefixIcon: Icon(Icons.search, color: AppTheme.accentNeonCyan),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Category Chips
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: ["All", "Easy", "Medium", "Hard", "⭐ Hot"].map((category) {
+                      final isSelected = _selectedCategory == category;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: FilterChip(
+                          label: Text(category),
+                          selected: isSelected,
+                          selectedColor: AppTheme.accentPurple,
+                          backgroundColor: AppTheme.primaryDark,
+                          labelStyle: TextStyle(
+                            color: isSelected ? Colors.white : AppTheme.textSecondary,
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          ),
+                          onSelected: (selected) {
+                            setState(() {
+                              _selectedCategory = category;
+                              _filterPatterns();
+                            });
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Count summary
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Showing ${_filteredPatterns.length} of ${_allPatterns.length} Patterns',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppTheme.textMuted,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const Icon(Icons.tune_outlined, size: 18, color: AppTheme.textMuted),
+              ],
+            ),
+          ),
+
+          // Pattern List
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              itemCount: _filteredPatterns.length,
+              itemBuilder: (context, index) {
+                final pattern = _filteredPatterns[index];
+                return PatternCard(
+                  pattern: pattern,
+                  onTap: () {
+                    PatternDetailModal.show(context, pattern);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
