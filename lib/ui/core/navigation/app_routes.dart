@@ -10,6 +10,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/valid_palindrome_det
 import 'package:algorithmix/ui/features/core_patterns/views/reverse_string_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/move_zeroes_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/remove_duplicates_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/squares_sorted_array_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -25,6 +26,7 @@ class AppRoutes {
   static const String reverseString = '/reverse-string';
   static const String moveZeroes = '/move-zeroes';
   static const String removeDuplicates = '/remove-duplicates';
+  static const String squaresSortedArray = '/squares-sorted-array';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -41,6 +43,7 @@ class AppRoutes {
       reverseString: (context) => const ReverseStringDetailScreen(),
       moveZeroes: (context) => const MoveZeroesDetailScreen(),
       removeDuplicates: (context) => const RemoveDuplicatesDetailScreen(),
+      squaresSortedArray: (context) => const SquaresSortedArrayDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };

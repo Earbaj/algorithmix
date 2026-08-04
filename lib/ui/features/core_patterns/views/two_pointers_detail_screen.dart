@@ -555,11 +555,14 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isMoveZeroes = problem.title.contains("Move Zeroes");
     final isRemoveDuplicates =
         problem.title.contains("Remove Duplicates from Sorted Array");
+    final isSquaresSortedArray =
+        problem.title.contains("Squares of a Sorted Array");
     final hasDedicatedPage = isTwoSum ||
         isValidPalindrome ||
         isReverseString ||
         isMoveZeroes ||
-        isRemoveDuplicates;
+        isRemoveDuplicates ||
+        isSquaresSortedArray;
 
     return InkWell(
       onTap: () {
@@ -573,6 +576,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.moveZeroes);
         } else if (isRemoveDuplicates) {
           Navigator.of(context).pushNamed(AppRoutes.removeDuplicates);
+        } else if (isSquaresSortedArray) {
+          Navigator.of(context).pushNamed(AppRoutes.squaresSortedArray);
         }
       },
       borderRadius: BorderRadius.circular(16),
