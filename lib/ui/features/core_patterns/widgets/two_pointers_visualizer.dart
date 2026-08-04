@@ -45,14 +45,17 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     // Template 1: Opposite Direction (Two Sum II)
     [
       "vector<int> twoSum(vector<int>& arr, int target) {",
-      "    int left = 0, right = arr.size() - 1;",
-      "    while (left < right) {",
-      "        int curr_sum = arr[left] + arr[right];",
-      "        if (curr_sum == target) return {left, right};",
-      "        else if (curr_sum < target) left++;",
-      "        else right--;",
-      "    }",
-      "    return {-1, -1};",
+      "   int left = 0;",
+      "   right = arr.size() - 1;",
+      "   while (left < right) {",
+      "     int curr_sum = arr[left] + arr[right];",
+      "     if (curr_sum == target) {",
+      "         return {left, right};",
+      "     }",
+      "     else if (curr_sum < target) left++;",
+      "     else right--;",
+      "   }",
+      "   return {-1, -1};",
       "}",
     ],
     // Template 2: Same Direction (Move Zeroes)
@@ -90,154 +93,162 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     DebugVisualizerStep(
       left: 0,
       right: 6,
-      activeLineIndex: 1,
+      activeLineIndex: 1, // int left = 0;
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 2: Initialize variables -> left = 0 (val 1), right = 6 (val 15). Target = 10.",
-      explanationBn: "লাইন ২: ভ্যারিয়েবল ডিক্লেয়ার -> left = 0 (মান 1), right = 6 (মান 15)। Target = 10।",
+      explanationEn: "Line 2: Initialize variables -> left = 0 (val 1). Target = 10.",
+      explanationBn: "লাইন ২: ভ্যারিয়েবল ডিক্লেয়ার -> left = 0 (মান 1)। Target = 10।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 6,
-      activeLineIndex: 2,
+      activeLineIndex: 2, // right = arr.size() - 1;
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 3: Check while (left < right) -> (0 < 6) is TRUE. Enter loop.",
-      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (0 < 6) সত্য! লুপে প্রবেশ করুন।",
+      explanationEn: "Line 3: Initialize variables -> right = 6 (val 15).",
+      explanationBn: "লাইন ৩: ভ্যারিয়েবল ডিক্লেয়ার -> right = 6 (মান 15)।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 6,
-      activeLineIndex: 3,
+      activeLineIndex: 3, // while (left < right)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 4: Calculate curr_sum = arr[0] + arr[6] = 1 + 15 = 16.",
-      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[0] + arr[6] = 1 + 15 = 16।",
+      explanationEn: "Line 4: Check while (left < right) -> (0 < 6) is TRUE. Enter loop.",
+      explanationBn: "লাইন ৪: শর্ত চেক while (left < right) -> (0 < 6) সত্য! লুপে প্রবেশ করুন।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 6,
-      activeLineIndex: 4,
+      activeLineIndex: 4, // int curr_sum = arr[left] + arr[right];
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 5: Check if (curr_sum == target) -> (16 == 10) is FALSE.",
-      explanationBn: "লাইন ৫: চেক if (curr_sum == target) -> (16 == 10) মিথ্যা।",
+      explanationEn: "Line 5: Calculate curr_sum = arr[0] + arr[6] = 1 + 15 = 16.",
+      explanationBn: "লাইন ৫: হিসাব করুন curr_sum = arr[0] + arr[6] = 1 + 15 = 16।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 6,
-      activeLineIndex: 5,
+      activeLineIndex: 5, // if (curr_sum == target)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 6: Check else if (curr_sum < target) -> (16 < 10) is FALSE.",
-      explanationBn: "লাইন ৬: চেক else if (curr_sum < target) -> (16 < 10) মিথ্যা।",
+      explanationEn: "Line 6: Check if (curr_sum == target) -> (16 == 10) is FALSE.",
+      explanationBn: "লাইন ৬: চেক if (curr_sum == target) -> (16 == 10) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 6,
+      activeLineIndex: 8, // else if (curr_sum < target) left++;
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 9: Check else if (curr_sum < target) -> (16 < 10) is FALSE.",
+      explanationBn: "লাইন ৯: চেক else if (curr_sum < target) -> (16 < 10) মিথ্যা।",
+    ),
+    DebugVisualizerStep(
+      left: 0,
+      right: 5, // right decreases
+      activeLineIndex: 9, // else right--;
+      arrayState: [1, 2, 4, 6, 8, 11, 15],
+      explanationEn: "Line 10: Execute else right-- -> right decreases from 6 to 5.",
+      explanationBn: "লাইন ১০: else এক্সিকিউট right-- -> right কমে 6 থেকে 5 হলো।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 5,
-      activeLineIndex: 6,
+      activeLineIndex: 3, // while (left < right)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 7: Execute else right-- -> right decreases from 6 to 5.",
-      explanationBn: "লাইন ৭: else এক্সিকিউট right-- -> right কমে 6 থেকে 5 হলো।",
+      explanationEn: "Line 4: Check while (left < right) -> (0 < 5) is TRUE. Continue loop.",
+      explanationBn: "লাইন ৪: শর্ত চেক while (left < right) -> (0 < 5) সত্য! লুপ চলবে।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 5,
-      activeLineIndex: 2,
+      activeLineIndex: 4, // int curr_sum...
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 3: Check while (left < right) -> (0 < 5) is TRUE. Continue loop.",
-      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (0 < 5) সত্য! লুপ চলবে।",
+      explanationEn: "Line 5: Calculate curr_sum = arr[0] + arr[5] = 1 + 11 = 12.",
+      explanationBn: "লাইন ৫: হিসাব করুন curr_sum = arr[0] + arr[5] = 1 + 11 = 12।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 5,
-      activeLineIndex: 3,
+      activeLineIndex: 5, // if (curr_sum == target)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 4: Calculate curr_sum = arr[0] + arr[5] = 1 + 11 = 12.",
-      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[0] + arr[5] = 1 + 11 = 12।",
+      explanationEn: "Line 6: Check if (curr_sum == target) -> (12 == 10) is FALSE.",
+      explanationBn: "লাইন ৬: চেক if (curr_sum == target) -> (12 == 10) মিথ্যা।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 5,
-      activeLineIndex: 4,
+      activeLineIndex: 8, // else if (curr_sum < target) left++;
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 5: Check if (curr_sum == target) -> (12 == 10) is FALSE.",
-      explanationBn: "লাইন ৫: চেক if (curr_sum == target) -> (12 == 10) মিথ্যা।",
+      explanationEn: "Line 9: Check else if (curr_sum < target) -> (12 < 10) is FALSE.",
+      explanationBn: "লাইন ৯: চেক else if (curr_sum < target) -> (12 < 10) মিথ্যা।",
     ),
     DebugVisualizerStep(
       left: 0,
-      right: 5,
-      activeLineIndex: 5,
+      right: 4, // right decreases
+      activeLineIndex: 9, // else right--;
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 6: Check else if (curr_sum < target) -> (12 < 10) is FALSE.",
-      explanationBn: "লাইন ৬: চেক else if (curr_sum < target) -> (12 < 10) মিথ্যা।",
-    ),
-    DebugVisualizerStep(
-      left: 0,
-      right: 4,
-      activeLineIndex: 6,
-      arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 7: Execute else right-- -> right decreases from 5 to 4.",
-      explanationBn: "লাইন ৭: else এক্সিকিউট right-- -> right কমে 5 থেকে 4 হলো।",
+      explanationEn: "Line 10: Execute else right-- -> right decreases from 5 to 4.",
+      explanationBn: "লাইন ১০: else এক্সিকিউট right-- -> right কমে 5 থেকে 4 হলো।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 4,
-      activeLineIndex: 2,
+      activeLineIndex: 3, // while (left < right)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 3: Check while (left < right) -> (0 < 4) is TRUE.",
-      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (0 < 4) সত্য।",
+      explanationEn: "Line 4: Check while (left < right) -> (0 < 4) is TRUE.",
+      explanationBn: "লাইন ৪: শর্ত চেক while (left < right) -> (0 < 4) সত্য।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 4,
-      activeLineIndex: 3,
+      activeLineIndex: 4, // int curr_sum...
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 4: Calculate curr_sum = arr[0] + arr[4] = 1 + 8 = 9.",
-      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[0] + arr[4] = 1 + 8 = 9।",
+      explanationEn: "Line 5: Calculate curr_sum = arr[0] + arr[4] = 1 + 8 = 9.",
+      explanationBn: "লাইন ৫: হিসাব করুন curr_sum = arr[0] + arr[4] = 1 + 8 = 9।",
     ),
     DebugVisualizerStep(
       left: 0,
       right: 4,
-      activeLineIndex: 4,
+      activeLineIndex: 5, // if (curr_sum == target)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 5: Check if (curr_sum == target) -> (9 == 10) is FALSE.",
-      explanationBn: "লাইন ৫: চেক if (curr_sum == target) -> (9 == 10) মিথ্যা।",
+      explanationEn: "Line 6: Check if (curr_sum == target) -> (9 == 10) is FALSE.",
+      explanationBn: "লাইন ৬: চেক if (curr_sum == target) -> (9 == 10) মিথ্যা।",
     ),
     DebugVisualizerStep(
-      left: 0,
+      left: 1, // left increases here
       right: 4,
-      activeLineIndex: 5,
+      activeLineIndex: 8, // else if (curr_sum < target) left++;
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 6: Check else if (curr_sum < target) -> (9 < 10) is TRUE! Execute left++.",
-      explanationBn: "লাইন ৬: চেক else if (curr_sum < target) -> (9 < 10) সত্য! left++ চালান।",
+      explanationEn: "Line 9: Check else if (curr_sum < target) -> (9 < 10) is TRUE! Execute left++ (left becomes 1).",
+      explanationBn: "লাইন ৯: চেক else if (curr_sum < target) -> (9 < 10) সত্য! left++ এক্সিকিউট হলো (left এখন 1)।",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 4,
-      activeLineIndex: 5,
+      activeLineIndex: 3, // while (left < right)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 6: left++ executed -> left is now 1 (val 2).",
-      explanationBn: "লাইন ৬: left++ সফল হলো -> left এখন 1 (মান 2)।",
+      explanationEn: "Line 4: Check while (left < right) -> (1 < 4) is TRUE.",
+      explanationBn: "লাইন ৪: শর্ত চেক while (left < right) -> (1 < 4) সত্য।",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 4,
-      activeLineIndex: 2,
+      activeLineIndex: 4, // int curr_sum...
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 3: Check while (left < right) -> (1 < 4) is TRUE.",
-      explanationBn: "লাইন ৩: শর্ত চেক while (left < right) -> (1 < 4) সত্য।",
+      explanationEn: "Line 5: Calculate curr_sum = arr[1] + arr[4] = 2 + 8 = 10.",
+      explanationBn: "লাইন ৫: হিসাব করুন curr_sum = arr[1] + arr[4] = 2 + 8 = 10।",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 4,
-      activeLineIndex: 3,
+      activeLineIndex: 5, // if (curr_sum == target)
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "Line 4: Calculate curr_sum = arr[1] + arr[4] = 2 + 8 = 10.",
-      explanationBn: "লাইন ৪: হিসাব করুন curr_sum = arr[1] + arr[4] = 2 + 8 = 10।",
+      explanationEn: "Line 6: Check if (curr_sum == target) -> (10 == 10) is TRUE!",
+      explanationBn: "লাইন ৬: চেক if (curr_sum == target) -> (10 == 10) সত্য!",
     ),
     DebugVisualizerStep(
       left: 1,
       right: 4,
-      activeLineIndex: 4,
+      activeLineIndex: 6, // return {left, right};
       arrayState: [1, 2, 4, 6, 8, 11, 15],
-      explanationEn: "🎉 Line 5: MATCH FOUND! (10 == 10) is TRUE! Return {1, 4}!",
-      explanationBn: "🎉 লাইন ৫: ম্যাচ পাওয়া গেছে! (10 == 10) সত্য! Return {1, 4}!",
+      explanationEn: "🎉 Line 7: MATCH FOUND! Return {1, 4}!",
+      explanationBn: "🎉 লাইন ৭: ম্যাচ পাওয়া গেছে! Return {1, 4}!",
       isMatch: true,
     ),
   ];
@@ -712,6 +723,14 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
 
   /// Highlight active line during execution
   Widget _buildCodeSnippetWithHighlight(List<String> codeLines, int activeLineIndex) {
+    // ১. স্ক্রিন উইডথ বের করা
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
+    // ২. ডায়নামিক ফন্ট সাইজ ক্যালকুলেশন (Width এর একটি নির্দিষ্ট পার্সেন্টেজ)
+    // clamp(min, max) ব্যবহার করা হয়েছে যেন ফন্ট অতিরিক্ত ছোট বা বড় না হয়
+    final double codeFontSize = (screenWidth * 0.025).clamp(9.5, 20.0);
+    final double lineNumFontSize = (screenWidth * 0.022).clamp(9.5, 18.0);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
@@ -743,7 +762,7 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
                     '${idx + 1}',
                     style: TextStyle(
                       fontFamily: 'monospace',
-                      fontSize: 11,
+                      fontSize: lineNumFontSize,
                       color: isActive ? AppTheme.accentNeonCyan : AppTheme.textMuted,
                       fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                     ),
@@ -756,7 +775,7 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
                       codeLines[idx],
                       style: TextStyle(
                         fontFamily: 'monospace',
-                        fontSize: 12,
+                        fontSize: codeFontSize,
                         color: isActive ? Colors.white : const Color(0xFF94A3B8),
                         fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                       ),

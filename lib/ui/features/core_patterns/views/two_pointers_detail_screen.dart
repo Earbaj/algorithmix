@@ -36,7 +36,7 @@ class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
     return Scaffold(
       backgroundColor: AppTheme.primaryDark,
       appBar: AppBar(
-        title: Text(_isEnglish ? 'Two Pointers Deep Dive (C++)' : 'টু পয়েন্টারস গাইড (C++)'),
+        title: Text(_isEnglish ? 'Two Pointers Deep Dive' : 'টু পয়েন্টারস গাইড'),
         centerTitle: true,
         actions: [
           // Language Switcher Button
@@ -70,6 +70,8 @@ class _TwoPointersDetailScreenState extends State<TwoPointersDetailScreen>
           labelColor: AppTheme.accentNeonCyan,
           unselectedLabelColor: AppTheme.textSecondary,
           isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          padding: EdgeInsets.zero,
           tabs: [
             Tab(text: _isEnglish ? 'Concept & C++ Code' : 'ধারণা ও C++ কোড'),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
