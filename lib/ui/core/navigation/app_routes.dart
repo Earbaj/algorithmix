@@ -22,6 +22,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/sort_colors_detail_s
 import 'package:algorithmix/ui/features/core_patterns/views/boats_to_save_people_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/partition_labels_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/trapping_rain_water_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/min_window_substring_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -49,6 +50,7 @@ class AppRoutes {
   static const String boatsToSavePeople = '/boats-to-save-people';
   static const String partitionLabels = '/partition-labels';
   static const String trappingRainWater = '/trapping-rain-water';
+  static const String minWindowSubstring = '/min-window-substring';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -77,9 +79,9 @@ class AppRoutes {
       boatsToSavePeople: (context) => const BoatsToSavePeopleDetailScreen(),
       partitionLabels: (context) => const PartitionLabelsDetailScreen(),
       trappingRainWater: (context) => const TrappingRainWaterDetailScreen(),
+      minWindowSubstring: (context) => const MinWindowSubstringDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };
   }
 }
-
