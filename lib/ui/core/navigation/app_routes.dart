@@ -16,6 +16,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/is_subsequence_detai
 import 'package:algorithmix/ui/features/core_patterns/views/three_sum_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/three_sum_closest_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/container_with_most_water_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/sort_colors_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -37,6 +38,7 @@ class AppRoutes {
   static const String threeSum = '/three-sum';
   static const String threeSumClosest = '/three-sum-closest';
   static const String containerWithMostWater = '/container-with-most-water';
+  static const String sortColors = '/sort-colors';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -59,6 +61,7 @@ class AppRoutes {
       threeSum: (context) => const ThreeSumDetailScreen(),
       threeSumClosest: (context) => const ThreeSumClosestDetailScreen(),
       containerWithMostWater: (context) => const ContainerWithMostWaterDetailScreen(),
+      sortColors: (context) => const SortColorsDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };
