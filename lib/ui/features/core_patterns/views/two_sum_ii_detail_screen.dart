@@ -1005,7 +1005,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                     ),
                     child: Wrap(
                       alignment: WrapAlignment.spaceBetween,
-                      crossAlignment: WrapCrossAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: 12,
                       runSpacing: 6,
                       children: [
@@ -1658,7 +1658,7 @@ List<int> twoSum(List<int> numbers, int target) {
           // Header with Language & Copy Code Button
           Wrap(
             alignment: WrapAlignment.spaceBetween,
-            crossAlignment: WrapCrossAlignment.center,
+            crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 10,
             runSpacing: 8,
             children: [
