@@ -557,12 +557,14 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         problem.title.contains("Remove Duplicates from Sorted Array");
     final isSquaresSortedArray =
         problem.title.contains("Squares of a Sorted Array");
+    final isMergeSortedArray = problem.title.contains("Merge Sorted Array");
     final hasDedicatedPage = isTwoSum ||
         isValidPalindrome ||
         isReverseString ||
         isMoveZeroes ||
         isRemoveDuplicates ||
-        isSquaresSortedArray;
+        isSquaresSortedArray ||
+        isMergeSortedArray;
 
     return InkWell(
       onTap: () {
@@ -578,6 +580,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.removeDuplicates);
         } else if (isSquaresSortedArray) {
           Navigator.of(context).pushNamed(AppRoutes.squaresSortedArray);
+        } else if (isMergeSortedArray) {
+          Navigator.of(context).pushNamed(AppRoutes.mergeSortedArray);
         }
       },
       borderRadius: BorderRadius.circular(16),
