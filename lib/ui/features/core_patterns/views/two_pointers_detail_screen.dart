@@ -552,7 +552,9 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isTwoSum = problem.title.contains("Two Sum II");
     final isValidPalindrome = problem.title.contains("Valid Palindrome");
     final isReverseString = problem.title.contains("Reverse String");
-    final hasDedicatedPage = isTwoSum || isValidPalindrome || isReverseString;
+    final isMoveZeroes = problem.title.contains("Move Zeroes");
+    final hasDedicatedPage =
+        isTwoSum || isValidPalindrome || isReverseString || isMoveZeroes;
 
     return InkWell(
       onTap: () {
@@ -562,6 +564,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.validPalindrome);
         } else if (isReverseString) {
           Navigator.of(context).pushNamed(AppRoutes.reverseString);
+        } else if (isMoveZeroes) {
+          Navigator.of(context).pushNamed(AppRoutes.moveZeroes);
         }
       },
       borderRadius: BorderRadius.circular(16),
