@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package0/algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 
 class AmortizedStep {

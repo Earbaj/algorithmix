@@ -640,8 +640,9 @@ int search(List<int> arr, int target) {
                     ),
                   ],
                 ),
-              );
-            }).toList(),
+              ),
+            );
+          }).toList(),
             const SizedBox(height: 24),
           ],
         ),

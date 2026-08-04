@@ -166,7 +166,7 @@ class _ComplexityClassesCodeFreeVisualizerState
           _buildSpeedBar("O(log N) Logarithmic",
               math.max(1.0, math.log(_inputN) / math.log(2)), AppTheme.accentNeonCyan),
           const SizedBox(height: 10),
-          _buildSpeedBar("O(N) Linear", _inputN, AppTheme.accentBlue),
+          _buildSpeedBar("O(N) Linear", _inputN, const Color(0xFF3B82F6)),
           const SizedBox(height: 10),
           _buildSpeedBar("O(N log N) Linearithmic",
               _inputN * (math.log(_inputN) / math.log(2)), AppTheme.accentPurple),
