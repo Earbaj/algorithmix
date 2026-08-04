@@ -559,7 +559,9 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         problem.title.contains("Squares of a Sorted Array");
     final isMergeSortedArray = problem.title.contains("Merge Sorted Array");
     final isIsSubsequence = problem.title.contains("Is Subsequence");
-    final isThreeSum = problem.title.contains("3Sum");
+    final isThreeSumClosest = problem.title.contains("3Sum Closest");
+    final isThreeSum =
+        problem.title.contains("3Sum") && !isThreeSumClosest;
     final hasDedicatedPage = isTwoSum ||
         isValidPalindrome ||
         isReverseString ||
@@ -568,7 +570,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         isSquaresSortedArray ||
         isMergeSortedArray ||
         isIsSubsequence ||
-        isThreeSum;
+        isThreeSum ||
+        isThreeSumClosest;
 
     return InkWell(
       onTap: () {
@@ -588,6 +591,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.mergeSortedArray);
         } else if (isIsSubsequence) {
           Navigator.of(context).pushNamed(AppRoutes.isSubsequence);
+        } else if (isThreeSumClosest) {
+          Navigator.of(context).pushNamed(AppRoutes.threeSumClosest);
         } else if (isThreeSum) {
           Navigator.of(context).pushNamed(AppRoutes.threeSum);
         }
