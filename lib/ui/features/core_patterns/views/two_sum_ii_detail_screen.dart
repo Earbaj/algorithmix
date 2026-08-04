@@ -706,11 +706,10 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: TextField(
+                  if (isMobile)
+                    Column(
+                      children: [
+                        TextField(
                           controller: _numbersController,
                           style: TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: Responsive.sp(context, 13)),
                           decoration: InputDecoration(
@@ -719,11 +718,8 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                             labelStyle: TextStyle(fontSize: Responsive.sp(context, 12)),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
+                        const SizedBox(height: 10),
+                        TextField(
                           controller: _targetController,
                           keyboardType: TextInputType.number,
                           style: TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: Responsive.sp(context, 13)),
@@ -733,9 +729,39 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                             labelStyle: TextStyle(fontSize: Responsive.sp(context, 12)),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    )
+                  else
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: TextField(
+                            controller: _numbersController,
+                            style: TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: Responsive.sp(context, 13)),
+                            decoration: InputDecoration(
+                              labelText: _isEnglish ? 'Sorted Array (comma separated)' : 'সর্টেড অ্যারে (কমা দিয়ে separated)',
+                              hintText: 'e.g. 1, 3, 4, 6, 8, 11, 15',
+                              labelStyle: TextStyle(fontSize: Responsive.sp(context, 12)),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          flex: 1,
+                          child: TextField(
+                            controller: _targetController,
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: Responsive.sp(context, 13)),
+                            decoration: InputDecoration(
+                              labelText: _isEnglish ? 'Target' : 'টার্গেট',
+                              hintText: '10',
+                              labelStyle: TextStyle(fontSize: Responsive.sp(context, 12)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   const SizedBox(height: 12),
 
                   // Preset buttons
@@ -970,15 +996,18 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
                   ),
                   const SizedBox(height: 16),
 
-                  // Current Calculation Banner
+                  // Current Calculation Banner (Responsive)
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryDark,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAlignment: WrapCrossAlignment.center,
+                      spacing: 12,
+                      runSpacing: 6,
                       children: [
                         Text(
                           "Current sum: ${_currentArray[_userLeft]} + ${_currentArray[_userRight]} = $currSum",
@@ -1627,8 +1656,11 @@ List<int> twoSum(List<int> numbers, int target) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header with Language & Copy Code Button
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAlignment: WrapCrossAlignment.center,
+            spacing: 10,
+            runSpacing: 8,
             children: [
               Text(
                 "$lang Solution Code",

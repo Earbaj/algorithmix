@@ -238,16 +238,19 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
         : _steps[_currentStepIndex];
 
     final isEng = widget.isEnglish;
+    final isMobile = Responsive.isMobile(context);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(
+        vertical: Responsive.verticalPadding(context),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 1. Zero Code Banner Header
+          // 1. Zero Code Banner Header (Responsive)
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(isMobile ? 12 : 16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
@@ -261,35 +264,38 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
               border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.4)),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(isMobile ? 8 : 12),
                   decoration: BoxDecoration(
                     color: AppTheme.accentNeonCyan.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.auto_awesome_rounded,
                     color: AppTheme.accentNeonCyan,
-                    size: 28,
+                    size: Responsive.sp(context, isMobile ? 22 : 28),
                   ),
                 ),
-                const SizedBox(width: 14),
+                SizedBox(width: isMobile ? 10 : 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 8,
+                        runSpacing: 4,
                         children: [
                           Text(
                             isEng ? 'Pure Visual Intuition' : 'সম্পূর্ণ কোডহীন ভিজ্যুয়াল অ্যানিমেশন',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: Responsive.sp(context, 17),
+                              fontSize: Responsive.sp(context, 16),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
@@ -301,7 +307,7 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
                               isEng ? '100% Code-Free' : '১০০% কোডফ্রি',
                               style: TextStyle(
                                 color: AppTheme.accentGreen,
-                                fontSize: Responsive.sp(context, 11),
+                                fontSize: Responsive.sp(context, 10.5),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -315,8 +321,8 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
                             : 'কোনো জটিল কোড ছাড়াই দেখুন কীভাবে সর্টেড অ্যারেতে টু-পয়েন্টার উপাদান চিহ্নিত ও বাদ দিয়ে কাঙ্ক্ষিত যোগফল খুঁজে পায়।',
                         style: TextStyle(
                           color: AppTheme.textSecondary,
-                          fontSize: Responsive.sp(context, 12.5),
-                          height: 1.3,
+                          fontSize: Responsive.sp(context, 12),
+                          height: 1.35,
                         ),
                       ),
                     ],
@@ -349,7 +355,7 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
                     label: Text(
                       preset['label'],
                       style: TextStyle(
-                        fontSize: Responsive.sp(context, 12),
+                        fontSize: Responsive.sp(context, 11.5),
                         color: isSelected ? Colors.white : AppTheme.textSecondary,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
@@ -375,95 +381,27 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
           ),
           const SizedBox(height: 20),
 
-          // 3. Dynamic Balance Scale / Gauge Visualizer
-          _buildBalanceGauge(step, isEng),
+          // 3. Dynamic Balance Scale / Gauge Visualizer (Responsive)
+          _buildBalanceGauge(step, isEng, isMobile),
           const SizedBox(height: 20),
 
-          // 4. Pointer-Array Graphic Box
-          _buildAnimatedArrayGraphic(step, isEng),
+          // 4. Pointer-Array Graphic Box (Responsive)
+          _buildAnimatedArrayGraphic(step, isEng, isMobile),
           const SizedBox(height: 20),
 
-          // 5. Interactive Playback Controls
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: AppTheme.surfaceDark,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: const Color(0xFF334155)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      tooltip: isEng ? "Previous Step" : "আগের ধাপ",
-                      icon: Icon(Icons.skip_previous_rounded, color: Colors.white, size: Responsive.sp(context, 22)),
-                      onPressed: _currentStepIndex > 0
-                          ? () => setState(() => _currentStepIndex--)
-                          : null,
-                    ),
-                    IconButton(
-                      tooltip: _isPlaying ? (isEng ? "Pause" : "পজ") : (isEng ? "Play" : "প্লে"),
-                      icon: Icon(
-                        _isPlaying ? Icons.pause_circle_filled_rounded : Icons.play_circle_fill_rounded,
-                        color: AppTheme.accentNeonCyan,
-                        size: Responsive.sp(context, 32),
-                      ),
-                      onPressed: _togglePlay,
-                    ),
-                    IconButton(
-                      tooltip: isEng ? "Next Step" : "পরের ধাপ",
-                      icon: Icon(Icons.skip_next_rounded, color: Colors.white, size: Responsive.sp(context, 22)),
-                      onPressed: _currentStepIndex < _steps.length - 1
-                          ? () => setState(() => _currentStepIndex++)
-                          : null,
-                    ),
-                    IconButton(
-                      tooltip: isEng ? "Reset" : "রিসেট",
-                      icon: Icon(Icons.replay_rounded, color: AppTheme.textMuted, size: Responsive.sp(context, 20)),
-                      onPressed: () {
-                        _timer?.cancel();
-                        setState(() {
-                          _isPlaying = false;
-                          _currentStepIndex = 0;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppTheme.primaryDark,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
-                  ),
-                  child: Text(
-                    isEng
-                        ? "Step ${_currentStepIndex + 1} of ${_steps.length}"
-                        : "ধাপ ${_currentStepIndex + 1} / ${_steps.length}",
-                    style: TextStyle(
-                      color: AppTheme.accentNeonCyan,
-                      fontWeight: FontWeight.bold,
-                      fontSize: Responsive.sp(context, 12.5),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // 5. Interactive Playback Controls (Responsive)
+          _buildPlaybackControls(isEng, isMobile),
           const SizedBox(height: 20),
 
           // 6. Visual Explanation Card (Intuition Focus)
-          _buildIntuitionExplanationCard(step, isEng),
+          _buildIntuitionExplanationCard(step, isEng, isMobile),
         ],
       ),
     );
   }
 
   /// Visual Balance Gauge showing target comparison visually
-  Widget _buildBalanceGauge(CodeFreeStep step, bool isEng) {
+  Widget _buildBalanceGauge(CodeFreeStep step, bool isEng, bool isMobile) {
     Color statusColor;
     IconData statusIcon;
 
@@ -491,7 +429,7 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(Responsive.sp(context, 16)),
+      padding: EdgeInsets.all(Responsive.sp(context, isMobile ? 12 : 16)),
       decoration: BoxDecoration(
         color: AppTheme.surfaceDark,
         borderRadius: BorderRadius.circular(16),
@@ -506,121 +444,177 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
       ),
       child: Column(
         children: [
-          // Header gauge label
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Icon(statusIcon, color: statusColor, size: Responsive.sp(context, 20)),
-                  const SizedBox(width: 8),
-                  Text(
-                    isEng ? step.titleEn : step.titleBn,
+          // Header gauge label - Responsive layout for mobile vs desktop
+          if (isMobile)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryDark,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: const Color(0xFF334155)),
+                      ),
+                      child: Text(
+                        "Target = $_target",
+                        style: TextStyle(
+                          color: AppTheme.accentNeonCyan,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Responsive.sp(context, 12),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(statusIcon, color: statusColor, size: Responsive.sp(context, 20)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        isEng ? step.titleEn : step.titleBn,
+                        style: TextStyle(
+                          color: statusColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Responsive.sp(context, 13.5),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+          else
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Icon(statusIcon, color: statusColor, size: Responsive.sp(context, 20)),
+                    const SizedBox(width: 8),
+                    Text(
+                      isEng ? step.titleEn : step.titleBn,
+                      style: TextStyle(
+                        color: statusColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.sp(context, 14.5),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryDark,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFF334155)),
+                  ),
+                  child: Text(
+                    "Target = $_target",
                     style: TextStyle(
-                      color: statusColor,
+                      color: AppTheme.accentNeonCyan,
                       fontWeight: FontWeight.bold,
-                      fontSize: Responsive.sp(context, 14.5),
+                      fontSize: Responsive.sp(context, 12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          const SizedBox(height: 16),
+
+          // Visual Combination Orb Display (Scrollable horizontally on very small screens)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: isMobile ? 12 : 20,
+                vertical: isMobile ? 10 : 14,
+              ),
+              decoration: BoxDecoration(
+                color: AppTheme.primaryDark,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: statusColor.withOpacity(0.3)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Left value capsule
+                  _buildValueBubble(
+                    label: "Left Ptr",
+                    val: _array[step.left],
+                    color: AppTheme.accentNeonCyan,
+                    isMobile: isMobile,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: isMobile ? 8 : 12),
+                    child: Text(
+                      "+",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Responsive.sp(context, isMobile ? 18 : 22),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  // Right value capsule
+                  _buildValueBubble(
+                    label: "Right Ptr",
+                    val: _array[step.right],
+                    color: AppTheme.accentPurple,
+                    isMobile: isMobile,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: isMobile ? 8 : 12),
+                    child: Text(
+                      "=",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Responsive.sp(context, isMobile ? 18 : 22),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  // Sum capsule
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isMobile ? 12 : 16,
+                      vertical: isMobile ? 8 : 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: statusColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: statusColor, width: 2),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Sum",
+                          style: TextStyle(
+                            fontSize: Responsive.sp(context, 10),
+                            color: statusColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "${step.sum}",
+                          style: TextStyle(
+                            fontSize: Responsive.sp(context, isMobile ? 17 : 20),
+                            fontWeight: FontWeight.bold,
+                            color: statusColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryDark,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF334155)),
-                ),
-                child: Text(
-                  "Target = $_target",
-                  style: TextStyle(
-                    color: AppTheme.accentNeonCyan,
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.sp(context, 12),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Visual Combination Orb Display
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryDark,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: statusColor.withOpacity(0.3)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Left value capsule
-                _buildValueBubble(
-                  label: "Left Ptr",
-                  val: _array[step.left],
-                  color: AppTheme.accentNeonCyan,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    "+",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: Responsive.sp(context, 22),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                // Right value capsule
-                _buildValueBubble(
-                  label: "Right Ptr",
-                  val: _array[step.right],
-                  color: AppTheme.accentPurple,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    "=",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: Responsive.sp(context, 22),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                // Sum capsule
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: statusColor.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: statusColor, width: 2),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        "Sum",
-                        style: TextStyle(
-                          fontSize: Responsive.sp(context, 10),
-                          color: statusColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        "${step.sum}",
-                        style: TextStyle(
-                          fontSize: Responsive.sp(context, 20),
-                          fontWeight: FontWeight.bold,
-                          color: statusColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
           ),
         ],
@@ -628,9 +622,17 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
     );
   }
 
-  Widget _buildValueBubble({required String label, required int val, required Color color}) {
+  Widget _buildValueBubble({
+    required String label,
+    required int val,
+    required Color color,
+    required bool isMobile,
+  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 10 : 14,
+        vertical: isMobile ? 6 : 8,
+      ),
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(12),
@@ -650,7 +652,7 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
           Text(
             "$val",
             style: TextStyle(
-              fontSize: Responsive.sp(context, 18),
+              fontSize: Responsive.sp(context, isMobile ? 15 : 18),
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
@@ -661,10 +663,10 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
   }
 
   /// Animated Array Graphic showing active pointers and eliminated items
-  Widget _buildAnimatedArrayGraphic(CodeFreeStep step, bool isEng) {
+  Widget _buildAnimatedArrayGraphic(CodeFreeStep step, bool isEng, bool isMobile) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(Responsive.sp(context, 16)),
+      padding: EdgeInsets.all(Responsive.sp(context, isMobile ? 12 : 16)),
       decoration: BoxDecoration(
         color: AppTheme.surfaceDark,
         borderRadius: BorderRadius.circular(16),
@@ -673,29 +675,51 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                isEng ? '📊 Array & Pointer Positions' : '📊 অ্যারে ও পয়েন্টারের বর্তমান অবস্থান',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: Responsive.sp(context, 14),
+          // Responsive Header: Stack legends below title on mobile
+          if (isMobile) ...[
+            Text(
+              isEng ? '📊 Array & Pointer Positions' : '📊 অ্যারে ও পয়েন্টারের বর্তমান অবস্থান',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: Responsive.sp(context, 13.5),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 12,
+              runSpacing: 6,
+              children: [
+                _buildLegendItem("Left (L)", AppTheme.accentNeonCyan),
+                _buildLegendItem("Right (R)", AppTheme.accentPurple),
+                _buildLegendItem(isEng ? "Eliminated" : "বাদ পড়েছে", AppTheme.textMuted),
+              ],
+            ),
+          ] else ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  isEng ? '📊 Array & Pointer Positions' : '📊 অ্যারে ও পয়েন্টারের বর্তমান অবস্থান',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.sp(context, 14),
+                  ),
                 ),
-              ),
-              Row(
-                children: [
-                  _buildLegendItem("Left (L)", AppTheme.accentNeonCyan),
-                  const SizedBox(width: 10),
-                  _buildLegendItem("Right (R)", AppTheme.accentPurple),
-                  const SizedBox(width: 10),
-                  _buildLegendItem(isEng ? "Eliminated" : "বাদ পড়েছে", AppTheme.textMuted),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
+                Row(
+                  children: [
+                    _buildLegendItem("Left (L)", AppTheme.accentNeonCyan),
+                    const SizedBox(width: 10),
+                    _buildLegendItem("Right (R)", AppTheme.accentPurple),
+                    const SizedBox(width: 10),
+                    _buildLegendItem(isEng ? "Eliminated" : "বাদ পড়েছে", AppTheme.textMuted),
+                  ],
+                ),
+              ],
+            ),
+          ],
+          const SizedBox(height: 16),
 
           // Scrollable Array Element Cards
           SingleChildScrollView(
@@ -731,7 +755,7 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
 
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.only(right: 10),
+                  margin: EdgeInsets.only(right: isMobile ? 8 : 10),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -810,8 +834,8 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
                           scale: (isLeft || isRight) ? 1.08 : 1.0,
                           duration: const Duration(milliseconds: 250),
                           child: Container(
-                            width: 65,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            width: isMobile ? 55 : 65,
+                            padding: EdgeInsets.symmetric(vertical: isMobile ? 10 : 12),
                             decoration: BoxDecoration(
                               color: bgColor,
                               borderRadius: BorderRadius.circular(12),
@@ -834,7 +858,7 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
                                 Text(
                                   '$val',
                                   style: TextStyle(
-                                    fontSize: Responsive.sp(context, 18),
+                                    fontSize: Responsive.sp(context, isMobile ? 16 : 18),
                                     fontWeight: FontWeight.bold,
                                     color: isMatched
                                         ? AppTheme.accentGreen
@@ -845,7 +869,7 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
                                 Text(
                                   'idx ${idx + 1}',
                                   style: TextStyle(
-                                    fontSize: Responsive.sp(context, 10),
+                                    fontSize: Responsive.sp(context, 9.5),
                                     color: AppTheme.textMuted,
                                   ),
                                 ),
@@ -865,12 +889,102 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
     );
   }
 
+  Widget _buildPlaybackControls(bool isEng, bool isMobile) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: Responsive.sp(context, isMobile ? 10 : 16),
+        vertical: 10,
+      ),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceDark,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFF334155)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                padding: isMobile ? EdgeInsets.zero : const EdgeInsets.all(8),
+                constraints: isMobile ? const BoxConstraints() : null,
+                tooltip: isEng ? "Previous Step" : "আগের ধাপ",
+                icon: Icon(Icons.skip_previous_rounded, color: Colors.white, size: Responsive.sp(context, isMobile ? 20 : 24)),
+                onPressed: _currentStepIndex > 0
+                    ? () => setState(() => _currentStepIndex--)
+                    : null,
+              ),
+              SizedBox(width: isMobile ? 8 : 12),
+              IconButton(
+                padding: isMobile ? EdgeInsets.zero : const EdgeInsets.all(8),
+                constraints: isMobile ? const BoxConstraints() : null,
+                tooltip: _isPlaying ? (isEng ? "Pause" : "পজ") : (isEng ? "Play" : "প্লে"),
+                icon: Icon(
+                  _isPlaying ? Icons.pause_circle_filled_rounded : Icons.play_circle_fill_rounded,
+                  color: AppTheme.accentNeonCyan,
+                  size: Responsive.sp(context, isMobile ? 28 : 34),
+                ),
+                onPressed: _togglePlay,
+              ),
+              SizedBox(width: isMobile ? 8 : 12),
+              IconButton(
+                padding: isMobile ? EdgeInsets.zero : const EdgeInsets.all(8),
+                constraints: isMobile ? const BoxConstraints() : null,
+                tooltip: isEng ? "Next Step" : "পরের ধাপ",
+                icon: Icon(Icons.skip_next_rounded, color: Colors.white, size: Responsive.sp(context, isMobile ? 20 : 24)),
+                onPressed: _currentStepIndex < _steps.length - 1
+                    ? () => setState(() => _currentStepIndex++)
+                    : null,
+              ),
+              SizedBox(width: isMobile ? 8 : 12),
+              IconButton(
+                padding: isMobile ? EdgeInsets.zero : const EdgeInsets.all(8),
+                constraints: isMobile ? const BoxConstraints() : null,
+                tooltip: isEng ? "Reset" : "রিসেট",
+                icon: Icon(Icons.replay_rounded, color: AppTheme.textMuted, size: Responsive.sp(context, isMobile ? 18 : 22)),
+                onPressed: () {
+                  _timer?.cancel();
+                  setState(() {
+                    _isPlaying = false;
+                    _currentStepIndex = 0;
+                  });
+                },
+              ),
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 8 : 12,
+              vertical: isMobile ? 4 : 6,
+            ),
+            decoration: BoxDecoration(
+              color: AppTheme.primaryDark,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
+            ),
+            child: Text(
+              isEng
+                  ? "Step ${_currentStepIndex + 1}/${_steps.length}"
+                  : "ধাপ ${_currentStepIndex + 1}/${_steps.length}",
+              style: TextStyle(
+                color: AppTheme.accentNeonCyan,
+                fontWeight: FontWeight.bold,
+                fontSize: Responsive.sp(context, isMobile ? 11 : 12.5),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildLegendItem(String label, Color color) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 10,
-          height: 10,
+          width: 9,
+          height: 9,
           decoration: BoxDecoration(
             color: color,
             shape: BoxShape.circle,
@@ -886,10 +1000,10 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
   }
 
   /// Visual Explanation Card for Beginner Conceptual Understanding
-  Widget _buildIntuitionExplanationCard(CodeFreeStep step, bool isEng) {
+  Widget _buildIntuitionExplanationCard(CodeFreeStep step, bool isEng, bool isMobile) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(Responsive.sp(context, 16)),
+      padding: EdgeInsets.all(Responsive.sp(context, isMobile ? 12 : 16)),
       decoration: BoxDecoration(
         color: AppTheme.surfaceDark,
         borderRadius: BorderRadius.circular(16),
@@ -900,14 +1014,14 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
         children: [
           Row(
             children: [
-              const Icon(Icons.lightbulb_rounded, color: AppTheme.accentAmber, size: 22),
+              Icon(Icons.lightbulb_rounded, color: AppTheme.accentAmber, size: Responsive.sp(context, isMobile ? 18 : 22)),
               const SizedBox(width: 8),
               Text(
                 isEng ? 'Intuition & Action Explanation' : 'সহজ ব্যাখ্যা ও লজিক',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: Responsive.sp(context, 14.5),
+                  fontSize: Responsive.sp(context, isMobile ? 13.5 : 14.5),
                 ),
               ),
             ],
@@ -917,29 +1031,30 @@ class _TwoSumCodeFreeVisualizerState extends State<TwoSumCodeFreeVisualizer>
             isEng ? step.descriptionEn : step.descriptionBn,
             style: TextStyle(
               color: Colors.white,
-              fontSize: Responsive.sp(context, 13),
+              fontSize: Responsive.sp(context, isMobile ? 12.5 : 13),
               height: 1.4,
             ),
           ),
           const SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(isMobile ? 10 : 12),
             decoration: BoxDecoration(
               color: AppTheme.primaryDark,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.3)),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.info_outline_rounded, color: AppTheme.accentNeonCyan, size: 18),
+                Icon(Icons.info_outline_rounded, color: AppTheme.accentNeonCyan, size: Responsive.sp(context, isMobile ? 16 : 18)),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     isEng ? step.visualTipEn : step.visualTipBn,
                     style: TextStyle(
                       color: AppTheme.accentNeonCyan,
-                      fontSize: Responsive.sp(context, 12),
-                      height: 1.3,
+                      fontSize: Responsive.sp(context, isMobile ? 11.5 : 12),
+                      height: 1.35,
                     ),
                   ),
                 ),
