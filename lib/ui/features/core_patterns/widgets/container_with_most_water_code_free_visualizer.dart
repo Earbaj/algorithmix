@@ -648,7 +648,7 @@ class _ContainerWithMostWaterCodeFreeVisualizerState
                     // Vertical Height Bars
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: List.generate(h.length, (idx) {
                         final heightVal = h[idx];
                         final isLeft = idx == step.left;
