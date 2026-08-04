@@ -552,6 +552,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isTwoSum = problem.title.contains("Two Sum II");
     final isValidPalindrome = problem.title.contains("Valid Palindrome");
     final isReverseString = problem.title.contains("Reverse String");
+    final isMoveZeroes = problem.title.contains("Move Zeroes");
     final isRemoveDuplicatesII =
         problem.title.contains("Remove Duplicates from Sorted Array II");
     final isRemoveDuplicates =
