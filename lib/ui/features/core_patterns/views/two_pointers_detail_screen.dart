@@ -558,13 +558,15 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isSquaresSortedArray =
         problem.title.contains("Squares of a Sorted Array");
     final isMergeSortedArray = problem.title.contains("Merge Sorted Array");
+    final isIsSubsequence = problem.title.contains("Is Subsequence");
     final hasDedicatedPage = isTwoSum ||
         isValidPalindrome ||
         isReverseString ||
         isMoveZeroes ||
         isRemoveDuplicates ||
         isSquaresSortedArray ||
-        isMergeSortedArray;
+        isMergeSortedArray ||
+        isIsSubsequence;
 
     return InkWell(
       onTap: () {
@@ -582,6 +584,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.squaresSortedArray);
         } else if (isMergeSortedArray) {
           Navigator.of(context).pushNamed(AppRoutes.mergeSortedArray);
+        } else if (isIsSubsequence) {
+          Navigator.of(context).pushNamed(AppRoutes.isSubsequence);
         }
       },
       borderRadius: BorderRadius.circular(16),

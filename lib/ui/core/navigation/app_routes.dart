@@ -12,6 +12,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/move_zeroes_detail_s
 import 'package:algorithmix/ui/features/core_patterns/views/remove_duplicates_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/squares_sorted_array_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/merge_sorted_array_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/is_subsequence_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -29,6 +30,7 @@ class AppRoutes {
   static const String removeDuplicates = '/remove-duplicates';
   static const String squaresSortedArray = '/squares-sorted-array';
   static const String mergeSortedArray = '/merge-sorted-array';
+  static const String isSubsequence = '/is-subsequence';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -47,6 +49,7 @@ class AppRoutes {
       removeDuplicates: (context) => const RemoveDuplicatesDetailScreen(),
       squaresSortedArray: (context) => const SquaresSortedArrayDetailScreen(),
       mergeSortedArray: (context) => const MergeSortedArrayDetailScreen(),
+      isSubsequence: (context) => const IsSubsequenceDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };
