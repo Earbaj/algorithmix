@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
+import 'package:algorithmix/ui/features/core_patterns/widgets/two_sum_code_free_visualizer.dart';
 
 class TwoSumIIStep {
   final int left;
@@ -67,7 +68,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _rebuildSteps();
   }
 
@@ -437,6 +438,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
           unselectedLabelStyle: TextStyle(fontSize: Responsive.sp(context, 13)),
           tabs: [
             Tab(text: _isEnglish ? '📘 Problem Description' : '📘 প্রবলেম বিবরণ'),
+            Tab(text: _isEnglish ? '🎨 Code-Free Animation' : '🎨 কোডহীন ভিজ্যুয়াল গাইড'),
             Tab(text: _isEnglish ? '⚡ Dynamic Visualizer' : '⚡ কাস্টম ইনপুট ও ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? '💡 Practice & Answer' : '💡 প্র্যাকটিস ও উত্তর'),
           ],
@@ -446,12 +448,23 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
         controller: _tabController,
         children: [
           _buildProblemDescriptionTab(hPadding),
+          _buildCodeFreeVisualizerTab(hPadding),
           _buildVisualizerTab(hPadding),
           _buildPracticeAndAnswerTab(hPadding),
         ],
       ),
     );
   }
+
+  // TAB 2: Code-Free Intuitive Visualizer (Zero Code)
+  Widget _buildCodeFreeVisualizerTab(double hPadding) {
+    return ResponsiveCenter(
+      maxWidth: 1280.0,
+      padding: EdgeInsets.all(hPadding),
+      child: TwoSumCodeFreeVisualizer(isEnglish: _isEnglish),
+    );
+  }
+
 
   // TAB 1: Problem Description & Key Intuition
   Widget _buildProblemDescriptionTab(double hPadding) {
