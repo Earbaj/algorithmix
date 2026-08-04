@@ -550,11 +550,14 @@ vector<vector<int>> three_sum(vector<int>& arr) {
 
   Widget _buildProblemCard(TwoPointersProblem problem, Color color) {
     final isTwoSum = problem.title.contains("Two Sum II");
+    final isValidPalindrome = problem.title.contains("Valid Palindrome");
 
     return InkWell(
       onTap: () {
         if (isTwoSum) {
           Navigator.of(context).pushNamed(AppRoutes.twoSumII);
+        } else if (isValidPalindrome) {
+          Navigator.of(context).pushNamed(AppRoutes.validPalindrome);
         }
       },
       borderRadius: BorderRadius.circular(16),
@@ -564,7 +567,12 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         decoration: BoxDecoration(
           color: AppTheme.surfaceDark,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: isTwoSum ? AppTheme.accentNeonCyan : (problem.isPopular ? AppTheme.accentPink : const Color(0xFF334155))),
+          border: Border.all(
+              color: (isTwoSum || isValidPalindrome)
+                  ? AppTheme.accentNeonCyan
+                  : (problem.isPopular
+                      ? AppTheme.accentPink
+                      : const Color(0xFF334155))),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -575,15 +583,25 @@ vector<vector<int>> three_sum(vector<int>& arr) {
                 Expanded(
                   child: Text(
                     problem.title,
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 15)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: Responsive.sp(context, 15)),
                   ),
                 ),
-                if (isTwoSum)
+                if (isTwoSum || isValidPalindrome)
                   Container(
                     margin: const EdgeInsets.only(right: 4),
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(color: AppTheme.accentNeonCyan.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
-                    child: const Text('🚀 Try Page', style: TextStyle(fontSize: 10, color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold)),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                        color: AppTheme.accentNeonCyan.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Text('🚀 Try Page',
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: AppTheme.accentNeonCyan,
+                            fontWeight: FontWeight.bold)),
                   ),
                 if (problem.isPopular)
                   Container(
