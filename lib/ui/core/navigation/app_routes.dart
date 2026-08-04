@@ -9,6 +9,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/two_sum_ii_detail_sc
 import 'package:algorithmix/ui/features/core_patterns/views/valid_palindrome_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/reverse_string_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/move_zeroes_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/remove_duplicates_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -23,6 +24,7 @@ class AppRoutes {
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
   static const String moveZeroes = '/move-zeroes';
+  static const String removeDuplicates = '/remove-duplicates';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -38,6 +40,7 @@ class AppRoutes {
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
       moveZeroes: (context) => const MoveZeroesDetailScreen(),
+      removeDuplicates: (context) => const RemoveDuplicatesDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };

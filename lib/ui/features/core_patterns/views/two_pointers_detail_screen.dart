@@ -553,8 +553,13 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isValidPalindrome = problem.title.contains("Valid Palindrome");
     final isReverseString = problem.title.contains("Reverse String");
     final isMoveZeroes = problem.title.contains("Move Zeroes");
-    final hasDedicatedPage =
-        isTwoSum || isValidPalindrome || isReverseString || isMoveZeroes;
+    final isRemoveDuplicates =
+        problem.title.contains("Remove Duplicates from Sorted Array");
+    final hasDedicatedPage = isTwoSum ||
+        isValidPalindrome ||
+        isReverseString ||
+        isMoveZeroes ||
+        isRemoveDuplicates;
 
     return InkWell(
       onTap: () {
@@ -566,6 +571,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.reverseString);
         } else if (isMoveZeroes) {
           Navigator.of(context).pushNamed(AppRoutes.moveZeroes);
+        } else if (isRemoveDuplicates) {
+          Navigator.of(context).pushNamed(AppRoutes.removeDuplicates);
         }
       },
       borderRadius: BorderRadius.circular(16),
