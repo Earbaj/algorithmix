@@ -1252,7 +1252,7 @@ class _ReverseStringDetailScreenState extends State<ReverseStringDetailScreen>
                   borderColor = AppTheme.accentPurple;
                 } else if (isSwapped) {
                   borderColor = AppTheme.accentGreen.withOpacity(0.6);
-                  bgColor = AppTheme.accentGreen.withOpacity(0.12);
+                  boxBg = AppTheme.accentGreen.withOpacity(0.12);
                 }
 
                 return Container(
