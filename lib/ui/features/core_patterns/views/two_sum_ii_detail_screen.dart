@@ -794,36 +794,32 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
             const SizedBox(height: 20),
 
             // Step Visualization Section (Expanded Code Trace Width: 580px)
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal, // Left-to-Right scroll support for wide screens / trace
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: isMobile ? MediaQuery.of(context).size.width - (hPadding * 2) : 1150.0,
+            if (isMobile)
+              Column(
+                children: [
+                  _buildCodeTraceWidget(step.activeLine),
+                  const SizedBox(height: 16),
+                  _buildArrayVisualizationBox(step),
+                ],
+              )
+            else
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 580, // Expanded width for C++ Execution Trace
+                      child: _buildCodeTraceWidget(step.activeLine),
+                    ),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 550, // Array Visualization Box width
+                      child: _buildArrayVisualizationBox(step),
+                    ),
+                  ],
                 ),
-                child: isMobile
-                    ? Column(
-                        children: [
-                          _buildCodeTraceWidget(step.activeLine),
-                          const SizedBox(height: 16),
-                          _buildArrayVisualizationBox(step),
-                        ],
-                      )
-                    : Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 580, // Expanded width for C++ Execution Trace
-                            child: _buildCodeTraceWidget(step.activeLine),
-                          ),
-                          const SizedBox(width: 16),
-                          SizedBox(
-                            width: 550, // Array Visualization Box width
-                            child: _buildArrayVisualizationBox(step),
-                          ),
-                        ],
-                      ),
               ),
-            ),
             const SizedBox(height: 16),
 
             // Playback Controls Bar
