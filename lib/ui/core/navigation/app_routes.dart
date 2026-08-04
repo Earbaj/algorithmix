@@ -6,6 +6,12 @@ import 'package:algorithmix/ui/features/dashboard/views/dashboard_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/core_patterns_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/two_pointers_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/space_complexity_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/big_o_rules_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/amortized_complexity_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/best_worst_case_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/two_sum_ii_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/valid_palindrome_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/reverse_string_detail_screen.dart';
@@ -35,6 +41,12 @@ class AppRoutes {
   static const String dashboard = '/dashboard';
   static const String corePatterns = '/core-patterns';
   static const String timeSpaceComplexityDetail = '/time-space-complexity-detail';
+  static const String asymptoticNotations = '/asymptotic-notations';
+  static const String complexityClasses = '/complexity-classes';
+  static const String spaceComplexity = '/space-complexity';
+  static const String bigORules = '/big-o-rules';
+  static const String amortizedComplexity = '/amortized-complexity';
+  static const String bestWorstCase = '/best-worst-case';
   static const String twoPointersDetail = '/two-pointers-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
@@ -66,6 +78,12 @@ class AppRoutes {
       dashboard: (context) => const DashboardScreen(),
       corePatterns: (context) => const CorePatternsScreen(),
       timeSpaceComplexityDetail: (context) => const TimeSpaceComplexityDetailScreen(),
+      asymptoticNotations: (context) => const AsymptoticNotationsDetailScreen(),
+      complexityClasses: (context) => const ComplexityClassesDetailScreen(),
+      spaceComplexity: (context) => const SpaceComplexityDetailScreen(),
+      bigORules: (context) => const BigORulesDetailScreen(),
+      amortizedComplexity: (context) => const AmortizedComplexityDetailScreen(),
+      bestWorstCase: (context) => const BestWorstCaseDetailScreen(),
       twoPointersDetail: (context) => const TwoPointersDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),

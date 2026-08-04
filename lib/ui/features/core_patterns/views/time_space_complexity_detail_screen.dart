@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
+import 'package:algorithmix/ui/core/navigation/app_routes.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/time_space_complexity_code_free_visualizer.dart';
 
 class SubTopicItem {
@@ -364,12 +365,26 @@ int search(List<int> arr, int target) {
   }
 
   void _openSubTopicDetailModal(SubTopicItem subTopic) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => _buildSubTopicModalContent(subTopic),
-    );
+    if (subTopic.id == 1) {
+      Navigator.of(context).pushNamed(AppRoutes.asymptoticNotations);
+    } else if (subTopic.id == 2) {
+      Navigator.of(context).pushNamed(AppRoutes.complexityClasses);
+    } else if (subTopic.id == 3) {
+      Navigator.of(context).pushNamed(AppRoutes.spaceComplexity);
+    } else if (subTopic.id == 4) {
+      Navigator.of(context).pushNamed(AppRoutes.bigORules);
+    } else if (subTopic.id == 5) {
+      Navigator.of(context).pushNamed(AppRoutes.amortizedComplexity);
+    } else if (subTopic.id == 6) {
+      Navigator.of(context).pushNamed(AppRoutes.bestWorstCase);
+    } else {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => _buildSubTopicModalContent(subTopic),
+      );
+    }
   }
 
   @override
@@ -524,17 +539,20 @@ int search(List<int> arr, int target) {
             const SizedBox(height: 12),
 
             ..._subTopics.map((subTopic) {
-              return Container(
-                margin: const EdgeInsets.only(bottom: 14),
-                padding: EdgeInsets.all(Responsive.sp(context, 14)),
-                decoration: BoxDecoration(
-                  color: AppTheme.surfaceDark,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF334155)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              return InkWell(
+                onTap: () => _openSubTopicDetailModal(subTopic),
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 14),
+                  padding: EdgeInsets.all(Responsive.sp(context, 14)),
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceDark,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFF334155)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
