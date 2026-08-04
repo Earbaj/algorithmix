@@ -596,124 +596,117 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     final codeLines = _codeTemplates[_selectedTemplateIndex];
     final isMobile = Responsive.isMobile(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
-      ),
-      padding: const EdgeInsets.all(18),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Selector & Header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  widget.isEnglish
-                      ? "C++ Line-by-Line Debugger"
-                      : "C++ লাইন-বাই-লাইন ডিবাগার",
-                  style: TextStyle(
-                    fontSize: Responsive.sp(context, 16),
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Selector & Header
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                widget.isEnglish
+                    ? isMobile ? "Debugger":"Line-by-Line Debugger"
+                    : isMobile ? "ডিবাগার":"লাইন-বাই-লাইন ডিবাগার",
+                style: TextStyle(
+                  fontSize: Responsive.sp(context, 16),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
-              DropdownButton<int>(
-                value: _selectedTemplateIndex,
-                dropdownColor: AppTheme.primaryDark,
-                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
-                underline: Container(),
-                items: [
-                  DropdownMenuItem(
-                    value: 0,
-                    child: Text(widget.isEnglish ? "1. Opposite Direction" : "১. বিপরীত দিক (Opposite)"),
+            ),
+            DropdownButton<int>(
+              value: _selectedTemplateIndex,
+              dropdownColor: AppTheme.primaryDark,
+              style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
+              underline: Container(),
+              items: [
+                DropdownMenuItem(
+                  value: 0,
+                  child: Text(widget.isEnglish ? "1. Opposite Direction" : "১. বিপরীত দিক (Opposite)"),
+                ),
+                DropdownMenuItem(
+                  value: 1,
+                  child: Text(widget.isEnglish ? "2. Same Direction" : "২. একই দিক (Same Dir)"),
+                ),
+                DropdownMenuItem(
+                  value: 2,
+                  child: Text(widget.isEnglish ? "3. Fixed + 2 Pointers" : "৩. Fixed + Two Pointers"),
+                ),
+              ],
+              onChanged: (val) {
+                if (val != null) {
+                  setState(() {
+                    _selectedTemplateIndex = val;
+                    _reset();
+                  });
+                }
+              },
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        // Code & Visualizer Container (Responsive Layout)
+        if (isMobile)
+          Column(
+            children: [
+              _buildCodeSnippetWithHighlight(codeLines, step.activeLineIndex),
+              const SizedBox(height: 16),
+              _buildVisualizerBox(step),
+            ],
+          )
+        else
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: _buildCodeSnippetWithHighlight(codeLines, step.activeLineIndex)),
+              const SizedBox(width: 16),
+              Expanded(child: _buildVisualizerBox(step)),
+            ],
+          ),
+
+        const SizedBox(height: 16),
+
+        // Controls Bar
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          decoration: BoxDecoration(
+            color: AppTheme.primaryDark,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppTheme.textMuted)
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.skip_previous, color: Colors.white),
+                    onPressed: _currentStepIndex > 0 ? _prevStep : null,
                   ),
-                  DropdownMenuItem(
-                    value: 1,
-                    child: Text(widget.isEnglish ? "2. Same Direction" : "২. একই দিক (Same Dir)"),
+                  IconButton(
+                    icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow, color: AppTheme.accentNeonCyan),
+                    onPressed: _togglePlay,
                   ),
-                  DropdownMenuItem(
-                    value: 2,
-                    child: Text(widget.isEnglish ? "3. Fixed + 2 Pointers" : "৩. Fixed + Two Pointers"),
+                  IconButton(
+                    icon: const Icon(Icons.skip_next, color: Colors.white),
+                    onPressed: _currentStepIndex < _currentSteps.length - 1 ? _nextStep : null,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh, color: AppTheme.textMuted),
+                    onPressed: _reset,
+                  ),
+                  Text(
+                    "Step ${_currentStepIndex + 1} / ${_currentSteps.length}",
+                    style: const TextStyle(color: AppTheme.textSecondary, fontWeight: FontWeight.bold),
                   ),
                 ],
-                onChanged: (val) {
-                  if (val != null) {
-                    setState(() {
-                      _selectedTemplateIndex = val;
-                      _reset();
-                    });
-                  }
-                },
               ),
             ],
           ),
-          const SizedBox(height: 16),
-
-          // Code & Visualizer Container (Responsive Layout)
-          if (isMobile)
-            Column(
-              children: [
-                _buildCodeSnippetWithHighlight(codeLines, step.activeLineIndex),
-                const SizedBox(height: 16),
-                _buildVisualizerBox(step),
-              ],
-            )
-          else
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(child: _buildCodeSnippetWithHighlight(codeLines, step.activeLineIndex)),
-                const SizedBox(width: 16),
-                Expanded(child: _buildVisualizerBox(step)),
-              ],
-            ),
-
-          const SizedBox(height: 16),
-
-          // Controls Bar
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: AppTheme.primaryDark,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.skip_previous, color: Colors.white),
-                      onPressed: _currentStepIndex > 0 ? _prevStep : null,
-                    ),
-                    IconButton(
-                      icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow, color: AppTheme.accentNeonCyan),
-                      onPressed: _togglePlay,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.skip_next, color: Colors.white),
-                      onPressed: _currentStepIndex < _currentSteps.length - 1 ? _nextStep : null,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.refresh, color: AppTheme.textMuted),
-                      onPressed: _reset,
-                    ),
-                  ],
-                ),
-                Text(
-                  "Step ${_currentStepIndex + 1} / ${_currentSteps.length}",
-                  style: const TextStyle(color: AppTheme.textSecondary, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -731,7 +724,6 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(codeLines.length, (idx) {
           final isActive = idx == activeLineIndex;
-
           return AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             margin: const EdgeInsets.symmetric(vertical: 2),
