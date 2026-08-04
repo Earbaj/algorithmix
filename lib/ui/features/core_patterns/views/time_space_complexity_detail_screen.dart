@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
-import 'package0/algorithmix/ui/core/utils/responsive.dart';
+import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/time_space_complexity_code_free_visualizer.dart';
 
 class SubTopicItem {
@@ -147,7 +147,6 @@ void demonstrateNotations(int n) {
         "In-Place algorithms use O(1) auxiliary space.",
         "Tree recursion space equals maximum depth (height H) of the tree."
       ],
-      keyTakeawaysEn2: null,
       keyTakeawaysBn: [
         "N গভীরতার রিকার্শনে O(N) কল স্ট্যাক মেমোরি লাগে।",
         "In-Place অ্যালগরিদম কোনো অতিরিক্ত O(1) স্পেস ছাড়া ইনপুট রূপান্তর করে।",
