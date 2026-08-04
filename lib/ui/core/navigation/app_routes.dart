@@ -23,6 +23,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/boats_to_save_people
 import 'package:algorithmix/ui/features/core_patterns/views/partition_labels_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/trapping_rain_water_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/min_window_substring_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/median_two_sorted_arrays_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -51,6 +52,7 @@ class AppRoutes {
   static const String partitionLabels = '/partition-labels';
   static const String trappingRainWater = '/trapping-rain-water';
   static const String minWindowSubstring = '/min-window-substring';
+  static const String medianTwoSortedArrays = '/median-two-sorted-arrays';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -80,6 +82,7 @@ class AppRoutes {
       partitionLabels: (context) => const PartitionLabelsDetailScreen(),
       trappingRainWater: (context) => const TrappingRainWaterDetailScreen(),
       minWindowSubstring: (context) => const MinWindowSubstringDetailScreen(),
+      medianTwoSortedArrays: (context) => const MedianTwoSortedArraysDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };

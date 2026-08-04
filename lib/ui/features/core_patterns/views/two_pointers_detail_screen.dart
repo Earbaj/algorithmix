@@ -578,6 +578,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         problem.title.contains("Trapping Rain Water");
     final isMinWindowSubstring =
         problem.title.contains("Minimum Window Substring");
+    final isMedianTwoSortedArrays =
+        problem.title.contains("Median of Two Sorted Arrays");
     final hasDedicatedPage = isTwoSum ||
         isValidPalindrome ||
         isReverseString ||
@@ -595,7 +597,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         isBoatsToSavePeople ||
         isPartitionLabels ||
         isTrappingRainWater ||
-        isMinWindowSubstring;
+        isMinWindowSubstring ||
+        isMedianTwoSortedArrays;
 
     return InkWell(
       onTap: () {
@@ -635,6 +638,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.trappingRainWater);
         } else if (isMinWindowSubstring) {
           Navigator.of(context).pushNamed(AppRoutes.minWindowSubstring);
+        } else if (isMedianTwoSortedArrays) {
+          Navigator.of(context).pushNamed(AppRoutes.medianTwoSortedArrays);
         }
       },
       borderRadius: BorderRadius.circular(16),
