@@ -10,6 +10,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/valid_palindrome_det
 import 'package:algorithmix/ui/features/core_patterns/views/reverse_string_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/move_zeroes_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/remove_duplicates_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/remove_duplicates_ii_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/squares_sorted_array_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/merge_sorted_array_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/is_subsequence_detail_screen.dart';
@@ -32,6 +33,7 @@ class AppRoutes {
   static const String reverseString = '/reverse-string';
   static const String moveZeroes = '/move-zeroes';
   static const String removeDuplicates = '/remove-duplicates';
+  static const String removeDuplicatesII = '/remove-duplicates-ii';
   static const String squaresSortedArray = '/squares-sorted-array';
   static const String mergeSortedArray = '/merge-sorted-array';
   static const String isSubsequence = '/is-subsequence';
@@ -55,6 +57,7 @@ class AppRoutes {
       reverseString: (context) => const ReverseStringDetailScreen(),
       moveZeroes: (context) => const MoveZeroesDetailScreen(),
       removeDuplicates: (context) => const RemoveDuplicatesDetailScreen(),
+      removeDuplicatesII: (context) => const RemoveDuplicatesIIDetailScreen(),
       squaresSortedArray: (context) => const SquaresSortedArrayDetailScreen(),
       mergeSortedArray: (context) => const MergeSortedArrayDetailScreen(),
       isSubsequence: (context) => const IsSubsequenceDetailScreen(),

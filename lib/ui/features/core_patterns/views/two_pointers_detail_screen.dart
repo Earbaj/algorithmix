@@ -552,9 +552,11 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isTwoSum = problem.title.contains("Two Sum II");
     final isValidPalindrome = problem.title.contains("Valid Palindrome");
     final isReverseString = problem.title.contains("Reverse String");
-    final isMoveZeroes = problem.title.contains("Move Zeroes");
+    final isRemoveDuplicatesII =
+        problem.title.contains("Remove Duplicates from Sorted Array II");
     final isRemoveDuplicates =
-        problem.title.contains("Remove Duplicates from Sorted Array");
+        problem.title.contains("Remove Duplicates from Sorted Array") &&
+            !isRemoveDuplicatesII;
     final isSquaresSortedArray =
         problem.title.contains("Squares of a Sorted Array");
     final isMergeSortedArray = problem.title.contains("Merge Sorted Array");
@@ -570,6 +572,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         isReverseString ||
         isMoveZeroes ||
         isRemoveDuplicates ||
+        isRemoveDuplicatesII ||
         isSquaresSortedArray ||
         isMergeSortedArray ||
         isIsSubsequence ||
@@ -588,6 +591,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.reverseString);
         } else if (isMoveZeroes) {
           Navigator.of(context).pushNamed(AppRoutes.moveZeroes);
+        } else if (isRemoveDuplicatesII) {
+          Navigator.of(context).pushNamed(AppRoutes.removeDuplicatesII);
         } else if (isRemoveDuplicates) {
           Navigator.of(context).pushNamed(AppRoutes.removeDuplicates);
         } else if (isSquaresSortedArray) {
