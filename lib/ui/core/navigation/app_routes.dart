@@ -21,6 +21,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/container_with_most_
 import 'package:algorithmix/ui/features/core_patterns/views/sort_colors_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/boats_to_save_people_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/partition_labels_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/trapping_rain_water_detail_screen.dart';
 import 'package:algorithmix/ui/features/algorithms/views/algorithms_screen.dart';
 import 'package:algorithmix/ui/features/dsa/views/dsa_screen.dart';
 
@@ -47,6 +48,7 @@ class AppRoutes {
   static const String sortColors = '/sort-colors';
   static const String boatsToSavePeople = '/boats-to-save-people';
   static const String partitionLabels = '/partition-labels';
+  static const String trappingRainWater = '/trapping-rain-water';
   static const String algorithms = '/algorithms';
   static const String dsa = '/dsa';
 
@@ -74,6 +76,7 @@ class AppRoutes {
       sortColors: (context) => const SortColorsDetailScreen(),
       boatsToSavePeople: (context) => const BoatsToSavePeopleDetailScreen(),
       partitionLabels: (context) => const PartitionLabelsDetailScreen(),
+      trappingRainWater: (context) => const TrappingRainWaterDetailScreen(),
       algorithms: (context) => const AlgorithmsScreen(),
       dsa: (context) => const DsaScreen(),
     };

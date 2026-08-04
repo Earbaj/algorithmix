@@ -574,6 +574,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isBoatsToSavePeople =
         problem.title.contains("Boats to Save People");
     final isPartitionLabels = problem.title.contains("Partition Labels");
+    final isTrappingRainWater =
+        problem.title.contains("Trapping Rain Water");
     final hasDedicatedPage = isTwoSum ||
         isValidPalindrome ||
         isReverseString ||
@@ -589,7 +591,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         isContainerWithMostWater ||
         isSortColors ||
         isBoatsToSavePeople ||
-        isPartitionLabels;
+        isPartitionLabels ||
+        isTrappingRainWater;
 
     return InkWell(
       onTap: () {
@@ -625,6 +628,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.boatsToSavePeople);
         } else if (isPartitionLabels) {
           Navigator.of(context).pushNamed(AppRoutes.partitionLabels);
+        } else if (isTrappingRainWater) {
+          Navigator.of(context).pushNamed(AppRoutes.trappingRainWater);
         }
       },
       borderRadius: BorderRadius.circular(16),
