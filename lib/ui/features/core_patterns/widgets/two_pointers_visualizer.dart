@@ -656,8 +656,7 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
             ),
           ],
         ),
-        const SizedBox(height: 16),
-
+        const SizedBox(height: 5),
         // Code & Visualizer Container (Responsive Layout)
         if (isMobile)
           Column(
@@ -791,6 +790,13 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
   }
 
   Widget _buildVisualizerBox(DebugVisualizerStep step) {
+    // ১. স্ক্রিন উইডথ বের করা
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
+    final double fontSize = (screenWidth * 0.025).clamp(8.0, 16.0);
+    final double dynamicWidth = (screenWidth * 0.09).clamp(12, 44);
+    final double dynamicHeight = (screenWidth * 0.09).clamp(12, 44);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -806,26 +812,27 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
         children: [
           // Pointer Variables Badge Legend
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               if (step.fixed != null) ...[
-                _buildPointerBadge('i (fixed)', AppTheme.accentAmber, step.fixed!),
+                _buildPointerBadge(context,'i (fixed)', AppTheme.accentAmber, step.fixed!),
                 const SizedBox(width: 8),
               ],
-              _buildPointerBadge(
+              _buildPointerBadge(context,
                 _selectedTemplateIndex == 1 ? 'slow' : 'left',
                 AppTheme.accentNeonCyan,
                 step.left,
               ),
               const SizedBox(width: 8),
               _buildPointerBadge(
+                context,
                 _selectedTemplateIndex == 1 ? 'fast' : 'right',
                 AppTheme.accentPink,
                 step.right,
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
 
           // Visual Array Elements
           SingleChildScrollView(
@@ -860,8 +867,8 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
                     children: [
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        width: 42,
-                        height: 42,
+                        width: dynamicWidth,
+                        height: dynamicHeight,
                         decoration: BoxDecoration(
                           color: boxBg,
                           borderRadius: BorderRadius.circular(10),
@@ -873,8 +880,8 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
                         child: Center(
                           child: Text(
                             '${step.arrayState[idx]}',
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: fontSize,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
@@ -884,7 +891,7 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
                       const SizedBox(height: 4),
                       Text(
                         '[$idx]',
-                        style: const TextStyle(fontSize: 10, color: AppTheme.textMuted),
+                        style: TextStyle(fontSize: fontSize, color: AppTheme.textMuted),
                       ),
                     ],
                   ),
@@ -907,7 +914,7 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
             child: Text(
               widget.isEnglish ? step.explanationEn : step.explanationBn,
               style: TextStyle(
-                fontSize: 13,
+                fontSize: fontSize,
                 color: step.isMatch ? AppTheme.accentGreen : AppTheme.textPrimary,
                 fontWeight: step.isMatch ? FontWeight.bold : FontWeight.normal,
               ),
@@ -918,17 +925,34 @@ class _TwoPointersVisualizerState extends State<TwoPointersVisualizer> {
     );
   }
 
-  Widget _buildPointerBadge(String label, Color color, int value) {
+  Widget _buildPointerBadge(BuildContext context, String label, Color color, int value) {
+    // ১. স্ক্রিন উইডথ বের করা
+    final screenWidth = MediaQuery.sizeOf(context).width;
+
+    // ২. ডায়নামিক ক্যালকুলেশন (clamp ব্যবহার করে)
+    final double fontSize = (screenWidth * 0.025).clamp(8.0, 16.0);
+    final double horizontalPadding = (screenWidth * 0.02).clamp(4.0, 16.0);
+    final double verticalPadding = (screenWidth * 0.01).clamp(4.0, 10.0);
+    final double radius = (screenWidth * 0.015).clamp(8.0, 12.0);
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      // ডায়নামিক প্যাডিং দেওয়া হলো
+      padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+          vertical: verticalPadding
+      ),
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(radius), // ডায়নামিক রেডিয়াস
         border: Border.all(color: color.withOpacity(0.5)),
       ),
       child: Text(
         '$label = $value',
-        style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color),
+        style: TextStyle(
+            fontSize: fontSize, // ডায়নামিক ফন্ট সাইজ
+            fontWeight: FontWeight.bold,
+            color: color
+        ),
       ),
     );
   }
