@@ -5,6 +5,7 @@ import 'package:algorithmix/ui/features/auth/views/register_screen.dart';
 import 'package:algorithmix/ui/features/dashboard/views/dashboard_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/core_patterns_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/two_pointers_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/two_sum_ii_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/valid_palindrome_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/reverse_string_detail_screen.dart';
@@ -33,6 +34,7 @@ class AppRoutes {
   static const String register = '/register';
   static const String dashboard = '/dashboard';
   static const String corePatterns = '/core-patterns';
+  static const String timeSpaceComplexityDetail = '/time-space-complexity-detail';
   static const String twoPointersDetail = '/two-pointers-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
@@ -63,6 +65,7 @@ class AppRoutes {
       register: (context) => const RegisterScreen(),
       dashboard: (context) => const DashboardScreen(),
       corePatterns: (context) => const CorePatternsScreen(),
+      timeSpaceComplexityDetail: (context) => const TimeSpaceComplexityDetailScreen(),
       twoPointersDetail: (context) => const TwoPointersDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),

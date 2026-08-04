@@ -52,7 +52,10 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
   }
 
   void _handlePatternTap(PatternModel pattern) {
-    if (pattern.id == 4) {
+    if (pattern.id == 1) {
+      // Time & Space Complexity dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.timeSpaceComplexityDetail);
+    } else if (pattern.id == 4) {
       // Two Pointers dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.twoPointersDetail);
     } else {
