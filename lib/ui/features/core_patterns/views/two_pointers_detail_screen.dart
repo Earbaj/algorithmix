@@ -562,6 +562,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isThreeSumClosest = problem.title.contains("3Sum Closest");
     final isThreeSum =
         problem.title.contains("3Sum") && !isThreeSumClosest;
+    final isContainerWithMostWater =
+        problem.title.contains("Container With Most Water");
     final hasDedicatedPage = isTwoSum ||
         isValidPalindrome ||
         isReverseString ||
@@ -571,7 +573,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         isMergeSortedArray ||
         isIsSubsequence ||
         isThreeSum ||
-        isThreeSumClosest;
+        isThreeSumClosest ||
+        isContainerWithMostWater;
 
     return InkWell(
       onTap: () {
@@ -595,6 +598,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.threeSumClosest);
         } else if (isThreeSum) {
           Navigator.of(context).pushNamed(AppRoutes.threeSum);
+        } else if (isContainerWithMostWater) {
+          Navigator.of(context).pushNamed(AppRoutes.containerWithMostWater);
         }
       },
       borderRadius: BorderRadius.circular(16),
