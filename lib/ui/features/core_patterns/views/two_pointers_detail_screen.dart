@@ -567,6 +567,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
     final isThreeSumClosest = problem.title.contains("3Sum Closest");
     final isThreeSum =
         problem.title.contains("3Sum") && !isThreeSumClosest;
+    final isFourSum = problem.title.contains("4Sum");
     final isContainerWithMostWater =
         problem.title.contains("Container With Most Water");
     final isSortColors = problem.title.contains("Sort Colors");
@@ -581,6 +582,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
         isIsSubsequence ||
         isThreeSum ||
         isThreeSumClosest ||
+        isFourSum ||
         isContainerWithMostWater ||
         isSortColors;
 
@@ -608,6 +610,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.threeSumClosest);
         } else if (isThreeSum) {
           Navigator.of(context).pushNamed(AppRoutes.threeSum);
+        } else if (isFourSum) {
+          Navigator.of(context).pushNamed(AppRoutes.fourSum);
         } else if (isContainerWithMostWater) {
           Navigator.of(context).pushNamed(AppRoutes.containerWithMostWater);
         } else if (isSortColors) {
