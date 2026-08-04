@@ -551,6 +551,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
   Widget _buildProblemCard(TwoPointersProblem problem, Color color) {
     final isTwoSum = problem.title.contains("Two Sum II");
     final isValidPalindrome = problem.title.contains("Valid Palindrome");
+    final isReverseString = problem.title.contains("Reverse String");
+    final hasDedicatedPage = isTwoSum || isValidPalindrome || isReverseString;
 
     return InkWell(
       onTap: () {
@@ -558,6 +560,8 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           Navigator.of(context).pushNamed(AppRoutes.twoSumII);
         } else if (isValidPalindrome) {
           Navigator.of(context).pushNamed(AppRoutes.validPalindrome);
+        } else if (isReverseString) {
+          Navigator.of(context).pushNamed(AppRoutes.reverseString);
         }
       },
       borderRadius: BorderRadius.circular(16),
@@ -568,7 +572,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
           color: AppTheme.surfaceDark,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-              color: (isTwoSum || isValidPalindrome)
+              color: hasDedicatedPage
                   ? AppTheme.accentNeonCyan
                   : (problem.isPopular
                       ? AppTheme.accentPink
@@ -589,7 +593,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
                         fontSize: Responsive.sp(context, 15)),
                   ),
                 ),
-                if (isTwoSum || isValidPalindrome)
+                if (hasDedicatedPage)
                   Container(
                     margin: const EdgeInsets.only(right: 4),
                     padding:
