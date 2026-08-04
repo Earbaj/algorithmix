@@ -889,7 +889,7 @@ class _PartitionLabelsCodeFreeVisualizerState
                     isEng ? step.visualTipEn : step.visualTipBn,
                     style: TextStyle(
                       color: AppTheme.accentNeonCyan,
-                      fontSize: Responsive.sp(context, 11.5 : 12),
+                      fontSize: Responsive.sp(context, isMobile ? 11.5 : 12),
                       height: 1.35,
                     ),
                   ),
