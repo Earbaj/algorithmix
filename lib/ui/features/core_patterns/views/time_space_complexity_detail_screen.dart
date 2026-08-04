@@ -17,6 +17,13 @@ class SubTopicItem {
   final List<String> keyTakeawaysEn;
   final List<String> keyTakeawaysBn;
   final String codeExample;
+  final String quizQuestionEn;
+  final String quizQuestionBn;
+  final List<String> quizOptionsEn;
+  final List<String> quizOptionsBn;
+  final int correctOptionIndex;
+  final String quizExplanationEn;
+  final String quizExplanationBn;
 
   const SubTopicItem({
     required this.id,
@@ -31,6 +38,13 @@ class SubTopicItem {
     required this.keyTakeawaysEn,
     required this.keyTakeawaysBn,
     required this.codeExample,
+    required this.quizQuestionEn,
+    required this.quizQuestionBn,
+    required this.quizOptionsEn,
+    required this.quizOptionsBn,
+    required this.correctOptionIndex,
+    required this.quizExplanationEn,
+    required this.quizExplanationBn,
   });
 }
 
@@ -49,6 +63,11 @@ class _TimeSpaceComplexityDetailScreenState
   late TabController _tabController;
   int? _expandedSubTopicId = 1;
   String _selectedCodeLang = "C++";
+
+  // Master Quiz State
+  final Map<int, int?> _userAnswers = {};
+  final Map<int, bool> _quizSubmitted = {};
+  int _quizScore = 0;
 
   // List of all sub-topics under Time & Space Complexity (Big O)
   final List<SubTopicItem> _subTopics = [
@@ -85,6 +104,13 @@ void demonstrateNotations(int n) {
   // Worst Case: O(N) if target is last element or missing
   // Average Case: Θ(N/2) -> Θ(N) linear scan
 }""",
+      quizQuestionEn: "Which notation guarantees the upper bound (worst-case scenario) of an algorithm?",
+      quizQuestionBn: "কোন নোটেশনটি অ্যালগরিদমের আপার বাউন্ড (ওয়ার্স্ট-কেস পরিস্থিতি) গ্যারান্টি দেয়?",
+      quizOptionsEn: ["Big O (O)", "Big Omega (Ω)", "Big Theta (Θ)", "Alpha (α)"],
+      quizOptionsBn: ["Big O (O)", "Big Omega (Ω)", "Big Theta (Θ)", "Alpha (α)"],
+      correctOptionIndex: 0,
+      quizExplanationEn: "Big O represents the upper bound, guaranteeing the maximum operations an algorithm will perform in the worst case.",
+      quizExplanationBn: "Big O হলো আপার বাউন্ড যা ওয়ার্স্ট কেসে সর্বোচ্চ অপারেশনের সংখ্যা গ্যারান্টি দেয়।",
     ),
     SubTopicItem(
       id: 2,
@@ -111,7 +137,7 @@ void demonstrateNotations(int n) {
           "৪. O(N log N) — লিনিয়ারিজমিক (সেরা কম্পারিজন সর্টিং)\n"
           "৫. O(N²) — কোয়াড্রাটিক (নেসটেড লুপ)\n"
           "৬. O(2ᴺ) — এক্সপোনেনশিয়াল (সাবসেট ও ব্রুটফোর্স)\n"
-          "৭. O(N!) — ফ্যাক্টোরিয়াল (পারমিউটেশন જেনারেশন)",
+          "৭. O(N!) — ফ্যাক্টোরিয়াল (পারমিউটেশন জেনারেশন)",
       keyTakeawaysEn: [
         "Aim for O(1), O(log N), or O(N) in production code.",
         "O(N log N) is acceptable for sorting up to 10^6 elements.",
@@ -125,6 +151,13 @@ void demonstrateNotations(int n) {
       codeExample: """
 // Growth Classes Summary
 // O(1) < O(log N) < O(N) < O(N log N) < O(N^2) < O(2^N) < O(N!)""",
+      quizQuestionEn: "Which time complexity scales the fastest and is most efficient for large input size N?",
+      quizQuestionBn: "কোন টাইম কমপ্লেক্সিটিটি সবচেয়ে দ্রুত কাজ করে এবং বড় ইনপুট N এর জন্য সবচেয়ে দক্ষ?",
+      quizOptionsEn: ["O(N^2)", "O(N log N)", "O(log N)", "O(2^N)"],
+      quizOptionsBn: ["O(N^2)", "O(N log N)", "O(log N)", "O(2^N)"],
+      correctOptionIndex: 2,
+      quizExplanationEn: "O(log N) grows extremely slowly because the problem size is halved at each step.",
+      quizExplanationBn: "O(log N) অত্যন্ত ধীরে বাড়ে কারণ প্রতি পদক্ষেপে সমস্যা অর্ধেক হয়ে যায়।",
     ),
     SubTopicItem(
       id: 3,
@@ -158,6 +191,13 @@ int factorial(int n) {
   if (n <= 1) return 1;
   return n * factorial(n - 1); // Depth n stack frame
 }""",
+      quizQuestionEn: "What is the memory space complexity of a recursive algorithm with recursion depth N?",
+      quizQuestionBn: "N গভীরতার একটি রিকার্সিভ অ্যালগরিদমের মেমোরি স্পেস কমপ্লেক্সিটি কত?",
+      quizOptionsEn: ["O(1)", "O(log N)", "O(N)", "O(N^2)"],
+      quizOptionsBn: ["O(1)", "O(log N)", "O(N)", "O(N^2)"],
+      correctOptionIndex: 2,
+      quizExplanationEn: "Each recursive call adds a stack frame, resulting in O(N) call stack space memory allocation.",
+      quizExplanationBn: "প্রতিটি রিকার্সিভ কলের জন্য স্ট্যাক ফ্রেম যুক্ত হয়ে O(N) কল স্ট্যাক মেমোরি তৈরি হয়।",
     ),
     SubTopicItem(
       id: 4,
@@ -197,6 +237,13 @@ void calculateBigO(List<int> a, List<int> b) {
   
   // Total: O(A + B)
 }""",
+      quizQuestionEn: "What is the simplified Big O complexity for an algorithm taking O(N^2 + 50N + 1000) operations?",
+      quizQuestionBn: "একটি অ্যালগরিদম O(N^2 + 50N + 1000) অপারেশন নিলে এর সরলীকৃত বিগ ও কত হবে?",
+      quizOptionsEn: ["O(N)", "O(50N)", "O(N^2)", "O(N^3)"],
+      quizOptionsBn: ["O(N)", "O(50N)", "O(N^2)", "O(N^3)"],
+      correctOptionIndex: 2,
+      quizExplanationEn: "By dropping constants and non-dominant terms, O(N^2 + 50N + 1000) simplifies to O(N^2).",
+      quizExplanationBn: "কনস্ট্যান্ট ও ছোট পদগুলো বাদ দিলে O(N^2 + 50N + 1000) সরল হয়ে O(N^2) হয়।",
     ),
     SubTopicItem(
       id: 5,
@@ -230,6 +277,13 @@ List<int> dynamicArray = [];
 for (int i = 0; i < n; i++) {
   dynamicArray.add(i); // Amortized O(1) time
 }""",
+      quizQuestionEn: "What is the amortized time complexity of inserting an element into a dynamic vector (ArrayList)?",
+      quizQuestionBn: "একটি ডায়নামিক ভেক্টরে (ArrayList) উপাদান যুক্ত করার অ্যামোরটাইজড টাইম কমপ্লেক্সিটি কত?",
+      quizOptionsEn: ["O(1) amortized", "O(N)", "O(log N)", "O(N^2)"],
+      quizOptionsBn: ["O(1) amortized", "O(N)", "O(log N)", "O(N^2)"],
+      correctOptionIndex: 0,
+      quizExplanationEn: "Although array doubling takes O(N) occasionally, over N insertions the average time per insertion is O(1) amortized.",
+      quizExplanationBn: "মাঝে মাঝে O(N) রি-সাইজিং লাগলেও N টি ইনসার্শনের গড়ে প্রতিটিতে O(1) সময় লাগে।",
     ),
     SubTopicItem(
       id: 6,
@@ -263,6 +317,13 @@ int search(List<int> arr, int target) {
   }
   return -1;
 }""",
+      quizQuestionEn: "What is the worst-case time complexity of Quick Sort when selecting a bad pivot on an already sorted array?",
+      quizQuestionBn: "সর্ট করা অ্যারেতে খারাপ পিবট সিলেক্ট করলে কুইক সর্টের ওয়ার্স্ট-কেস টাইম কমপ্লেক্সিটি কত হয়?",
+      quizOptionsEn: ["O(N log N)", "O(N^2)", "O(N)", "O(1)"],
+      quizOptionsBn: ["O(N log N)", "O(N^2)", "O(N)", "O(1)"],
+      correctOptionIndex: 1,
+      quizExplanationEn: "Without randomized pivot selection, Quick Sort degenerates to quadratic O(N^2) worst case on sorted arrays.",
+      quizExplanationBn: "খারাপ পিবটের কারণে কুইক সর্ট ডিমোট হয়ে O(N^2) ওয়ার্স্ট কেসে রূপ নেয়।",
     ),
   ];
 
@@ -299,6 +360,15 @@ int search(List<int> arr, int target) {
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
+    );
+  }
+
+  void _openSubTopicDetailModal(SubTopicItem subTopic) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildSubTopicModalContent(subTopic),
     );
   }
 
@@ -356,10 +426,10 @@ int search(List<int> arr, int target) {
           unselectedLabelStyle:
               TextStyle(fontSize: Responsive.sp(context, 13)),
           tabs: [
-            Tab(text: _isEnglish ? '📌 All Sub-Topics' : '📌 সকল সাব-টপিক'),
+            Tab(text: _isEnglish ? '📌 Sub-Topics List' : '📌 সকল সাব-টপিক লিস্ট'),
             Tab(text: _isEnglish ? '📊 Growth Rate Visualizer' : '📊 গ্রোথ রেট ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? '⚡ Code Examples' : '⚡ কোড উদাহরণ'),
-            Tab(text: _isEnglish ? '💡 Quiz & Best Practices' : '💡 কুইজ ও সেরা নিয়মাবলী'),
+            Tab(text: _isEnglish ? '💡 Practice & Master Quiz' : '💡 প্র্যাকটিস ও মাস্টার কুইজ'),
           ],
         ),
       ),
@@ -375,8 +445,10 @@ int search(List<int> arr, int target) {
     );
   }
 
-  // TAB 1: List of All Sub-topics with Expandable Details
+  // TAB 1: List of All Sub-topics in Clean Card Grid/List Format
   Widget _buildAllSubTopicsTab(double hPadding) {
+    final isMobile = Responsive.isMobile(context);
+
     return ResponsiveCenter(
       maxWidth: 1280.0,
       padding: EdgeInsets.all(hPadding),
@@ -440,9 +512,9 @@ int search(List<int> arr, int target) {
             ),
             const SizedBox(height: 20),
 
-            // Sub-Topics List
+            // Sub-Topics List Cards
             Text(
-              _isEnglish ? '📚 Sub-Topics Breakdown:' : '📚 সাব-টপিকসমূহের বিস্তারিত তালিকা:',
+              _isEnglish ? '📚 Sub-Topics Modules List:' : '📚 সাব-টপিকস মডিউলসমূহ:',
               style: TextStyle(
                 fontSize: Responsive.sp(context, 16),
                 fontWeight: FontWeight.bold,
@@ -452,169 +524,102 @@ int search(List<int> arr, int target) {
             const SizedBox(height: 12),
 
             ..._subTopics.map((subTopic) {
-              final isExpanded = _expandedSubTopicId == subTopic.id;
-
               return Container(
                 margin: const EdgeInsets.only(bottom: 14),
+                padding: EdgeInsets.all(Responsive.sp(context, 14)),
                 decoration: BoxDecoration(
                   color: AppTheme.surfaceDark,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: isExpanded ? subTopic.color : const Color(0xFF334155),
-                    width: isExpanded ? 2.0 : 1.0,
-                  ),
-                  boxShadow: isExpanded
-                      ? [
-                          BoxShadow(
-                            color: subTopic.color.withOpacity(0.12),
-                            blurRadius: 16,
-                            spreadRadius: 2,
-                          )
-                        ]
-                      : null,
+                  border: Border.all(color: const Color(0xFF334155)),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header Clickable Bar
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _expandedSubTopicId =
-                              isExpanded ? null : subTopic.id;
-                        });
-                      },
-                      borderRadius: BorderRadius.circular(16),
-                      child: Padding(
-                        padding: EdgeInsets.all(Responsive.sp(context, 14)),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: subTopic.color.withOpacity(0.2),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(subTopic.icon,
-                                  color: subTopic.color, size: 22),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _isEnglish
-                                        ? subTopic.titleEn
-                                        : subTopic.titleBn,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: Responsive.sp(context, 14.5),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    _isEnglish
-                                        ? subTopic.summaryEn
-                                        : subTopic.summaryBn,
-                                    style: TextStyle(
-                                      color: AppTheme.textSecondary,
-                                      fontSize: Responsive.sp(context, 12),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Icon(
-                              isExpanded
-                                  ? Icons.keyboard_arrow_up_rounded
-                                  : Icons.keyboard_arrow_down_rounded,
-                              color: subTopic.color,
-                              size: 26,
-                            ),
-                          ],
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: subTopic.color.withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(subTopic.icon,
+                              color: subTopic.color, size: 22),
                         ),
-                      ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _isEnglish
+                                    ? subTopic.titleEn
+                                    : subTopic.titleBn,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Responsive.sp(context, 15),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _isEnglish
+                                    ? subTopic.summaryEn
+                                    : subTopic.summaryBn,
+                                style: TextStyle(
+                                  color: AppTheme.textSecondary,
+                                  fontSize: Responsive.sp(context, 12.5),
+                                  height: 1.35,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 12),
+                    const Divider(height: 1, color: Color(0xFF334155)),
+                    const SizedBox(height: 12),
 
-                    // Expanded Details
-                    if (isExpanded) ...[
-                      const Divider(height: 1, color: Color(0xFF334155)),
-                      Padding(
-                        padding: EdgeInsets.all(Responsive.sp(context, 16)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _isEnglish
-                                  ? "📖 Concept Breakdown:"
-                                  : "📖 কনসেপ্টের সহজ বিশ্লেষণ:",
-                              style: TextStyle(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: subTopic.color.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            _isEnglish ? "Module #${subTopic.id}" : "মডিউল #${subTopic.id}",
+                            style: TextStyle(
                                 color: subTopic.color,
                                 fontWeight: FontWeight.bold,
-                                fontSize: Responsive.sp(context, 13.5),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              _isEnglish
-                                  ? subTopic.detailsEn
-                                  : subTopic.detailsBn,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: Responsive.sp(context, 13),
-                                height: 1.5,
-                              ),
-                            ),
-                            const SizedBox(height: 14),
-
-                            Text(
-                              _isEnglish
-                                  ? "🔑 Key Takeaways & Rules:"
-                                  : "🔑 মূল পয়েন্ট ও নিয়মাবলী:",
-                              style: TextStyle(
-                                color: AppTheme.accentNeonCyan,
-                                fontWeight: FontWeight.bold,
-                                fontSize: Responsive.sp(context, 13.5),
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            ...(_isEnglish
-                                    ? subTopic.keyTakeawaysEn
-                                    : subTopic.keyTakeawaysBn)
-                                .map((takeaway) => Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 4, left: 4),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text("• ",
-                                              style: TextStyle(
-                                                  color: AppTheme.accentNeonCyan,
-                                                  fontWeight: FontWeight.bold)),
-                                          Expanded(
-                                            child: Text(
-                                              takeaway,
-                                              style: TextStyle(
-                                                color: AppTheme.textSecondary,
-                                                fontSize: Responsive.sp(
-                                                    context, 12.5),
-                                                height: 1.35,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                            const SizedBox(height: 14),
-
-                            // Code Snippet for Subtopic
-                            _buildSubTopicCodeSnippet(subTopic),
-                          ],
+                                fontSize: Responsive.sp(context, 11)),
+                          ),
                         ),
-                      ),
-                    ],
+                        ElevatedButton.icon(
+                          onPressed: () => _openSubTopicDetailModal(subTopic),
+                          icon: Icon(Icons.star_rounded,
+                              size: 16, color: AppTheme.accentGreen),
+                          label: Text(
+                            _isEnglish ? "⭐ Try Topic & Quiz" : "⭐ সাব-টপিক ও কুইজ",
+                            style: TextStyle(
+                                fontSize: Responsive.sp(context, 12),
+                                fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.accentPurple,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               );
@@ -626,7 +631,7 @@ int search(List<int> arr, int target) {
     );
   }
 
-  // TAB 2: Code Free Visualizer
+  // TAB 2: Growth Rate Visualizer
   Widget _buildGrowthRateVisualizerTab(double hPadding) {
     return ResponsiveCenter(
       maxWidth: 1280.0,
@@ -691,7 +696,7 @@ int search(List<int> arr, int target) {
     );
   }
 
-  // TAB 4: Quiz & Best Practices
+  // TAB 4: Practice & Master Quiz
   Widget _buildQuizAndBestPracticesTab(double hPadding) {
     return ResponsiveCenter(
       maxWidth: 1280.0,
@@ -700,57 +705,200 @@ int search(List<int> arr, int target) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Quiz Score Card Header
             Container(
               padding: EdgeInsets.all(Responsive.sp(context, 16)),
               decoration: BoxDecoration(
                 color: AppTheme.surfaceDark,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.accentGreen.withOpacity(0.4)),
+                border: Border.all(color: AppTheme.accentPurple),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.check_circle_outline_rounded,
-                          color: AppTheme.accentGreen, size: 22),
-                      const SizedBox(width: 8),
                       Text(
                         _isEnglish
-                            ? "💡 Big O Optimization Best Practices"
-                            : "💡 বিগ ও (Big O) অপটিমাইজেশনের সেরা নিয়মাবলী",
+                            ? "🧠 Master Quiz Score:"
+                            : "🧠 মাস্টার কুইজ স্কোর:",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: Responsive.sp(context, 15),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _isEnglish
+                            ? "$_quizScore / ${_subTopics.length} Correct Answers"
+                            : "$_quizScore / ${_subTopics.length} সঠিক উত্তর",
                         style: TextStyle(
                           color: AppTheme.accentGreen,
                           fontWeight: FontWeight.bold,
-                          fontSize: Responsive.sp(context, 16),
+                          fontSize: Responsive.sp(context, 13),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  _buildPracticeBullet(
-                    _isEnglish
-                        ? "1. Trade Space for Time: Use Hash Maps or Frequency arrays to reduce O(N²) nested loops down to O(N)."
-                        : "১. সময়ের খাতিরে স্পেস ট্রেড করুন: O(N²) নেসটেড লুপ কমানোর জন্য হ্যাশ ম্যাপ ব্যবহার করে O(N) করুন।",
-                  ),
-                  _buildPracticeBullet(
-                    _isEnglish
-                        ? "2. Two Pointers & Sliding Window: Replace O(N²) brute-force window scanning with O(N) linear dynamic boundaries."
-                        : "২. টু-পয়েন্টার ও স্লাইডিং উইন্ডো: O(N²) সাব-অ্যারে স্ক্যান কমানোর জন্য টু-পয়েন্টার ব্যবহার করে O(N) করুন।",
-                  ),
-                  _buildPracticeBullet(
-                    _isEnglish
-                        ? "3. Binary Search: Convert O(N) linear search on sorted elements to logarithmic O(log N)."
-                        : "৩. বাইনারি সার্চ: সর্টেড ডাটার উপর লিনিয়ার স্ক্যান ও O(N) এর বদলে O(log N) বাইনারি সার্চ করুন।",
-                  ),
-                  _buildPracticeBullet(
-                    _isEnglish
-                        ? "4. Dynamic Programming: Avoid O(2ⁿ) exponential recursive duplication by caching subproblem solutions in O(N) memoization."
-                        : "৪. ডায়নামিক প্রোগ্রামিং: রিকার্সিভ রিপিট কাজ বন্ধ করে O(2ⁿ) এর বদলে ডায়নামিক প্রোগ্রামিং মেমোাইজেশনে O(N) করুন।",
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      setState(() {
+                        _userAnswers.clear();
+                        _quizSubmitted.clear();
+                        _quizScore = 0;
+                      });
+                    },
+                    icon: const Icon(Icons.refresh, size: 16),
+                    label: Text(_isEnglish ? "Reset Quiz" : "রিসেট কুইজ"),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primaryDark),
                   ),
                 ],
               ),
             ),
+            const SizedBox(height: 20),
+
+            // Quiz Questions List
+            ..._subTopics.map((subTopic) {
+              final userAns = _userAnswers[subTopic.id];
+              final isSubmitted = _quizSubmitted[subTopic.id] ?? false;
+
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: EdgeInsets.all(Responsive.sp(context, 16)),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceDark,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFF334155)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Q${subTopic.id}. ${_isEnglish ? subTopic.quizQuestionEn : subTopic.quizQuestionBn}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.sp(context, 14),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    ...List.generate(
+                        _isEnglish
+                            ? subTopic.quizOptionsEn.length
+                            : subTopic.quizOptionsBn.length, (optIdx) {
+                      final optText = _isEnglish
+                          ? subTopic.quizOptionsEn[optIdx]
+                          : subTopic.quizOptionsBn[optIdx];
+                      final isSelected = userAns == optIdx;
+                      final isCorrect = optIdx == subTopic.correctOptionIndex;
+
+                      Color btnColor = AppTheme.primaryDark;
+                      Color borderColor = const Color(0xFF334155);
+
+                      if (isSubmitted) {
+                        if (isCorrect) {
+                          btnColor = AppTheme.accentGreen.withOpacity(0.2);
+                          borderColor = AppTheme.accentGreen;
+                        } else if (isSelected) {
+                          btnColor = AppTheme.accentPink.withOpacity(0.2);
+                          borderColor = AppTheme.accentPink;
+                        }
+                      } else if (isSelected) {
+                        btnColor = AppTheme.accentPurple.withOpacity(0.3);
+                        borderColor = AppTheme.accentPurple;
+                      }
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: InkWell(
+                          onTap: isSubmitted
+                              ? null
+                              : () {
+                                  setState(() {
+                                    _userAnswers[subTopic.id] = optIdx;
+                                  });
+                                },
+                          borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: borderColor),
+                            ),
+                            child: Row(
+                              children: [
+                                Text(
+                                  String.fromCharCode(65 + optIdx) + ") ",
+                                  style: TextStyle(
+                                    color: AppTheme.accentNeonCyan,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: Responsive.sp(context, 13),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    optText,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: Responsive.sp(context, 13),
+                                    ),
+                                  ),
+                                ),
+                                if (isSubmitted && isCorrect)
+                                  const Icon(Icons.check_circle,
+                                      color: AppTheme.accentGreen, size: 18)
+                                else if (isSubmitted && isSelected)
+                                  const Icon(Icons.cancel,
+                                      color: AppTheme.accentPink, size: 18),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+                    const SizedBox(height: 10),
+
+                    if (!isSubmitted)
+                      ElevatedButton(
+                        onPressed: userAns == null
+                            ? null
+                            : () {
+                                setState(() {
+                                  _quizSubmitted[subTopic.id] = true;
+                                  if (userAns == subTopic.correctOptionIndex) {
+                                    _quizScore++;
+                                  }
+                                });
+                              },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.accentPurple),
+                        child: Text(_isEnglish ? "Submit Answer" : "উত্তর সাবমিট করুন"),
+                      )
+                    else
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryDark,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          "💡 ${_isEnglish ? subTopic.quizExplanationEn : subTopic.quizExplanationBn}",
+                          style: TextStyle(
+                            color: AppTheme.accentNeonCyan,
+                            fontSize: Responsive.sp(context, 12),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            }).toList(),
             const SizedBox(height: 24),
           ],
         ),
@@ -758,22 +906,96 @@ int search(List<int> arr, int target) {
     );
   }
 
-  Widget _buildPracticeBullet(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  // Interactive Sub-Topic Modal Bottom Sheet
+  Widget _buildSubTopicModalContent(SubTopicItem subTopic) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.85,
+      padding: EdgeInsets.all(Responsive.sp(context, 18)),
+      decoration: const BoxDecoration(
+        color: AppTheme.surfaceDark,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: Column(
         children: [
-          const Icon(Icons.arrow_right_rounded,
-              color: AppTheme.accentNeonCyan, size: 20),
-          const SizedBox(width: 6),
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: AppTheme.textMuted,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          Row(
+            children: [
+              Icon(subTopic.icon, color: subTopic.color, size: 24),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  _isEnglish ? subTopic.titleEn : subTopic.titleBn,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.sp(context, 16),
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close, color: Colors.white),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+          const Divider(color: Color(0xFF334155)),
+          const SizedBox(height: 10),
+
           Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: Responsive.sp(context, 13),
-                height: 1.4,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _isEnglish ? subTopic.detailsEn : subTopic.detailsBn,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: Responsive.sp(context, 13.5),
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  Text(
+                    _isEnglish ? "🔑 Key Rules:" : "🔑 মূল নিয়মাবলী:",
+                    style: TextStyle(
+                      color: subTopic.color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Responsive.sp(context, 14),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  ...(_isEnglish
+                          ? subTopic.keyTakeawaysEn
+                          : subTopic.keyTakeawaysBn)
+                      .map((item) => Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.arrow_right,
+                                    color: AppTheme.accentNeonCyan),
+                                Expanded(
+                                  child: Text(item,
+                                      style: TextStyle(
+                                          color: AppTheme.textSecondary,
+                                          fontSize: Responsive.sp(context, 12.5))),
+                                ),
+                              ],
+                            ),
+                          )),
+                  const SizedBox(height: 16),
+
+                  _buildSubTopicCodeSnippet(subTopic),
+                ],
               ),
             ),
           ),
