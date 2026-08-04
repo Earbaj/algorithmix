@@ -274,7 +274,7 @@ class _RemoveDuplicatesDetailScreenState
           _userSlow++;
           _userArray[_userSlow] = val;
           _userFast++;
-          _userFeedbackEn = "✅ Correct! New unique value $val placed at slow position ($userSlow).";
+          _userFeedbackEn = "✅ Correct! New unique value $val placed at slow position ($_userSlow).";
           _userFeedbackBn = "✅ সঠিক পদক্ষেপ! নতুন ইউনিক মান $val slow পজিশনে কপি করা হলো।";
         } else {
           _userFeedbackEn = "⚠️ Element at fast ($val) is a duplicate! Use 'Skip Duplicate'.";
