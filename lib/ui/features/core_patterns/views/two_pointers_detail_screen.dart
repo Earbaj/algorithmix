@@ -615,7 +615,7 @@ vector<vector<int>> three_sum(vector<int>& arr) {
       borderRadius: BorderRadius.circular(16),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: AppTheme.surfaceDark,
           borderRadius: BorderRadius.circular(16),
@@ -641,11 +641,16 @@ vector<vector<int>> three_sum(vector<int>& arr) {
                         fontSize: Responsive.sp(context, 15)),
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Row(
+              children: [
                 if (hasDedicatedPage)
                   Container(
                     margin: const EdgeInsets.only(right: 4),
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                         color: AppTheme.accentNeonCyan.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(10)),
