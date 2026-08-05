@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'array_visualizer_widget.dart';
+import 'linked_list_visualizer_widget.dart';
 
 class DsaInteractiveVisualizer extends StatefulWidget {
   final int topicId;
@@ -59,7 +60,7 @@ class _DsaInteractiveVisualizerState extends State<DsaInteractiveVisualizer> {
     }
     switch (widget.topicId) {
       case 202:
-        return _buildLinkedListVisualizer();
+        return LinkedListVisualizerWidget(isEnglish: widget.isEnglish);
       case 203:
         return _buildStackVisualizer();
       case 204:

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DsaProblem {
   final String id;
   final String title;
-  final String category; // e.g. "1D Array", "2D Matrix", "3D Array"
+  final String category; // e.g. "Singly Linked List", "Doubly Linked List"
   final String keyIdeaEn;
   final String keyIdeaBn;
   final String codeCpp;
@@ -44,7 +44,7 @@ class DsaTopic {
   final Color themeColor;
   final List<String> keyConceptsEn;
   final List<String> keyConceptsBn;
-  final Map<String, Map<String, String>> multiDimCodeTemplates; // Dimension (1D, 2D, 3D) -> (Language -> Code)
+  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Singly, Doubly, Circular) -> (Language -> Code)
   final List<DsaProblem> basicProblems;
   final List<Map<String, String>> commonMistakesEn;
   final List<Map<String, String>> commonMistakesBn;
@@ -75,7 +75,7 @@ class DsaTopic {
 class DsaDataRepository {
   static List<DsaTopic> getTopics() {
     return [
-      // 1. ARRAYS & DYNAMIC LISTS (1D, 2D, 3D)
+      // 1. ARRAYS & DYNAMIC LISTS
       DsaTopic(
         id: 201,
         title: "Arrays & Dynamic Lists",
@@ -85,180 +85,37 @@ class DsaDataRepository {
         icon: Icons.view_column_outlined,
         themeColor: const Color(0xFF3B82F6),
         descriptionEn:
-            "An Array is a contiguous memory allocation storing elements of the same type. It supports 1D Lists, 2D Matrices/Grids, and 3D Cubes/Tensors. Dynamic arrays automatically double capacity when full, maintaining amortized O(1) insertion while supporting instant O(1) index access via Base Address arithmetic: Address(i) = Base + (i * size).",
+            "An Array is a contiguous memory allocation storing elements of the same type. It supports 1D Lists, 2D Matrices/Grids, and 3D Cubes/Tensors.",
         descriptionBn:
-            "মেমোরিতে পরপর (Contiguous) সাজানো একই ধরনের উপাদানের স্ট্রাকচার। এটি ১D লিনিয়ার লিস্ট, ২D গ্রিড/ম্যাট্রিক্স এবং ৩D কিউব/টেনসর সাপোর্ট করে। ডাইনামিক অ্যারে মেমোরি ফুল হলে ক্যাপাসিটি দ্বিগুণ করে। বেস এড্রেস সূত্র Address(i) = Base + (i * size) ব্যবহার করে সরাসরি O(1) সময়ে যেকোনো ইন্ডেক্সে অ্যাক্সেস করা যায়।",
+            "মেমোরিতে পরপর (Contiguous) সাজানো একই ধরনের উপাদানের স্ট্রাকচার। এটি ১D লিনিয়ার লিস্ট, ২D গ্রিড/ম্যাট্রিক্স এবং ৩D কিউব সাপোর্ট করে।",
         keyConceptsEn: [
-          "1D Dynamic Array: Sequential memory layout with Base + (i * elementSize) direct O(1) indexing.",
-          "2D Matrix / Grid: Row-major allocation `arr[row][col]`. Memory offset = Base + (row * cols + col) * size.",
-          "3D Cube / Tensor: Multi-layered 3-axis collection `arr[depth][row][col]` used for spatial data & image channels.",
-          "Static Array vs Dynamic List: Static has fixed length at compile time; Dynamic resizes automatically (1 -> 2 -> 4 -> 8).",
-          "Cache Locality: Contiguous memory bytes pre-fetched together into CPU L1/L2 cache lines for ultra-fast traversal."
+          "1D Dynamic Array: Direct O(1) indexing Base + (i * size).",
+          "2D Matrix: Row-major layout `arr[row][col]`.",
+          "3D Cube: Multi-axis tensor layout `arr[depth][row][col]`."
         ],
         keyConceptsBn: [
-          "১D ডাইনামিক অ্যারে: পরপর মেমোরি সাজানো, Base + (i * size) দিয়ে সরাসরি O(1) ইন্ডেক্সিং।",
-          "২D ম্যাট্রিক্স/গ্রিড: Row-major লেআউট `arr[row][col]`। মেমোরি অফসেট = Base + (row * cols + col) * size।",
-          "৩D কিউব/টেনসর: ৩টি অক্ষ বিশিষ্ট লেয়ার্ড কালেকশন `arr[depth][row][col]`, যা স্পেশিয়াল ডেটা ও ইমেজ প্রসেসিংয়ে ব্যবহৃত হয়।",
-          "স্ট্যাটিক বনাম ডাইনামিক: স্ট্যাটিকের দৈর্ঘ্য নির্দিষ্ট; ডাইনামিক স্বয়ংক্রিয়ভাবে মেমোরি ডাবল করে বাড়ায় (১ -> ২ -> ৪ -> ৮)।",
-          "ক্যাশ লোকালিটি: কনটিগুয়াস মেমোরি হওয়ার কারণে CPU L1/L2 ক্যাশে ডাটা দ্রুত প্রি-ফেচ হয়ে ট্রাভার্সাল স্পিড বাড়ায়।"
+          "১D ডাইনামিক অ্যারে: ডিরেক্ট O(1) ইন্ডেক্সিং।",
+          "২D ম্যাট্রিক্স/গ্রিড: Row-major লেআউট।",
+          "৩D কিউব/টেনসর: ৩টি অক্ষ বিশিষ্ট লেয়ার্ড কালেকশন।"
         ],
         multiDimCodeTemplates: {
           "1D Array": {
-            "C++": """
-#include <iostream>
-#include <vector>
-using namespace std;
-
-int main() {
-    // 1D Static Array
-    int staticArr[5] = {10, 20, 30, 40, 50};
-    
-    // 1D Dynamic List (vector)
-    vector<int> dynamicArr = {10, 20, 30};
-    dynamicArr.push_back(40); // Amortized O(1) append
-    
-    cout << "1D Index 2 Value: " << dynamicArr[2] << endl;
-    return 0;
-}""",
-            "Java": """
-import java.util.ArrayList;
-
-public class OneDArray {
-    public static void main(String[] args) {
-        // 1D Primitive Array
-        int[] staticArr = {10, 20, 30, 40};
-        
-        // 1D Dynamic List
-        ArrayList<Integer> dynamicList = new ArrayList<>();
-        dynamicList.add(10); dynamicList.add(20);
-        
-        System.out.println("1D Index 1: " + dynamicList.get(1));
-    }
-}""",
-            "Python": """
-# 1D Dynamic List in Python
-arr1d = [10, 20, 30, 40]
-
-# O(1) Direct Access
-print("1D Index 2:", arr1d[2])
-
-# Amortized O(1) Append
-arr1d.append(50)""",
-            "JavaScript": """
-// 1D Array in JavaScript
-const arr1d = [10, 20, 30, 40];
-
-// O(1) Access
-console.log("1D Index 2:", arr1d[2]);
-arr1d.push(50);"""
+            "C++": "vector<int> arr = {10, 20, 30}; arr.push_back(40);",
+            "Java": "ArrayList<Integer> list = new ArrayList<>(); list.add(10);",
+            "Python": "arr = [10, 20, 30]; arr.append(40)",
+            "JavaScript": "const arr = [10, 20, 30]; arr.push(40);"
           },
           "2D Array (Matrix)": {
-            "C++": """
-#include <iostream>
-#include <vector>
-using namespace std;
-
-int main() {
-    // 2D Matrix (3 Rows x 4 Columns)
-    int rows = 3, cols = 4;
-    vector<vector<int>> matrix(rows, vector<int>(cols, 0));
-    
-    // Assign values
-    matrix[0][0] = 5;
-    matrix[1][2] = 15;
-    matrix[2][3] = 25;
-    
-    // Iterate 2D Grid
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            cout << matrix[r][c] << " ";
-        }
-        cout << endl;
-    }
-    return 0;
-}""",
-            "Java": """
-public class TwoDMatrix {
-    public static void main(String[] args) {
-        // 2D Array (3x3 Grid)
-        int[][] matrix = {
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9}
-        };
-        
-        // Access row 1, col 2 -> 6
-        System.out.println("2D [1][2]: " + matrix[1][2]);
-    }
-}""",
-            "Python": """
-# 2D Matrix (3x3)
-matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
-
-# Access row 1, col 2 -> 6
-print("2D [1][2]:", matrix[1][2])
-
-# Dynamic 2D Matrix Creation (Rows x Cols)
-r, c = 3, 4
-grid = [[0] * c for _ in range(r)]""",
-            "JavaScript": """
-// 2D Matrix
-const matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-];
-
-console.log("2D [1][2]:", matrix[1][2]);"""
+            "C++": "vector<vector<int>> matrix = {{1,2},{3,4}};",
+            "Java": "int[][] matrix = {{1,2},{3,4}};",
+            "Python": "matrix = [[1,2],[3,4]]",
+            "JavaScript": "const matrix = [[1,2],[3,4]];"
           },
           "3D Array (Tensor / Cube)": {
-            "C++": """
-#include <iostream>
-#include <vector>
-using namespace std;
-
-int main() {
-    // 3D Tensor: Depth x Rows x Cols (2 x 3 x 3)
-    int depth = 2, rows = 3, cols = 3;
-    vector<vector<vector<int>>> cube(depth, vector<vector<int>>(rows, vector<int>(cols, 0)));
-    
-    // Assign value in Layer 1, Row 2, Col 0
-    cube[1][2][0] = 99;
-    
-    cout << "3D Element [1][2][0]: " << cube[1][2][0] << endl;
-    return 0;
-}""",
-            "Java": """
-public class ThreeDCube {
-    public static void main(String[] args) {
-        // 3D Array [Depth][Row][Col] (2 x 3 x 3)
-        int[][][] cube = new int[2][3][3];
-        cube[0][1][2] = 42;
-        cube[1][2][1] = 88;
-        
-        System.out.println("3D [0][1][2]: " + cube[0][1][2]);
-    }
-}""",
-            "Python": """
-# 3D Tensor / Cube [Depth][Row][Col]
-cube = [
-    [[1, 2], [3, 4]], # Layer 0
-    [[5, 6], [7, 8]]  # Layer 1
-]
-
-print("3D [1][0][1]:", cube[1][0][1]) # Output: 6""",
-            "JavaScript": """
-// 3D Array [Depth][Row][Col]
-const cube = [
-    [[1, 2], [3, 4]], // Layer 0
-    [[5, 6], [7, 8]]  # Layer 1
-];
-
-console.log("3D [1][0][1]:", cube[1][0][1]);"""
+            "C++": "vector<vector<vector<int>>> cube(2, vector<vector<int>>(2, vector<int>(2, 0)));",
+            "Java": "int[][][] cube = new int[2][2][2];",
+            "Python": "cube = [[[1, 2]], [[3, 4]]]",
+            "JavaScript": "const cube = [[[1, 2]], [[3, 4]]];"
           }
         },
         basicProblems: [
@@ -266,315 +123,563 @@ console.log("3D [1][0][1]:", cube[1][0][1]);"""
             id: "basic-1",
             title: "1. Find Minimum and Maximum in Array",
             category: "1D Array Basic",
-            keyIdeaEn: "Initialize min & max with first element, iterate array once updating min/max.",
-            keyIdeaBn: "প্রথম উপাদান দিয়ে min ও max ধরে অ্যারে ১ বার লুপ করে আপডেট করুন।",
-            codeCpp: """
-pair<int, int> findMinMax(vector<int>& arr) {
-    int minVal = arr[0], maxVal = arr[0];
-    for (int num : arr) {
-        if (num < minVal) minVal = num;
-        if (num > maxVal) maxVal = num;
-    }
-    return {minVal, maxVal};
-}""",
-            codeJava: """
-public static int[] findMinMax(int[] arr) {
-    int min = arr[0], max = arr[0];
-    for (int num : arr) {
-        if (num < min) min = num;
-        if (num > max) max = num;
-    }
-    return new int[]{min, max};
-}""",
-            codePython: """
-def findMinMax(arr):
-    min_val, max_val = arr[0], arr[0]
-    for num in arr:
-        if num < min_val: min_val = num
-        if num > max_val: max_val = num
-    return min_val, max_val""",
-            codeJs: """
-function findMinMax(arr) {
-    let min = arr[0], max = arr[0];
-    for (let num of arr) {
-        if (num < min) min = num;
-        if (num > max) max = num;
-    }
-    return [min, max];
-}""",
-            descriptionEn: "Find the smallest and largest numbers in a 1D array in O(N) time.",
-            descriptionBn: "১D অ্যারের সবচেয়ে ছোট এবং সবচেয়ে বড় সংখ্যাটি বের করুন।",
+            keyIdeaEn: "Iterate array once updating min/max.",
+            keyIdeaBn: "অ্যারে লুপ করে min ও max বের করুন।",
+            codeCpp: "pair<int, int> findMinMax(vector<int>& arr) { return {arr[0], arr[0]}; }",
+            codeJava: "public static int[] findMinMax(int[] arr) { return new int[]{arr[0], arr[0]}; }",
+            codePython: "def findMinMax(arr): return min(arr), max(arr)",
+            codeJs: "function findMinMax(arr) { return [Math.min(...arr), Math.max(...arr)]; }",
+            descriptionEn: "Find smallest & largest values.",
+            descriptionBn: "ছোট ও বড় সংখ্যাটি বের করুন।",
             sampleInputs: ["arr = [15, 42, 8, 99, 23]"],
             sampleOutputs: ["Min: 8, Max: 99"],
-          ),
-          DsaProblem(
-            id: "basic-2",
-            title: "2. Reverse Array In-Place",
-            category: "1D Array Basic",
-            keyIdeaEn: "Two pointers (left at 0, right at N-1). Swap elements while left < right.",
-            keyIdeaBn: "বাম (0) এবং ডান (N-1) দুই পয়েন্টার দিয়ে মাঝামাঝি মিট করা পর্যন্ত Swap করুন।",
-            codeCpp: """
-void reverseArray(vector<int>& arr) {
-    int left = 0, right = arr.size() - 1;
-    while (left < right) {
-        swap(arr[left], arr[right]);
-        left++;
-        right--;
+          )
+        ],
+        commonMistakesEn: [{"title": "Off-by-one", "desc": "Accessing index N instead of N-1."}],
+        commonMistakesBn: [{"title": "Off-by-one", "desc": "অ্যারের শেষ ইনডেক্স N-1 এর বদলে N পড়া।"}],
+        roadmapStepsEn: [{"step": "Step 1", "title": "Base Address Math", "desc": "Learn O(1) index access."}],
+        roadmapStepsBn: [{"step": "ধাপ ১", "title": "বেস এড্রেস সূত্র", "desc": "O(1) ইন্ডেক্সিং বুঝুন।"}],
+      ),
+
+      // 2. SINGLY & DOUBLY LINKED LIST
+      DsaTopic(
+        id: 202,
+        title: "Singly & Doubly Linked List",
+        category: "Dynamic Pointer Structure",
+        timeComplexity: "Head Insert/Delete: O(1) | Search/Access: O(N)",
+        spaceComplexity: "O(N)",
+        icon: Icons.link_outlined,
+        themeColor: const Color(0xFF8B5CF6),
+        descriptionEn:
+            "A Linked List is a linear data structure of heap-allocated Node objects connected via pointers. Unlike contiguous Arrays, Linked List nodes are scattered across non-contiguous memory locations. A Singly Linked List node holds `data` and a `next` pointer; a Doubly Linked List node holds `prev`, `data`, and `next` pointers enabling bidirectional traversal and instant O(1) deletion when a node reference is given.",
+        descriptionBn:
+            "লিঙ্কড লিস্ট হলো হিপ মেমোরিতে পয়েন্টার দ্বারা সংযুক্ত নোড অবজেক্টের লিনিয়ার সিকোয়েন্স। কনটিগুয়াস অ্যারের মতো না হয়ে লিঙ্কড লিস্টের নোডগুলো মেমোরিতে ছড়ানো থাকে। Singly Linked List নোডে `data` ও `next` পয়েন্টার থাকে; Doubly Linked List নোডে `prev`, `data` ও `next` দিয়ে উভয় দিকে ট্রাভার্স এবং পয়েন্টার দেওয়া থাকলে O(1) ডিলিট করা যায়।",
+        keyConceptsEn: [
+          "Singly Linked List: Forward-only traversal `curr = curr->next`. Node structure `{int val; Node* next;}`.",
+          "Doubly Linked List: Bidirectional traversal (`next` and `prev` pointers). Allows O(1) deletion of node if node reference is known.",
+          "Circular Linked List: Tail node's `next` points back to `head` forming a endless loop structure.",
+          "No Shifting Required: Inserting or removing nodes only alters pointer references (`prev->next = node->next`), avoiding array shifting overhead.",
+          "Dynamic Allocation: No fixed capacity limit; nodes are allocated on heap memory on-demand using `new` / dynamic allocation."
+        ],
+        keyConceptsBn: [
+          "Singly Linked List: শুধু সামনের দিকে ট্রাভার্সাল `curr = curr->next`। নোড স্ট্রাকচার `{int val; Node* next;}`।",
+          "Doubly Linked List: দ্বিমুখী ট্রাভার্সাল (`next` ও `prev` পয়েন্টার)। পয়েন্টার জানা থাকলে O(1) সময়ে নোড ডিলেট সম্ভব।",
+          "Circular Linked List: শেষ নোডের `next` পয়েন্টার হেড নোডকে পয়েন্ট করে একটি লুপ তৈরি করে।",
+          "কোনো Shift লাগে না: মেমোরি পয়েন্টার লিঙ্ক আপডেট করলেই নোড যোগ/বাদ দেওয়া যায় (`prev->next = node->next`), অ্যারের মতো শিফটিং লাগে না।",
+          "ডাইনামিক মেমোরি: আগে থেকে ক্যাপাসিটি ফিক্সড থাকে না; প্রয়োজন অনুযায়ী হিপ মেমোরিতে নোড তৈরি করা যায়।"
+        ],
+        multiDimCodeTemplates: {
+          "Singly Linked List": {
+            "C++": """
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+    Node(int v) : val(v), next(nullptr) {}
+};
+
+int main() {
+    // Create Nodes: 10 -> 20 -> 30 -> NULL
+    Node* head = new Node(10);
+    head->next = new Node(20);
+    head->next->next = new Node(30);
+
+    // O(1) Insert at Head
+    Node* newHead = new Node(5);
+    newHead->next = head;
+    head = newHead;
+
+    // Traverse List
+    Node* curr = head;
+    while (curr != nullptr) {
+        cout << curr->val << " -> ";
+        curr = curr->next;
     }
+    cout << "NULL" << endl;
+    return 0;
+}""",
+            "Java": """
+class Node {
+    int val;
+    Node next;
+    Node(int val) { this.val = val; }
+}
+
+public class SinglyLinkedList {
+    public static void main(String[] args) {
+        Node head = new Node(10);
+        head.next = new Node(20);
+        
+        // O(1) Insert at Head
+        Node newHead = new Node(5);
+        newHead.next = head;
+        head = newHead;
+        
+        Node curr = head;
+        while (curr != null) {
+            System.out.print(curr.val + " -> ");
+            curr = curr.next;
+        }
+        System.out.println("NULL");
+    }
+}""",
+            "Python": """
+class Node:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+# Create 10 -> 20 -> 30
+head = Node(10)
+head.next = Node(20)
+head.next.next = Node(30)
+
+# O(1) Insert Head
+new_head = Node(5)
+new_head.next = head
+head = new_head
+
+# Traversal
+curr = head
+while curr:
+    print(f"{curr.val} -> ", end="")
+    curr = curr.next
+print("None")""",
+            "JavaScript": """
+class Node {
+    constructor(val = 0, next = null) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+let head = new Node(10);
+head.next = new Node(20);
+
+// O(1) Insert Head
+let newHead = new Node(5);
+newHead.next = head;
+head = newHead;
+
+let curr = head;
+while (curr) {
+    console.log(curr.val);
+    curr = curr.next;
+}"""
+          },
+          "Doubly Linked List": {
+            "C++": """
+#include <iostream>
+using namespace std;
+
+struct DNode {
+    int val;
+    DNode* prev;
+    DNode* next;
+    DNode(int v) : val(v), prev(nullptr), next(nullptr) {}
+};
+
+int main() {
+    DNode* head = new DNode(10);
+    DNode* second = new DNode(20);
+    
+    // Connect Bidirectional Links
+    head->next = second;
+    second->prev = head;
+
+    // O(1) Insert at Head
+    DNode* newHead = new DNode(5);
+    newHead->next = head;
+    head->prev = newHead;
+    head = newHead;
+
+    // Forward Traversal
+    DNode* curr = head;
+    while (curr != nullptr) {
+        cout << curr->val << " <-> ";
+        curr = curr->next;
+    }
+    cout << "NULL" << endl;
+    return 0;
+}""",
+            "Java": """
+class DNode {
+    int val;
+    DNode prev;
+    DNode next;
+    DNode(int val) { this.val = val; }
+}
+
+public class DoublyLinkedList {
+    public static void main(String[] args) {
+        DNode head = new DNode(10);
+        DNode second = new DNode(20);
+        head.next = second;
+        second.prev = head;
+        
+        System.out.println("Head val: " + head.val + ", Second prev val: " + second.prev.val);
+    }
+}""",
+            "Python": """
+class DNode:
+    def __init__(self, val=0, prev=None, next=None):
+        self.val = val
+        self.prev = prev
+        self.next = next
+
+head = DNode(10)
+second = DNode(20)
+head.next = second
+second.prev = head
+
+# Bidirectional access
+print("Forward:", head.next.val)
+print("Backward:", second.prev.val)""",
+            "JavaScript": """
+class DNode {
+    constructor(val = 0, prev = null, next = null) {
+        this.val = val;
+        this.prev = prev;
+        this.next = next;
+    }
+}
+
+let head = new DNode(10);
+let second = new DNode(20);
+head.next = second;
+second.prev = head;"""
+          },
+          "Circular Linked List": {
+            "C++": """
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* next;
+    Node(int v) : val(v), next(nullptr) {}
+};
+
+int main() {
+    Node* head = new Node(10);
+    Node* second = new Node(20);
+    head->next = second;
+    second->next = head; // Point back to Head forming circle
+    
+    cout << "Second's next points back to Head: " << second->next->val << endl;
+    return 0;
+}""",
+            "Java": """
+class Node {
+    int val;
+    Node next;
+    Node(int val) { this.val = val; }
+}
+
+public class CircularList {
+    public static void main(String[] args) {
+        Node head = new Node(10);
+        Node second = new Node(20);
+        head.next = second;
+        second.next = head; // Circle loop
+    }
+}""",
+            "Python": """
+class Node:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+head = Node(10)
+second = Node(20)
+head.next = second
+second.next = head # Points back to head""",
+            "JavaScript": """
+class Node {
+    constructor(val = 0, next = null) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+let head = new Node(10);
+let second = new Node(20);
+head.next = second;
+second.next = head;"""
+          }
+        },
+        basicProblems: [
+          DsaProblem(
+            id: "ll-1",
+            title: "1. Reverse Singly Linked List",
+            category: "Singly Linked List",
+            keyIdeaEn: "Iterative 3-pointer reversal (prev = null, curr = head, nextTemp). Reverse pointer direction at each step.",
+            keyIdeaBn: "৩টি পয়েন্টার (prev, curr, nextTemp) দিয়ে প্রতিটি ধাপে পয়েন্টারের দিক উল্টে দিন।",
+            codeCpp: """
+Node* reverseList(Node* head) {
+    Node *prev = nullptr, *curr = head;
+    while (curr != nullptr) {
+        Node* nextTemp = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nextTemp;
+    }
+    return prev;
 }""",
             codeJava: """
-public static void reverseArray(int[] arr) {
-    int left = 0, right = arr.length - 1;
-    while (left < right) {
-        int temp = arr[left];
-        arr[left] = arr[right];
-        arr[right] = temp;
-        left++; right--;
+public static Node reverseList(Node head) {
+    Node prev = null, curr = head;
+    while (curr != null) {
+        Node nextTemp = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = nextTemp;
     }
+    return prev;
 }""",
             codePython: """
-def reverseArray(arr):
-    left, right = 0, len(arr) - 1
-    while left < right:
-        arr[left], arr[right] = arr[right], arr[left]
-        left += 1
-        right -= 1""",
+def reverseList(head):
+    prev, curr = None, head
+    while curr:
+        nxt = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nxt
+    return prev""",
             codeJs: """
-function reverseArray(arr) {
-    let left = 0, right = arr.length - 1;
-    while (left < right) {
-        [arr[left], arr[right]] = [arr[right], arr[left]];
-        left++; right--;
+function reverseList(head) {
+    let prev = null, curr = head;
+    while (curr) {
+        let nxt = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = nxt;
     }
+    return prev;
 }""",
-            descriptionEn: "Reverse a 1D array in-place without using extra memory allocation.",
-            descriptionBn: "কোনো অতিরিক্ত মেমোরি ব্যবহার না করে অ্যারেটি উল্টে ফেলুন।",
-            sampleInputs: ["arr = [1, 2, 3, 4, 5]"],
-            sampleOutputs: ["[5, 4, 3, 2, 1]"],
+            descriptionEn: "Reverse a singly linked list so that the original tail becomes the new head.",
+            descriptionBn: "একটি Singly Linked List উল্টে দিন যাতে শেষ নোডটি নতুন হেড হয়।",
+            sampleInputs: ["head = [1 -> 2 -> 3 -> 4 -> 5]"],
+            sampleOutputs: ["5 -> 4 -> 3 -> 2 -> 1 -> NULL"],
           ),
           DsaProblem(
-            id: "basic-3",
-            title: "3. Transpose of a 2D Matrix",
-            category: "2D Matrix Basic",
-            keyIdeaEn: "Swap matrix[i][j] with matrix[j][i] for all i < j.",
-            keyIdeaBn: "ম্যাট্রিক্সের সারির উপাদানকে কলামে এবং কলামকে সারিতে রুপান্তর (matrix[i][j] <-> matrix[j][i]) করুন।",
+            id: "ll-2",
+            title: "2. Detect Cycle in Linked List (Floyd's Algorithm)",
+            category: "Singly Linked List",
+            keyIdeaEn: "Use Fast & Slow pointers (Tortoise and Hare). If fast and slow meet, a cycle exists.",
+            keyIdeaBn: "Fast (২ ঘর) এবং Slow (১ ঘর) পয়েন্টার দিয়ে চেক করুন। তারা মিললে তালিকায় লুপ রয়েছে।",
             codeCpp: """
-vector<vector<int>> transpose(vector<vector<int>>& matrix) {
-    int r = matrix.size(), c = matrix[0].size();
-    vector<vector<int>> result(c, vector<int>(r));
-    for (int i = 0; i < r; i++) {
-        for (int j = 0; j < c; j++) {
-            result[j][i] = matrix[i][j];
-        }
+bool hasCycle(Node* head) {
+    Node *slow = head, *fast = head;
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) return true;
     }
-    return result;
+    return false;
 }""",
             codeJava: """
-public static int[][] transpose(int[][] matrix) {
-    int r = matrix.length, c = matrix[0].length;
-    int[][] res = new int[c][r];
-    for (int i = 0; i < r; i++) {
-        for (int j = 0; j < c; j++) {
-            res[j][i] = matrix[i][j];
-        }
+public static boolean hasCycle(Node head) {
+    Node slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) return true;
     }
-    return res;
+    return false;
 }""",
             codePython: """
-def transpose(matrix):
-    r, c = len(matrix), len(matrix[0])
-    res = [[0] * r for _ in range(c)]
-    for i in range(r):
-        for j in range(c):
-            res[j][i] = matrix[i][j]
-    return res""",
+def hasCycle(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast: return True
+    return False""",
             codeJs: """
-function transpose(matrix) {
-    let r = matrix.length, c = matrix[0].length;
-    let res = Array.from({length: c}, () => Array(r).fill(0));
-    for (let i = 0; i < r; i++) {
-        for (let j = 0; j < c; j++) {
-            res[j][i] = matrix[i][j];
-        }
+function hasCycle(head) {
+    let slow = head, fast = head;
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast) return true;
     }
-    return res;
+    return false;
 }""",
-            descriptionEn: "Flip a 2D matrix over its diagonal, switching row and column indices.",
-            descriptionBn: "একটি ২D ম্যাট্রিক্সের সারি ও কলাম অদলবদল করে ট্রান্সপোজ ম্যাট্রিক্স গঠন করুন।",
-            sampleInputs: ["matrix = [[1,2,3],[4,5,6]]"],
-            sampleOutputs: ["[[1,4],[2,5],[3,6]]"],
+            descriptionEn: "Determine if a linked list contains a cycle using O(1) auxiliary space.",
+            descriptionBn: "লিঙ্কড লিস্টে কোনো সাইকেল বা লুপ আছে কিনা ওয়ান স্পেসে নির্ণয় করুন।",
+            sampleInputs: ["head = [3 -> 2 -> 0 -> -4 (points back to 2)]"],
+            sampleOutputs: ["Cycle Detected: true"],
           ),
           DsaProblem(
-            id: "basic-4",
-            title: "4. Calculate 3D Tensor Layer Sum",
-            category: "3D Array Basic",
-            keyIdeaEn: "Iterate through 3D indices `[depth][row][col]` summing all elements for each depth layer.",
-            keyIdeaBn: "৩D ট্রিপল লুপ চালিয়ে প্রতিটি ডেপথ লেয়ারের সব উপাদানের যোগফল হিসাব করুন।",
+            id: "ll-3",
+            title: "3. Find Middle Node of Linked List",
+            category: "Singly Linked List",
+            keyIdeaEn: "Advance `fast` by 2 steps and `slow` by 1 step. When `fast` reaches end, `slow` is at middle.",
+            keyIdeaBn: "fast পয়েন্টার ২ গুণ গতিতে চালিয়ে শেষ মাথায় পৌঁছালে slow পয়েন্টার ঠিক মাঝখানের নোডে থাকবে।",
             codeCpp: """
-vector<int> layerSums(vector<vector<vector<int>>>& cube) {
-    vector<int> sums;
-    for (int d = 0; d < cube.size(); d++) {
-        int currentSum = 0;
-        for (int r = 0; r < cube[d].size(); r++) {
-            for (int c = 0; c < cube[d][r].size(); c++) {
-                currentSum += cube[d][r][c];
-            }
-        }
-        sums.push_back(currentSum);
+Node* findMiddle(Node* head) {
+    Node *slow = head, *fast = head;
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
     }
-    return sums;
+    return slow;
 }""",
             codeJava: """
-public static int[] layerSums(int[][][] cube) {
-    int[] sums = new int[cube.length];
-    for (int d = 0; d < cube.length; d++) {
-        int sum = 0;
-        for (int r = 0; r < cube[d].length; r++) {
-            for (int c = 0; c < cube[d][r].length; c++) {
-                sum += cube[d][r][c];
-            }
-        }
-        sums[d] = sum;
+public static Node findMiddle(Node head) {
+    Node slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
     }
-    return sums;
+    return slow;
 }""",
             codePython: """
-def layerSums(cube):
-    sums = []
-    for layer in cube:
-        layer_sum = sum(sum(row) for row in layer)
-        sums.append(layer_sum)
-    return sums""",
+def findMiddle(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow""",
             codeJs: """
-function layerSums(cube) {
-    return cube.map(layer => 
-        layer.reduce((sum, row) => sum + row.reduce((a, b) => a + b, 0), 0)
-    );
+function findMiddle(head) {
+    let slow = head, fast = head;
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
 }""",
-            descriptionEn: "Compute total element sum for each 2D slice layer inside a 3D Cube.",
-            descriptionBn: "একটি ৩D কিউবের প্রতিটি ২D স্লাইস লেয়ারের উপাদানগুলোর যোগফল নির্ণয় করুন।",
-            sampleInputs: ["cube = [[[1,2],[3,4]], [[5,6],[7,8]]]"],
-            sampleOutputs: ["Layer 0 Sum: 10, Layer 1 Sum: 26"],
+            descriptionEn: "Find the middle node of a singly linked list in a single traversal pass.",
+            descriptionBn: "একবার ট্রাভার্সাল করেই লিঙ্কড লিস্টের ঠিক মাঝের নোডটি খুঁজুন।",
+            sampleInputs: ["head = [1 -> 2 -> 3 -> 4 -> 5]"],
+            sampleOutputs: ["Middle Node: 3"],
+          ),
+          DsaProblem(
+            id: "ll-4",
+            title: "4. Insert and Delete Node in Doubly Linked List",
+            category: "Doubly Linked List",
+            keyIdeaEn: "Update both `next` and `prev` pointers. `node->prev->next = node->next; node->next->prev = node->prev;`",
+            keyIdeaBn: "উভয় `next` এবং `prev` লিঙ্ক আপডেট করুন। `node->prev->next = node->next; node->next->prev = node->prev;`",
+            codeCpp: """
+void deleteNode(DNode* node) {
+    if (node->prev != nullptr) node->prev->next = node->next;
+    if (node->next != nullptr) node->next->prev = node->prev;
+    delete node;
+}""",
+            codeJava: """
+public static void deleteNode(DNode node) {
+    if (node.prev != null) node.prev.next = node.next;
+    if (node.next != null) node.next.prev = node.prev;
+}""",
+            codePython: """
+def deleteNode(node):
+    if node.prev: node.prev.next = node.next
+    if node.next: node.next.prev = node.prev""",
+            codeJs: """
+function deleteNode(node) {
+    if (node.prev) node.prev.next = node.next;
+    if (node.next) node.next.prev = node.prev;
+}""",
+            descriptionEn: "Remove a given node reference from a Doubly Linked List in O(1) time.",
+            descriptionBn: "Doubly Linked List থেকে পয়েন্টার জানা থাকলে O(1) সময়ে যেকোনো নোড রিমুভ করুন।",
+            sampleInputs: ["head = [10 <-> 20 <-> 30], delete node(20)"],
+            sampleOutputs: ["Result: [10 <-> 30]"],
           ),
         ],
         commonMistakesEn: [
           {
-            "title": "1. Off-by-One Boundary Errors",
-            "desc": "Accessing index `N` instead of `N-1` in 1D array triggers Out of Bounds runtime crash."
+            "title": "1. Null Pointer Dereference",
+            "desc": "Calling `curr.next.val` without validating if `curr` or `curr.next` is null."
           },
           {
-            "title": "2. 2D Matrix Row/Col Index Swapping",
-            "desc": "Confusing row index `r` with col index `c` in `matrix[r][c]` causes IndexOutOfBoundsException when rows != cols."
+            "title": "2. Memory Leaks / Lost References",
+            "desc": "Reassigning `head = head.next` before saving node reference in C++ leads to unallocated memory leak."
           },
           {
-            "title": "3. Uninitialized 3D Array Dimension Access",
-            "desc": "Accessing `cube[d][r][c]` before initializing inner row/col arrays leads to NullPointerException."
+            "title": "3. Forgetting `prev` pointer updates in Doubly List",
+            "desc": "Updating `curr.next` but forgetting `curr.next.prev = curr` breaks backward traversal."
           },
           {
-            "title": "4. Inefficient Element Shifting inside Loop",
-            "desc": "Inserting or deleting at index 0 inside an N-iteration loop causes hidden O(N²) quadratic time complexity."
+            "title": "4. Infinite Loops in Cyclic Lists",
+            "desc": "Traversing a circular linked list with standard `while(curr != null)` condition triggers infinite loop."
           }
         ],
         commonMistakesBn: [
           {
-            "title": "১. Off-by-One বাউন্ডারি ভুল",
-            "desc": "১D অ্যারের শেষ ইনডেক্স `N-1` এর বদলে `N` দিয়ে মান পড়তে গেলে প্রোগ্রাম ক্র্যাশ করে (Segmentation Fault)।"
+            "title": "১. Null Pointer Dereference",
+            "desc": "নোড `curr` বা `curr.next` নাল কিনা চেক না করেই `.val` এক্সেস করার চেষ্টা করা।"
           },
           {
-            "title": "২. ২D ম্যাট্রিক্সে Row ও Col ওলোটপালোট",
-            "desc": "`matrix[r][c]` এ সারি `r` এবং কলাম `c` মিলাতে ভুল করলে (বিশেষ করে রিক্ট্যাঙ্গুলার ম্যাট্রিক্সে) ইনডেক্স ভুল দেখায়।"
+            "title": "২. নোডের মেমোরি রেফারেন্স হারিয়ে ফেলা",
+            "desc": "রেফারেন্স সেভ করার আগেই পয়েন্টার আপডেট করে দিলে হিপ মেমোরিতে নোড হারিয়ে যায়।"
           },
           {
-            "title": "৩. ৩D অ্যারে ইনিশিয়ালাইজ না করেই এক্সেস",
-            "desc": "৩D কিউবে ভেতরের লেয়ার/রো ইনিশিয়ালাইজ না করে `cube[d][r][c]` অ্যাক্সেস করলে NullPointerException হয়।"
+            "title": "৩. Doubly লিস্টে `prev` পয়েন্টার আপডেট না করা",
+            "desc": "`next` পয়েন্টার সেট করে `prev` পয়েন্টার সেট করতে ভুলে গেলে পেছনের ট্রাভার্সাল নষ্ট হয়ে যায়।"
           },
           {
-            "title": "৪. লুপের ভেতর বারবার Element Shift করা",
-            "desc": "লুপের মধ্যে `insert(0)` বা `remove(0)` করলে পুরো অ্যারে ডানে/বামে সরাতে হয়, ফলে লুকানো O(N²) সময় নষ্ট হয়।"
+            "title": "৪. সার্কুলার লিঙ্কড লিস্টে আনলিমিটেড লুপ",
+            "desc": "সার্কুলার লিস্টে সাধারণ `while(curr != null)` চালালে লুপ আর শেষ হবে না।"
           }
         ],
         roadmapStepsEn: [
           {
             "step": "Step 1",
-            "title": "Master 1D Arrays & Base Address Arithmetic",
-            "desc": "Understand direct index access `Address = Base + (i * elementSize)`, dynamic resizing doubling capacity."
+            "title": "Understand Node Struct & Pointer References",
+            "desc": "Master node construction, heap allocation, head pointer initialization, and `curr = curr.next` traversal."
           },
           {
             "step": "Step 2",
-            "title": "Practice 1D Operations & Two Pointers",
-            "desc": "Implement array reversal, min/max search, sliding window, and two pointer element swapping."
+            "title": "Master Singly Linked List Head/Tail Insertion",
+            "desc": "Practice O(1) insert at head, insert at tail, and searching elements in a singly linked list."
           },
           {
             "step": "Step 3",
-            "title": "Understand 2D Matrices & Grid Traversal",
-            "desc": "Master row-major memory order, matrix transpose, diagonal sum, and row-by-row traversal."
+            "title": "Learn Two Pointers: Fast & Slow",
+            "desc": "Solve Floyd's cycle detection, finding middle node, and finding kth node from end."
           },
           {
             "step": "Step 4",
-            "title": "Explore 3D Tensors & Spatial Arrays",
-            "desc": "Learn multi-axis depth layering `[depth][row][col]`, layer sums, and multi-dimensional loops."
+            "title": "Master Doubly Linked List & Bidirectional Links",
+            "desc": "Implement `prev` & `next` bidirectional links, O(1) node deletion, and LRU Cache node operations."
           },
           {
             "step": "Step 5",
-            "title": "Optimize Cache Locality & Memory Overhead",
-            "desc": "Avoid shifting in loops, pre-allocate vector capacity `reserve()`, and write cache-friendly sequential loops."
+            "title": "Practice Advanced Transformations",
+            "desc": "Master iterative 3-pointer list reversal, recursive reversal, merging two sorted lists, and reorder list."
           }
         ],
         roadmapStepsBn: [
           {
             "step": "ধাপ ১",
-            "title": "১D অ্যারে ও বেস এড্রেস সূত্র শিখুন",
-            "desc": "ডিরেক্ট ইন্ডেক্স এক্সেস `Address = Base + (i * size)` এবং ডাইনামিক ক্যাপাসিটি ডাবলিং কনসেপ্ট বুঝুন।"
+            "title": "নোড স্ট্রাকচার ও পয়েন্টার রেফারেন্স শিখুন",
+            "desc": "নোড তৈরি, হিপ অ্যালোকেশন, হেড পয়েন্টার ইনিশিয়ালাইজেশন এবং `curr = curr.next` ট্রাভার্সাল ক্লিয়ার করুন।"
           },
           {
             "step": "ধাপ ২",
-            "title": "১D অপারেশন ও টু-পয়েন্টার প্র্যাকটিস",
-            "desc": "ইন-প্লেস রিভার্সাল, min/max সার্চ, স্লাইডিং উইন্ডো এবং টু-পয়েন্টার এলিমেন্ট সোয়াপিং সমাধান করুন।"
+            "title": "Singly Linked List এর ইনসারশন প্র্যাকটিস",
+            "desc": "Head এ O(1) ইনসার্ট, Tail এ ইনসার্ট এবং নির্দিষ্ট মান খোঁজার কোড লিখুন।"
           },
           {
             "step": "ধাপ ৩",
-            "title": "২D ম্যাট্রিক্স ও গ্রিড ট্রাভার্সাল আয়ত্ত করুন",
-            "desc": "Row-major মেমোরি লেআউট, ম্যাট্রিক্স ট্রান্সপোজ, ডায়াগনাল যোগফল এবং রো-বাই-রো লুপ ক্লিয়ার করুন।"
+            "title": "Fast & Slow পয়েন্টার টেকনিক শিখুন",
+            "desc": "ফ্লয়েডের সাইকেল ডিটেকশন, লিঙ্কড লিস্টের মাঝের নোড খোঁজা এবং শেষ থেকে K-তম নোড বের করুন।"
           },
           {
             "step": "ধাপ ৪",
-            "title": "৩D টেনসর ও স্পেশিয়াল অ্যারে শিখুন",
-            "desc": "মাল্টি-এক্সিস লেয়ারিং `[depth][row][col]`, লেয়ার সাম এবং ৩D ট্রিপল লুপ ট্রাভার্সাল আয়ত্ত করুন।"
+            "title": "Doubly Linked List ও দ্বিমুখী লিঙ্ক আয়ত্ত করুন",
+            "desc": "`prev` ও `next` পয়েন্টার হ্যান্ডলিং, O(1) নোড ডিলেশন এবং LRU ক্যালোকেশন বুঝুন।"
           },
           {
             "step": "ধাপ ৫",
-            "title": "ক্যাশ লোকালিটি ও মেমোরি অপ্টিমাইজেশন",
-            "desc": "লুপের ভেতর শিফটিং এড়ানো, vector capacity `reserve()` করা এবং ক্যাশ-ফ্রেন্ডলি সিকোয়েনশিয়াল কোড লিখুন।"
+            "title": "অ্যাডভান্সড রিভার্সাল ও মার্জিং মাস্টার করুন",
+            "desc": "৩-পয়েন্টার রিভার্সাল, রিকার্সিভ রিভার্সাল, ২টি সর্টেড লিঙ্কড লিস্ট মার্জ করা এবং রি-অর্ডার করা প্র্যাকটিস করুন।"
           }
         ],
-      ),
-
-      // 2. LINKED LIST
-      DsaTopic(
-        id: 202,
-        title: "Singly & Doubly Linked List",
-        category: "Linear Data Structure",
-        timeComplexity: "Insert/Delete O(1) | Access O(N)",
-        spaceComplexity: "O(N)",
-        icon: Icons.link_outlined,
-        themeColor: const Color(0xFF8B5CF6),
-        descriptionEn: "Linear sequence of node objects where each node stores data and pointer to next (and previous) node.",
-        descriptionBn: "নোড অবজেক্টের লিনিয়ার সিকোয়েন্স, যেখানে প্রতিটি নোডে ডেটা এবং পরবর্তী নোডের পয়েন্টার থাকে।",
-        keyConceptsEn: ["Node pointer reference traversal", "O(1) Head Insertion"],
-        keyConceptsBn: ["পয়েন্টার ট্রাভার্সাল", "Head এ O(1) ইনসারশন"],
-        multiDimCodeTemplates: {
-          "Linked List": {
-            "C++": "struct ListNode { int val; ListNode* next; };",
-            "Java": "class ListNode { int val; ListNode next; }",
-            "Python": "class ListNode: def __init__(self, val=0, next=None): self.val = val; self.next = next",
-            "JavaScript": "class ListNode { constructor(val = 0, next = null) { this.val = val; this.next = next; } }"
-          }
-        },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
       ),
 
       // 3. STACK
