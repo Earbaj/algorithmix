@@ -55,6 +55,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     if (pattern.id == 1) {
       // Time & Space Complexity dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.timeSpaceComplexityDetail);
+    } else if (pattern.id == 2) {
+      // Basic Data Structures dedicated screen (NEW PAGE)
+      Navigator.of(context).pushNamed(AppRoutes.dsa);
     } else if (pattern.id == 4) {
       // Two Pointers dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.twoPointersDetail);

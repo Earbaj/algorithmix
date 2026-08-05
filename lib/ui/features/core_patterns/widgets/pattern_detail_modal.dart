@@ -112,7 +112,29 @@ class PatternDetailModal extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
 
-                    // Launch Deep Dive Button if Two Pointers (id 4)
+                    // Launch Deep Dive Button if Basic Data Structures (id 2) or Two Pointers (id 4)
+                    if (pattern.id == 2) ...[
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pushNamed(AppRoutes.dsa);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.accentNeonCyan,
+                            foregroundColor: Colors.black,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          icon: const Icon(Icons.rocket_launch, size: 20),
+                          label: const Text(
+                            'Open Basic Data Structures Hub 🚀',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
                     if (pattern.id == 4) ...[
                       SizedBox(
                         width: double.infinity,
