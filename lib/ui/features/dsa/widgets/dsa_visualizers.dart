@@ -5,6 +5,7 @@ import 'linked_list_visualizer_widget.dart';
 import 'stack_visualizer_widget.dart';
 import 'queue_visualizer_widget.dart';
 import 'hash_table_visualizer_widget.dart';
+import 'bst_visualizer_widget.dart';
 
 class DsaInteractiveVisualizer extends StatefulWidget {
   final int topicId;
@@ -71,7 +72,7 @@ class _DsaInteractiveVisualizerState extends State<DsaInteractiveVisualizer> {
       case 205:
         return HashTableVisualizerWidget(isEnglish: widget.isEnglish);
       case 206:
-        return _buildBstVisualizer();
+        return BstVisualizerWidget(isEnglish: widget.isEnglish);
       case 207:
         return _buildHeapVisualizer();
       case 208:

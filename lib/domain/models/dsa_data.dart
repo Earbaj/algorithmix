@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DsaProblem {
   final String id;
   final String title;
-  final String category; // e.g. "Hash Map Basic", "Hash Set Pattern"
+  final String category; // e.g. "BST Basic", "BST Pattern"
   final String keyIdeaEn;
   final String keyIdeaBn;
   final String codeCpp;
@@ -44,7 +44,7 @@ class DsaTopic {
   final Color themeColor;
   final List<String> keyConceptsEn;
   final List<String> keyConceptsBn;
-  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Hash Map, Hash Set, Custom Chaining) -> (Language -> Code)
+  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Standard BST, Tree Traversals, Self-Balancing) -> (Language -> Code)
   final List<DsaProblem> basicProblems;
   final List<Map<String, String>> commonMistakesEn;
   final List<Map<String, String>> commonMistakesBn;
@@ -196,501 +196,16 @@ class DsaDataRepository {
         spaceComplexity: "O(N)",
         icon: Icons.grid_view_outlined,
         themeColor: const Color(0xFFEC4899),
-        descriptionEn:
-            "A Hash Table (or Hash Map) is an associative key-value dictionary that maps keys to memory array indices using a Hash Function (`hash(key) % capacity`). It delivers average O(1) constant time complexity for insertion, lookup, and deletion. Collisions (when multiple keys produce the same hash index) are resolved using Separate Chaining (bucket linked lists) or Open Addressing (linear probing).",
-        descriptionBn:
-            "হ্যাশ টেবিল (বা হ্যাশ ম্যাপ) হলো একটি কী-ভ্যালু ডিকশনারি যা হ্যাশ ফাংশন (`hash(key) % capacity`) ব্যবহার করে কী-কে মেমোরি অ্যারের ইনডেক্সে রূপান্তর করে। এটি গড়ে O(1) কনস্ট্যান্ট টাইমে ইনসার্ট, লুকআপ ও ডিলেশন সাপোর্ট করে। কলিশন (একাধিক কী এর একই ইনডেক্স পাওয়া) দূর করতে সেপারেট চেইনিং (লিঙ্কড লিস্ট বাকেট) বা ওপেন এড্রেসিং (লিনিয়ার প্রোবিং) ব্যবহৃত হয়।",
-        keyConceptsEn: [
-          "O(1) Average Time Complexity: Direct Key-to-Value lookup without searching through arrays sequentially.",
-          "Hash Function: Maps arbitrary key objects (Strings, Integers, Custom Objects) to integer array bucket indices.",
-          "Collision Resolution: Separate Chaining attaches LinkedList nodes at bucket index; Linear Probing searches next available slot.",
-          "Load Factor & Dynamic Rehashing: Load Factor α = N / Capacity. When α exceeds 0.75, table capacity doubles and keys are rehashed.",
-          "Hash Map vs Hash Set: Hash Map stores `Key -> Value` associations; Hash Set stores unique `Key` elements only."
-        ],
-        keyConceptsBn: [
-          "O(1) গড় সময় জটিলতা: অ্যারেতে লিনিয়ার সার্চ না করেই সরাসরি কী দিয়ে মান বের করা যায়।",
-          "হ্যাশ ফাংশন: যেকোনো ডেটা কী-কে ইনটিজার অ্যারে ইনডেক্সে রূপান্তর করে।",
-          "কলিশন হ্যান্ডলিং: সেপারেট চেইনিং নোডগুলোকে বাকেটের সাথে লিঙ্ক করে; লিনিয়ার প্রোবিং খালি স্লট না পাওয়া পর্যন্ত ডানে খোঁজে।",
-          "লোড ফ্যাক্টর ও রিহ্যাশিং: লোড ফ্যাক্টর α = N / Capacity। α এর মান ০.৭৫ এর বেশি হলে ক্যাপাসিটি ডাবল হয়ে রিহ্যাশিং ঘটে।",
-          "হ্যাশ ম্যাপ বনাম হ্যাশ সেট: হ্যাশ ম্যাপ `Key -> Value` পেয়ার রাখে; হ্যাশ সেট কেবল ইউনিক `Key` কালেকশন রাখে।"
-        ],
+        descriptionEn: "A Hash Table is an associative dictionary mapping keys to array indices using a Hash Function.",
+        descriptionBn: "হ্যাশ টেবিল হলো একটি কী-ভ্যালু ডিকশনারি যা হ্যাশ ফাংশন দিয়ে ইনডেক্সিং করে।",
+        keyConceptsEn: ["O(1) Average Lookup", "Collision Handling"],
+        keyConceptsBn: ["O(1) গড়ে সমাধান", "কলিশন হ্যান্ডলিং"],
         multiDimCodeTemplates: {
           "Hash Map (Key-Value)": {
-            "C++": """
-#include <iostream>
-#include <unordered_map>
-#include <string>
-using namespace std;
-
-int main() {
-    unordered_map<string, int> ageMap;
-    
-    // O(1) Put
-    ageMap["Alice"] = 25;
-    ageMap["Bob"] = 30;
-    
-    // O(1) Lookup
-    if (ageMap.count("Alice")) {
-        cout << "Alice's Age: " << ageMap["Alice"] << endl;
-    }
-    
-    // O(1) Erase
-    ageMap.erase("Bob");
-    return 0;
-}""",
-            "Java": """
-import java.util.HashMap;
-import java.util.Map;
-
-public class HashMapDemo {
-    public static void main(String[] args) {
-        Map<String, Integer> ageMap = new HashMap<>();
-        
-        // O(1) Put
-        ageMap.put("Alice", 25);
-        ageMap.put("Bob", 30);
-        
-        // O(1) Get
-        System.out.println("Alice's Age: " + ageMap.get("Alice"));
-        
-        // O(1) ContainsKey
-        if (ageMap.containsKey("Bob")) {
-            ageMap.remove("Bob");
-        }
-    }
-}""",
-            "Python": """
-# Python dict is a highly optimized Hash Map
-age_map = {}
-
-# O(1) Put
-age_map["Alice"] = 25
-age_map["Bob"] = 30
-
-# O(1) Get
-print("Alice's Age:", age_map.get("Alice"))
-
-# O(1) Key check & Delete
-if "Bob" in age_map:
-    del age_map["Bob"]""",
-            "JavaScript": """
-const ageMap = new Map();
-
-// O(1) Set
-ageMap.set("Alice", 25);
-ageMap.set("Bob", 30);
-
-// O(1) Get
-console.log("Alice's Age:", ageMap.get("Alice"));
-
-// O(1) Has & Delete
-if (ageMap.has("Bob")) {
-    ageMap.delete("Bob");
-}"""
-          },
-          "Hash Set (Unique Keys)": {
-            "C++": """
-#include <iostream>
-#include <unordered_set>
-using namespace std;
-
-int main() {
-    unordered_set<int> uniqueSet;
-    
-    uniqueSet.insert(10);
-    uniqueSet.insert(20);
-    uniqueSet.insert(10); // Duplicate ignored
-    
-    cout << "Set Size: " << uniqueSet.size() << endl; // 2
-    return 0;
-}""",
-            "Java": """
-import java.util.HashSet;
-import java.util.Set;
-
-public class HashSetDemo {
-    public static void main(String[] args) {
-        Set<Integer> uniqueSet = new HashSet<>();
-        uniqueSet.add(10);
-        uniqueSet.add(20);
-        uniqueSet.add(10); // Duplicate ignored
-        
-        System.out.println("Set Size: " + uniqueSet.size()); // 2
-    }
-}""",
-            "Python": """
-unique_set = set()
-unique_set.add(10)
-unique_set.add(20)
-unique_set.add(10) # Duplicate ignored
-
-print("Set Size:", len(unique_set)) # 2""",
-            "JavaScript": """
-const uniqueSet = new Set();
-uniqueSet.add(10);
-uniqueSet.add(20);
-uniqueSet.add(10); // Duplicate ignored
-
-console.log("Set Size:", uniqueSet.size); // 2"""
-          },
-          "Custom Chaining Hash Table": {
-            "C++": """
-#include <iostream>
-#include <vector>
-#include <list>
-using namespace std;
-
-class HashTable {
-    int capacity;
-    vector<list<pair<string, int>>> buckets;
-    
-    int hashFunc(string key) {
-        int sum = 0;
-        for (char c : key) sum += c;
-        return sum % capacity;
-    }
-public:
-    HashTable(int cap = 5) : capacity(cap), buckets(cap) {}
-    
-    void put(string key, int val) {
-        int idx = hashFunc(key);
-        for (auto& p : buckets[idx]) {
-            if (p.first == key) { p.second = val; return; }
-        }
-        buckets[idx].push_back({key, val});
-    }
-    
-    int get(string key) {
-        int idx = hashFunc(key);
-        for (auto& p : buckets[idx]) {
-            if (p.first == key) return p.second;
-        }
-        return -1;
-    }
-};""",
-            "Java": """
-import java.util.LinkedList;
-
-class HashTable {
-    class Entry {
-        String key; int val;
-        Entry(String k, int v) { key = k; val = v; }
-    }
-    private int capacity = 5;
-    private LinkedList<Entry>[] buckets = new LinkedList[capacity];
-    
-    public HashTable() {
-        for (int i = 0; i < capacity; i++) buckets[i] = new LinkedList<>();
-    }
-    private int hashFunc(String key) {
-        return Math.abs(key.hashCode()) % capacity;
-    }
-    public void put(String key, int val) {
-        int idx = hashFunc(key);
-        for (Entry e : buckets[idx]) {
-            if (e.key.equals(key)) { e.val = val; return; }
-        }
-        buckets[idx].add(new Entry(key, val));
-    }
-}""",
-            "Python": """
-class CustomHashTable:
-    def __init__(self, capacity=5):
-        self.capacity = capacity
-        self.buckets = [[] for _ in range(capacity)]
-        
-    def _hash(self, key):
-        return sum(ord(c) for c in key) % self.capacity
-        
-    def put(self, key, val):
-        idx = self._hash(key)
-        for i, (k, v) in enumerate(self.buckets[idx]):
-            if k == key:
-                self.buckets[idx][i] = (key, val)
-                return
-        self.buckets[idx].append((key, val))
-        
-    def get(self, key):
-        idx = self._hash(key)
-        for k, v in self.buckets[idx]:
-            if k == key: return v
-        return None""",
-            "JavaScript": """
-class CustomHashTable {
-    constructor(capacity = 5) {
-        this.capacity = capacity;
-        this.buckets = Array.from({length: capacity}, () => []);
-    }
-    hash(key) {
-        let sum = 0;
-        for (let i = 0; i < key.length; i++) sum += key.charCodeAt(i);
-        return sum % this.capacity;
-    }
-    put(key, val) {
-        const idx = this.hash(key);
-        const chain = this.buckets[idx];
-        for (let entry of chain) {
-            if (entry.key === key) { entry.val = val; return; }
-        }
-        chain.push({key, val});
-    }
-}"""
-          }
-        },
-        basicProblems: [
-          DsaProblem(
-            id: "hm-1",
-            title: "1. Intersection of Two Arrays (LeetCode #349)",
-            category: "Hash Set Basic",
-            keyIdeaEn: "Insert elements of first array into a HashSet, then filter second array elements present in set.",
-            keyIdeaBn: "প্রথম অ্যারের উপাদানগুলোকে সেটে রাখুন, তারপর দ্বিতীয় অ্যারের কোনো উপাদান সেটে থাকলে যুক্ত করুন।",
-            codeCpp: """
-vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
-    unordered_set<int> s(nums1.begin(), nums1.end());
-    vector<int> res;
-    for (int n : nums2) {
-        if (s.count(n)) {
-            res.push_back(n);
-            s.erase(n); // Remove to prevent duplicates
-        }
-    }
-    return res;
-}""",
-            codeJava: """
-public static int[] intersection(int[] nums1, int[] nums2) {
-    Set<Integer> set1 = new HashSet<>();
-    for (int n : nums1) set1.add(n);
-    Set<Integer> resSet = new HashSet<>();
-    for (int n : nums2) {
-        if (set1.contains(n)) resSet.add(n);
-    }
-    return resSet.stream().mapToInt(i -> i).toArray();
-}""",
-            codePython: """
-def intersection(nums1, nums2):
-    return list(set(nums1) & set(nums2))""",
-            codeJs: """
-function intersection(nums1, nums2) {
-    const set1 = new Set(nums1);
-    return [...new Set(nums2.filter(n => set1.has(n)))];
-}""",
-            descriptionEn: "Given two integer arrays `nums1` and `nums2`, return an array of their unique intersection elements.",
-            descriptionBn: "দুটি পূর্ণসংখ্যার অ্যারে `nums1` এবং `nums2` থেকে তাদের অনন্য (Unique) সাধারণ উপাদানগুলোর অ্যারে তৈরি করুন।",
-            sampleInputs: ["nums1 = [1,2,2,1], nums2 = [2,2]"],
-            sampleOutputs: ["[2]"],
-          ),
-          DsaProblem(
-            id: "hm-2",
-            title: "2. Group Anagrams (LeetCode #49)",
-            category: "Hash Map Pattern",
-            keyIdeaEn: "Sort characters of each string to form a canonical key, then group original strings in a HashMap under key.",
-            keyIdeaBn: "প্রতিটি স্ট্রিংয়ের ক্যারেক্টার সর্ট করে একই কী গঠন করুন এবং হ্যাশ ম্যাপে গ্রুপিং করুন।",
-            codeCpp: """
-vector<vector<string>> groupAnagrams(vector<string>& strs) {
-    unordered_map<string, vector<string>> mp;
-    for (string s : strs) {
-        string key = s;
-        sort(key.begin(), key.end());
-        mp[key].push_back(s);
-    }
-    vector<vector<string>> res;
-    for (auto p : mp) res.push_back(p.second);
-    return res;
-}""",
-            codeJava: """
-public static List<List<String>> groupAnagrams(String[] strs) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strs) {
-        char[] ca = s.toCharArray();
-        Arrays.sort(ca);
-        String key = String.valueOf(ca);
-        map.putIfAbsent(key, new ArrayList<>());
-        map.get(key).add(s);
-    }
-    return new ArrayList<>(map.values());
-}""",
-            codePython: """
-from collections import defaultdict
-
-def groupAnagrams(strs):
-    mp = defaultdict(list)
-    for s in strs:
-        key = "".join(sorted(s))
-        mp[key].append(s)
-    return list(mp.values())""",
-            codeJs: """
-function groupAnagrams(strs) {
-    const map = new Map();
-    for (let s of strs) {
-        let key = s.split('').sort().join('');
-        if (!map.has(key)) map.set(key, []);
-        map.get(key).push(s);
-    }
-    return Array.from(map.values());
-}""",
-            descriptionEn: "Group an array of strings together if they are anagrams of each other.",
-            descriptionBn: "স্ট্রিংগুলোর অ্যারে থেকে একই বর্ণ দ্বারা গঠিত শব্দসমূহ (Anagrams) হ্যাশ ম্যাপ দিয়ে গ্রুপিং করুন।",
-            sampleInputs: ["strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]"],
-            sampleOutputs: ["[\"bat\"], [\"nat\",\"tan\"], [\"ate\",\"eat\",\"tea\"]"],
-          ),
-          DsaProblem(
-            id: "hm-3",
-            title: "3. First Unique Character in a String",
-            category: "Hash Map Basic",
-            keyIdeaEn: "First pass: store character frequencies in HashMap. Second pass: return first index where frequency == 1.",
-            keyIdeaBn: "প্রথম ধাপে ক্যারেক্টার ফ্রিকোয়েন্সি ম্যাপে সেভ করুন। দ্বিতীয় ধাপে প্রথম যার ফ্রিকোয়েন্সি ১ পাওয়া যাবে তার ইনডেক্স রিটার্ন করুন।",
-            codeCpp: """
-int firstUniqChar(string s) {
-    unordered_map<char, int> freq;
-    for (char c : s) freq[c]++;
-    for (int i = 0; i < s.length(); i++) {
-        if (freq[s[i]] == 1) return i;
-    }
-    return -1;
-}""",
-            codeJava: """
-public static int firstUniqChar(String s) {
-    Map<Character, Integer> freq = new HashMap<>();
-    for (char c : s.toCharArray()) freq.put(c, freq.getOrDefault(c, 0) + 1);
-    for (int i = 0; i < s.length(); i++) {
-        if (freq.get(s.charAt(i)) == 1) return i;
-    }
-    return -1;
-}""",
-            codePython: """
-from collections import Counter
-
-def firstUniqChar(s):
-    freq = Counter(s)
-    for i, c in enumerate(s):
-        if freq[c] == 1: return i
-    return -1""",
-            codeJs: """
-function firstUniqChar(s) {
-    const freq = {};
-    for (let c of s) freq[c] = (freq[c] || 0) + 1;
-    for (let i = 0; i < s.length; i++) {
-        if (freq[s[i]] === 1) return i;
-    }
-    return -1;
-}""",
-            descriptionEn: "Find the first non-repeating character in a string and return its index.",
-            descriptionBn: "স্ট্রিংয়ের প্রথম ইউনিক (অনন্য) অক্ষরটির ইনডেক্স বের করুন।",
-            sampleInputs: ["s = \"leetcode\"", "s = \"loveleetcode\""],
-            sampleOutputs: ["0 ('l')", "2 ('v')"],
-          ),
-        ],
-        commonMistakesEn: [
-          {
-            "title": "1. Modifying Mutable Key Objects",
-            "desc": "Modifying an object after inserting it as a key in HashMap alters its hashCode, making the key unfindable."
-          },
-          {
-            "title": "2. High Load Factor Performance Degradation",
-            "desc": "Setting a fixed capacity without dynamic rehashing causes bucket chains to grow, degrading O(1) to linear O(N) lookup."
-          },
-          {
-            "title": "3. Confusing Hash Map with Ordered TreeMap",
-            "desc": "Expecting keys in HashMap to remain sorted by insertion or alphabetical order. Use TreeMap or LinkedHashMap for order."
-          },
-          {
-            "title": "4. Missing Custom `equals()` & `hashCode()`",
-            "desc": "Using custom class objects as HashMap keys in Java/C++ without overriding both `equals()` and `hashCode()`."
-          }
-        ],
-        commonMistakesBn: [
-          {
-            "title": "১. হ্যাশ ম্যাপে কী অবজেক্ট মিউটেট করা",
-            "desc": "ম্যাপে কী যোগ করার পর সেই অবজেক্টের মান পরিবর্তন করলে হ্যাশকোড চেঞ্জ হয়ে কী আর খুঁজে পাওয়া যায় না।"
-          },
-          {
-            "title": "২. অতিরিক্ত লোড ফ্যাক্টরে ধীরগতি",
-            "desc": "টেবিলের সাইজ না বাড়িয়ে শত শত উপাদান ঢোকালে বাকেটের দৈর্ঘ্য বাড়ে এবং ওয়ান স্পিড নষ্ট হয়ে O(N) হয়ে যায়।"
-          },
-          {
-            "title": "৩. সর্টেড অর্ডারের আশা করা",
-            "desc": "সাধারণ HashMap কাস্টম অর্ডারে সাজানো থাকে না। সর্টেড অর্ডার পেতে TreeMap বা LinkedHashMap ব্যবহার করুন।"
-          },
-          {
-            "title": "৪. কাস্টম ক্লাসে `hashCode()` না লেখা",
-            "desc": "Java বা C++ এ কাস্টম অবজেক্ট কী হিসেবে ব্যবহার করার সময় `equals()` ও `hashCode()` ওভাররাইড না করা।"
-          }
-        ],
-        roadmapStepsEn: [
-          {
-            "step": "Step 1",
-            "title": "Understand Hash Functions & Index Math",
-            "desc": "Master key hashing, `hash(key) % capacity`, and direct O(1) bucket index mapping."
-          },
-          {
-            "step": "Step 2",
-            "title": "Learn Collision Resolution Techniques",
-            "desc": "Understand Separate Chaining (LinkedList buckets) and Open Addressing (Linear Probing)."
-          },
-          {
-            "step": "Step 3",
-            "title": "Master Frequency Counting & Sets",
-            "desc": "Solve character counting, subarray sum, two sum, and unique elements with HashSet."
-          },
-          {
-            "step": "Step 4",
-            "title": "Learn Anagram & Canonical Key Grouping",
-            "desc": "Group strings by sorted character key, word frequency vectors, and isomorphism."
-          },
-          {
-            "step": "Step 5",
-            "title": "Design Custom HashMap & LRU Cache",
-            "desc": "Build a custom HashMap with chaining and integrate with Doubly LinkedList for O(1) LRU Cache."
-          }
-        ],
-        roadmapStepsBn: [
-          {
-            "step": "ধাপ ১",
-            "title": "হ্যাশ ফাংশন ও ইন্ডেক্স সূত্র শিখুন",
-            "desc": "কী হ্যাশিং, `hash(key) % capacity` এবং ডিরেক্ট O(1) বাকেট ইন্ডেক্সিং পরিষ্কার করুন।"
-          },
-          {
-            "step": "ধাপ ২",
-            "title": "কলিশন হ্যান্ডলিং টেকনিক আয়ত্ত করুন",
-            "desc": "সেপারেট চেইনিং (লিঙ্কড লিস্ট বাকেট) এবং ওপেন এড্রেসিং (লিনিয়ার প্রোবিং) টেকনিক শিখুন।"
-          },
-          {
-            "step": "ধাপ ৩",
-            "title": "ফ্রিকোয়েন্সি কাউন্টিং ও সেটের ব্যবহার",
-            "desc": "ক্যারেক্টার ফ্রিকোয়েন্সি, টু সাম, সাবঅ্যারে সাম এবং ইউনিক এলিমেন্ট ডিটেকশন সলভ করুন।"
-          },
-          {
-            "step": "ধাপ ৪",
-            "title": "অ্যানাগ্রাম ও ক্যানোনিকাল কী গ্রুপিং",
-            "desc": "সর্টেড অক্ষর ক্যানোনিকাল কী এবং ওয়ার্ড ফ্রিকোয়েন্সি ভেক্টর দিয়ে গ্রুপিং মাস্টার করুন।"
-          },
-          {
-            "step": "ধাপ ৫",
-            "title": "কাস্টম হ্যাশম্যাপ ও LRU ক্যাশ ডিজাইন",
-            "desc": "নিজে চেইনিং হ্যাশম্যাপ বানান এবং Doubly LinkedList সমন্বয়ে O(1) LRU ক্যাশ ডিজাইন করুন।"
-          }
-        ],
-      ),
-
-      // 6. BST
-      DsaTopic(
-        id: 206,
-        title: "Binary Search Tree (BST)",
-        category: "Hierarchical",
-        timeComplexity: "Search O(log N)",
-        spaceComplexity: "O(N)",
-        icon: Icons.account_tree_outlined,
-        themeColor: const Color(0xFF06B6D4),
-        descriptionEn: "Left < Root < Right tree.",
-        descriptionBn: "বাম পাশে ছোট ও ডান পাশে বড় মান।",
-        keyConceptsEn: ["Ordered BST"],
-        keyConceptsBn: ["সর্টেড বাইনারি ট্রি"],
-        multiDimCodeTemplates: {
-          "BST": {
-            "C++": "struct TreeNode { int val; TreeNode *left, *right; };",
-            "Java": "class TreeNode { int val; TreeNode left, right; }",
-            "Python": "class TreeNode: pass",
-            "JavaScript": "class TreeNode {}"
+            "C++": "unordered_map<string, int> mp;",
+            "Java": "Map<String, Integer> map = new HashMap<>();",
+            "Python": "mp = {}",
+            "JavaScript": "const map = new Map();"
           }
         },
         basicProblems: [],
@@ -698,6 +213,451 @@ function firstUniqChar(s) {
         commonMistakesBn: [],
         roadmapStepsEn: [],
         roadmapStepsBn: [],
+      ),
+
+      // 6. BINARY SEARCH TREE (BST)
+      DsaTopic(
+        id: 206,
+        title: "Binary Search Tree (BST)",
+        category: "Hierarchical Tree Structure",
+        timeComplexity: "Search O(log N) avg | Insert O(log N) avg | Delete O(log N) avg",
+        spaceComplexity: "O(N)",
+        icon: Icons.account_tree_outlined,
+        themeColor: const Color(0xFF06B6D4),
+        descriptionEn:
+            "A Binary Search Tree (BST) is a hierarchical node-based tree structure maintaining the strict BST Invariant: for every node X, all values in its left subtree are strictly smaller than X (`left->val < X->val`), and all values in its right subtree are strictly larger than X (`right->val > X->val`). An Inorder Traversal (Left-Node-Right) on a BST always visits nodes in strictly sorted ascending order.",
+        descriptionBn:
+            "বাইনারি সার্চ ট্রি (BST) হলো একটি নোড-ভিত্তিক ট্রি স্ট্রাকচার যা BST নিয়ম মেনে চলে: যেকোনো নোড X এর জন্য তার বাম সাবট্রির সব মান X এর চেয়ে ছোট (`left->val < X->val`) এবং ডান সাবট্রির সব মান X এর চেয়ে বড় (`right->val > X->val`) হয়। BST তে Inorder Traversal (Left-Node-Right) করলে সব উপাদান ছোট থেকে বড় (Sorted Order) সাজানো পাওয়া যায়।",
+        keyConceptsEn: [
+          "BST Invariant Property: Left Subtree < Root Node < Right Subtree for every single node in the tree.",
+          "Inorder Traversal Sorted Order: Visiting Left -> Root -> Right outputs elements in strictly ascending sorted order.",
+          "O(log N) Average Search & Insert: At each comparison, half of the remaining subtrees are eliminated.",
+          "Node Deletion (3 Cases): (1) Leaf Node (remove directly), (2) 1 Child Node (bypass pointer), (3) 2 Children Nodes (replace node with its Inorder Successor / minimum of right subtree).",
+          "Balanced vs Skewed BST: A balanced BST has depth O(log N); inserting already sorted elements degenerates a naive BST into a skewed linked list of depth O(N)."
+        ],
+        keyConceptsBn: [
+          "BST মূল বৈশিষ্ট্য: প্রতিটি নোডের জন্য বাম সাবট্রি < নোড < ডান সাবট্রি নিয়ম প্রযোজ্য।",
+          "Inorder ট্রাভার্সাল: Left -> Root -> Right ক্রমানুসারে ট্রাভার্স করলে উপাদান সর্টেড অর্ডারে পাওয়া যায়।",
+          "O(log N) সময় জটিলতা: প্রতিটি স্টেপে সার্চ স্পেস অর্ধেক হয়ে যায়।",
+          "নোড ডিলেশন (৩টি কেস): (১) লিফ নোড (সরাসরি বাদ), (২) ১টি চাইল্ড নোড (পয়েন্টার বাইপাস), (৩) ২টি চাইল্ড নোড (ডান সাবট্রির সর্বনিম্ন Inorder Successor দিয়ে রিপ্লেস)।",
+          "ব্যালেন্সড বনাম স্কিউড BST: ব্যালেন্সড গাছের ডেপথ O(log N); সর্টেড ডেটা দিলে সাধারণ BST স্কিউড হয়ে লিঙ্কড লিস্টের মতো O(N) হয়ে যায়।"
+        ],
+        multiDimCodeTemplates: {
+          "Standard BST": {
+            "C++": """
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// O(log N) Search
+TreeNode* searchBST(TreeNode* root, int val) {
+    if (root == nullptr || root->val == val) return root;
+    if (val < root->val) return searchBST(root->left, val);
+    return searchBST(root->right, val);
+}
+
+// O(log N) Insert
+TreeNode* insertBST(TreeNode* root, int val) {
+    if (root == nullptr) return new TreeNode(val);
+    if (val < root->val) root->left = insertBST(root->left, val);
+    else if (val > root->val) root->right = insertBST(root->right, val);
+    return root;
+}
+
+int main() {
+    TreeNode* root = new TreeNode(50);
+    insertBST(root, 30);
+    insertBST(root, 70);
+    
+    TreeNode* found = searchBST(root, 30);
+    if (found) cout << "Found Node: " << found->val << endl;
+    return 0;
+}""",
+            "Java": """
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int val) { this.val = val; }
+}
+
+public class BstDemo {
+    public static TreeNode searchBST(TreeNode root, int val) {
+        if (root == null || root.val == val) return root;
+        return val < root.val ? searchBST(root.left, val) : searchBST(root.right, val);
+    }
+    
+    public static TreeNode insertBST(TreeNode root, int val) {
+        if (root == null) return new TreeNode(val);
+        if (val < root.val) root.left = insertBST(root.left, val);
+        else if (val > root.val) root.right = insertBST(root.right, val);
+        return root;
+    }
+}""",
+            "Python": """
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def searchBST(root, val):
+    if not root or root.val == val:
+        return root
+    return searchBST(root.left, val) if val < root.val else searchBST(root.right, val)
+
+def insertBST(root, val):
+    if not root:
+        return TreeNode(val)
+    if val < root.val:
+        root.left = insertBST(root.left, val)
+    elif val > root.val:
+        root.right = insertBST(root.right, val)
+    return root""",
+            "JavaScript": """
+class TreeNode {
+    constructor(val = 0, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function searchBST(root, val) {
+    if (!root || root.val === val) return root;
+    return val < root.val ? searchBST(root.left, val) : searchBST(root.right, val);
+}
+
+function insertBST(root, val) {
+    if (!root) return new TreeNode(val);
+    if (val < root.val) root.left = insertBST(root.left, val);
+    else if (val > root.val) root.right = insertBST(root.right, val);
+    return root;
+}"""
+          },
+          "Tree Traversals": {
+            "C++": """
+#include <iostream>
+using namespace std;
+
+struct TreeNode { int val; TreeNode *left, *right; };
+
+// Inorder Traversal (LNR) -> Sorted Ascending Order
+void inorder(TreeNode* root) {
+    if (!root) return;
+    inorder(root->left);
+    cout << root->val << " ";
+    inorder(root->right);
+}
+
+// Preorder Traversal (NLR)
+void preorder(TreeNode* root) {
+    if (!root) return;
+    cout << root->val << " ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+// Postorder Traversal (LRN)
+void postorder(TreeNode* root) {
+    if (!root) return;
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->val << " ";
+}""",
+            "Java": """
+class TreeTraversals {
+    // Inorder (Left -> Root -> Right)
+    public static void inorder(TreeNode root) {
+        if (root == null) return;
+        inorder(root.left);
+        System.out.print(root.val + " ");
+        inorder(root.right);
+    }
+}""",
+            "Python": """
+def inorder(root):
+    if not root: return []
+    return inorder(root.left) + [root.val] + inorder(root.right)""",
+            "JavaScript": """
+function inorder(root) {
+    if (!root) return [];
+    return [...inorder(root.left), root.val, ...inorder(root.right)];
+}"""
+          },
+          "BST Deletion": {
+            "C++": """
+TreeNode* findMin(TreeNode* node) {
+    while (node->left != nullptr) node = node->left;
+    return node;
+}
+
+TreeNode* deleteNode(TreeNode* root, int key) {
+    if (!root) return nullptr;
+    if (key < root->val) root->left = deleteNode(root->left, key);
+    else if (key > root->val) root->right = deleteNode(root->right, key);
+    else {
+        // Node found
+        if (!root->left) { TreeNode* temp = root->right; delete root; return temp; }
+        else if (!root->right) { TreeNode* temp = root->left; delete root; return temp; }
+        // Case 3: 2 children -> replace with Inorder Successor (min of right subtree)
+        TreeNode* temp = findMin(root->right);
+        root->val = temp->val;
+        root->right = deleteNode(root->right, temp->val);
+    }
+    return root;
+}""",
+            "Java": """
+public TreeNode deleteNode(TreeNode root, int key) {
+    if (root == null) return null;
+    if (key < root.val) root.left = deleteNode(root.left, key);
+    else if (key > root.val) root.right = deleteNode(root.right, key);
+    else {
+        if (root.left == null) return root.right;
+        if (root.right == null) return root.left;
+        TreeNode minNode = findMin(root.right);
+        root.val = minNode.val;
+        root.right = deleteNode(root.right, minNode.val);
+    }
+    return root;
+}
+private TreeNode findMin(TreeNode node) {
+    while (node.left != null) node = node.left;
+    return node;
+}""",
+            "Python": """
+def deleteNode(root, key):
+    if not root: return None
+    if key < root.val: root.left = deleteNode(root.left, key)
+    elif key > root.val: root.right = deleteNode(root.right, key)
+    else:
+        if not root.left: return root.right
+        if not root.right: return root.left
+        temp = root.right
+        while temp.left: temp = temp.left
+        root.val = temp.val
+        root.right = deleteNode(root.right, temp.val)
+    return root""",
+            "JavaScript": """
+function deleteNode(root, key) {
+    if (!root) return null;
+    if (key < root.val) root.left = deleteNode(root.left, key);
+    else if (key > root.val) root.right = deleteNode(root.right, key);
+    else {
+        if (!root.left) return root.right;
+        if (!root.right) return root.left;
+        let curr = root.right;
+        while (curr.left) curr = curr.left;
+        root.val = curr.val;
+        root.right = deleteNode(root.right, curr.val);
+    }
+    return root;
+}"""
+          }
+        },
+        basicProblems: [
+          DsaProblem(
+            id: "bst-1",
+            title: "1. Search in a Binary Search Tree (LeetCode #700)",
+            category: "BST Basic",
+            keyIdeaEn: "Compare `val` with `root.val`. If smaller go left, if larger go right in O(log N) time.",
+            keyIdeaBn: "টার্গেট মান ছোট হলে বামে এবং বড় হলে ডানে গিয়ে O(log N) সময়ে খুঁজুন।",
+            codeCpp: """
+TreeNode* searchBST(TreeNode* root, int val) {
+    if (!root || root->val == val) return root;
+    return val < root->val ? searchBST(root->left, val) : searchBST(root->right, val);
+}""",
+            codeJava: """
+public static TreeNode searchBST(TreeNode root, int val) {
+    if (root == null || root.val == val) return root;
+    return val < root.val ? searchBST(root.left, val) : searchBST(root.right, val);
+}""",
+            codePython: """
+def searchBST(root, val):
+    if not root or root.val == val: return root
+    return searchBST(root.left, val) if val < root.val else searchBST(root.right, val)""",
+            codeJs: """
+function searchBST(root, val) {
+    if (!root || root.val === val) return root;
+    return val < root.val ? searchBST(root.left, val) : searchBST(root.right, val);
+}""",
+            descriptionEn: "Find the node in the BST that has a node's value equal to `val` and return the subtree rooted with that node.",
+            descriptionBn: "BST তে যে নোডের মান `val` এর সমান সেটি খুঁজুন এবং সেই নোড যুক্ত সাবট্রি রিটার্ন করুন।",
+            sampleInputs: ["root = [4,2,7,1,3], val = 2"],
+            sampleOutputs: ["Subtree: [2,1,3]"],
+          ),
+          DsaProblem(
+            id: "bst-2",
+            title: "2. Validate Binary Search Tree (LeetCode #98)",
+            category: "BST Pattern",
+            keyIdeaEn: "Validate each node falls strictly within a valid global range `(minVal, maxVal)`. Recursively update bounds.",
+            keyIdeaBn: "প্রতিটি নোডের মান `(minVal, maxVal)` বাউন্ডের মধ্যে রয়েছে কিনা রিকার্সিভলি চেক করুন।",
+            codeCpp: """
+bool isValidBST(TreeNode* root, long long minVal = LONG_MIN, long long maxVal = LONG_MAX) {
+    if (!root) return true;
+    if (root->val <= minVal || root->val >= maxVal) return false;
+    return isValidBST(root->left, minVal, root->val) && isValidBST(root->right, root->val, maxVal);
+}""",
+            codeJava: """
+public static boolean isValidBST(TreeNode root) {
+    return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+}
+private static boolean validate(TreeNode node, long min, long max) {
+    if (node == null) return true;
+    if (node.val <= min || node.val >= max) return false;
+    return validate(node.left, min, node.val) && validate(node.right, node.val, max);
+}""",
+            codePython: """
+def isValidBST(root, min_val=float('-inf'), max_val=float('inf')):
+    if not root: return True
+    if root.val <= min_val or root.val >= max_val: return False
+    return isValidBST(root.left, min_val, root.val) and isValidBST(root.right, root.val, max_val)""",
+            codeJs: """
+function isValidBST(root, minVal = -Infinity, maxVal = Infinity) {
+    if (!root) return true;
+    if (root.val <= minVal || root.val >= maxVal) return false;
+    return isValidBST(root.left, minVal, root.val) && isValidBST(root.right, root.val, maxVal);
+}""",
+            descriptionEn: "Determine if a given binary tree is a valid Binary Search Tree satisfying the BST invariant.",
+            descriptionBn: "দেওয়া বাইনারি ট্রিটি একটি ভ্যালিড BST কিনা নিরূপণ করুন।",
+            sampleInputs: ["root = [2,1,3]", "root = [5,1,4,null,null,3,6]"],
+            sampleOutputs: ["true", "false (4 in right subtree is < 5)"],
+          ),
+          DsaProblem(
+            id: "bst-3",
+            title: "3. Lowest Common Ancestor of a BST (LeetCode #235)",
+            category: "BST Pattern",
+            keyIdeaEn: "If both nodes `p` & `q` < root, go left. If both > root, go right. The split point is the LCA!",
+            keyIdeaBn: "যদি `p` ও `q` উভয়েই মূল নোডের চেয়ে ছোট হয় তবে বামে যান, বড় হলে ডানে যান। স্প্লিট নোডটিই হলো LCA।",
+            codeCpp: """
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (p->val < root->val && q->val < root->val)
+        return lowestCommonAncestor(root->left, p, q);
+    if (p->val > root->val && q->val > root->val)
+        return lowestCommonAncestor(root->right, p, q);
+    return root;
+}""",
+            codeJava: """
+public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (p.val < root.val && q.val < root.val) return lowestCommonAncestor(root.left, p, q);
+    if (p.val > root.val && q.val > root.val) return lowestCommonAncestor(root.right, p, q);
+    return root;
+}""",
+            codePython: """
+def lowestCommonAncestor(root, p, q):
+    if p.val < root.val and q.val < root.val:
+        return lowestCommonAncestor(root.left, p, q)
+    if p.val > root.val and q.val > root.val:
+        return lowestCommonAncestor(root.right, p, q)
+    return root""",
+            codeJs: """
+function lowestCommonAncestor(root, p, q) {
+    if (p.val < root.val && q.val < root.val) return lowestCommonAncestor(root.left, p, q);
+    if (p.val > root.val && q.val > root.val) return lowestCommonAncestor(root.right, p, q);
+    return root;
+}""",
+            descriptionEn: "Find the Lowest Common Ancestor (LCA) node of two given nodes `p` and `q` in a BST.",
+            descriptionBn: "BST তে দুটি নির্দিষ্ট নোড `p` এবং `q` এর সর্বনিম্ন কমন এনসেস্টর (LCA) নোড খুঁজুন।",
+            sampleInputs: ["root = [6,2,8,0,4,7,9], p = 2, q = 8"],
+            sampleOutputs: ["LCA Node: 6"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Degeneration to Skewed O(N) Tree",
+            "desc": "Inserting already sorted array elements sequentially turns naive BST into a line of depth O(N). Use AVL or Red-Black balance."
+          },
+          {
+            "title": "2. Local BST Validation Bug",
+            "desc": "Only checking `node.left < node` locally fails when a deep left node is larger than an ancestor. Always enforce global `(min, max)` range."
+          },
+          {
+            "title": "3. Unlinked Pointer in Node Deletion",
+            "desc": "Forgetting to assign the return value of `deleteNode(root.left, val)` back to `root.left` severs parent-child links."
+          },
+          {
+            "title": "4. Duplicate Values Invariant Confusion",
+            "desc": "Not defining strict rules for equal key values (`<` vs `<=`). Standard BST requires unique keys."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. স্কিউড ট্রি হয়ে O(N) সময় লাগা",
+            "desc": "সর্টেড ডেটা দিয়ে বিএসটি তৈরি করলে গাছটি একলাইনে হেলে পড়ে O(N) লিঙ্কড লিস্টের মতো হয়ে যায়।"
+          },
+          {
+            "title": "২. লোকাল BST চেক করার ভুল",
+            "desc": "শুধু ইমিডিয়েট চাইল্ডের সাথে তুলনা করলে ভেতরের কোনো নোড এন্সেস্টরের চেয়ে বড় হয়ে BST নিয়ম ভেঙে দিতে পারে।"
+          },
+          {
+            "title": "৩. নোড ডিলেশনে পয়েন্টার ফিক্স না করা",
+            "desc": "রিকার্সিভ `deleteNode(root.left, val)` এর রিটার্ন মান `root.left` এ ব্যাক-এসাইন করতে ভুলে যাওয়া।"
+          },
+          {
+            "title": "৪. ডুপ্লিকেট মানের ভুলের বিভ্রান্তি",
+            "desc": "সমান মানের জন্য নির্দিষ্ট নিয়ম না রাখা। স্ট্যান্ডার্ড BST তে প্রতিটি কী ইউনিক হতে হয়।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand Node Hierarchy & BST Invariant",
+            "desc": "Master node struct, left/right pointers, and the rule `Left Subtree < Root < Right Subtree`."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Tree Traversals (Inorder, Preorder, Postorder)",
+            "desc": "Learn LNR inorder traversal to obtain sorted elements, and BFS level order traversal."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Search & Insert Operations",
+            "desc": "Implement recursive and iterative BST search and insertion in O(log N) time."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Node Deletion (3 Cases)",
+            "desc": "Handle leaf deletion, single child bypass, and 2-child Inorder Successor replacement."
+          },
+          {
+            "step": "Step 5",
+            "title": "Learn Global BST Validation & LCA",
+            "desc": "Solve Validate BST using global range bounds, LCA, and introduction to AVL / Red-Black self-balancing trees."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "নোড হায়ারার্কি ও BST মূল নিয়ম শিখুন",
+            "desc": "নোড পয়েন্টার এবং `বাম সাবট্রি < নোড < ডান সাবট্রি` ইনভেরিয়েন্ট রুল আয়ত্ত করুন।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "ট্রি ট্রাভার্সাল (Inorder, Preorder, Postorder)",
+            "desc": "LNR Inorder দিয়ে সর্টেড উপাদান পাওয়া এবং লেভেল অর্ডার BFS ট্রাভার্সাল শিখুন।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "O(log N) সার্চ ও ইনসার্ট অপারেশন",
+            "desc": "রিকার্সিভ এবং ইটারেটিভ নিয়মে BST তে উপাদান খোঁজা ও যোগ করার কোড লিখুন।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "নোড ডিলেশনের ৩টি কেস আয়ত্ত করুন",
+            "desc": "লিফ নোড বাদ, ১ চাইল্ড বাইপাস এবং ২ চাইল্ডের ক্ষেত্রে Inorder Successor রিপ্লেসমেন্ট শিখুন।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "গ্লোবাল BST ভ্যালিডেশন ও LCA প্রবলেম",
+            "desc": "গ্লোবাল বাউন্ড রেঞ্জ দিয়ে Validate BST, LCA এবং AVL/Red-Black সেলফ-ব্যালেন্সিং ট্রির ধারণা।"
+          }
+        ],
       ),
 
       // 7. HEAP
