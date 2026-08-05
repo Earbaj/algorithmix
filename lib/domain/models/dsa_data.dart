@@ -531,7 +531,7 @@ function groupAnagrams(strs) {
             descriptionEn: "Group an array of strings together if they are anagrams of each other.",
             descriptionBn: "স্ট্রিংগুলোর অ্যারে থেকে একই বর্ণ দ্বারা গঠিত শব্দসমূহ (Anagrams) হ্যাশ ম্যাপ দিয়ে গ্রুপিং করুন।",
             sampleInputs: ["strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]"],
-            sampleOutputs: "[[\"bat\"], [\"nat\",\"tan\"], [\"ate\",\"eat\",\"tea\"]]",
+            sampleOutputs: ["[\"bat\"], [\"nat\",\"tan\"], [\"ate\",\"eat\",\"tea\"]"],
           ),
           DsaProblem(
             id: "hm-3",
