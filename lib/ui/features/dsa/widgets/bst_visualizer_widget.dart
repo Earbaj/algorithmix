@@ -147,19 +147,19 @@ class _BstVisualizerWidgetState extends State<BstVisualizerWidget> {
           width: double.infinity,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppTheme.accentCyan.withOpacity(0.15),
+            color: AppTheme.accentNeonCyan.withOpacity(0.15),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppTheme.accentCyan.withOpacity(0.5)),
+            border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.5)),
           ),
           child: Row(
             children: [
-              const Icon(Icons.account_tree, color: AppTheme.accentCyan, size: 20),
+              const Icon(Icons.account_tree, color: AppTheme.accentNeonCyan, size: 20),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   _statusMessage,
                   style: const TextStyle(
-                    color: AppTheme.accentCyan,
+                    color: AppTheme.accentNeonCyan,
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
                   ),
@@ -184,7 +184,7 @@ class _BstVisualizerWidgetState extends State<BstVisualizerWidget> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("BST Diagram (Left < Root < Right)", style: TextStyle(color: AppTheme.accentCyan, fontWeight: FontWeight.bold, fontSize: 13)),
+                  Text("BST Diagram (Left < Root < Right)", style: TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13)),
                   Text("Height: O(log N)", style: TextStyle(color: AppTheme.textMuted, fontSize: 11)),
                 ],
               ),
@@ -308,7 +308,7 @@ class _BstVisualizerWidgetState extends State<BstVisualizerWidget> {
                   ElevatedButton.icon(
                     icon: const Icon(Icons.add, size: 16),
                     label: Text(widget.isEnglish ? "Insert BST O(log N)" : "ইনসার্ট (O(log N))"),
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentCyan, foregroundColor: AppTheme.primaryDark),
+                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentNeonCyan, foregroundColor: AppTheme.primaryDark),
                     onPressed: _handleInsert,
                   ),
                   ElevatedButton.icon(
@@ -345,7 +345,7 @@ class _BstVisualizerWidgetState extends State<BstVisualizerWidget> {
       decoration: BoxDecoration(
         color: isHl ? AppTheme.accentPink : (isRoot ? AppTheme.accentPurple : AppTheme.surfaceDark),
         shape: BoxShape.circle,
-        border: Border.all(color: isHl ? Colors.white : AppTheme.accentCyan, width: isHl ? 2.5 : 1.5),
+        border: Border.all(color: isHl ? Colors.white : AppTheme.accentNeonCyan, width: isHl ? 2.5 : 1.5),
         boxShadow: isHl ? [BoxShadow(color: AppTheme.accentPink.withOpacity(0.5), blurRadius: 10)] : [],
       ),
       child: Center(
@@ -370,7 +370,7 @@ class _BstVisualizerWidgetState extends State<BstVisualizerWidget> {
       decoration: BoxDecoration(
         color: isHl ? AppTheme.accentPink : AppTheme.primaryDark,
         shape: BoxShape.circle,
-        border: Border.all(color: isHl ? Colors.white : AppTheme.accentCyan.withOpacity(0.6)),
+        border: Border.all(color: isHl ? Colors.white : AppTheme.accentNeonCyan.withOpacity(0.6)),
       ),
       child: Center(
         child: Text("${node.val}", style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white)),
@@ -393,7 +393,7 @@ class _BstVisualizerWidgetState extends State<BstVisualizerWidget> {
           duration: const Duration(milliseconds: 250),
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? AppTheme.accentCyan : Colors.transparent,
+            color: isSelected ? AppTheme.accentNeonCyan : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
