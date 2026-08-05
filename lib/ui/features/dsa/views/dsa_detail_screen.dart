@@ -5,6 +5,7 @@ import 'package:algorithmix/ui/core/utils/responsive.dart';
 import '../widgets/array_visualizer_widget.dart';
 import '../widgets/dsa_visualizers.dart';
 import '../widgets/dsa_problem_modal.dart';
+import 'dsa_problem_detail_screen.dart';
 
 class DsaDetailScreen extends StatefulWidget {
   final DsaTopic topic;
@@ -356,7 +357,14 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
       margin: const EdgeInsets.only(bottom: 14),
       child: InkWell(
         onTap: () {
-          DsaProblemModal.show(context, problem, _isEnglish);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => DsaProblemDetailScreen(
+                problem: problem,
+                initialLanguageIsEnglish: _isEnglish,
+              ),
+            ),
+          );
         },
         borderRadius: BorderRadius.circular(16),
         child: Padding(
