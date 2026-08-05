@@ -122,7 +122,7 @@ class _DsaScreenState extends State<DsaScreen> {
   }
 
   Widget _buildTopicTile(DsaTopic topic) {
-    final totalProblems = topic.easyProblems.length + topic.mediumProblems.length + topic.hardProblems.length;
+    final totalProblems = topic.basicProblems.length;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 14),
