@@ -322,9 +322,11 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
   // TAB 3: Basic Problems (1D, 2D, 3D)
   Widget _buildProblemsTab() {
     final hPadding = Responsive.horizontalPadding(context);
+    final isMobile = Responsive.isMobile(context);
     final problems = widget.topic.basicProblems;
 
     return ResponsiveCenter(
+      maxWidth: 1200,
       padding: EdgeInsets.all(hPadding),
       child: SingleChildScrollView(
         child: Column(
@@ -341,9 +343,22 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 padding: EdgeInsets.all(20),
                 child: Text("No basic problems listed.", style: TextStyle(color: AppTheme.textMuted)),
               )
-            else
+            else if (isMobile)
               Column(
                 children: problems.map((p) => _buildProblemCard(p)).toList(),
+              )
+            else
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 540,
+                  mainAxisExtent: 165,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: problems.length,
+                itemBuilder: (context, index) => _buildProblemCard(problems[index]),
               ),
             const SizedBox(height: 20),
           ],
