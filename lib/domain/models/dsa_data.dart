@@ -674,7 +674,11 @@ class MinStack {
     }
     top() { return this.st[this.st.length - 1]; }
     getMin() { return this.minSt[this.minSt.length - 1]; }
-}"""
+}""",
+            descriptionEn: "Design a stack that supports push, pop, top, and retrieving the minimum element in O(1) time.",
+            descriptionBn: "একটি স্ট্যাক ডিজাইন করুন যা O(1) সময়ে push, pop, top এবং সর্বনিম্ন মান (Min) পেতে সাপোর্ট করে।",
+            sampleInputs: ["push(-2), push(0), push(-3), getMin(), pop(), top(), getMin()"],
+            sampleOutputs: ["getMin(): -3, top(): 0, getMin(): -2"],
           ),
         ],
         commonMistakesEn: [
