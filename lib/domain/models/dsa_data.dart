@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DsaProblem {
   final String id;
   final String title;
-  final String category; // e.g. "Queue Basic", "Deque Pattern"
+  final String category; // e.g. "Hash Map Basic", "Hash Set Pattern"
   final String keyIdeaEn;
   final String keyIdeaBn;
   final String codeCpp;
@@ -44,7 +44,7 @@ class DsaTopic {
   final Color themeColor;
   final List<String> keyConceptsEn;
   final List<String> keyConceptsBn;
-  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Queue, Circular Queue, Deque) -> (Language -> Code)
+  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Hash Map, Hash Set, Custom Chaining) -> (Language -> Code)
   final List<DsaProblem> basicProblems;
   final List<Map<String, String>> commonMistakesEn;
   final List<Map<String, String>> commonMistakesBn;
@@ -168,637 +168,16 @@ class DsaDataRepository {
         spaceComplexity: "O(N)",
         icon: Icons.swap_horizontal_circle_outlined,
         themeColor: const Color(0xFFF59E0B),
-        descriptionEn:
-            "A Queue is a linear pipeline operating under the strict First-In, First-Out (FIFO) discipline. Elements enter at the REAR and exit from the FRONT. A Double-Ended Queue (Deque) extends this by allowing insertions and deletions at BOTH Front and Rear ends in O(1) time. Operating systems use queues for BFS graph traversal, printer queues, and CPU task scheduling.",
-        descriptionBn:
-            "কিউ হলো একটি ফার্স্ট-ইন, ফার্স্ট-আউট (FIFO) লিনিয়ার পাইপলাইন। যে উপাদান প্রথমে ঢোকে, সে উপাদানই প্রথমে বের হয়। উপাদান যোগ হয় পেছনে (REAR) এবং বের হয় সামনে থেকে (FRONT)। ডাবল-এন্ডেড কিউ (Deque) সামনে ও পেছনে উভয় প্রান্তেই O(1) সময়ে যোগ ও বাদ দেওয়ার সুবিধা দেয়। এটি গ্রাফের BFS ট্রাভার্সাল, প্রিন্টার কিউ এবং CPU টাস্ক সিডিউলিংয়ে ব্যবহৃত হয়।",
-        keyConceptsEn: [
-          "FIFO Discipline: First item enqueued is the first item dequeued. Insert at REAR, remove from FRONT.",
-          "O(1) Operations: `enqueue(val)` / `push_back`, `dequeue()` / `pop_front`, `front()`, `isEmpty()` all run in O(1).",
-          "Circular Queue: Reuses array slots with modulo math `index = (rear + 1) % capacity`, eliminating O(N) element shifting.",
-          "Double-Ended Queue (Deque): Supports `push_front`, `push_back`, `pop_front`, `pop_back` in O(1) time.",
-          "BFS Traversal Engine: Breadth-First Search on trees and graphs uses a Queue to explore level by level."
-        ],
-        keyConceptsBn: [
-          "FIFO নীতি: প্রথম যোগ করা উপাদানটিই প্রথমে বের হবে। ইনসার্ট হয় REAR এ, ডিলেট হয় FRONT থেকে।",
-          "O(1) অপারেশন্স: `enqueue(val)` / `push_back`, `dequeue()` / `pop_front`, `front()`, এবং `isEmpty()` O(1) সময়ে সম্পন্ন হয়।",
-          "সার্কুলার কিউ (Circular Queue): মডিউলাস সূত্র `index = (rear + 1) % capacity` দিয়ে মেমোরি খালি ঘর পুনর্ব্যবহার করে O(N) শিফটিং দূর করে।",
-          "ডাবল-এন্ডেড কিউ (Deque): সামনে ও পেছনে উভয় মুখেই O(1) সময়ে ইনসার্ট ও ডিলেট করার সুবিধা দেয়।",
-          "BFS ট্রাভার্সাল: গ্রাফ ও ট্রির লেভেল-বাই-লেভেল BFS সার্চের মূল ড্রাইভার হলো Queue।"
-        ],
+        descriptionEn: "A Queue is a linear pipeline operating under the strict First-In, First-Out (FIFO) discipline.",
+        descriptionBn: "কিউ হলো একটি ফার্স্ট-ইন, ফার্স্ট-আউট (FIFO) লিনিয়ার পাইপলাইন।",
+        keyConceptsEn: ["FIFO Discipline", "Circular Queue", "Deque"],
+        keyConceptsBn: ["FIFO নীতি", "সার্কুলার কিউ", "Deque"],
         multiDimCodeTemplates: {
           "Queue (FIFO)": {
-            "C++": """
-#include <iostream>
-#include <queue>
-using namespace std;
-
-int main() {
-    queue<int> q;
-    
-    // Enqueue at Rear O(1)
-    q.push(10);
-    q.push(20);
-    q.push(30);
-    
-    // Read Front O(1)
-    cout << "Front element: " << q.front() << endl; // 10
-    
-    // Dequeue from Front O(1)
-    q.pop();
-    cout << "New Front: " << q.front() << endl; // 20
-    return 0;
-}""",
-            "Java": """
-import java.util.ArrayDeque;
-import java.util.Queue;
-
-public class QueueDemo {
-    public static void main(String[] args) {
-        // Use ArrayDeque for O(1) FIFO Queue
-        Queue<Integer> q = new ArrayDeque<>();
-        
-        // Enqueue O(1)
-        q.offer(10);
-        q.offer(20);
-        
-        // Peek Front O(1)
-        System.out.println("Front: " + q.peek()); // 10
-        
-        // Dequeue Front O(1)
-        q.poll();
-        System.out.println("New Front: " + q.peek()); // 20
-    }
-}""",
-            "Python": """
-from collections import deque
-
-# Python deque provides fast O(1) FIFO operations
-q = deque()
-
-# Enqueue Rear O(1)
-q.append(10)
-q.append(20)
-
-# Peek Front O(1)
-print("Front:", q[0]) # 10
-
-# Dequeue Front O(1)
-popped = q.popleft()
-print("Dequeued:", popped) # 10
-print("New Front:", q[0]) # 20""",
-            "JavaScript": """
-class Queue {
-    constructor() {
-        this.items = {};
-        this.head = 0;
-        this.tail = 0;
-    }
-    enqueue(element) {
-        this.items[this.tail] = element;
-        this.tail++;
-    }
-    dequeue() {
-        if (this.isEmpty()) return null;
-        const item = this.items[this.head];
-        delete this.items[this.head];
-        this.head++;
-        return item;
-    }
-    front() {
-        return this.items[this.head];
-    }
-    isEmpty() {
-        return this.tail - this.head === 0;
-    }
-}
-
-const q = new Queue();
-q.enqueue(10); q.enqueue(20);
-console.log("Front:", q.front()); // 10
-q.dequeue();"""
-          },
-          "Circular Queue": {
-            "C++": """
-#include <iostream>
-#include <vector>
-using namespace std;
-
-class MyCircularQueue {
-    vector<int> data;
-    int head, tail, size, capacity;
-public:
-    MyCircularQueue(int k) {
-        capacity = k;
-        data.resize(k);
-        head = 0; tail = -1; size = 0;
-    }
-    bool enQueue(int value) {
-        if (isFull()) return false;
-        tail = (tail + 1) % capacity;
-        data[tail] = value;
-        size++;
-        return true;
-    }
-    bool deQueue() {
-        if (isEmpty()) return false;
-        head = (head + 1) % capacity;
-        size--;
-        return true;
-    }
-    int Front() { return isEmpty() ? -1 : data[head]; }
-    bool isEmpty() { return size == 0; }
-    bool isFull() { return size == capacity; }
-};""",
-            "Java": """
-class MyCircularQueue {
-    private int[] data;
-    private int head = 0, tail = -1, size = 0, capacity;
-    
-    public MyCircularQueue(int k) {
-        capacity = k;
-        data = new int[k];
-    }
-    public boolean enQueue(int value) {
-        if (isFull()) return false;
-        tail = (tail + 1) % capacity;
-        data[tail] = value;
-        size++;
-        return true;
-    }
-    public boolean deQueue() {
-        if (isEmpty()) return false;
-        head = (head + 1) % capacity;
-        size--;
-        return true;
-    }
-    public int Front() { return isEmpty() ? -1 : data[head]; }
-    public boolean isEmpty() { return size == 0; }
-    public boolean isFull() { return size == capacity; }
-}""",
-            "Python": """
-class MyCircularQueue:
-    def __init__(self, k: int):
-        self.capacity = k
-        self.data = [0] * k
-        self.head = 0
-        self.tail = -1
-        self.size = 0
-        
-    def enQueue(self, value: int) -> bool:
-        if self.isFull(): return False
-        self.tail = (self.tail + 1) % self.capacity
-        self.data[self.tail] = value
-        self.size += 1
-        return True
-        
-    def deQueue(self) -> bool:
-        if self.isEmpty(): return False
-        self.head = (self.head + 1) % self.capacity
-        self.size -= 1
-        return True
-        
-    def Front(self) -> int:
-        return -1 if self.isEmpty() else self.data[self.head]
-        
-    def isEmpty(self) -> bool: return self.size == 0
-    def isFull(self) -> bool: return self.size == self.capacity""",
-            "JavaScript": """
-class MyCircularQueue {
-    constructor(k) {
-        this.capacity = k;
-        this.data = new Array(k);
-        this.head = 0;
-        this.tail = -1;
-        this.size = 0;
-    }
-    enQueue(value) {
-        if (this.isFull()) return false;
-        this.tail = (this.tail + 1) % this.capacity;
-        this.data[this.tail] = value;
-        this.size++;
-        return true;
-    }
-    deQueue() {
-        if (this.isEmpty()) return false;
-        this.head = (this.head + 1) % this.capacity;
-        this.size--;
-        return true;
-    }
-    Front() { return this.isEmpty() ? -1 : this.data[this.head]; }
-    isEmpty() { return this.size === 0; }
-    isFull() { return this.size === this.capacity; }
-}"""
-          },
-          "Double-Ended Queue (Deque)": {
-            "C++": """
-#include <iostream>
-#include <deque>
-using namespace std;
-
-int main() {
-    deque<int> dq;
-    
-    // O(1) Insert at both ends
-    dq.push_back(20);  // 20
-    dq.push_front(10); // 10 <-> 20
-    dq.push_back(30);  // 10 <-> 20 <-> 30
-    
-    cout << "Front: " << dq.front() << ", Back: " << dq.back() << endl;
-    
-    // O(1) Pop from both ends
-    dq.pop_front(); // Removes 10
-    dq.pop_back();  // Removes 30
-    return 0;
-}""",
-            "Java": """
-import java.util.ArrayDeque;
-import java.util.Deque;
-
-public class DequeDemo {
-    public static void main(String[] args) {
-        Deque<Integer> dq = new ArrayDeque<>();
-        
-        dq.addFirst(10); // push_front
-        dq.addLast(20);  // push_back
-        dq.addLast(30);
-        
-        System.out.println("Front: " + dq.peekFirst() + ", Back: " + dq.peekLast());
-        
-        dq.removeFirst(); // pop_front
-        dq.removeLast();  // pop_back
-    }
-}""",
-            "Python": """
-from collections import deque
-
-dq = deque()
-
-# O(1) Push Front & Back
-dq.appendleft(10)
-dq.append(20)
-dq.append(30)
-
-print("Front:", dq[0], "Back:", dq[-1])
-
-# O(1) Pop Front & Back
-dq.popleft() # Removes 10
-dq.pop()     # Removes 30""",
-            "JavaScript": """
-// Deque in JS using ArrayDeque simulation
-class Deque {
-    constructor() {
-        this.items = [];
-    }
-    pushFront(val) { this.items.unshift(val); }
-    pushBack(val) { this.items.push(val); }
-    popFront() { return this.items.shift(); }
-    popBack() { return this.items.pop(); }
-    peekFront() { return this.items[0]; }
-    peekBack() { return this.items[this.items.length - 1]; }
-}
-
-const dq = new Deque();
-dq.pushFront(10); dq.pushBack(20);
-console.log("Front:", dq.peekFront(), "Back:", dq.peekBack());"""
-          }
-        },
-        basicProblems: [
-          DsaProblem(
-            id: "q-1",
-            title: "1. Implement Queue using 2 Stacks",
-            category: "Queue Design",
-            keyIdeaEn: "Use inputStack for push, and outputStack for pop. When outputStack is empty, transfer all items from inputStack.",
-            keyIdeaBn: "ইনপুটের জন্য inputStack এবং পপের জন্য outputStack ব্যবহার করুন। পপ করার সময় outputStack খালি হলে সব উপাদান রিভার্স ট্রান্সফার করুন।",
-            codeCpp: """
-class MyQueue {
-    stack<int> inSt, outSt;
-public:
-    void push(int x) { inSt.push(x); }
-    int pop() {
-        peek();
-        int val = outSt.top(); outSt.pop();
-        return val;
-    }
-    int peek() {
-        if (outSt.empty()) {
-            while (!inSt.empty()) {
-                outSt.push(inSt.top());
-                inSt.pop();
-            }
-        }
-        return outSt.top();
-    }
-    bool empty() { return inSt.empty() && outSt.empty(); }
-};""",
-            codeJava: """
-class MyQueue {
-    private Deque<Integer> inSt = new ArrayDeque<>();
-    private Deque<Integer> outSt = new ArrayDeque<>();
-    
-    public void push(int x) { inSt.push(x); }
-    public int pop() {
-        peek();
-        return outSt.pop();
-    }
-    public int peek() {
-        if (outSt.isEmpty()) {
-            while (!inSt.isEmpty()) {
-                outSt.push(inSt.pop());
-            }
-        }
-        return outSt.peek();
-    }
-    public boolean empty() { return inSt.isEmpty() && outSt.isEmpty(); }
-}""",
-            codePython: """
-class MyQueue:
-    def __init__(self):
-        self.in_st = []
-        self.out_st = []
-        
-    def push(self, x: int) -> None:
-        self.in_st.append(x)
-        
-    def pop(self) -> int:
-        self.peek()
-        return self.out_st.pop()
-        
-    def peek(self) -> int:
-        if not self.out_st:
-            while self.in_st:
-                self.out_st.append(self.in_st.pop())
-        return self.out_st[-1]
-        
-    def empty(self) -> bool:
-        return not self.in_st and not self.out_st""",
-            codeJs: """
-class MyQueue {
-    constructor() {
-        this.inSt = [];
-        this.outSt = [];
-    }
-    push(x) { this.inSt.push(x); }
-    pop() {
-        this.peek();
-        return this.outSt.pop();
-    }
-    peek() {
-        if (this.outSt.length === 0) {
-            while (this.inSt.length > 0) {
-                this.outSt.push(this.inSt.pop());
-            }
-        }
-        return this.outSt[this.outSt.length - 1];
-    }
-    empty() { return this.inSt.length === 0 && this.outSt.length === 0; }
-}""",
-            descriptionEn: "Implement a First-In, First-Out (FIFO) queue using only two standard LIFO stacks.",
-            descriptionBn: "শুধুমাত্র ২টি LIFO স্ট্যাক ব্যবহার করে একটি FIFO কিউ ইমপ্লিমেন্ট করুন।",
-            sampleInputs: ["push(1), push(2), peek(), pop(), empty()"],
-            sampleOutputs: ["peek(): 1, pop(): 1, empty(): false"],
-          ),
-          DsaProblem(
-            id: "q-2",
-            title: "2. First Non-Repeating Character in Stream",
-            category: "Queue Basic",
-            keyIdeaEn: "Store frequency array and push characters to Queue. Pop queue front while frequency > 1.",
-            keyIdeaBn: "ফ্রিকোয়েন্সি অ্যারে এবং কিউ ব্যবহার করুন। কিউয়ের ফ্রন্টের ফ্রিকোয়েন্সি ১ এর বেশি হলে পপ করতে থাকুন।",
-            codeCpp: """
-string firstNonRepeating(string s) {
-    unordered_map<char, int> freq;
-    queue<char> q;
-    string res = "";
-    for (char c : s) {
-        freq[c]++;
-        q.push(c);
-        while (!q.empty() && freq[q.front()] > 1) q.pop();
-        if (q.empty()) res += '#';
-        else res += q.front();
-    }
-    return res;
-}""",
-            codeJava: """
-public static String firstNonRepeating(String s) {
-    Map<Character, Integer> freq = new HashMap<>();
-    Queue<Character> q = new ArrayDeque<>();
-    StringBuilder res = new StringBuilder();
-    for (char c : s.toCharArray()) {
-        freq.put(c, freq.getOrDefault(c, 0) + 1);
-        q.offer(c);
-        while (!q.isEmpty() && freq.get(q.peek()) > 1) q.poll();
-        if (q.isEmpty()) res.append('#');
-        else res.append(q.peek());
-    }
-    return res.toString();
-}""",
-            codePython: """
-from collections import deque, Counter
-
-def firstNonRepeating(s):
-    freq = Counter()
-    q = deque()
-    res = []
-    for c in s:
-        freq[c] += 1
-        q.append(c)
-        while q and freq[q[0]] > 1:
-            q.popleft()
-        res.append(q[0] if q else '#')
-    return "".join(res)""",
-            codeJs: """
-function firstNonRepeating(s) {
-    const freq = {};
-    const q = [];
-    let res = "";
-    for (let c of s) {
-        freq[c] = (freq[c] || 0) + 1;
-        q.push(c);
-        while (q.length > 0 && freq[q[0]] > 1) q.shift();
-        res += q.length === 0 ? '#' : q[0];
-    }
-    return res;
-}""",
-            descriptionEn: "Find the first non-repeating character at each step in a continuous character stream.",
-            descriptionBn: "একটি কন্টিনিউয়াস স্ট্রিমে প্রতিটি ধাপে প্রথম রিপিট না হওয়া ক্যারেক্টারটি খুঁজুন।",
-            sampleInputs: ["s = \"aabccxb\""],
-            sampleOutputs: ["\"a#bbbbx\""],
-          ),
-          DsaProblem(
-            id: "q-3",
-            title: "3. Sliding Window Maximum using Deque",
-            category: "Deque Pattern",
-            keyIdeaEn: "Maintain a monotonically decreasing Deque storing indices. Pop back indices smaller than current item; pop front if outside window.",
-            keyIdeaBn: "একটি Monotonic Decreasing Deque বজায় রাখুন। কারেন্ট এলিমেন্টের চেয়ে ছোট ইনডেক্স ব্যাক থেকে এবং উইন্ডোর বাইরের ইনডেক্স ফ্রন্ট থেকে পপ করুন।",
-            codeCpp: """
-vector<int> maxSlidingWindow(vector<int>& nums, int k) {
-    deque<int> dq;
-    vector<int> res;
-    for (int i = 0; i < nums.size(); i++) {
-        if (!dq.empty() && dq.front() == i - k) dq.pop_front();
-        while (!dq.empty() && nums[dq.back()] < nums[i]) dq.pop_back();
-        dq.push_back(i);
-        if (i >= k - 1) res.push_back(nums[dq.front()]);
-    }
-    return res;
-}""",
-            codeJava: """
-public static int[] maxSlidingWindow(int[] nums, int k) {
-    int n = nums.length;
-    int[] res = new int[n - k + 1];
-    Deque<Integer> dq = new ArrayDeque<>();
-    for (int i = 0; i < n; i++) {
-        if (!dq.isEmpty() && dq.peekFirst() == i - k) dq.pollFirst();
-        while (!dq.isEmpty() && nums[dq.peekLast()] < nums[i]) dq.pollLast();
-        dq.offerLast(i);
-        if (i >= k - 1) res[i - k + 1] = nums[dq.peekFirst()];
-    }
-    return res;
-}""",
-            codePython: """
-from collections import deque
-
-def maxSlidingWindow(nums, k):
-    dq = deque()
-    res = []
-    for i, num in enumerate(nums):
-        if dq and dq[0] == i - k:
-            dq.popleft()
-        while dq and nums[dq[-1]] < num:
-            dq.pop()
-        dq.append(i)
-        if i >= k - 1:
-            res.append(nums[dq[0]])
-    return res""",
-            codeJs: """
-function maxSlidingWindow(nums, k) {
-    const dq = [];
-    const res = [];
-    for (let i = 0; i < nums.length; i++) {
-        if (dq.length > 0 && dq[0] === i - k) dq.shift();
-        while (dq.length > 0 && nums[dq[dq.length - 1]] < nums[i]) dq.pop();
-        dq.push(i);
-        if (i >= k - 1) res.push(nums[dq[0]]);
-    }
-    return res;
-}""",
-            descriptionEn: "Find the maximum element in each sliding window of size `k` moving from left to right in O(N) time.",
-            descriptionBn: "সাইজ `k` এর স্লাইডিং উইন্ডো ডানে সরানোর সাথে সাথে O(N) সময়ে সর্বোচ্চ উপাদানটি বের করুন।",
-            sampleInputs: ["nums = [1,3,-1,-3,5,3,6,7], k = 3"],
-            sampleOutputs: ["[3, 3, 5, 5, 6, 7]"],
-          ),
-        ],
-        commonMistakesEn: [
-          {
-            "title": "1. Inefficient O(N) Array Shifting Dequeue",
-            "desc": "Calling `arr.shift()` or `list.remove(0)` inside N loops causes hidden quadratic O(N²) time complexity. Use `ArrayDeque` or `Circular Queue`."
-          },
-          {
-            "title": "2. Queue Underflow Exception",
-            "desc": "Calling `dequeue()` or `front()` on an empty queue triggers runtime errors."
-          },
-          {
-            "title": "3. Confusing FRONT and REAR Index Pointers",
-            "desc": "Swapping FRONT and REAR pointer assignment in Circular Queue logic distorts item order."
-          },
-          {
-            "title": "4. Missing Window Expiry Check in Deque",
-            "desc": "Forgetting to evict stale indices `dq.front() == i - k` in Sliding Window Maximum algorithm."
-          }
-        ],
-        commonMistakesBn: [
-          {
-            "title": "১. অ্যারের ওয়ান ডিলেশনে O(N²) লুকানো সময় নষ্ট",
-            "desc": "লুপের ভেতর `list.remove(0)` বা `shift()` কল করলে প্রতিটি উপাদান বামে সরানোর কারণে O(N²) সময় নষ্ট হয়। `ArrayDeque` ব্যবহার করুন।"
-          },
-          {
-            "title": "২. কিউ আন্ডারফ্লো ভুল",
-            "desc": "খালি কিউ থেকে `dequeue()` করতে গেলে রানটাইম এক্সেপশন ঘটে।"
-          },
-          {
-            "title": "৩. FRONT এবং REAR পয়েন্টারে উল্টাপাল্টা",
-            "desc": "সার্কুলার কিউ তে FRONT এবং REAR এর পয়েন্টার আপডেট গুলিয়ে ফেললে ডেটার অর্ডার নষ্ট হয়।"
-          },
-          {
-            "title": "৪. স্লাইডিং উইন্ডোতে পুরানো ইনডেক্স সরাতে ভুলে যাওয়া",
-            "desc": "স্লাইডিং উইন্ডো মেথডে `dq.front() == i - k` উইন্ডো আউট হওয়া ইনডেক্স না মুছলে ভুল রেজাল্ট আসে।"
-          }
-        ],
-        roadmapStepsEn: [
-          {
-            "step": "Step 1",
-            "title": "Understand FIFO Discipline & Core Operations",
-            "desc": "Master enqueue, dequeue, front, rear, and difference between Queue and Stack."
-          },
-          {
-            "step": "Step 2",
-            "title": "Master Circular Queue Implementation",
-            "desc": "Learn modulo index math `(rear + 1) % capacity` to build memory-efficient circular queue."
-          },
-          {
-            "step": "Step 3",
-            "title": "Understand Double-Ended Queue (Deque)",
-            "desc": "Master push_front, push_back, pop_front, pop_back operations in O(1) time."
-          },
-          {
-            "step": "Step 4",
-            "title": "Implement Queue using 2 Stacks & Stream Buffers",
-            "desc": "Solve queue using 2 stacks, stream non-repeating character, and print job queue."
-          },
-          {
-            "step": "Step 5",
-            "title": "Master Sliding Window Maximum & Monotonic Deque",
-            "desc": "Solve sliding window max using monotonic deque and prepare for BFS graph traversal."
-          }
-        ],
-        roadmapStepsBn: [
-          {
-            "step": "ধাপ ১",
-            "title": "FIFO নীতি ও মূল কিউ অপারেশন শিখুন",
-            "desc": "Enqueue, Dequeue, Front, Rear এবং স্ট্যাক ও কিউয়ের পার্থক্য পরিষ্কার করুন।"
-          },
-          {
-            "step": "ধাপ ২",
-            "title": "সার্কুলার কিউ (Circular Queue) আয়ত্ত করুন",
-            "desc": "মডিউলাস সূত্র `(rear + 1) % capacity` দিয়ে মেমোরি-দক্ষ সার্কুলার কিউ তৈরি করা শিখুন।"
-          },
-          {
-            "step": "ধাপ ৩",
-            "title": "ডাবল-এন্ডেড কিউ (Deque) মাস্টার করুন",
-            "desc": "সামনে ও পেছনে O(1) ইনসার্ট ও ডিলেশনের `push_front`, `pop_front`, `push_back`, `pop_back` প্রয়োগ।"
-          },
-          {
-            "step": "ধাপ ৪",
-            "title": "২টি স্ট্যাক দিয়ে Queue ও স্ট্রিম বাফার সলভ করুন",
-            "desc": "২টি স্ট্যাক দিয়ে কিউ ডিজাইন এবং স্ট্রিমে প্রথম নন-রিপিটিং অক্ষর ডিটেক্ট করা প্র্যাকটিস করুন।"
-          },
-          {
-            "step": "ধাপ ৫",
-            "title": "স্লাইডিং উইন্ডো ম্যাক্সিমাম ও Monotonic Deque",
-            "desc": "Monotonic Deque দিয়ে স্লাইডিং উইন্ডো ম্যাক্সিমাম সলভ করুন এবং BFS গ্রাফ ট্রাভার্সালের জন্য তৈরি হন।"
-          }
-        ],
-      ),
-
-      // 5. HASH TABLE
-      DsaTopic(
-        id: 205,
-        title: "Hash Table & Hash Map",
-        category: "Associative Array",
-        timeComplexity: "Lookup O(1) avg",
-        spaceComplexity: "O(N)",
-        icon: Icons.grid_view_outlined,
-        themeColor: const Color(0xFFEC4899),
-        descriptionEn: "Key-Value lookup table.",
-        descriptionBn: "কী-ভ্যালু পেয়ার লুপআপ টেবিল।",
-        keyConceptsEn: ["Hash key mapping"],
-        keyConceptsBn: ["হ্যাশ কী গণনা"],
-        multiDimCodeTemplates: {
-          "Hash Table": {
-            "C++": "unordered_map<string, int> mp;",
-            "Java": "HashMap<String, Integer> map = new HashMap<>();",
-            "Python": "mp = {}",
-            "JavaScript": "const map = new Map();"
+            "C++": "queue<int> q; q.push(10); q.pop();",
+            "Java": "Queue<Integer> q = new ArrayDeque<>();",
+            "Python": "q = deque(); q.append(10); q.popleft()",
+            "JavaScript": "const q = []; q.push(10); q.shift()"
           }
         },
         basicProblems: [],
@@ -806,6 +185,491 @@ function maxSlidingWindow(nums, k) {
         commonMistakesBn: [],
         roadmapStepsEn: [],
         roadmapStepsBn: [],
+      ),
+
+      // 5. HASH TABLE & HASH MAP
+      DsaTopic(
+        id: 205,
+        title: "Hash Table & Hash Map",
+        category: "Associative Dictionary",
+        timeComplexity: "Lookup O(1) avg | Insert O(1) avg | Delete O(1) avg",
+        spaceComplexity: "O(N)",
+        icon: Icons.grid_view_outlined,
+        themeColor: const Color(0xFFEC4899),
+        descriptionEn:
+            "A Hash Table (or Hash Map) is an associative key-value dictionary that maps keys to memory array indices using a Hash Function (`hash(key) % capacity`). It delivers average O(1) constant time complexity for insertion, lookup, and deletion. Collisions (when multiple keys produce the same hash index) are resolved using Separate Chaining (bucket linked lists) or Open Addressing (linear probing).",
+        descriptionBn:
+            "হ্যাশ টেবিল (বা হ্যাশ ম্যাপ) হলো একটি কী-ভ্যালু ডিকশনারি যা হ্যাশ ফাংশন (`hash(key) % capacity`) ব্যবহার করে কী-কে মেমোরি অ্যারের ইনডেক্সে রূপান্তর করে। এটি গড়ে O(1) কনস্ট্যান্ট টাইমে ইনসার্ট, লুকআপ ও ডিলেশন সাপোর্ট করে। কলিশন (একাধিক কী এর একই ইনডেক্স পাওয়া) দূর করতে সেপারেট চেইনিং (লিঙ্কড লিস্ট বাকেট) বা ওপেন এড্রেসিং (লিনিয়ার প্রোবিং) ব্যবহৃত হয়।",
+        keyConceptsEn: [
+          "O(1) Average Time Complexity: Direct Key-to-Value lookup without searching through arrays sequentially.",
+          "Hash Function: Maps arbitrary key objects (Strings, Integers, Custom Objects) to integer array bucket indices.",
+          "Collision Resolution: Separate Chaining attaches LinkedList nodes at bucket index; Linear Probing searches next available slot.",
+          "Load Factor & Dynamic Rehashing: Load Factor α = N / Capacity. When α exceeds 0.75, table capacity doubles and keys are rehashed.",
+          "Hash Map vs Hash Set: Hash Map stores `Key -> Value` associations; Hash Set stores unique `Key` elements only."
+        ],
+        keyConceptsBn: [
+          "O(1) গড় সময় জটিলতা: অ্যারেতে লিনিয়ার সার্চ না করেই সরাসরি কী দিয়ে মান বের করা যায়।",
+          "হ্যাশ ফাংশন: যেকোনো ডেটা কী-কে ইনটিজার অ্যারে ইনডেক্সে রূপান্তর করে।",
+          "কলিশন হ্যান্ডলিং: সেপারেট চেইনিং নোডগুলোকে বাকেটের সাথে লিঙ্ক করে; লিনিয়ার প্রোবিং খালি স্লট না পাওয়া পর্যন্ত ডানে খোঁজে।",
+          "লোড ফ্যাক্টর ও রিহ্যাশিং: লোড ফ্যাক্টর α = N / Capacity। α এর মান ০.৭৫ এর বেশি হলে ক্যাপাসিটি ডাবল হয়ে রিহ্যাশিং ঘটে।",
+          "হ্যাশ ম্যাপ বনাম হ্যাশ সেট: হ্যাশ ম্যাপ `Key -> Value` পেয়ার রাখে; হ্যাশ সেট কেবল ইউনিক `Key` কালেকশন রাখে।"
+        ],
+        multiDimCodeTemplates: {
+          "Hash Map (Key-Value)": {
+            "C++": """
+#include <iostream>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+int main() {
+    unordered_map<string, int> ageMap;
+    
+    // O(1) Put
+    ageMap["Alice"] = 25;
+    ageMap["Bob"] = 30;
+    
+    // O(1) Lookup
+    if (ageMap.count("Alice")) {
+        cout << "Alice's Age: " << ageMap["Alice"] << endl;
+    }
+    
+    // O(1) Erase
+    ageMap.erase("Bob");
+    return 0;
+}""",
+            "Java": """
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapDemo {
+    public static void main(String[] args) {
+        Map<String, Integer> ageMap = new HashMap<>();
+        
+        // O(1) Put
+        ageMap.put("Alice", 25);
+        ageMap.put("Bob", 30);
+        
+        // O(1) Get
+        System.out.println("Alice's Age: " + ageMap.get("Alice"));
+        
+        // O(1) ContainsKey
+        if (ageMap.containsKey("Bob")) {
+            ageMap.remove("Bob");
+        }
+    }
+}""",
+            "Python": """
+# Python dict is a highly optimized Hash Map
+age_map = {}
+
+# O(1) Put
+age_map["Alice"] = 25
+age_map["Bob"] = 30
+
+# O(1) Get
+print("Alice's Age:", age_map.get("Alice"))
+
+# O(1) Key check & Delete
+if "Bob" in age_map:
+    del age_map["Bob"]""",
+            "JavaScript": """
+const ageMap = new Map();
+
+// O(1) Set
+ageMap.set("Alice", 25);
+ageMap.set("Bob", 30);
+
+// O(1) Get
+console.log("Alice's Age:", ageMap.get("Alice"));
+
+// O(1) Has & Delete
+if (ageMap.has("Bob")) {
+    ageMap.delete("Bob");
+}"""
+          },
+          "Hash Set (Unique Keys)": {
+            "C++": """
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+int main() {
+    unordered_set<int> uniqueSet;
+    
+    uniqueSet.insert(10);
+    uniqueSet.insert(20);
+    uniqueSet.insert(10); // Duplicate ignored
+    
+    cout << "Set Size: " << uniqueSet.size() << endl; // 2
+    return 0;
+}""",
+            "Java": """
+import java.util.HashSet;
+import java.util.Set;
+
+public class HashSetDemo {
+    public static void main(String[] args) {
+        Set<Integer> uniqueSet = new HashSet<>();
+        uniqueSet.add(10);
+        uniqueSet.add(20);
+        uniqueSet.add(10); // Duplicate ignored
+        
+        System.out.println("Set Size: " + uniqueSet.size()); // 2
+    }
+}""",
+            "Python": """
+unique_set = set()
+unique_set.add(10)
+unique_set.add(20)
+unique_set.add(10) # Duplicate ignored
+
+print("Set Size:", len(unique_set)) # 2""",
+            "JavaScript": """
+const uniqueSet = new Set();
+uniqueSet.add(10);
+uniqueSet.add(20);
+uniqueSet.add(10); // Duplicate ignored
+
+console.log("Set Size:", uniqueSet.size); // 2"""
+          },
+          "Custom Chaining Hash Table": {
+            "C++": """
+#include <iostream>
+#include <vector>
+#include <list>
+using namespace std;
+
+class HashTable {
+    int capacity;
+    vector<list<pair<string, int>>> buckets;
+    
+    int hashFunc(string key) {
+        int sum = 0;
+        for (char c : key) sum += c;
+        return sum % capacity;
+    }
+public:
+    HashTable(int cap = 5) : capacity(cap), buckets(cap) {}
+    
+    void put(string key, int val) {
+        int idx = hashFunc(key);
+        for (auto& p : buckets[idx]) {
+            if (p.first == key) { p.second = val; return; }
+        }
+        buckets[idx].push_back({key, val});
+    }
+    
+    int get(string key) {
+        int idx = hashFunc(key);
+        for (auto& p : buckets[idx]) {
+            if (p.first == key) return p.second;
+        }
+        return -1;
+    }
+};""",
+            "Java": """
+import java.util.LinkedList;
+
+class HashTable {
+    class Entry {
+        String key; int val;
+        Entry(String k, int v) { key = k; val = v; }
+    }
+    private int capacity = 5;
+    private LinkedList<Entry>[] buckets = new LinkedList[capacity];
+    
+    public HashTable() {
+        for (int i = 0; i < capacity; i++) buckets[i] = new LinkedList<>();
+    }
+    private int hashFunc(String key) {
+        return Math.abs(key.hashCode()) % capacity;
+    }
+    public void put(String key, int val) {
+        int idx = hashFunc(key);
+        for (Entry e : buckets[idx]) {
+            if (e.key.equals(key)) { e.val = val; return; }
+        }
+        buckets[idx].add(new Entry(key, val));
+    }
+}""",
+            "Python": """
+class CustomHashTable:
+    def __init__(self, capacity=5):
+        self.capacity = capacity
+        self.buckets = [[] for _ in range(capacity)]
+        
+    def _hash(self, key):
+        return sum(ord(c) for c in key) % self.capacity
+        
+    def put(self, key, val):
+        idx = self._hash(key)
+        for i, (k, v) in enumerate(self.buckets[idx]):
+            if k == key:
+                self.buckets[idx][i] = (key, val)
+                return
+        self.buckets[idx].append((key, val))
+        
+    def get(self, key):
+        idx = self._hash(key)
+        for k, v in self.buckets[idx]:
+            if k == key: return v
+        return None""",
+            "JavaScript": """
+class CustomHashTable {
+    constructor(capacity = 5) {
+        this.capacity = capacity;
+        this.buckets = Array.from({length: capacity}, () => []);
+    }
+    hash(key) {
+        let sum = 0;
+        for (let i = 0; i < key.length; i++) sum += key.charCodeAt(i);
+        return sum % this.capacity;
+    }
+    put(key, val) {
+        const idx = this.hash(key);
+        const chain = this.buckets[idx];
+        for (let entry of chain) {
+            if (entry.key === key) { entry.val = val; return; }
+        }
+        chain.push({key, val});
+    }
+}"""
+          }
+        },
+        basicProblems: [
+          DsaProblem(
+            id: "hm-1",
+            title: "1. Intersection of Two Arrays (LeetCode #349)",
+            category: "Hash Set Basic",
+            keyIdeaEn: "Insert elements of first array into a HashSet, then filter second array elements present in set.",
+            keyIdeaBn: "প্রথম অ্যারের উপাদানগুলোকে সেটে রাখুন, তারপর দ্বিতীয় অ্যারের কোনো উপাদান সেটে থাকলে যুক্ত করুন।",
+            codeCpp: """
+vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+    unordered_set<int> s(nums1.begin(), nums1.end());
+    vector<int> res;
+    for (int n : nums2) {
+        if (s.count(n)) {
+            res.push_back(n);
+            s.erase(n); // Remove to prevent duplicates
+        }
+    }
+    return res;
+}""",
+            codeJava: """
+public static int[] intersection(int[] nums1, int[] nums2) {
+    Set<Integer> set1 = new HashSet<>();
+    for (int n : nums1) set1.add(n);
+    Set<Integer> resSet = new HashSet<>();
+    for (int n : nums2) {
+        if (set1.contains(n)) resSet.add(n);
+    }
+    return resSet.stream().mapToInt(i -> i).toArray();
+}""",
+            codePython: """
+def intersection(nums1, nums2):
+    return list(set(nums1) & set(nums2))""",
+            codeJs: """
+function intersection(nums1, nums2) {
+    const set1 = new Set(nums1);
+    return [...new Set(nums2.filter(n => set1.has(n)))];
+}""",
+            descriptionEn: "Given two integer arrays `nums1` and `nums2`, return an array of their unique intersection elements.",
+            descriptionBn: "দুটি পূর্ণসংখ্যার অ্যারে `nums1` এবং `nums2` থেকে তাদের অনন্য (Unique) সাধারণ উপাদানগুলোর অ্যারে তৈরি করুন।",
+            sampleInputs: ["nums1 = [1,2,2,1], nums2 = [2,2]"],
+            sampleOutputs: ["[2]"],
+          ),
+          DsaProblem(
+            id: "hm-2",
+            title: "2. Group Anagrams (LeetCode #49)",
+            category: "Hash Map Pattern",
+            keyIdeaEn: "Sort characters of each string to form a canonical key, then group original strings in a HashMap under key.",
+            keyIdeaBn: "প্রতিটি স্ট্রিংয়ের ক্যারেক্টার সর্ট করে একই কী গঠন করুন এবং হ্যাশ ম্যাপে গ্রুপিং করুন।",
+            codeCpp: """
+vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    unordered_map<string, vector<string>> mp;
+    for (string s : strs) {
+        string key = s;
+        sort(key.begin(), key.end());
+        mp[key].push_back(s);
+    }
+    vector<vector<string>> res;
+    for (auto p : mp) res.push_back(p.second);
+    return res;
+}""",
+            codeJava: """
+public static List<List<String>> groupAnagrams(String[] strs) {
+    Map<String, List<String>> map = new HashMap<>();
+    for (String s : strs) {
+        char[] ca = s.toCharArray();
+        Arrays.sort(ca);
+        String key = String.valueOf(ca);
+        map.putIfAbsent(key, new ArrayList<>());
+        map.get(key).add(s);
+    }
+    return new ArrayList<>(map.values());
+}""",
+            codePython: """
+from collections import defaultdict
+
+def groupAnagrams(strs):
+    mp = defaultdict(list)
+    for s in strs:
+        key = "".join(sorted(s))
+        mp[key].append(s)
+    return list(mp.values())""",
+            codeJs: """
+function groupAnagrams(strs) {
+    const map = new Map();
+    for (let s of strs) {
+        let key = s.split('').sort().join('');
+        if (!map.has(key)) map.set(key, []);
+        map.get(key).push(s);
+    }
+    return Array.from(map.values());
+}""",
+            descriptionEn: "Group an array of strings together if they are anagrams of each other.",
+            descriptionBn: "স্ট্রিংগুলোর অ্যারে থেকে একই বর্ণ দ্বারা গঠিত শব্দসমূহ (Anagrams) হ্যাশ ম্যাপ দিয়ে গ্রুপিং করুন।",
+            sampleInputs: ["strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]"],
+            sampleOutputs: "[[\"bat\"], [\"nat\",\"tan\"], [\"ate\",\"eat\",\"tea\"]]",
+          ),
+          DsaProblem(
+            id: "hm-3",
+            title: "3. First Unique Character in a String",
+            category: "Hash Map Basic",
+            keyIdeaEn: "First pass: store character frequencies in HashMap. Second pass: return first index where frequency == 1.",
+            keyIdeaBn: "প্রথম ধাপে ক্যারেক্টার ফ্রিকোয়েন্সি ম্যাপে সেভ করুন। দ্বিতীয় ধাপে প্রথম যার ফ্রিকোয়েন্সি ১ পাওয়া যাবে তার ইনডেক্স রিটার্ন করুন।",
+            codeCpp: """
+int firstUniqChar(string s) {
+    unordered_map<char, int> freq;
+    for (char c : s) freq[c]++;
+    for (int i = 0; i < s.length(); i++) {
+        if (freq[s[i]] == 1) return i;
+    }
+    return -1;
+}""",
+            codeJava: """
+public static int firstUniqChar(String s) {
+    Map<Character, Integer> freq = new HashMap<>();
+    for (char c : s.toCharArray()) freq.put(c, freq.getOrDefault(c, 0) + 1);
+    for (int i = 0; i < s.length(); i++) {
+        if (freq.get(s.charAt(i)) == 1) return i;
+    }
+    return -1;
+}""",
+            codePython: """
+from collections import Counter
+
+def firstUniqChar(s):
+    freq = Counter(s)
+    for i, c in enumerate(s):
+        if freq[c] == 1: return i
+    return -1""",
+            codeJs: """
+function firstUniqChar(s) {
+    const freq = {};
+    for (let c of s) freq[c] = (freq[c] || 0) + 1;
+    for (let i = 0; i < s.length; i++) {
+        if (freq[s[i]] === 1) return i;
+    }
+    return -1;
+}""",
+            descriptionEn: "Find the first non-repeating character in a string and return its index.",
+            descriptionBn: "স্ট্রিংয়ের প্রথম ইউনিক (অনন্য) অক্ষরটির ইনডেক্স বের করুন।",
+            sampleInputs: ["s = \"leetcode\"", "s = \"loveleetcode\""],
+            sampleOutputs: ["0 ('l')", "2 ('v')"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Modifying Mutable Key Objects",
+            "desc": "Modifying an object after inserting it as a key in HashMap alters its hashCode, making the key unfindable."
+          },
+          {
+            "title": "2. High Load Factor Performance Degradation",
+            "desc": "Setting a fixed capacity without dynamic rehashing causes bucket chains to grow, degrading O(1) to linear O(N) lookup."
+          },
+          {
+            "title": "3. Confusing Hash Map with Ordered TreeMap",
+            "desc": "Expecting keys in HashMap to remain sorted by insertion or alphabetical order. Use TreeMap or LinkedHashMap for order."
+          },
+          {
+            "title": "4. Missing Custom `equals()` & `hashCode()`",
+            "desc": "Using custom class objects as HashMap keys in Java/C++ without overriding both `equals()` and `hashCode()`."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. হ্যাশ ম্যাপে কী অবজেক্ট মিউটেট করা",
+            "desc": "ম্যাপে কী যোগ করার পর সেই অবজেক্টের মান পরিবর্তন করলে হ্যাশকোড চেঞ্জ হয়ে কী আর খুঁজে পাওয়া যায় না।"
+          },
+          {
+            "title": "২. অতিরিক্ত লোড ফ্যাক্টরে ধীরগতি",
+            "desc": "টেবিলের সাইজ না বাড়িয়ে শত শত উপাদান ঢোকালে বাকেটের দৈর্ঘ্য বাড়ে এবং ওয়ান স্পিড নষ্ট হয়ে O(N) হয়ে যায়।"
+          },
+          {
+            "title": "৩. সর্টেড অর্ডারের আশা করা",
+            "desc": "সাধারণ HashMap কাস্টম অর্ডারে সাজানো থাকে না। সর্টেড অর্ডার পেতে TreeMap বা LinkedHashMap ব্যবহার করুন।"
+          },
+          {
+            "title": "৪. কাস্টম ক্লাসে `hashCode()` না লেখা",
+            "desc": "Java বা C++ এ কাস্টম অবজেক্ট কী হিসেবে ব্যবহার করার সময় `equals()` ও `hashCode()` ওভাররাইড না করা।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand Hash Functions & Index Math",
+            "desc": "Master key hashing, `hash(key) % capacity`, and direct O(1) bucket index mapping."
+          },
+          {
+            "step": "Step 2",
+            "title": "Learn Collision Resolution Techniques",
+            "desc": "Understand Separate Chaining (LinkedList buckets) and Open Addressing (Linear Probing)."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Frequency Counting & Sets",
+            "desc": "Solve character counting, subarray sum, two sum, and unique elements with HashSet."
+          },
+          {
+            "step": "Step 4",
+            "title": "Learn Anagram & Canonical Key Grouping",
+            "desc": "Group strings by sorted character key, word frequency vectors, and isomorphism."
+          },
+          {
+            "step": "Step 5",
+            "title": "Design Custom HashMap & LRU Cache",
+            "desc": "Build a custom HashMap with chaining and integrate with Doubly LinkedList for O(1) LRU Cache."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "হ্যাশ ফাংশন ও ইন্ডেক্স সূত্র শিখুন",
+            "desc": "কী হ্যাশিং, `hash(key) % capacity` এবং ডিরেক্ট O(1) বাকেট ইন্ডেক্সিং পরিষ্কার করুন।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "কলিশন হ্যান্ডলিং টেকনিক আয়ত্ত করুন",
+            "desc": "সেপারেট চেইনিং (লিঙ্কড লিস্ট বাকেট) এবং ওপেন এড্রেসিং (লিনিয়ার প্রোবিং) টেকনিক শিখুন।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "ফ্রিকোয়েন্সি কাউন্টিং ও সেটের ব্যবহার",
+            "desc": "ক্যারেক্টার ফ্রিকোয়েন্সি, টু সাম, সাবঅ্যারে সাম এবং ইউনিক এলিমেন্ট ডিটেকশন সলভ করুন।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "অ্যানাগ্রাম ও ক্যানোনিকাল কী গ্রুপিং",
+            "desc": "সর্টেড অক্ষর ক্যানোনিকাল কী এবং ওয়ার্ড ফ্রিকোয়েন্সি ভেক্টর দিয়ে গ্রুপিং মাস্টার করুন।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "কাস্টম হ্যাশম্যাপ ও LRU ক্যাশ ডিজাইন",
+            "desc": "নিজে চেইনিং হ্যাশম্যাপ বানান এবং Doubly LinkedList সমন্বয়ে O(1) LRU ক্যাশ ডিজাইন করুন।"
+          }
+        ],
       ),
 
       // 6. BST
