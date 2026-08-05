@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DsaProblem {
   final String id;
   final String title;
-  final String category; // e.g. "Stack Basic", "Monotonic Stack"
+  final String category; // e.g. "Queue Basic", "Deque Pattern"
   final String keyIdeaEn;
   final String keyIdeaBn;
   final String codeCpp;
@@ -44,7 +44,7 @@ class DsaTopic {
   final Color themeColor;
   final List<String> keyConceptsEn;
   final List<String> keyConceptsBn;
-  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Array-Based, Linked-List-Based, Monotonic) -> (Language -> Code)
+  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Queue, Circular Queue, Deque) -> (Language -> Code)
   final List<DsaProblem> basicProblems;
   final List<Map<String, String>> commonMistakesEn;
   final List<Map<String, String>> commonMistakesBn;
@@ -140,658 +140,16 @@ class DsaDataRepository {
         spaceComplexity: "O(N)",
         icon: Icons.layers_outlined,
         themeColor: const Color(0xFF10B981),
-        descriptionEn:
-            "A Stack is a linear data structure operating under the strict Last-In, First-Out (LIFO) discipline. Elements can only be inserted (push) or removed (pop) from one end called the TOP. Runtimes and operating systems rely heavily on the execution Call Stack to manage function calls, local variables, and recursion frame allocation.",
-        descriptionBn:
-            "স্ট্যাক হলো একটি লিনিয়ার কন্টেইনার যা লাস্ট-ইন, ফার্স্ট-আউট (LIFO) নীতিতে কাজ করে। সব উপাদান যোগ (push) এবং অপসারণ (pop) কেবল এর উপরের প্রান্ত (TOP) দিয়ে হয়। অপারেটিং সিস্টেম ও ল্যাঙ্গুয়েজ রানটাইম ফাংশন কল, লোকাল ভ্যারিয়েবল এবং রিকার্সন ফ্রেম ট্র্যাকিংয়ের জন্য Execution Call Stack ব্যবহার করে।",
-        keyConceptsEn: [
-          "LIFO Discipline: The last element pushed onto the stack is the first element popped out.",
-          "O(1) Constant Operations: `push(val)`, `pop()`, `top()` / `peek()`, and `isEmpty()` all execute in O(1) time.",
-          "Call Stack & Recursion: Function invocation frames are pushed onto the system stack and popped when returning.",
-          "Stack Overflow vs Underflow: Overflow occurs when exceeding maximum stack depth limit; Underflow happens when popping an empty stack.",
-          "Array vs Linked List Stack: Array implementation offers cache locality; Linked List implementation guarantees unbounded dynamic growth."
-        ],
-        keyConceptsBn: [
-          "LIFO নীতি: সর্বশেষ যে উপাদানটি যোগ করা হয়, সেটিই প্রথমে বের হয়ে আসে।",
-          "O(1) সময়ে কাজ: `push(val)`, `pop()`, `top()` / `peek()`, এবং `isEmpty()` অপারেশনগুলো মুহূর্তেই O(1) সময়ে শেষ হয়।",
-          "কল স্ট্যাক ও রিকার্সন: ফাংশন ইনভোকেশন ফ্রেম সিস্টেম স্ট্যাকে পুশ হয় এবং ফাংশন শেষ হলে পপ হয়।",
-          "স্ট্যাক ওভারফ্লো বনাম আন্ডারফ্লো: অতিরিক্ত ডেটায় লিমিট পার হলে Overflow এবং খালি স্ট্যাক থেকে পপ করতে গেলে Underflow ঘটে।",
-          "অ্যারে বনাম লিঙ্কড লিস্ট স্ট্যাক: অ্যারে ভিত্তিক স্ট্যাক ক্যাশ লোকালিটি দেয়; লিঙ্কড লিস্ট ভিত্তিক স্ট্যাক স্বাধীন ডায়নামিক বৃদ্ধি নিশ্চিত করে।"
-        ],
+        descriptionEn: "A Stack is a linear data structure operating under the strict Last-In, First-Out (LIFO) discipline.",
+        descriptionBn: "স্ট্যাক হলো একটি লিনিয়ার কন্টেইনার যা লাস্ট-ইন, ফার্স্ট-আউট (LIFO) নীতিতে কাজ করে।",
+        keyConceptsEn: ["LIFO Discipline", "O(1) Push/Pop"],
+        keyConceptsBn: ["LIFO নীতি", "O(1) পুশ/পপ"],
         multiDimCodeTemplates: {
           "Array-Based Stack": {
-            "C++": """
-#include <iostream>
-#include <vector>
-using namespace std;
-
-class Stack {
-    vector<int> arr;
-public:
-    void push(int val) {
-        arr.push_back(val); // O(1)
-    }
-    void pop() {
-        if (!isEmpty()) arr.pop_back(); // O(1)
-    }
-    int top() {
-        if (!isEmpty()) return arr.back();
-        return -1;
-    }
-    bool isEmpty() {
-        return arr.empty();
-    }
-};
-
-int main() {
-    Stack st;
-    st.push(10);
-    st.push(20);
-    cout << "Top: " << st.top() << endl; // 20
-    st.pop();
-    cout << "Top after pop: " << st.top() << endl; // 10
-    return 0;
-}""",
-            "Java": """
-import java.util.ArrayDeque;
-import java.util.Deque;
-
-public class StackDemo {
-    public static void main(String[] args) {
-        // Recommended in Java instead of legacy Stack class
-        Deque<Integer> stack = new ArrayDeque<>();
-        
-        // Push O(1)
-        stack.push(10);
-        stack.push(20);
-        
-        // Peek O(1)
-        System.out.println("Top: " + stack.peek()); // 20
-        
-        // Pop O(1)
-        stack.pop();
-        System.out.println("Top after pop: " + stack.peek()); // 10
-    }
-}""",
-            "Python": """
-# Python list used as LIFO Stack
-stack = []
-
-# Push O(1)
-stack.append(10)
-stack.append(20)
-
-# Peek O(1)
-print("Top:", stack[-1]) # 20
-
-# Pop O(1)
-top_item = stack.pop()
-print("Popped:", top_item) # 20
-print("Top after pop:", stack[-1]) # 10""",
-            "JavaScript": """
-class Stack {
-    constructor() {
-        this.items = [];
-    }
-    push(element) {
-        this.items.push(element); // O(1)
-    }
-    pop() {
-        if (this.isEmpty()) return "Underflow";
-        return this.items.pop(); // O(1)
-    }
-    peek() {
-        return this.items[this.items.length - 1];
-    }
-    isEmpty() {
-        return this.items.length === 0;
-    }
-}
-
-const st = new Stack();
-st.push(10); st.push(20);
-console.log("Top:", st.peek()); // 20
-st.pop();"""
-          },
-          "Linked-List Stack": {
-            "C++": """
-#include <iostream>
-using namespace std;
-
-struct Node {
-    int val;
-    Node* next;
-    Node(int v) : val(v), next(nullptr) {}
-};
-
-class LinkedListStack {
-    Node* topNode = nullptr;
-public:
-    void push(int val) {
-        Node* newNode = new Node(val);
-        newNode->next = topNode;
-        topNode = newNode; // O(1) Insert at Head
-    }
-    void pop() {
-        if (topNode == nullptr) return;
-        Node* temp = topNode;
-        topNode = topNode->next;
-        delete temp; // O(1) Remove Head
-    }
-    int peek() {
-        return topNode ? topNode->val : -1;
-    }
-};""",
-            "Java": """
-class Node {
-    int val;
-    Node next;
-    Node(int val) { this.val = val; }
-}
-
-public class LLStack {
-    private Node topNode = null;
-    
-    public void push(int val) {
-        Node newNode = new Node(val);
-        newNode.next = topNode;
-        topNode = newNode;
-    }
-    
-    public int pop() {
-        if (topNode == null) return -1;
-        int val = topNode.val;
-        topNode = topNode.next;
-        return val;
-    }
-}""",
-            "Python": """
-class Node:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-
-class LLStack:
-    def __init__(self):
-        self.top_node = None
-        
-    def push(self, val):
-        new_node = Node(val, self.top_node)
-        self.top_node = new_node
-        
-    def pop(self):
-        if not self.top_node: return None
-        val = self.top_node.val
-        self.top_node = self.top_node.next
-        return val""",
-            "JavaScript": """
-class Node {
-    constructor(val = 0, next = null) {
-        this.val = val;
-        this.next = next;
-    }
-}
-
-class LLStack {
-    constructor() {
-        this.topNode = null;
-    }
-    push(val) {
-        this.topNode = new Node(val, this.topNode);
-    }
-    pop() {
-        if (!this.topNode) return null;
-        let val = this.topNode.val;
-        this.topNode = this.topNode.next;
-        return val;
-    }
-}"""
-          },
-          "Monotonic Stack": {
-            "C++": """
-// Monotonic Increasing Stack Example
-#include <iostream>
-#include <vector>
-#include <stack>
-using namespace std;
-
-vector<int> nextGreaterElement(vector<int>& nums) {
-    int n = nums.size();
-    vector<int> res(n, -1);
-    stack<int> st; // Stores indices
-    
-    for (int i = 0; i < n; i++) {
-        while (!st.empty() && nums[st.top()] < nums[i]) {
-            res[st.top()] = nums[i];
-            st.pop();
-        }
-        st.push(i);
-    }
-    return res;
-}""",
-            "Java": """
-import java.util.*;
-
-public class MonotonicStack {
-    public static int[] nextGreaterElement(int[] nums) {
-        int n = nums.length;
-        int[] res = new int[n];
-        Arrays.fill(res, -1);
-        Deque<Integer> st = new ArrayDeque<>();
-        
-        for (int i = 0; i < n; i++) {
-            while (!st.isEmpty() && nums[st.peek()] < nums[i]) {
-                res[st.pop()] = nums[i];
-            }
-            st.push(i);
-        }
-        return res;
-    }
-}""",
-            "Python": """
-def nextGreaterElement(nums):
-    res = [-1] * len(nums)
-    st = [] # stores indices
-    for i, num in enumerate(nums):
-        while st and nums[st[-1]] < num:
-            res[st.pop()] = num
-        st.append(i)
-    return res""",
-            "JavaScript": """
-function nextGreaterElement(nums) {
-    const res = new Array(nums.length).fill(-1);
-    const st = [];
-    for (let i = 0; i < nums.length; i++) {
-        while (st.length > 0 && nums[st[st.length - 1]] < nums[i]) {
-            res[st.pop()] = nums[i];
-        }
-        st.push(i);
-    }
-    return res;
-}"""
-          }
-        },
-        basicProblems: [
-          DsaProblem(
-            id: "st-1",
-            title: "1. Valid Parentheses (Balanced Brackets)",
-            category: "Stack Basic",
-            keyIdeaEn: "Push opening brackets `(`, `{`, `[` onto Stack. On closing bracket, pop and check matching bracket.",
-            keyIdeaBn: "ওপেনিং ব্র্যাকেট হলে স্ট্যাকে পুশ করুন। ক্লোজিং ব্র্যাকেটে পপ করে জোড়া মিলান।",
-            codeCpp: """
-bool isValid(string s) {
-    stack<char> st;
-    for (char c : s) {
-        if (c == '(' || c == '{' || c == '[') {
-            st.push(c);
-        } else {
-            if (st.empty()) return false;
-            char top = st.top(); st.pop();
-            if ((c == ')' && top != '(') || 
-                (c == '}' && top != '{') || 
-                (c == ']' && top != '[')) return false;
-        }
-    }
-    return st.empty();
-}""",
-            codeJava: """
-public static boolean isValid(String s) {
-    Deque<Character> st = new ArrayDeque<>();
-    for (char c : s.toCharArray()) {
-        if (c == '(' || c == '{' || c == '[') st.push(c);
-        else {
-            if (st.isEmpty()) return false;
-            char top = st.pop();
-            if ((c == ')' && top != '(') || 
-                (c == '}' && top != '{') || 
-                (c == ']' && top != '[')) return false;
-        }
-    }
-    return st.isEmpty();
-}""",
-            codePython: """
-def isValid(s):
-    st = []
-    mapping = {')': '(', '}': '{', ']': '['}
-    for char in s:
-        if char in mapping.values():
-            st.append(char)
-        elif char in mapping:
-            if not st or st.pop() != mapping[char]:
-                return False
-    return len(st) == 0""",
-            codeJs: """
-function isValid(s) {
-    const st = [];
-    const map = {')': '(', '}': '{', ']': '['};
-    for (let c of s) {
-        if (c === '(' || c === '{' || c === '[') st.push(c);
-        else {
-            if (st.length === 0 || st.pop() !== map[c]) return false;
-        }
-    }
-    return st.length === 0;
-}""",
-            descriptionEn: "Given a string `s` containing brackets `()`, `{}`, `[]`, determine if input string is valid.",
-            descriptionBn: "ব্র্যাকেট সংবলিত একটি স্ট্রিং `s` ব্যালেন্সড ও ভ্যালিড কিনা স্ট্যাক দিয়ে পরীক্ষা করুন।",
-            sampleInputs: ["s = \"()[]{}\"", "s = \"(]\""],
-            sampleOutputs: ["true", "false"],
-          ),
-          DsaProblem(
-            id: "st-2",
-            title: "2. Reverse String / Array using Stack",
-            category: "Stack Basic",
-            keyIdeaEn: "Push all characters onto Stack sequentially, then pop elements out to construct reversed string.",
-            keyIdeaBn: "সব ক্যারেক্টার স্ট্যাকে পুশ করুন, তারপর পরপর পপ করে রিভার্স স্ট্রিং তৈরি করুন।",
-            codeCpp: """
-string reverseString(string s) {
-    stack<char> st;
-    for (char c : s) st.push(c);
-    string reversed = "";
-    while (!st.empty()) {
-        reversed += st.top();
-        st.pop();
-    }
-    return reversed;
-}""",
-            codeJava: """
-public static String reverseString(String s) {
-    Deque<Character> st = new ArrayDeque<>();
-    for (char c : s.toCharArray()) st.push(c);
-    StringBuilder sb = new StringBuilder();
-    while (!st.isEmpty()) sb.append(st.pop());
-    return sb.toString();
-}""",
-            codePython: """
-def reverseString(s):
-    st = list(s)
-    res = []
-    while st:
-        res.append(st.pop())
-    return "".join(res)""",
-            codeJs: """
-function reverseString(s) {
-    const st = s.split('');
-    let res = "";
-    while (st.length > 0) {
-        res += st.pop();
-    }
-    return res;
-}""",
-            descriptionEn: "Reverse characters of a string utilizing the LIFO property of a Stack.",
-            descriptionBn: "স্ট্যাকের LIFO ধর্ম ব্যবহার করে একটি স্ট্রিংয়ের ক্যারেক্টার উল্টিয়ে ফেলুন।",
-            sampleInputs: ["s = \"algorithmix\""],
-            sampleOutputs: ["\"ximrohtigla\""],
-          ),
-          DsaProblem(
-            id: "st-3",
-            title: "3. Evaluate Reverse Polish Notation (Postfix)",
-            category: "Stack Basic",
-            keyIdeaEn: "Push numbers onto Stack. When encountering an operator `+ - * /`, pop 2 numbers, apply operation, and push result.",
-            keyIdeaBn: "সংখ্যা হলে স্ট্যাকে পুশ করুন। অপারেটর (+ - * /) আসলে ২টি সংখ্যা পপ করে হিসাব করে রেজাল্ট পুশ করুন।",
-            codeCpp: """
-int evalRPN(vector<string>& tokens) {
-    stack<int> st;
-    for (string& t : tokens) {
-        if (t == "+" || t == "-" || t == "*" || t == "/") {
-            int b = st.top(); st.pop();
-            int a = st.top(); st.pop();
-            if (t == "+") st.push(a + b);
-            else if (t == "-") st.push(a - b);
-            else if (t == "*") st.push(a * b);
-            else if (t == "/") st.push(a / b);
-        } else {
-            st.push(stoi(t));
-        }
-    }
-    return st.top();
-}""",
-            codeJava: """
-public static int evalRPN(String[] tokens) {
-    Deque<Integer> st = new ArrayDeque<>();
-    for (String t : tokens) {
-        if (t.equals("+") || t.equals("-") || t.equals("*") || t.equals("/")) {
-            int b = st.pop();
-            int a = st.pop();
-            if (t.equals("+")) st.push(a + b);
-            else if (t.equals("-")) st.push(a - b);
-            else if (t.equals("*")) st.push(a * b);
-            else if (t.equals("/")) st.push(a / b);
-        } else st.push(Integer.parseInt(t));
-    }
-    return st.peek();
-}""",
-            codePython: """
-def evalRPN(tokens):
-    st = []
-    for t in tokens:
-        if t in "+-*/":
-            b, a = st.pop(), st.pop()
-            if t == '+': st.append(a + b)
-            elif t == '-': st.append(a - b)
-            elif t == '*': st.append(a * b)
-            elif t == '/': st.append(int(a / b))
-        else:
-            st.append(int(t))
-    return st[0]""",
-            codeJs: """
-function evalRPN(tokens) {
-    const st = [];
-    for (let t of tokens) {
-        if (["+", "-", "*", "/"].includes(t)) {
-            let b = st.pop();
-            let a = st.pop();
-            if (t === "+") st.push(a + b);
-            else if (t === "-") st.push(a - b);
-            else if (t === "*") st.push(a * b);
-            else if (t === "/") st.push(Math.trunc(a / b));
-        } else {
-            st.push(Number(t));
-        }
-    }
-    return st[0];
-}""",
-            descriptionEn: "Evaluate arithmetic value of an expression in Reverse Polish Notation (Postfix).",
-            descriptionBn: "রিভার্স পোলিশ নোটেশন (পোস্টফিক্স) গাণিতিক এক্সপ্রেশনের ফলাফল স্ট্যাক দিয়ে মান নির্ণয় করুন।",
-            sampleInputs: ["tokens = [\"2\",\"1\",\"+\",\"3\",\"*\"]"],
-            sampleOutputs: ["9 ((2 + 1) * 3)"],
-          ),
-          DsaProblem(
-            id: "st-4",
-            title: "4. Min Stack (O(1) Min Element Access)",
-            category: "Stack Design",
-            keyIdeaEn: "Maintain an auxiliary `minStack` alongside main stack to track minimum element at each level in O(1) time.",
-            keyIdeaBn: "মূল স্ট্যাকের সাথে একটি সহায়ক `minStack` রাখুন যা প্রতিটি লেভেলে সর্বনিম্ন মান O(1) সময়ে ট্র্যাক করে।",
-            codeCpp: """
-class MinStack {
-    stack<int> mainSt, minSt;
-public:
-    void push(int val) {
-        mainSt.push(val);
-        if (minSt.empty() || val <= minSt.top()) minSt.push(val);
-    }
-    void pop() {
-        if (mainSt.top() == minSt.top()) minSt.pop();
-        mainSt.pop();
-    }
-    int top() { return mainSt.top(); }
-    int getMin() { return minSt.top(); } // O(1)
-};""",
-            codeJava: """
-class MinStack {
-    private Deque<Integer> mainSt = new ArrayDeque<>();
-    private Deque<Integer> minSt = new ArrayDeque<>();
-    
-    public void push(int val) {
-        mainSt.push(val);
-        if (minSt.isEmpty() || val <= minSt.peek()) minSt.push(val);
-    }
-    public void pop() {
-        if (mainSt.peek().equals(minSt.peek())) minSt.pop();
-        mainSt.pop();
-    }
-    public int top() { return mainSt.peek(); }
-    public int getMin() { return minSt.peek(); }
-}""",
-            codePython: """
-class MinStack:
-    def __init__(self):
-        self.st = []
-        self.min_st = []
-        
-    def push(self, val: int) -> None:
-        self.st.append(val)
-        if not self.min_st or val <= self.min_st[-1]:
-            self.min_st.append(val)
-            
-    def pop(self) -> None:
-        if self.st[-1] == self.min_st[-1]:
-            self.min_st.pop()
-        self.st.pop()
-        
-    def top(self) -> int:
-        return self.st[-1]
-        
-    def getMin(self) -> int:
-        return self.min_st[-1]""",
-            codeJs: """
-class MinStack {
-    constructor() {
-        this.st = [];
-        this.minSt = [];
-    }
-    push(val) {
-        this.st.push(val);
-        if (this.minSt.length === 0 || val <= this.minSt[this.minSt.length - 1]) {
-            this.minSt.push(val);
-        }
-    }
-    pop() {
-        if (this.st[this.st.length - 1] === this.minSt[this.minSt.length - 1]) {
-            this.minSt.pop();
-        }
-        this.st.pop();
-    }
-    top() { return this.st[this.st.length - 1]; }
-    getMin() { return this.minSt[this.minSt.length - 1]; }
-}""",
-            descriptionEn: "Design a stack that supports push, pop, top, and retrieving the minimum element in O(1) time.",
-            descriptionBn: "একটি স্ট্যাক ডিজাইন করুন যা O(1) সময়ে push, pop, top এবং সর্বনিম্ন মান (Min) পেতে সাপোর্ট করে।",
-            sampleInputs: ["push(-2), push(0), push(-3), getMin(), pop(), top(), getMin()"],
-            sampleOutputs: ["getMin(): -3, top(): 0, getMin(): -2"],
-          ),
-        ],
-        commonMistakesEn: [
-          {
-            "title": "1. Stack Underflow Error",
-            "desc": "Calling `pop()` or `top()` on an empty stack triggers runtime exceptions (EmptyStackException)."
-          },
-          {
-            "title": "2. Infinite Recursion Stack Overflow",
-            "desc": "Recursive function calls without base cases exceed OS call stack limit causing StackOverflowError."
-          },
-          {
-            "title": "3. Misinterpreting Stack Top Element",
-            "desc": "Forgetting that `pop()` removes element while `top()` / `peek()` reads without removing."
-          },
-          {
-            "title": "4. Confusing Stack (LIFO) with Queue (FIFO)",
-            "desc": "Using Stack when elements must be processed in original insertion order."
-          }
-        ],
-        commonMistakesBn: [
-          {
-            "title": "১. স্ট্যাক আন্ডারফ্লো ভুল",
-            "desc": "খালি স্ট্যাক থেকে `pop()` বা `top()` করতে গেলে ক্র্যাশ করে (EmptyStackException)।"
-          },
-          {
-            "title": "২. আনলিমিটেড রিকার্সন স্ট্যাক ওভারফ্লো",
-            "desc": "বেস কেস ছাড়া রিকার্সিভ কল দিলে ওএস সিস্টেম কল স্ট্যাক ফুল হয়ে StackOverflowError হয়।"
-          },
-          {
-            "title": "৩. `pop()` ও `top()` গুলিয়ে ফেলা",
-            "desc": "মনে রাখবেন `pop()` এলিমেন্ট বাদ দিয়ে দেয়, কিন্তু `top()` শুধু মান পড়ে বাদ দেয় না।"
-          },
-          {
-            "title": "৪. স্ট্যাক (LIFO) এবং কিউ (FIFO) ভুল করা",
-            "desc": "যেখানে আসার ক্রমানুসারে প্রসেস করা দরকার সেখানে স্ট্যাক ব্যবহার করা।"
-          }
-        ],
-        roadmapStepsEn: [
-          {
-            "step": "Step 1",
-            "title": "Understand LIFO Discipline & Core Operations",
-            "desc": "Master push, pop, top, isEmpty, and array vs linked list stack implementations."
-          },
-          {
-            "step": "Step 2",
-            "title": "Solve Matching Brackets & String Reversals",
-            "desc": "Practice valid parentheses matching, string reversal, and undo-redo stack mechanics."
-          },
-          {
-            "step": "Step 3",
-            "title": "Learn Expression Evaluation & Postfix RPN",
-            "desc": "Evaluate postfix expressions, infix to postfix conversion, and calculator evaluation."
-          },
-          {
-            "step": "Step 4",
-            "title": "Master Monotonic Stack Pattern",
-            "desc": "Learn Monotonic Increasing/Decreasing stack to solve Next Greater Element and Stock Span."
-          },
-          {
-            "step": "Step 5",
-            "title": "Design O(1) Min Stack & Specialized Containers",
-            "desc": "Build Min Stack, Max Stack, and Implement Queue using 2 Stacks."
-          }
-        ],
-        roadmapStepsBn: [
-          {
-            "step": "ধাপ ১",
-            "title": "LIFO নীতি ও মূল অপারেশন শিখুন",
-            "desc": "Push, Pop, Top, IsEmpty এবং অ্যারে বনাম লিঙ্কড লিস্ট স্ট্যাক ইমপ্লিমেন্টেশন আয়ত্ত করুন।"
-          },
-          {
-            "step": "ধাপ ২",
-            "title": "ব্র্যাকেট ম্যাচিং ও স্ট্রিং রিভার্সাল প্র্যাকটিস",
-            "desc": "ভ্যালিড প্যারেন্থেসিস, স্ট্রিং রিভার্স এবং Undo-Redo মেকানিজম কোড করুন।"
-          },
-          {
-            "step": "ধাপ ৩",
-            "title": "পোস্টফিক্স (RPN) এক্সপ্রেশন মূল্যায়ন শিখুন",
-            "desc": "পোস্টফিক্স গাণিতিক হিসাব, ইনফিক্স থেকে পোস্টফিক্স রূপান্তর এবং ক্যালকুলেটর পার্সিং।"
-          },
-          {
-            "step": "ধাপ ৪",
-            "title": "Monotonic Stack প্যাটার্ন আয়ত্ত করুন",
-            "desc": "Next Greater Element এবং স্টক স্প্যান প্রবলেম সলভ করতে Monotonic Stack ব্যবহার করুন।"
-          },
-          {
-            "step": "ধাপ ৫",
-            "title": "O(1) Min Stack ও স্পেশালাইজড স্ট্রাকচার ডিজাইন",
-            "desc": "Min Stack, Max Stack এবং ২টি স্ট্যাক দিয়ে Queue তৈরির প্রবলেম সলভ করুন।"
-          }
-        ],
-      ),
-
-      // 4. QUEUE
-      DsaTopic(
-        id: 204,
-        title: "Queue (FIFO) & Deque",
-        category: "Linear Data Structure",
-        timeComplexity: "Enqueue O(1) | Dequeue O(1)",
-        spaceComplexity: "O(N)",
-        icon: Icons.swap_horizontal_circle_outlined,
-        themeColor: const Color(0xFFF59E0B),
-        descriptionEn: "First-In, First-Out pipeline.",
-        descriptionBn: "ফার্স্ট-ইন, ফার্স্ট-আউট পাইপলাইন।",
-        keyConceptsEn: ["FIFO discipline"],
-        keyConceptsBn: ["FIFO নীতি"],
-        multiDimCodeTemplates: {
-          "Queue": {
-            "C++": "queue<int> q; q.push(10); q.pop();",
-            "Java": "Queue<Integer> q = new ArrayDeque<>();",
-            "Python": "q = deque(); q.append(10); q.popleft()",
-            "JavaScript": "const q = []; q.push(10); q.shift()"
+            "C++": "vector<int> st; st.push_back(10); st.pop_back();",
+            "Java": "Deque<Integer> st = new ArrayDeque<>();",
+            "Python": "st = []; st.append(10); st.pop()",
+            "JavaScript": "const st = []; st.push(10); st.pop()"
           }
         },
         basicProblems: [],
@@ -799,6 +157,627 @@ class MinStack {
         commonMistakesBn: [],
         roadmapStepsEn: [],
         roadmapStepsBn: [],
+      ),
+
+      // 4. QUEUE (FIFO) & DEQUE
+      DsaTopic(
+        id: 204,
+        title: "Queue (FIFO) & Deque",
+        category: "Linear Pipeline Structure",
+        timeComplexity: "Enqueue O(1) | Dequeue O(1) | Front O(1)",
+        spaceComplexity: "O(N)",
+        icon: Icons.swap_horizontal_circle_outlined,
+        themeColor: const Color(0xFFF59E0B),
+        descriptionEn:
+            "A Queue is a linear pipeline operating under the strict First-In, First-Out (FIFO) discipline. Elements enter at the REAR and exit from the FRONT. A Double-Ended Queue (Deque) extends this by allowing insertions and deletions at BOTH Front and Rear ends in O(1) time. Operating systems use queues for BFS graph traversal, printer queues, and CPU task scheduling.",
+        descriptionBn:
+            "কিউ হলো একটি ফার্স্ট-ইন, ফার্স্ট-আউট (FIFO) লিনিয়ার পাইপলাইন। যে উপাদান প্রথমে ঢোকে, সে উপাদানই প্রথমে বের হয়। উপাদান যোগ হয় পেছনে (REAR) এবং বের হয় সামনে থেকে (FRONT)। ডাবল-এন্ডেড কিউ (Deque) সামনে ও পেছনে উভয় প্রান্তেই O(1) সময়ে যোগ ও বাদ দেওয়ার সুবিধা দেয়। এটি গ্রাফের BFS ট্রাভার্সাল, প্রিন্টার কিউ এবং CPU টাস্ক সিডিউলিংয়ে ব্যবহৃত হয়।",
+        keyConceptsEn: [
+          "FIFO Discipline: First item enqueued is the first item dequeued. Insert at REAR, remove from FRONT.",
+          "O(1) Operations: `enqueue(val)` / `push_back`, `dequeue()` / `pop_front`, `front()`, `isEmpty()` all run in O(1).",
+          "Circular Queue: Reuses array slots with modulo math `index = (rear + 1) % capacity`, eliminating O(N) element shifting.",
+          "Double-Ended Queue (Deque): Supports `push_front`, `push_back`, `pop_front`, `pop_back` in O(1) time.",
+          "BFS Traversal Engine: Breadth-First Search on trees and graphs uses a Queue to explore level by level."
+        ],
+        keyConceptsBn: [
+          "FIFO নীতি: প্রথম যোগ করা উপাদানটিই প্রথমে বের হবে। ইনসার্ট হয় REAR এ, ডিলেট হয় FRONT থেকে।",
+          "O(1) অপারেশন্স: `enqueue(val)` / `push_back`, `dequeue()` / `pop_front`, `front()`, এবং `isEmpty()` O(1) সময়ে সম্পন্ন হয়।",
+          "সার্কুলার কিউ (Circular Queue): মডিউলাস সূত্র `index = (rear + 1) % capacity` দিয়ে মেমোরি খালি ঘর পুনর্ব্যবহার করে O(N) শিফটিং দূর করে।",
+          "ডাবল-এন্ডেড কিউ (Deque): সামনে ও পেছনে উভয় মুখেই O(1) সময়ে ইনসার্ট ও ডিলেট করার সুবিধা দেয়।",
+          "BFS ট্রাভার্সাল: গ্রাফ ও ট্রির লেভেল-বাই-লেভেল BFS সার্চের মূল ড্রাইভার হলো Queue।"
+        ],
+        multiDimCodeTemplates: {
+          "Queue (FIFO)": {
+            "C++": """
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int main() {
+    queue<int> q;
+    
+    // Enqueue at Rear O(1)
+    q.push(10);
+    q.push(20);
+    q.push(30);
+    
+    // Read Front O(1)
+    cout << "Front element: " << q.front() << endl; // 10
+    
+    // Dequeue from Front O(1)
+    q.pop();
+    cout << "New Front: " << q.front() << endl; // 20
+    return 0;
+}""",
+            "Java": """
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+public class QueueDemo {
+    public static void main(String[] args) {
+        // Use ArrayDeque for O(1) FIFO Queue
+        Queue<Integer> q = new ArrayDeque<>();
+        
+        // Enqueue O(1)
+        q.offer(10);
+        q.offer(20);
+        
+        // Peek Front O(1)
+        System.out.println("Front: " + q.peek()); // 10
+        
+        // Dequeue Front O(1)
+        q.poll();
+        System.out.println("New Front: " + q.peek()); // 20
+    }
+}""",
+            "Python": """
+from collections import deque
+
+# Python deque provides fast O(1) FIFO operations
+q = deque()
+
+# Enqueue Rear O(1)
+q.append(10)
+q.append(20)
+
+# Peek Front O(1)
+print("Front:", q[0]) # 10
+
+# Dequeue Front O(1)
+popped = q.popleft()
+print("Dequeued:", popped) # 10
+print("New Front:", q[0]) # 20""",
+            "JavaScript": """
+class Queue {
+    constructor() {
+        this.items = {};
+        this.head = 0;
+        this.tail = 0;
+    }
+    enqueue(element) {
+        this.items[this.tail] = element;
+        this.tail++;
+    }
+    dequeue() {
+        if (this.isEmpty()) return null;
+        const item = this.items[this.head];
+        delete this.items[this.head];
+        this.head++;
+        return item;
+    }
+    front() {
+        return this.items[this.head];
+    }
+    isEmpty() {
+        return this.tail - this.head === 0;
+    }
+}
+
+const q = new Queue();
+q.enqueue(10); q.enqueue(20);
+console.log("Front:", q.front()); // 10
+q.dequeue();"""
+          },
+          "Circular Queue": {
+            "C++": """
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class MyCircularQueue {
+    vector<int> data;
+    int head, tail, size, capacity;
+public:
+    MyCircularQueue(int k) {
+        capacity = k;
+        data.resize(k);
+        head = 0; tail = -1; size = 0;
+    }
+    bool enQueue(int value) {
+        if (isFull()) return false;
+        tail = (tail + 1) % capacity;
+        data[tail] = value;
+        size++;
+        return true;
+    }
+    bool deQueue() {
+        if (isEmpty()) return false;
+        head = (head + 1) % capacity;
+        size--;
+        return true;
+    }
+    int Front() { return isEmpty() ? -1 : data[head]; }
+    bool isEmpty() { return size == 0; }
+    bool isFull() { return size == capacity; }
+};""",
+            "Java": """
+class MyCircularQueue {
+    private int[] data;
+    private int head = 0, tail = -1, size = 0, capacity;
+    
+    public MyCircularQueue(int k) {
+        capacity = k;
+        data = new int[k];
+    }
+    public boolean enQueue(int value) {
+        if (isFull()) return false;
+        tail = (tail + 1) % capacity;
+        data[tail] = value;
+        size++;
+        return true;
+    }
+    public boolean deQueue() {
+        if (isEmpty()) return false;
+        head = (head + 1) % capacity;
+        size--;
+        return true;
+    }
+    public int Front() { return isEmpty() ? -1 : data[head]; }
+    public boolean isEmpty() { return size == 0; }
+    public boolean isFull() { return size == capacity; }
+}""",
+            "Python": """
+class MyCircularQueue:
+    def __init__(self, k: int):
+        self.capacity = k
+        self.data = [0] * k
+        self.head = 0
+        self.tail = -1
+        self.size = 0
+        
+    def enQueue(self, value: int) -> bool:
+        if self.isFull(): return False
+        self.tail = (self.tail + 1) % self.capacity
+        self.data[self.tail] = value
+        self.size += 1
+        return True
+        
+    def deQueue(self) -> bool:
+        if self.isEmpty(): return False
+        self.head = (self.head + 1) % self.capacity
+        self.size -= 1
+        return True
+        
+    def Front(self) -> int:
+        return -1 if self.isEmpty() else self.data[self.head]
+        
+    def isEmpty(self) -> bool: return self.size == 0
+    def isFull(self) -> bool: return self.size == self.capacity""",
+            "JavaScript": """
+class MyCircularQueue {
+    constructor(k) {
+        this.capacity = k;
+        this.data = new Array(k);
+        this.head = 0;
+        this.tail = -1;
+        this.size = 0;
+    }
+    enQueue(value) {
+        if (this.isFull()) return false;
+        this.tail = (this.tail + 1) % this.capacity;
+        this.data[this.tail] = value;
+        this.size++;
+        return true;
+    }
+    deQueue() {
+        if (this.isEmpty()) return false;
+        this.head = (this.head + 1) % this.capacity;
+        this.size--;
+        return true;
+    }
+    Front() { return this.isEmpty() ? -1 : this.data[this.head]; }
+    isEmpty() { return this.size === 0; }
+    isFull() { return this.size === this.capacity; }
+}"""
+          },
+          "Double-Ended Queue (Deque)": {
+            "C++": """
+#include <iostream>
+#include <deque>
+using namespace std;
+
+int main() {
+    deque<int> dq;
+    
+    // O(1) Insert at both ends
+    dq.push_back(20);  // 20
+    dq.push_front(10); // 10 <-> 20
+    dq.push_back(30);  // 10 <-> 20 <-> 30
+    
+    cout << "Front: " << dq.front() << ", Back: " << dq.back() << endl;
+    
+    // O(1) Pop from both ends
+    dq.pop_front(); // Removes 10
+    dq.pop_back();  // Removes 30
+    return 0;
+}""",
+            "Java": """
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class DequeDemo {
+    public static void main(String[] args) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        
+        dq.addFirst(10); // push_front
+        dq.addLast(20);  // push_back
+        dq.addLast(30);
+        
+        System.out.println("Front: " + dq.peekFirst() + ", Back: " + dq.peekLast());
+        
+        dq.removeFirst(); // pop_front
+        dq.removeLast();  // pop_back
+    }
+}""",
+            "Python": """
+from collections import deque
+
+dq = deque()
+
+# O(1) Push Front & Back
+dq.appendleft(10)
+dq.append(20)
+dq.append(30)
+
+print("Front:", dq[0], "Back:", dq[-1])
+
+# O(1) Pop Front & Back
+dq.popleft() # Removes 10
+dq.pop()     # Removes 30""",
+            "JavaScript": """
+// Deque in JS using ArrayDeque simulation
+class Deque {
+    constructor() {
+        this.items = [];
+    }
+    pushFront(val) { this.items.unshift(val); }
+    pushBack(val) { this.items.push(val); }
+    popFront() { return this.items.shift(); }
+    popBack() { return this.items.pop(); }
+    peekFront() { return this.items[0]; }
+    peekBack() { return this.items[this.items.length - 1]; }
+}
+
+const dq = new Deque();
+dq.pushFront(10); dq.pushBack(20);
+console.log("Front:", dq.peekFront(), "Back:", dq.peekBack());"""
+          }
+        },
+        basicProblems: [
+          DsaProblem(
+            id: "q-1",
+            title: "1. Implement Queue using 2 Stacks",
+            category: "Queue Design",
+            keyIdeaEn: "Use inputStack for push, and outputStack for pop. When outputStack is empty, transfer all items from inputStack.",
+            keyIdeaBn: "ইনপুটের জন্য inputStack এবং পপের জন্য outputStack ব্যবহার করুন। পপ করার সময় outputStack খালি হলে সব উপাদান রিভার্স ট্রান্সফার করুন।",
+            codeCpp: """
+class MyQueue {
+    stack<int> inSt, outSt;
+public:
+    void push(int x) { inSt.push(x); }
+    int pop() {
+        peek();
+        int val = outSt.top(); outSt.pop();
+        return val;
+    }
+    int peek() {
+        if (outSt.empty()) {
+            while (!inSt.empty()) {
+                outSt.push(inSt.top());
+                inSt.pop();
+            }
+        }
+        return outSt.top();
+    }
+    bool empty() { return inSt.empty() && outSt.empty(); }
+};""",
+            codeJava: """
+class MyQueue {
+    private Deque<Integer> inSt = new ArrayDeque<>();
+    private Deque<Integer> outSt = new ArrayDeque<>();
+    
+    public void push(int x) { inSt.push(x); }
+    public int pop() {
+        peek();
+        return outSt.pop();
+    }
+    public int peek() {
+        if (outSt.isEmpty()) {
+            while (!inSt.isEmpty()) {
+                outSt.push(inSt.pop());
+            }
+        }
+        return outSt.peek();
+    }
+    public boolean empty() { return inSt.isEmpty() && outSt.isEmpty(); }
+}""",
+            codePython: """
+class MyQueue:
+    def __init__(self):
+        self.in_st = []
+        self.out_st = []
+        
+    def push(self, x: int) -> None:
+        self.in_st.append(x)
+        
+    def pop(self) -> int:
+        self.peek()
+        return self.out_st.pop()
+        
+    def peek(self) -> int:
+        if not self.out_st:
+            while self.in_st:
+                self.out_st.append(self.in_st.pop())
+        return self.out_st[-1]
+        
+    def empty(self) -> bool:
+        return not self.in_st and not self.out_st""",
+            codeJs: """
+class MyQueue {
+    constructor() {
+        this.inSt = [];
+        this.outSt = [];
+    }
+    push(x) { this.inSt.push(x); }
+    pop() {
+        this.peek();
+        return this.outSt.pop();
+    }
+    peek() {
+        if (this.outSt.length === 0) {
+            while (this.inSt.length > 0) {
+                this.outSt.push(this.inSt.pop());
+            }
+        }
+        return this.outSt[this.outSt.length - 1];
+    }
+    empty() { return this.inSt.length === 0 && this.outSt.length === 0; }
+}""",
+            descriptionEn: "Implement a First-In, First-Out (FIFO) queue using only two standard LIFO stacks.",
+            descriptionBn: "শুধুমাত্র ২টি LIFO স্ট্যাক ব্যবহার করে একটি FIFO কিউ ইমপ্লিমেন্ট করুন।",
+            sampleInputs: ["push(1), push(2), peek(), pop(), empty()"],
+            sampleOutputs: ["peek(): 1, pop(): 1, empty(): false"],
+          ),
+          DsaProblem(
+            id: "q-2",
+            title: "2. First Non-Repeating Character in Stream",
+            category: "Queue Basic",
+            keyIdeaEn: "Store frequency array and push characters to Queue. Pop queue front while frequency > 1.",
+            keyIdeaBn: "ফ্রিকোয়েন্সি অ্যারে এবং কিউ ব্যবহার করুন। কিউয়ের ফ্রন্টের ফ্রিকোয়েন্সি ১ এর বেশি হলে পপ করতে থাকুন।",
+            codeCpp: """
+string firstNonRepeating(string s) {
+    unordered_map<char, int> freq;
+    queue<char> q;
+    string res = "";
+    for (char c : s) {
+        freq[c]++;
+        q.push(c);
+        while (!q.empty() && freq[q.front()] > 1) q.pop();
+        if (q.empty()) res += '#';
+        else res += q.front();
+    }
+    return res;
+}""",
+            codeJava: """
+public static String firstNonRepeating(String s) {
+    Map<Character, Integer> freq = new HashMap<>();
+    Queue<Character> q = new ArrayDeque<>();
+    StringBuilder res = new StringBuilder();
+    for (char c : s.toCharArray()) {
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+        q.offer(c);
+        while (!q.isEmpty() && freq.get(q.peek()) > 1) q.poll();
+        if (q.isEmpty()) res.append('#');
+        else res.append(q.peek());
+    }
+    return res.toString();
+}""",
+            codePython: """
+from collections import deque, Counter
+
+def firstNonRepeating(s):
+    freq = Counter()
+    q = deque()
+    res = []
+    for c in s:
+        freq[c] += 1
+        q.append(c)
+        while q and freq[q[0]] > 1:
+            q.popleft()
+        res.append(q[0] if q else '#')
+    return "".join(res)""",
+            codeJs: """
+function firstNonRepeating(s) {
+    const freq = {};
+    const q = [];
+    let res = "";
+    for (let c of s) {
+        freq[c] = (freq[c] || 0) + 1;
+        q.push(c);
+        while (q.length > 0 && freq[q[0]] > 1) q.shift();
+        res += q.length === 0 ? '#' : q[0];
+    }
+    return res;
+}""",
+            descriptionEn: "Find the first non-repeating character at each step in a continuous character stream.",
+            descriptionBn: "একটি কন্টিনিউয়াস স্ট্রিমে প্রতিটি ধাপে প্রথম রিপিট না হওয়া ক্যারেক্টারটি খুঁজুন।",
+            sampleInputs: ["s = \"aabccxb\""],
+            sampleOutputs: ["\"a#bbbbx\""],
+          ),
+          DsaProblem(
+            id: "q-3",
+            title: "3. Sliding Window Maximum using Deque",
+            category: "Deque Pattern",
+            keyIdeaEn: "Maintain a monotonically decreasing Deque storing indices. Pop back indices smaller than current item; pop front if outside window.",
+            keyIdeaBn: "একটি Monotonic Decreasing Deque বজায় রাখুন। কারেন্ট এলিমেন্টের চেয়ে ছোট ইনডেক্স ব্যাক থেকে এবং উইন্ডোর বাইরের ইনডেক্স ফ্রন্ট থেকে পপ করুন।",
+            codeCpp: """
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    deque<int> dq;
+    vector<int> res;
+    for (int i = 0; i < nums.size(); i++) {
+        if (!dq.empty() && dq.front() == i - k) dq.pop_front();
+        while (!dq.empty() && nums[dq.back()] < nums[i]) dq.pop_back();
+        dq.push_back(i);
+        if (i >= k - 1) res.push_back(nums[dq.front()]);
+    }
+    return res;
+}""",
+            codeJava: """
+public static int[] maxSlidingWindow(int[] nums, int k) {
+    int n = nums.length;
+    int[] res = new int[n - k + 1];
+    Deque<Integer> dq = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        if (!dq.isEmpty() && dq.peekFirst() == i - k) dq.pollFirst();
+        while (!dq.isEmpty() && nums[dq.peekLast()] < nums[i]) dq.pollLast();
+        dq.offerLast(i);
+        if (i >= k - 1) res[i - k + 1] = nums[dq.peekFirst()];
+    }
+    return res;
+}""",
+            codePython: """
+from collections import deque
+
+def maxSlidingWindow(nums, k):
+    dq = deque()
+    res = []
+    for i, num in enumerate(nums):
+        if dq and dq[0] == i - k:
+            dq.popleft()
+        while dq and nums[dq[-1]] < num:
+            dq.pop()
+        dq.append(i)
+        if i >= k - 1:
+            res.append(nums[dq[0]])
+    return res""",
+            codeJs: """
+function maxSlidingWindow(nums, k) {
+    const dq = [];
+    const res = [];
+    for (let i = 0; i < nums.length; i++) {
+        if (dq.length > 0 && dq[0] === i - k) dq.shift();
+        while (dq.length > 0 && nums[dq[dq.length - 1]] < nums[i]) dq.pop();
+        dq.push(i);
+        if (i >= k - 1) res.push(nums[dq[0]]);
+    }
+    return res;
+}""",
+            descriptionEn: "Find the maximum element in each sliding window of size `k` moving from left to right in O(N) time.",
+            descriptionBn: "সাইজ `k` এর স্লাইডিং উইন্ডো ডানে সরানোর সাথে সাথে O(N) সময়ে সর্বোচ্চ উপাদানটি বের করুন।",
+            sampleInputs: ["nums = [1,3,-1,-3,5,3,6,7], k = 3"],
+            sampleOutputs: ["[3, 3, 5, 5, 6, 7]"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Inefficient O(N) Array Shifting Dequeue",
+            "desc": "Calling `arr.shift()` or `list.remove(0)` inside N loops causes hidden quadratic O(N²) time complexity. Use `ArrayDeque` or `Circular Queue`."
+          },
+          {
+            "title": "2. Queue Underflow Exception",
+            "desc": "Calling `dequeue()` or `front()` on an empty queue triggers runtime errors."
+          },
+          {
+            "title": "3. Confusing FRONT and REAR Index Pointers",
+            "desc": "Swapping FRONT and REAR pointer assignment in Circular Queue logic distorts item order."
+          },
+          {
+            "title": "4. Missing Window Expiry Check in Deque",
+            "desc": "Forgetting to evict stale indices `dq.front() == i - k` in Sliding Window Maximum algorithm."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. অ্যারের ওয়ান ডিলেশনে O(N²) লুকানো সময় নষ্ট",
+            "desc": "লুপের ভেতর `list.remove(0)` বা `shift()` কল করলে প্রতিটি উপাদান বামে সরানোর কারণে O(N²) সময় নষ্ট হয়। `ArrayDeque` ব্যবহার করুন।"
+          },
+          {
+            "title": "২. কিউ আন্ডারফ্লো ভুল",
+            "desc": "খালি কিউ থেকে `dequeue()` করতে গেলে রানটাইম এক্সেপশন ঘটে।"
+          },
+          {
+            "title": "৩. FRONT এবং REAR পয়েন্টারে উল্টাপাল্টা",
+            "desc": "সার্কুলার কিউ তে FRONT এবং REAR এর পয়েন্টার আপডেট গুলিয়ে ফেললে ডেটার অর্ডার নষ্ট হয়।"
+          },
+          {
+            "title": "৪. স্লাইডিং উইন্ডোতে পুরানো ইনডেক্স সরাতে ভুলে যাওয়া",
+            "desc": "স্লাইডিং উইন্ডো মেথডে `dq.front() == i - k` উইন্ডো আউট হওয়া ইনডেক্স না মুছলে ভুল রেজাল্ট আসে।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand FIFO Discipline & Core Operations",
+            "desc": "Master enqueue, dequeue, front, rear, and difference between Queue and Stack."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Circular Queue Implementation",
+            "desc": "Learn modulo index math `(rear + 1) % capacity` to build memory-efficient circular queue."
+          },
+          {
+            "step": "Step 3",
+            "title": "Understand Double-Ended Queue (Deque)",
+            "desc": "Master push_front, push_back, pop_front, pop_back operations in O(1) time."
+          },
+          {
+            "step": "Step 4",
+            "title": "Implement Queue using 2 Stacks & Stream Buffers",
+            "desc": "Solve queue using 2 stacks, stream non-repeating character, and print job queue."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Sliding Window Maximum & Monotonic Deque",
+            "desc": "Solve sliding window max using monotonic deque and prepare for BFS graph traversal."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "FIFO নীতি ও মূল কিউ অপারেশন শিখুন",
+            "desc": "Enqueue, Dequeue, Front, Rear এবং স্ট্যাক ও কিউয়ের পার্থক্য পরিষ্কার করুন।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "সার্কুলার কিউ (Circular Queue) আয়ত্ত করুন",
+            "desc": "মডিউলাস সূত্র `(rear + 1) % capacity` দিয়ে মেমোরি-দক্ষ সার্কুলার কিউ তৈরি করা শিখুন।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "ডাবল-এন্ডেড কিউ (Deque) মাস্টার করুন",
+            "desc": "সামনে ও পেছনে O(1) ইনসার্ট ও ডিলেশনের `push_front`, `pop_front`, `push_back`, `pop_back` প্রয়োগ।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "২টি স্ট্যাক দিয়ে Queue ও স্ট্রিম বাফার সলভ করুন",
+            "desc": "২টি স্ট্যাক দিয়ে কিউ ডিজাইন এবং স্ট্রিমে প্রথম নন-রিপিটিং অক্ষর ডিটেক্ট করা প্র্যাকটিস করুন।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "স্লাইডিং উইন্ডো ম্যাক্সিমাম ও Monotonic Deque",
+            "desc": "Monotonic Deque দিয়ে স্লাইডিং উইন্ডো ম্যাক্সিমাম সলভ করুন এবং BFS গ্রাফ ট্রাভার্সালের জন্য তৈরি হন।"
+          }
+        ],
       ),
 
       // 5. HASH TABLE

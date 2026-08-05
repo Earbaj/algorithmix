@@ -3,6 +3,7 @@ import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'array_visualizer_widget.dart';
 import 'linked_list_visualizer_widget.dart';
 import 'stack_visualizer_widget.dart';
+import 'queue_visualizer_widget.dart';
 
 class DsaInteractiveVisualizer extends StatefulWidget {
   final int topicId;
@@ -65,7 +66,7 @@ class _DsaInteractiveVisualizerState extends State<DsaInteractiveVisualizer> {
       case 203:
         return StackVisualizerWidget(isEnglish: widget.isEnglish);
       case 204:
-        return _buildQueueVisualizer();
+        return QueueVisualizerWidget(isEnglish: widget.isEnglish);
       case 205:
         return _buildHashTableVisualizer();
       case 206:
