@@ -29,19 +29,6 @@ class DsaProblemModal extends StatefulWidget {
 class _DsaProblemModalState extends State<DsaProblemModal> {
   String _selectedLanguage = "C++";
 
-  Color _getDifficultyColor(String diff) {
-    switch (diff.toLowerCase()) {
-      case "easy":
-        return AppTheme.accentGreen;
-      case "medium":
-        return AppTheme.accentAmber;
-      case "hard":
-        return const Color(0xFFEF4444);
-      default:
-        return AppTheme.accentNeonCyan;
-    }
-  }
-
   String _getCodeForLanguage() {
     switch (_selectedLanguage) {
       case "C++":
@@ -59,8 +46,6 @@ class _DsaProblemModalState extends State<DsaProblemModal> {
 
   @override
   Widget build(BuildContext context) {
-    final diffColor = _getDifficultyColor(widget.problem.difficulty);
-
     return DraggableScrollableSheet(
       initialChildSize: 0.85,
       maxChildSize: 0.95,
@@ -92,13 +77,13 @@ class _DsaProblemModalState extends State<DsaProblemModal> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: diffColor.withOpacity(0.2),
+                        color: AppTheme.accentPurple.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: diffColor),
+                        border: Border.all(color: AppTheme.accentPurple),
                       ),
                       child: Text(
-                        widget.problem.difficulty.toUpperCase(),
-                        style: TextStyle(color: diffColor, fontWeight: FontWeight.bold, fontSize: 12),
+                        widget.problem.category,
+                        style: const TextStyle(color: AppTheme.accentPurple, fontWeight: FontWeight.bold, fontSize: 12),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -106,7 +91,7 @@ class _DsaProblemModalState extends State<DsaProblemModal> {
                       child: Text(
                         widget.problem.title,
                         style: TextStyle(
-                          fontSize: Responsive.sp(context, 18),
+                          fontSize: Responsive.sp(context, 17),
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -130,27 +115,9 @@ class _DsaProblemModalState extends State<DsaProblemModal> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Company Tags
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: widget.problem.companyTags.map((tag) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: AppTheme.surfaceDark,
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: const Color(0xFF334155)),
-                            ),
-                            child: Text("🏢 $tag", style: const TextStyle(fontSize: 11, color: Colors.white)),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Problem Statement
+                      // Problem Description
                       Text(
-                        widget.isEnglish ? "Problem Description" : "সমস্যা বিবরণী",
+                        widget.isEnglish ? "Problem Statement" : "সমস্যা বিবরণী",
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       const SizedBox(height: 8),
@@ -186,7 +153,7 @@ class _DsaProblemModalState extends State<DsaProblemModal> {
 
                       // Sample Test Cases
                       Text(
-                        widget.isEnglish ? "Sample Test Cases" : "স্যাম্পল টেস্ট কেস",
+                        widget.isEnglish ? "Sample Cases" : "স্যাম্পল টেস্ট কেস",
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       const SizedBox(height: 8),
@@ -216,7 +183,7 @@ class _DsaProblemModalState extends State<DsaProblemModal> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.isEnglish ? "Code Solution" : "সমাধান কোড",
+                            widget.isEnglish ? "Solution Code" : "সমাধান কোড",
                             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                           DropdownButton<String>(

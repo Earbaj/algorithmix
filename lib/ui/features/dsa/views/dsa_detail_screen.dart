@@ -19,6 +19,9 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
     with SingleTickerProviderStateMixin {
   bool _isEnglish = true;
   late TabController _tabController;
+
+  // Code Tab state
+  String _selectedDimension = "1D Array";
   String _selectedLang = "C++";
 
   @override
@@ -41,7 +44,6 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
         title: Text(widget.topic.title),
         centerTitle: true,
         actions: [
-          // Language Switcher Button (EN / BN)
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: TextButton.icon(
@@ -74,9 +76,9 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           isScrollable: true,
           tabAlignment: TabAlignment.start,
           tabs: [
-            Tab(text: _isEnglish ? 'Concept & Code' : 'ধারণা ও কোড'),
+            Tab(text: _isEnglish ? 'Concept & Code (1D/2D/3D)' : 'ধারণা ও কোড (১D/২D/৩D)'),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
-            Tab(text: _isEnglish ? 'FAANG Problems' : 'FAANG প্রবলেমস'),
+            Tab(text: _isEnglish ? 'Basic Problems' : 'বেসিক প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
           ],
         ),
@@ -93,9 +95,19 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
     );
   }
 
-  // TAB 1: Concept & Multi-Language Code
+  // TAB 1: Concept & Multi-Dimension Code
   Widget _buildConceptTab() {
     final hPadding = Responsive.horizontalPadding(context);
+    final dimMap = widget.topic.multiDimCodeTemplates;
+    final availableDims = dimMap.keys.toList();
+    if (!availableDims.contains(_selectedDimension) && availableDims.isNotEmpty) {
+      _selectedDimension = availableDims.first;
+    }
+    final langMap = dimMap[_selectedDimension] ?? {};
+    final availableLangs = langMap.keys.toList();
+    if (!availableLangs.contains(_selectedLang) && availableLangs.isNotEmpty) {
+      _selectedLang = availableLangs.first;
+    }
 
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
@@ -130,7 +142,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             ),
             const SizedBox(height: 20),
 
-            // Time & Space Complexity Matrix Box
+            // Complexity Matrix Box
             Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
@@ -146,7 +158,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                       const Icon(Icons.timer_outlined, color: AppTheme.accentAmber, size: 22),
                       const SizedBox(width: 8),
                       Text(
-                        _isEnglish ? "Operations Time & Space Complexity" : "অপারেশন জটিলতা (Time & Space)",
+                        _isEnglish ? "Complexity Metrics (1D, 2D, 3D)" : "টাইম ও স্পেস জটিলতা (১D, ২D, ৩D)",
                         style: TextStyle(
                           fontSize: Responsive.sp(context, 16),
                           fontWeight: FontWeight.bold,
@@ -159,10 +171,9 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildComplexityBadge(_isEnglish ? "Access Index" : "ইন্ডেক্স রিড", "O(1)", AppTheme.accentGreen),
-                      _buildComplexityBadge(_isEnglish ? "Push Back" : "শেষে যোগ", "Amortized O(1)", AppTheme.accentGreen),
-                      _buildComplexityBadge(_isEnglish ? "Search" : "খোঁজা", "O(N)", AppTheme.accentAmber),
-                      _buildComplexityBadge(_isEnglish ? "Insert/Delete" : "ইনসার্ট/ডিলেট", "O(N)", const Color(0xFFEF4444)),
+                      _buildComplexityBadge(_isEnglish ? "1D Access" : "১D এক্সেস", "O(1)", AppTheme.accentGreen),
+                      _buildComplexityBadge(_isEnglish ? "2D Space" : "২D স্পেস", "O(R×C)", AppTheme.accentNeonCyan),
+                      _buildComplexityBadge(_isEnglish ? "3D Space" : "৩D স্পেস", "O(D×R×C)", AppTheme.accentPink),
                     ],
                   ),
                 ],
@@ -172,7 +183,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
 
             // Core Characteristics
             Text(
-              _isEnglish ? "🔑 Core Characteristics & Intuition" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি ধারণা",
+              _isEnglish ? "🔑 Core Characteristics & Multi-Dimensional Layouts" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি লেআউট",
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -196,20 +207,51 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             }),
             const SizedBox(height: 24),
 
-            // Multi-Language Code Snippets
+            // Multi-Dimension & Language Code Switcher
+            Text(
+              _isEnglish ? "💻 Code Examples (1D, 2D Grid & 3D Cube)" : "💻 কোড উদাহরণ (১D, ২D ম্যাট্রিক্স ও ৩D কিউব)",
+              style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            const SizedBox(height: 12),
+
+            // Dimension Switcher Chips
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: availableDims.map((dim) {
+                  final isSelected = dim == _selectedDimension;
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(dim),
+                      selected: isSelected,
+                      selectedColor: widget.topic.themeColor,
+                      backgroundColor: AppTheme.surfaceDark,
+                      labelStyle: TextStyle(
+                        color: isSelected ? Colors.white : AppTheme.textSecondary,
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                      onSelected: (selected) {
+                        if (selected) setState(() => _selectedDimension = dim);
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Language Switcher Dropdown
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  _isEnglish ? "💻 Code Implementation" : "💻 ইমপ্লিমেন্টেশন কোড",
-                  style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
-                ),
+                Text("Dimension: $_selectedDimension", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold)),
                 DropdownButton<String>(
                   value: _selectedLang,
                   dropdownColor: AppTheme.surfaceDark,
                   style: TextStyle(color: widget.topic.themeColor, fontWeight: FontWeight.bold),
                   underline: Container(),
-                  items: widget.topic.codeTemplates.keys.map((lang) {
+                  items: availableLangs.map((lang) {
                     return DropdownMenuItem(value: lang, child: Text(lang));
                   }).toList(),
                   onChanged: (val) {
@@ -218,7 +260,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
 
             Container(
               padding: const EdgeInsets.all(16),
@@ -230,7 +272,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Text(
-                  widget.topic.codeTemplates[_selectedLang] ?? "",
+                  langMap[_selectedLang] ?? "",
                   style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: Color(0xFF38BDF8), height: 1.4),
                 ),
               ),
@@ -269,16 +311,17 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
       child: SingleChildScrollView(
         child: Column(
           children: [
-            DsaInteractiveVisualizer(topicId: widget.topic.id, isEnglish: _isEnglish),
+            ArrayVisualizerWidget(isEnglish: _isEnglish),
           ],
         ),
       ),
     );
   }
 
-  // TAB 3: FAANG Problems (Easy, Medium, Hard)
+  // TAB 3: Basic Problems (1D, 2D, 3D)
   Widget _buildProblemsTab() {
     final hPadding = Responsive.horizontalPadding(context);
+    final problems = widget.topic.basicProblems;
 
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
@@ -287,33 +330,84 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEnglish ? "📋 FAANG Interview Problems" : "📋 FAANG প্রবলেম কালেকশন",
+              _isEnglish ? "📋 Fundamental Array Practice Problems" : "📋 বেসিক অ্যারে প্র্যাকটিস প্রবলেমস",
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 16),
 
-            if (widget.topic.easyProblems.isNotEmpty) ...[
-              _buildDifficultySection("🟢 EASY", AppTheme.accentGreen, widget.topic.easyProblems),
-              const SizedBox(height: 20),
-            ],
-            if (widget.topic.mediumProblems.isNotEmpty) ...[
-              _buildDifficultySection("🟡 MEDIUM", AppTheme.accentAmber, widget.topic.mediumProblems),
-              const SizedBox(height: 20),
-            ],
-            if (widget.topic.hardProblems.isNotEmpty) ...[
-              _buildDifficultySection("🔴 HARD", const Color(0xFFEF4444), widget.topic.hardProblems),
-              const SizedBox(height: 20),
-            ],
+            if (problems.isEmpty)
+              const Padding(
+                padding: EdgeInsets.all(20),
+                child: Text("No basic problems listed.", style: TextStyle(color: AppTheme.textMuted)),
+              )
+            else
+              Column(
+                children: problems.map((p) => _buildProblemCard(p)).toList(),
+              ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  // TAB 4: Mistakes & Roadmap
+  Widget _buildProblemCard(DsaProblem problem) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 14),
+      child: InkWell(
+        onTap: () {
+          DsaProblemModal.show(context, problem, _isEnglish);
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: widget.topic.themeColor.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+                    ),
+                    child: Text(problem.category, style: TextStyle(fontSize: 10, color: widget.topic.themeColor, fontWeight: FontWeight.bold)),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      problem.title,
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 15)),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
+                style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 13), height: 1.3),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(_isEnglish ? "View Solution & Code 🚀" : "সমাধান ও কোড দেখুন 🚀", style: TextStyle(color: widget.topic.themeColor, fontSize: 12, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // TAB 4: Mistakes & 5-Step Roadmap
   Widget _buildMistakesTab() {
     final hPadding = Responsive.horizontalPadding(context);
     final mistakes = _isEnglish ? widget.topic.commonMistakesEn : widget.topic.commonMistakesBn;
+    final roadmap = _isEnglish ? widget.topic.roadmapStepsEn : widget.topic.roadmapStepsBn;
 
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
@@ -326,7 +420,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 const Icon(Icons.warning_amber_rounded, color: Color(0xFFEF4444), size: 24),
                 const SizedBox(width: 8),
                 Text(
-                  _isEnglish ? "⚠️ Common Interview Pitfalls" : "⚠️ সাধারণ ইন্টারভিউ ভুলসমূহ",
+                  _isEnglish ? "⚠️ Common Array Mistakes & Pitfalls" : "⚠️ অ্যারের সাধারণ ভুলসমূহ",
                   style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ],
@@ -347,11 +441,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                   children: [
                     Text(
                       m["title"]!,
-                      style: TextStyle(
-                        fontSize: Responsive.sp(context, 15),
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFFEF4444),
-                      ),
+                      style: TextStyle(fontSize: Responsive.sp(context, 15), fontWeight: FontWeight.bold, color: const Color(0xFFEF4444)),
                     ),
                     const SizedBox(height: 6),
                     Text(
@@ -362,96 +452,67 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 ),
               );
             }),
+            const SizedBox(height: 28),
+
+            // Step-by-Step Learning Roadmap
+            Row(
+              children: [
+                const Icon(Icons.alt_route_rounded, color: AppTheme.accentNeonCyan, size: 24),
+                const SizedBox(width: 8),
+                Text(
+                  _isEnglish ? "🎯 Step-by-Step Mastery Roadmap" : "🎯 রোডম্যাপ (ধাপে ধাপে শেখার উপায়)",
+                  style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            ...roadmap.map((step) {
+              return Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceDark,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: const Color(0xFF334155)),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: widget.topic.themeColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        step["step"]!,
+                        style: TextStyle(color: widget.topic.themeColor, fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            step["title"]!,
+                            style: TextStyle(fontSize: Responsive.sp(context, 15), fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            step["desc"]!,
+                            style: TextStyle(fontSize: Responsive.sp(context, 13), color: AppTheme.textSecondary, height: 1.4),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
             const SizedBox(height: 24),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDifficultySection(String label, Color color, List<DsaProblem> problems) {
-    final isMobile = Responsive.isMobile(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color)),
-        const SizedBox(height: 12),
-        if (isMobile)
-          Column(children: problems.map((p) => _buildProblemCard(p, color)).toList())
-        else
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 480,
-              mainAxisExtent: 165,
-              crossAxisSpacing: 14,
-              mainAxisSpacing: 14,
-            ),
-            itemCount: problems.length,
-            itemBuilder: (context, index) => _buildProblemCard(problems[index], color),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildProblemCard(DsaProblem problem, Color color) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () {
-          DsaProblemModal.show(context, problem, _isEnglish);
-        },
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      problem.title,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 15)),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(color: widget.topic.themeColor.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                    child: Text("🚀 Solution Code", style: TextStyle(fontSize: 10, color: widget.topic.themeColor, fontWeight: FontWeight.bold)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              Text(
-                _isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12), height: 1.3),
-              ),
-              const SizedBox(height: 10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: problem.companyTags.map((tag) {
-                    return Container(
-                      margin: const EdgeInsets.only(right: 6),
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryDark,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFF334155)),
-                      ),
-                      child: Text(tag, style: const TextStyle(fontSize: 10, color: Colors.white)),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
