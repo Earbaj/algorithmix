@@ -64,6 +64,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 4) {
       // Two Pointers dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.twoPointersDetail);
+    } else if (pattern.id == 5) {
+      // Sliding Window dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.slidingWindowDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
