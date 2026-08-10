@@ -58,6 +58,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 2) {
       // Basic Data Structures dedicated screen (NEW PAGE)
       Navigator.of(context).pushNamed(AppRoutes.dsa);
+    } else if (pattern.id == 3) {
+      // Recursion & Backtracking dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.recursionBacktrackingDetail);
     } else if (pattern.id == 4) {
       // Two Pointers dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.twoPointersDetail);
