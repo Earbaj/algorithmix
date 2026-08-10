@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/big_o_rules_code_free_visualizer.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class BigORulesDetailScreen extends StatefulWidget {
   const BigORulesDetailScreen({super.key});
@@ -64,7 +65,17 @@ class _BigORulesDetailScreenState extends State<BigORulesDetailScreen>
     return Scaffold(
       backgroundColor: AppTheme.primaryDark,
       appBar: AppBar(
-        title: Text(
+        title: Responsive.isMobile(context) ? TextScroll(
+          '1.4 Four Core Rules for Big O',
+          mode: TextScrollMode.bouncing, // This makes it go right-to-left, then left-to-right
+          velocity: const Velocity(pixelsPerSecond: Offset(50, 0)), // Adjust speed here
+          delayBefore: const Duration(seconds: 1), // Waits 1 second before starting
+          pauseBetween: const Duration(seconds: 1), // Pauses before bouncing back
+          style: TextStyle(
+            fontSize: Responsive.sp(context, 16),
+            fontWeight: FontWeight.bold,
+          ),
+        ):Text(
           '1.4 Four Core Rules for Big O',
           style: TextStyle(
             fontSize: Responsive.sp(context, 16),

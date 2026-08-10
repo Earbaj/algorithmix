@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/best_worst_case_code_free_visualizer.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class BestWorstCaseDetailScreen extends StatefulWidget {
   const BestWorstCaseDetailScreen({super.key});
@@ -65,7 +66,17 @@ class _BestWorstCaseDetailScreenState extends State<BestWorstCaseDetailScreen>
     return Scaffold(
       backgroundColor: AppTheme.primaryDark,
       appBar: AppBar(
-        title: Text(
+        title: Responsive.isMobile(context) ? TextScroll(
+          '1.6 Best vs Average vs Worst Case',
+          mode: TextScrollMode.bouncing, // This makes it go right-to-left, then left-to-right
+          velocity: const Velocity(pixelsPerSecond: Offset(50, 0)), // Adjust speed here
+          delayBefore: const Duration(seconds: 1), // Waits 1 second before starting
+          pauseBetween: const Duration(seconds: 1), // Pauses before bouncing back
+          style: TextStyle(
+            fontSize: Responsive.sp(context, 16),
+            fontWeight: FontWeight.bold,
+          ),
+        ):Text(
           '1.6 Best vs Average vs Worst Case',
           style: TextStyle(
             fontSize: Responsive.sp(context, 16),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/complexity_classes_code_free_visualizer.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class ComplexityClassesDetailScreen extends StatefulWidget {
   const ComplexityClassesDetailScreen({super.key});
@@ -66,7 +67,17 @@ class _ComplexityClassesDetailScreenState
     return Scaffold(
       backgroundColor: AppTheme.primaryDark,
       appBar: AppBar(
-        title: Text(
+        title: Responsive.isMobile(context) ? TextScroll(
+          '1.2 Common Complexity Classes',
+          mode: TextScrollMode.bouncing, // This makes it go right-to-left, then left-to-right
+          velocity: const Velocity(pixelsPerSecond: Offset(50, 0)), // Adjust speed here
+          delayBefore: const Duration(seconds: 1), // Waits 1 second before starting
+          pauseBetween: const Duration(seconds: 1), // Pauses before bouncing back
+          style: TextStyle(
+            fontSize: Responsive.sp(context, 16),
+            fontWeight: FontWeight.bold,
+          ),
+        ):Text(
           '1.2 Common Complexity Classes',
           style: TextStyle(
             fontSize: Responsive.sp(context, 16),
