@@ -100,6 +100,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 16) {
       // K-way Merge dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.kwayMergeDetail);
+    } else if (pattern.id == 17) {
+      // Greedy Algorithms dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.greedyAlgorithmDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }

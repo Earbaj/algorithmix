@@ -18,6 +18,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/subsets_backtracking
 import 'package:algorithmix/ui/features/core_patterns/views/modified_binary_search_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/top_k_elements_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/kway_merge_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/greedy_algorithm_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -74,6 +75,7 @@ class AppRoutes {
   static const String modifiedBinarySearchDetail = '/modified-binary-search-detail';
   static const String topKElementsDetail = '/top-k-elements-detail';
   static const String kwayMergeDetail = '/kway-merge-detail';
+  static const String greedyAlgorithmDetail = '/greedy-algorithm-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -124,6 +126,7 @@ class AppRoutes {
       modifiedBinarySearchDetail: (context) => const ModifiedBinarySearchDetailScreen(),
       topKElementsDetail: (context) => const TopKElementsDetailScreen(),
       kwayMergeDetail: (context) => const KWayMergeDetailScreen(),
+      greedyAlgorithmDetail: (context) => const GreedyAlgorithmDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
