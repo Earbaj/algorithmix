@@ -8,6 +8,7 @@ import 'hash_table_visualizer_widget.dart';
 import 'bst_visualizer_widget.dart';
 import 'heap_visualizer_widget.dart';
 import 'graph_visualizer_widget.dart';
+import 'trie_visualizer_widget.dart';
 
 class DsaInteractiveVisualizer extends StatefulWidget {
   final int topicId;
@@ -80,7 +81,7 @@ class _DsaInteractiveVisualizerState extends State<DsaInteractiveVisualizer> {
       case 208:
         return GraphVisualizerWidget(isEnglish: widget.isEnglish);
       case 209:
-        return _buildTrieVisualizer();
+        return TrieVisualizerWidget(isEnglish: widget.isEnglish);
       default:
         return ArrayVisualizerWidget(isEnglish: widget.isEnglish);
     }

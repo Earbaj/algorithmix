@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DsaProblem {
   final String id;
   final String title;
-  final String category; // e.g. "Graph Basic", "Graph Traversal"
+  final String category; // e.g. "Trie Basic", "Trie Pattern"
   final String keyIdeaEn;
   final String keyIdeaBn;
   final String codeCpp;
@@ -44,7 +44,7 @@ class DsaTopic {
   final Color themeColor;
   final List<String> keyConceptsEn;
   final List<String> keyConceptsBn;
-  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Adj List, Adj Matrix, BFS/DFS) -> (Language -> Code)
+  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Standard Trie, Autocomplete, Wildcard Search) -> (Language -> Code)
   final List<DsaProblem> basicProblems;
   final List<Map<String, String>> commonMistakesEn;
   final List<Map<String, String>> commonMistakesBn;
@@ -271,566 +271,25 @@ class DsaDataRepository {
         roadmapStepsBn: [],
       ),
 
-      // 8. GRAPH (ADJACENCY LIST & MATRIX)
+      // 8. GRAPH
       DsaTopic(
         id: 208,
         title: "Graph (Adjacency List & Matrix)",
         category: "Non-Linear Network Structure",
-        timeComplexity: "BFS O(V + E) | DFS O(V + E) | Edge Lookup O(1) Matrix",
-        spaceComplexity: "Adj List: O(V + E) | Adj Matrix: O(V²)",
+        timeComplexity: "BFS O(V + E) | DFS O(V + E)",
+        spaceComplexity: "Adj List: O(V + E) | Matrix: O(V²)",
         icon: Icons.hub_outlined,
         themeColor: const Color(0xFF0284C7),
-        descriptionEn:
-            "A Graph is a non-linear network structure composed of Vertices (nodes) connected by Edges (links). Graphs are categorized as Directed vs Undirected and Weighted vs Unweighted. In memory, graphs are represented via an Adjacency List (dynamic array of neighbors per node, O(V + E) space) or an Adjacency Matrix (V×V 2D grid, O(V²) space for O(1) edge checks). Graph algorithms include Breadth-First Search (BFS using Queue for shortest path in unweighted graphs) and Depth-First Search (DFS using Stack/Recursion for deep exploration).",
-        descriptionBn:
-            "গ্রাফ হলো একটি নন-লিনিয়ার নেটওয়ার্ক স্ট্রাকচার যা ভার্টেক্স বা নোড (Vertices) এবং এজ বা সংযোগকারী লাইন (Edges) নিয়ে গঠিত। গ্রাফকে ডাইরেক্টেড (Directed) বনাম আনডাইরেক্টেড (Undirected) এবং ওয়েটেড (Weighted) বনাম আনওয়েটেড (Unweighted) হিসেবে ভাগ করা হয়। মেমোরিতে গ্রাফ সংরক্ষণের ২টি মূল উপায়: অ্যাডজাসেন্সি লিস্ট (Adjacency List, O(V + E) স্পেস) এবং অ্যাডজাসেন্সি ম্যাট্রিক্স (Adjacency Matrix, V×V 2D গ্রিড, O(1) এজ চেকিং)। গ্রাফ অ্যালগরিদমের মূল ভিত্তি হলো BFS (কিউ দিয়ে লেভেল-বাই-লেভেল শর্টেস্ট পাথ) এবং DFS (স্ট্যাক/রিকার্শন দিয়ে ডিপ ট্রাভার্সাল)।",
-        keyConceptsEn: [
-          "Vertices & Edges: V represents nodes/entities; E represents connections between node pairs.",
-          "Adjacency List Representation: Dynamic array `adj[u] = [v1, v2]` taking memory-efficient O(V + E) space.",
-          "Adjacency Matrix Representation: 2D Grid `matrix[u][v] = 1` taking O(V²) space allowing O(1) instant edge verification.",
-          "Breadth-First Search (BFS): Level-by-level traversal using Queue guaranteeing Shortest Path in unweighted graphs.",
-          "Depth-First Search (DFS): Deep branch exploration using Stack/Recursion used in Topological Sort and Cycle Detection."
-        ],
-        keyConceptsBn: [
-          "ভার্টেক্স ও এজ: V হলো নোড বা শহরের তালিকা; E হলো নোডসমূহের মধ্যকার সংযোগকারী রাস্তা।",
-          "অ্যাডজাসেন্সি লিস্ট: ডাইনামিক অ্যারে `adj[u] = [v1, v2]` যা মেমোরি-দক্ষ O(V + E) স্পেস নেয়।",
-          "অ্যাডজাসেন্সি ম্যাট্রিক্স: V×V 2D গ্রিড `matrix[u][v] = 1` যা O(V²) স্পেস নিলেও O(1) সময়ে এজ আছে কিনা চেক করে।",
-          "Breadth-First Search (BFS): কিউ দিয়ে লেভেল-বাই-লেভেল ট্রাভার্সাল যা আনওয়েটেড গ্রাফে শর্টেস্ট পাথ গ্যারান্টি দেয়।",
-          "Depth-First Search (DFS): স্ট্যাক বা রিকার্শন দিয়ে ডিপ ব্রাঞ্চ সার্চ যা সাইকেল ডিটেকশন ও টপোলজিক্যাল সর্টে ব্যবহৃত হয়।"
-        ],
+        descriptionEn: "A Graph is a non-linear network of Vertices and Edges.",
+        descriptionBn: "গ্রাফ হলো নোড ও এজের নন-লিনিয়ার নেটওয়ার্ক।",
+        keyConceptsEn: ["Adj List & Matrix", "BFS & DFS"],
+        keyConceptsBn: ["অ্যাডজাসেন্সি লিস্ট ও ম্যাট্রিক্স", "BFS ও DFS"],
         multiDimCodeTemplates: {
-          "Adjacency List (O(V+E))": {
-            "C++": """
-#include <iostream>
-#include <vector>
-using namespace std;
-
-class Graph {
-    int V;
-    vector<vector<int>> adj;
-public:
-    Graph(int v) : V(v), adj(v) {}
-    
-    // Undirected Edge O(1)
-    void addEdge(int u, int v) {
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-    
-    void printAdjList() {
-        for (int i = 0; i < V; i++) {
-            cout << "Node " << i << " -> ";
-            for (int neighbor : adj[i]) cout << neighbor << " ";
-            cout << endl;
-        }
-    }
-};
-
-int main() {
-    Graph g(4);
-    g.addEdge(0, 1); g.addEdge(0, 2); g.addEdge(1, 3);
-    g.printAdjList();
-    return 0;
-}""",
-            "Java": """
-import java.util.ArrayList;
-import java.util.List;
-
-public class GraphAdjList {
-    private int V;
-    private List<List<Integer>> adj;
-    
-    public GraphAdjList(int v) {
-        this.V = v;
-        adj = new ArrayList<>();
-        for (int i = 0; i < v; i++) adj.add(new ArrayList<>());
-    }
-    public void addEdge(int u, int v) {
-        adj.get(u).add(v);
-        adj.get(v).add(u);
-    }
-}""",
-            "Python": """
-from collections import defaultdict
-
-class GraphAdjList:
-    def __init__(self):
-        self.adj = defaultdict(list)
-        
-    def add_edge(self, u, v, directed=False):
-        self.adj[u].append(v)
-        if not directed:
-            self.adj[v].append(u)
-
-g = GraphAdjList()
-g.add_edge(0, 1); g.add_edge(0, 2); g.add_edge(1, 3)
-print("Graph Adj List:", dict(g.adj))""",
-            "JavaScript": """
-class GraphAdjList {
-    constructor() {
-        this.adj = new Map();
-    }
-    addNode(node) {
-        if (!this.adj.has(node)) this.adj.set(node, []);
-    }
-    addEdge(u, v) {
-        this.addNode(u); this.addNode(v);
-        this.adj.get(u).push(v);
-        this.adj.get(v).push(u);
-    }
-}
-
-const g = new GraphAdjList();
-g.addEdge(0, 1); g.addEdge(0, 2);"""
-          },
-          "Adjacency Matrix (O(V²))": {
-            "C++": """
-#include <iostream>
-#include <vector>
-using namespace std;
-
-class GraphMatrix {
-    int V;
-    vector<vector<int>> matrix;
-public:
-    GraphMatrix(int v) : V(v), matrix(v, vector<int>(v, 0)) {}
-    
-    void addEdge(int u, int v) {
-        matrix[u][v] = 1;
-        matrix[v][u] = 1;
-    }
-    
-    bool hasEdge(int u, int v) {
-        return matrix[u][v] == 1; // O(1) Edge Lookup
-    }
-};""",
-            "Java": """
-public class GraphMatrix {
-    private int V;
-    private int[][] matrix;
-    
-    public GraphMatrix(int v) {
-        this.V = v;
-        matrix = new int[v][v];
-    }
-    public void addEdge(int u, int v) {
-        matrix[u][v] = 1;
-        matrix[v][u] = 1;
-    }
-    public boolean hasEdge(int u, int v) {
-        return matrix[u][v] == 1;
-    }
-}""",
-            "Python": """
-class GraphMatrix:
-    def __init__(self, v):
-        self.V = v
-        self.matrix = [[0] * v for _ in range(v)]
-        
-    def add_edge(self, u, v):
-        self.matrix[u][v] = 1
-        self.matrix[v][u] = 1
-        
-    def has_edge(self, u, v):
-        return self.matrix[u][v] == 1""",
-            "JavaScript": """
-class GraphMatrix {
-    constructor(v) {
-        this.V = v;
-        this.matrix = Array.from({length: v}, () => new Array(v).fill(0));
-    }
-    addEdge(u, v) {
-        this.matrix[u][v] = 1;
-        this.matrix[v][u] = 1;
-    }
-}"""
-          },
-          "BFS & DFS Traversals": {
-            "C++": """
-#include <iostream>
-#include <vector>
-#include <queue>
-using namespace std;
-
-// BFS Traversal using Queue O(V + E)
-void bfs(int startNode, vector<vector<int>>& adj, int V) {
-    vector<bool> visited(V, false);
-    queue<int> q;
-    
-    visited[startNode] = true;
-    q.push(startNode);
-    
-    while (!q.empty()) {
-        int u = q.front(); q.pop();
-        cout << u << " ";
-        
-        for (int v : adj[u]) {
-            if (!visited[v]) {
-                visited[v] = true;
-                q.push(v);
-            }
-        }
-    }
-}
-
-// DFS Recursive Traversal O(V + E)
-void dfs(int u, vector<vector<int>>& adj, vector<bool>& visited) {
-    visited[u] = true;
-    cout << u << " ";
-    for (int v : adj[u]) {
-        if (!visited[v]) dfs(v, adj, visited);
-    }
-}""",
-            "Java": """
-public static void bfs(int start, List<List<Integer>> adj, int V) {
-    boolean[] visited = new boolean[V];
-    Queue<Integer> q = new ArrayDeque<>();
-    visited[start] = true;
-    q.offer(start);
-    while (!q.isEmpty()) {
-        int u = q.poll();
-        System.out.print(u + " ");
-        for (int v : adj.get(u)) {
-            if (!visited[v]) {
-                visited[v] = true;
-                q.offer(v);
-            }
-        }
-    }
-}""",
-            "Python": """
-from collections import deque
-
-def bfs(start, adj):
-    visited = set([start])
-    q = deque([start])
-    res = []
-    while q:
-        u = q.popleft()
-        res.append(u)
-        for v in adj[u]:
-            if v not in visited:
-                visited.add(v)
-                q.append(v)
-    return res""",
-            "JavaScript": """
-function bfs(start, adj) {
-    const visited = new Set([start]);
-    const q = [start];
-    const res = [];
-    while (q.length > 0) {
-        const u = q.shift();
-        res.push(u);
-        for (let v of (adj.get(u) || [])) {
-            if (!visited.has(v)) {
-                visited.add(v);
-                q.push(v);
-            }
-        }
-    }
-    return res;
-}"""
-          }
-        },
-        basicProblems: [
-          DsaProblem(
-            id: "gr-1",
-            title: "1. Number of Islands (LeetCode #200)",
-            category: "Graph Basic",
-            keyIdeaEn: "Iterate over 2D grid matrix. When finding '1', increment island count and run BFS/DFS to sink connected land cells to '0'.",
-            keyIdeaBn: "২D গ্রিড ম্যাট্রিক্স ট্রাভার্স করুন। '1' পেলে আইল্যান্ড কাউন্ট বাড়ান এবং BFS/DFS চালিয়ে সংলগ্ন সব '1' কে '0' বানিয়ে দিন।",
-            codeCpp: """
-void dfs(vector<vector<char>>& grid, int r, int c) {
-    int R = grid.size(), C = grid[0].size();
-    if (r < 0 || r >= R || c < 0 || c >= C || grid[r][c] == '0') return;
-    grid[r][c] = '0'; // Sink land
-    dfs(grid, r+1, c); dfs(grid, r-1, c);
-    dfs(grid, r, c+1); dfs(grid, r, c-1);
-}
-int numIslands(vector<vector<char>>& grid) {
-    int count = 0;
-    for (int r = 0; r < grid.size(); r++) {
-        for (int c = 0; c < grid[0].size(); c++) {
-            if (grid[r][c] == '1') {
-                count++;
-                dfs(grid, r, c);
-            }
-        }
-    }
-    return count;
-}""",
-            codeJava: """
-public static int numIslands(char[][] grid) {
-    int count = 0;
-    for (int r = 0; r < grid.length; r++) {
-        for (int c = 0; c < grid[0].length; c++) {
-            if (grid[r][c] == '1') {
-                count++;
-                dfs(grid, r, c);
-            }
-        }
-    }
-    return count;
-}
-private static void dfs(char[][] grid, int r, int c) {
-    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == '0') return;
-    grid[r][c] = '0';
-    dfs(grid, r + 1, c); dfs(grid, r - 1, c);
-    dfs(grid, r, c + 1); dfs(grid, r, c - 1);
-}""",
-            codePython: """
-def numIslands(grid):
-    if not grid: return 0
-    R, C = len(grid), len(grid[0])
-    count = 0
-    
-    def dfs(r, c):
-        if r < 0 or r >= R or c < 0 or c >= C or grid[r][c] == '0':
-            return
-        grid[r][c] = '0'
-        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1)
-        
-    for r in range(R):
-        for c in range(C):
-            if grid[r][c] == '1':
-                count += 1
-                dfs(r, c)
-    return count""",
-            codeJs: """
-function numIslands(grid) {
-    let count = 0;
-    const R = grid.length, C = grid[0].length;
-    function dfs(r, c) {
-        if (r < 0 || r >= R || c < 0 || c >= C || grid[r][c] === '0') return;
-        grid[r][c] = '0';
-        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1);
-    }
-    for (let r = 0; r < R; r++) {
-        for (let c = 0; c < C; c++) {
-            if (grid[r][c] === '1') {
-                count++;
-                dfs(r, c);
-            }
-        }
-    }
-    return count;
-}""",
-            descriptionEn: "Given an `m x n` 2D binary grid representing a map of '1's (land) and '0's (water), return the total number of islands.",
-            descriptionBn: "'1' (ডাঙা) এবং '0' (পানি) সমৃদ্ধ `m x n` ২D বাইনারি গ্রিড থেকে মোট দ্বীপের সংখ্যা (Islands) গণনা করুন।",
-            sampleInputs: ["grid = [[\"1\",\"1\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\"],[\"0\",\"0\",\"1\",\"0\"],[\"0\",\"0\",\"0\",\"1\"]]"],
-            sampleOutputs: ["3 Islands"],
-          ),
-          DsaProblem(
-            id: "gr-2",
-            title: "2. Course Schedule - Cycle Detection (LeetCode #207)",
-            category: "Graph Pattern",
-            keyIdeaEn: "Build directed graph and calculate in-degree of all nodes. Run BFS (Kahn's Algorithm). If processed nodes count == V, course schedule is possible!",
-            keyIdeaBn: "ডাইরেক্টেড গ্রাফ তৈরি করে প্রতিটি নোডের In-degree হিসেব করুন। Kahn's BFS অ্যালগরিদম রান করে সাইকেল আছে কিনা চেক করুন।",
-            codeCpp: """
-bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-    vector<vector<int>> adj(numCourses);
-    vector<int> inDegree(numCourses, 0);
-    for (auto& p : prerequisites) {
-        adj[p[1]].push_back(p[0]);
-        inDegree[p[0]]++;
-    }
-    queue<int> q;
-    for (int i = 0; i < numCourses; i++) {
-        if (inDegree[i] == 0) q.push(i);
-    }
-    int count = 0;
-    while (!q.empty()) {
-        int u = q.front(); q.pop();
-        count++;
-        for (int v : adj[u]) {
-            if (--inDegree[v] == 0) q.push(v);
-        }
-    }
-    return count == numCourses;
-}""",
-            codeJava: """
-public static boolean canFinish(int numCourses, int[][] prerequisites) {
-    List<List<Integer>> adj = new ArrayList<>();
-    int[] inDegree = new int[numCourses];
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
-    for (int[] p : prerequisites) {
-        adj.get(p[1]).add(p[0]);
-        inDegree[p[0]]++;
-    }
-    Queue<Integer> q = new ArrayDeque<>();
-    for (int i = 0; i < numCourses; i++) {
-        if (inDegree[i] == 0) q.offer(i);
-    }
-    int count = 0;
-    while (!q.isEmpty()) {
-        int u = q.poll();
-        count++;
-        for (int v : adj.get(u)) {
-            if (--inDegree[v] == 0) q.offer(v);
-        }
-    }
-    return count == numCourses;
-}""",
-            codePython: """
-from collections import defaultdict, deque
-
-def canFinish(numCourses, prerequisites):
-    adj = defaultdict(list)
-    in_degree = [0] * numCourses
-    for dest, src in prerequisites:
-        adj[src].append(dest)
-        in_degree[dest] += 1
-        
-    q = deque([i for i in range(numCourses) if in_degree[i] == 0])
-    count = 0
-    while q:
-        u = q.popleft()
-        count += 1
-        for v in adj[u]:
-            in_degree[v] -= 1
-            if in_degree[v] == 0:
-                q.append(v)
-    return count == numCourses""",
-            codeJs: """
-function canFinish(numCourses, prerequisites) {
-    const adj = Array.from({length: numCourses}, () => []);
-    const inDegree = new Array(numCourses).fill(0);
-    for (let [dest, src] of prerequisites) {
-        adj[src].push(dest);
-        inDegree[dest]++;
-    }
-    const q = [];
-    for (let i = 0; i < numCourses; i++) {
-        if (inDegree[i] === 0) q.push(i);
-    }
-    let count = 0;
-    while (q.length > 0) {
-        const u = q.shift();
-        count++;
-        for (let v of adj[u]) {
-            inDegree[v]--;
-            if (inDegree[v] === 0) q.push(v);
-        }
-    }
-    return count === numCourses;
-}""",
-            descriptionEn: "Determine if it is possible to complete all `numCourses` given a list of prerequisite course pairs.",
-            descriptionBn: "কোর্স পূর্বশর্তের (Prerequisites) তালিকা থেকে সাইকেল চেক করে সব কোর্স সম্পন্ন করা সম্ভব কিনা নিরূপণ করুন।",
-            sampleInputs: ["numCourses = 2, prerequisites = [[1,0]]"],
-            sampleOutputs: ["true (Take course 0 then course 1)"],
-          ),
-        ],
-        commonMistakesEn: [
-          {
-            "title": "1. Missing `visited[]` Set causing Infinite Loop",
-            "desc": "Traversing a cyclic graph without marking visited nodes causes infinite recursive recursion or queue overflow."
-          },
-          {
-            "title": "2. Using Adjacency Matrix for Sparse Graphs",
-            "desc": "Using a V×V matrix when E is small wastes O(V²) memory space. Use an Adjacency List instead."
-          },
-          {
-            "title": "3. Confusing Directed vs Undirected Edge Insertions",
-            "desc": "Forgetting `adj[v].push_back(u)` when adding an undirected edge breaks two-way navigation."
-          },
-          {
-            "title": "4. StackOverflowError in Deep DFS Recursion",
-            "desc": "Running recursive DFS on deep linear graphs exceeds system call stack limit. Use iterative DFS with Stack."
-          }
-        ],
-        commonMistakesBn: [
-          {
-            "title": "১. `visited[]` সেট ব্যবহার করতে ভুলে যাওয়া",
-            "desc": "সাইক্লিক গ্রাফে ভিজিটেড নোড ট্র্যাক না করলে রিকার্শন বা কিউ অসীম লুপে পড়ে অ্যাপ ক্র্যাশ করে।"
-          },
-          {
-            "title": "২. ছোট গ্রাফে অ্যাডজাসেন্সি ম্যাট্রিক্স ব্যবহার",
-            "desc": "এজের সংখ্যা কম থাকলে V×V ম্যাট্রিক্স বিশাল O(V²) মেমোরি অপচয় করে। অ্যাডজাসেন্সি লিস্ট ব্যবহার করুন।"
-          },
-          {
-            "title": "৩. ডাইরেক্টেড ও আনডাইরেক্টেড এজের পজিশন গুলিয়ে ফেলা",
-            "desc": "আনডাইরেক্টেড এজে `adj[v].push_back(u)` বাদ দিলে দুইমুখী পথ বন্ধ হয়ে যায়।"
-          },
-          {
-            "title": "৪. গভীর DFS রিকার্শনে StackOverflowError",
-            "desc": "গভীর গ্রাফে রিকার্সিভ DFS চালালে সিস্টেমের কল স্ট্যাক সীমা পার হয়ে যায়। ইটারেটিভ DFS ব্যবহার করুন।"
-          }
-        ],
-        roadmapStepsEn: [
-          {
-            "step": "Step 1",
-            "title": "Understand Graph Components (Vertices & Edges)",
-            "desc": "Master Directed vs Undirected, Weighted vs Unweighted graphs and memory representations."
-          },
-          {
-            "step": "Step 2",
-            "title": "Master Adjacency List & Adjacency Matrix",
-            "desc": "Build Adjacency List O(V+E) and 2D Matrix O(V²) representation classes in code."
-          },
-          {
-            "step": "Step 3",
-            "title": "Master Breadth-First Search (BFS)",
-            "desc": "Implement Queue-based BFS for level order traversal and unweighted Shortest Path."
-          },
-          {
-            "step": "Step 4",
-            "title": "Master Depth-First Search (DFS) & 2D Grid Search",
-            "desc": "Solve Number of Islands, Flood Fill, and connected components using DFS."
-          },
-          {
-            "step": "Step 5",
-            "title": "Learn Cycle Detection & Topological Sort",
-            "desc": "Master Kahn's algorithm for Course Schedule, Topological Sort, and Dijkstra's algorithm."
-          }
-        ],
-        roadmapStepsBn: [
-          {
-            "step": "ধাপ ১",
-            "title": "গ্রাফের মূল উপাদান (ভার্টেক্স ও এজ) শিখুন",
-            "desc": "ডাইরেক্টেড বনাম আনডাইরেক্টেড, ওয়েটেড বনাম আনওয়েটেড গ্রাফের কনসেপ্ট পরিষ্কার করুন।"
-          },
-          {
-            "step": "ধাপ ২",
-            "title": "অ্যাডজাসেন্সি লিস্ট ও অ্যাডজাসেন্সি ম্যাট্রিক্স",
-            "desc": "কোডে O(V+E) অ্যাডজাসেন্সি লিস্ট এবং O(V²) ২D ম্যাট্রিক্স ক্লাস ইমপ্লিমেন্ট করুন।"
-          },
-          {
-            "step": "ধাপ ৩",
-            "title": "Breadth-First Search (BFS) মাস্টার করুন",
-            "desc": "কিউ নির্ভর BFS দিয়ে লেভেল অর্ডার ট্রাভার্সাল এবং শর্টেস্ট পাথ বের করা শিখুন।"
-          },
-          {
-            "step": "ধাপ ৪",
-            "title": "Depth-First Search (DFS) ও ২D গ্রিড সার্চ",
-            "desc": "DFS দিয়ে Number of Islands, Flood Fill এবং কানেক্টেড কম্পোনেন্ট প্রবলেমস সলভ করুন।"
-          },
-          {
-            "step": "ধাপ ৫",
-            "title": "সাইকেল ডিটেকশন ও টপোলজিক্যাল সর্ট",
-            "desc": "Kahn's algorithm দিয়ে কোর্স সিডিউল, টপোলজিক্যাল সর্ট এবং ডাইকস্ট্রা শর্টেস্ট পাথ।"
-          }
-        ],
-      ),
-
-      // 9. TRIE
-      DsaTopic(
-        id: 209,
-        title: "Trie (Prefix Tree)",
-        category: "Advanced Tree",
-        timeComplexity: "Search O(L)",
-        spaceComplexity: "O(N * L)",
-        icon: Icons.sort_by_alpha_outlined,
-        themeColor: const Color(0xFFA855F7),
-        descriptionEn: "Character prefix tree.",
-        descriptionBn: "অক্ষরভিত্তিক প্রিফিক্স ট্রি।",
-        keyConceptsEn: ["Prefix tree branches"],
-        keyConceptsBn: ["শব্দ খোঁজার ট্রি"],
-        multiDimCodeTemplates: {
-          "Trie": {
-            "C++": "class TrieNode { unordered_map<char, TrieNode*> children; };",
-            "Java": "class TrieNode { TrieNode[] children = new TrieNode[26]; }",
-            "Python": "class TrieNode: pass",
-            "JavaScript": "class TrieNode {}"
+          "Graph": {
+            "C++": "vector<vector<int>> adj;",
+            "Java": "List<List<Integer>> adj = new ArrayList<>();",
+            "Python": "adj = collections.defaultdict(list)",
+            "JavaScript": "const adj = {};"
           }
         },
         basicProblems: [],
@@ -838,6 +297,679 @@ function canFinish(numCourses, prerequisites) {
         commonMistakesBn: [],
         roadmapStepsEn: [],
         roadmapStepsBn: [],
+      ),
+
+      // 9. TRIE (PREFIX TREE)
+      DsaTopic(
+        id: 209,
+        title: "Trie (Prefix Tree)",
+        category: "Advanced Character Tree",
+        timeComplexity: "Insert O(L) | Search O(L) | StartsWith O(L)",
+        spaceComplexity: "O(N × L)",
+        icon: Icons.sort_by_alpha_outlined,
+        themeColor: const Color(0xFFA855F7),
+        descriptionEn:
+            "A Trie (pronounced 'try', short for Retrieval Tree) or Prefix Tree is a specialized N-ary tree data structure used for fast string matching and prefix searches. Nodes store character references (`unordered_map<char, TrieNode*>` or `TrieNode[26]`) and a boolean flag `isEndOfWord`. Operations like `insert(word)`, `search(word)`, and `startsWith(prefix)` run in O(L) time where L is the length of the target string — independent of the total number of words stored! Modern search engine autocomplete, spell-checking, and IP routing tables use Tries extensively.",
+        descriptionBn:
+            "ট্রাই (Trie или Prefix Tree) হলো একটি বিশেষায়িত N-ary ক্যারেক্টার ট্রি স্ট্রাকচার যা দ্রুত স্ট্রিং ম্যাচিং এবং প্রিফিক্স সার্চের জন্য ব্যবহৃত হয়। প্রতিটি নোডে অক্ষর সংযোগ (`unordered_map<char, TrieNode*>` বা `TrieNode[26]`) এবং একটি বুলিয়ান ফ্ল্যাগ `isEndOfWord` থাকে। `insert(word)`, `search(word)`, এবং `startsWith(prefix)` অপারেশনগুলো মাত্র O(L) টাইমে সম্পন্ন হয় (যেখানে L হলো শব্দটির দৈর্ঘ্য)। এতে অভিধানে যত লক্ষ শব্দই থাক না কেন সময়কাল সর্বদা O(L)! সার্চ ইঞ্জিন অটো-কমপ্লিট, স্পেল চেকার এবং IP রাউটিংয়ে ট্রাই ব্যবহৃত হয়।",
+        keyConceptsEn: [
+          "O(L) Fast Lookup: Operations depend ONLY on string length L, completely independent of the dictionary size N.",
+          "Character Branch Sharing: Words with common prefixes (e.g., 'app', 'apple', 'application') share identical prefix tree branches.",
+          "Trie Node Anatomy: Contains a child map/array `children[c]` and a boolean flag `isEndOfWord` marking word endings.",
+          "Autocomplete Engine: Navigating to the prefix node `startsWith('app')` and running DFS yields all matching suggested words.",
+          "Wildcard Matching: Supports pattern searches (e.g. `b.d` matching `bad`, `bed`, `bid`) via recursive DFS branching."
+        ],
+        keyConceptsBn: [
+          "O(L) সুপারফাস্ট লুকআপ: সার্চ স্পিড কেবল শব্দের দৈর্ঘ্য L এর ওপর নির্ভর করে; অভিধানে মোট শব্দের সংখ্যা N এর ওপর নয়।",
+          "প্রিফিক্স শেয়ারিং: একই প্রিফিক্স যুক্ত শব্দসমূহ (যেমন: 'app', 'apple', 'application') মেমোরিতে একই ব্রাঞ্চ শেয়ার করে।",
+          "ট্রাই নোড স্ট্রাকচার: নোডে চাইল্ড ম্যাপ `children[c]` এবং শব্দ সমাপ্তি চিহ্নিত করার বুলিয়ান ফ্ল্যাগ `isEndOfWord` থাকে।",
+          "অটো-কমপ্লিট ইঞ্জিন: প্রিফিক্স নোডে `startsWith('app')` গিয়ে DFS চালালে সকল প্রস্তাবিত শব্দ সাজেস্ট করা সম্ভব।",
+          "ওয়াইল্ডকার্ড প্যাটার্ন সার্চ: রিকার্সিভ DFS দিয়ে `b.d` টাইপের প্যাটার্ন সার্চ করে `bad`, `bed`, `bid` ম্যাচিং করা।"
+        ],
+        multiDimCodeTemplates: {
+          "Standard Trie": {
+            "C++": """
+#include <iostream>
+#include <unordered_map>
+#include <string>
+using namespace std;
+
+class TrieNode {
+public:
+    unordered_map<char, TrieNode*> children;
+    bool isEndOfWord;
+    TrieNode() : isEndOfWord(false) {}
+};
+
+class Trie {
+    TrieNode* root;
+public:
+    Trie() { root = new TrieNode(); }
+    
+    // O(L) Insert
+    void insert(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            if (!curr->children.count(c)) {
+                curr->children[c] = new TrieNode();
+            }
+            curr = curr->children[c];
+        }
+        curr->isEndOfWord = true;
+    }
+    
+    // O(L) Search Exact Word
+    bool search(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            if (!curr->children.count(c)) return false;
+            curr = curr->children[c];
+        }
+        return curr->isEndOfWord;
+    }
+    
+    // O(L) StartsWith Prefix
+    bool startsWith(string prefix) {
+        TrieNode* curr = root;
+        for (char c : prefix) {
+            if (!curr->children.count(c)) return false;
+            curr = curr->children[c];
+        }
+        return true;
+    }
+};""",
+            "Java": """
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isEndOfWord = false;
+}
+
+public class Trie {
+    private TrieNode root;
+    public Trie() { root = new TrieNode(); }
+    
+    public void insert(String word) {
+        TrieNode curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) {
+                curr.children[idx] = new TrieNode();
+            }
+            curr = curr.children[idx];
+        }
+        curr.isEndOfWord = true;
+    }
+    
+    public boolean search(String word) {
+        TrieNode curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) return false;
+            curr = curr.children[idx];
+        }
+        return curr.isEndOfWord;
+    }
+    
+    public boolean startsWith(String prefix) {
+        TrieNode curr = root;
+        for (char c : prefix.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) return false;
+            curr = curr.children[idx];
+        }
+        return true;
+    }
+}""",
+            "Python": """
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+        
+    def insert(self, word: str) -> None:
+        curr = self.root
+        for c in word:
+            if c not in curr.children:
+                curr.children[c] = TrieNode()
+            curr = curr.children[c]
+        curr.is_end_of_word = True
+        
+    def search(self, word: str) -> bool:
+        curr = self.root
+        for c in word:
+            if c not in curr.children:
+                return False
+            curr = curr.children[c]
+        return curr.is_end_of_word
+        
+    def startsWith(self, prefix: str) -> bool:
+        curr = self.root
+        for c in prefix:
+            if c not in curr.children:
+                return False
+            curr = curr.children[c]
+        return True""",
+            "JavaScript": """
+class TrieNode {
+    constructor() {
+        this.children = {};
+        this.isEndOfWord = false;
+    }
+}
+
+class Trie {
+    constructor() {
+        this.root = new TrieNode();
+    }
+    insert(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr.children[c]) {
+                curr.children[c] = new TrieNode();
+            }
+            curr = curr.children[c];
+        }
+        curr.isEndOfWord = true;
+    }
+    search(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr.children[c]) return false;
+            curr = curr.children[c];
+        }
+        return curr.isEndOfWord;
+    }
+    startsWith(prefix) {
+        let curr = this.root;
+        for (let c of prefix) {
+            if (!curr.children[c]) return false;
+            curr = curr.children[c];
+        }
+        return true;
+    }
+}"""
+          },
+          "Autocomplete Engine": {
+            "C++": """
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+class AutocompleteTrie {
+    struct Node {
+        unordered_map<char, Node*> children;
+        bool isEnd = false;
+    };
+    Node* root = new Node();
+    
+    void dfs(Node* curr, string currentWord, vector<string>& results) {
+        if (curr->isEnd) results.push_back(currentWord);
+        for (auto& p : curr->children) {
+            dfs(p.second, currentWord + p.first, results);
+        }
+    }
+public:
+    void insert(string word) {
+        Node* curr = root;
+        for (char c : word) {
+            if (!curr->children.count(c)) curr->children[c] = new Node();
+            curr = curr->children[c];
+        }
+        curr->isEnd = true;
+    }
+    
+    vector<string> autocomplete(string prefix) {
+        Node* curr = root;
+        vector<string> results;
+        for (char c : prefix) {
+            if (!curr->children.count(c)) return results;
+            curr = curr->children[c];
+        }
+        dfs(curr, prefix, results);
+        return results;
+    }
+};""",
+            "Java": """
+import java.util.*;
+
+public class AutocompleteTrie {
+    static class Node {
+        Map<Character, Node> children = new HashMap<>();
+        boolean isEnd = false;
+    }
+    private Node root = new Node();
+    
+    public void insert(String word) {
+        Node curr = root;
+        for (char c : word.toCharArray()) {
+            curr.children.putIfAbsent(c, new Node());
+            curr = curr.children.get(c);
+        }
+        curr.isEnd = true;
+    }
+    
+    public List<String> getSuggestions(String prefix) {
+        Node curr = root;
+        List<String> results = new ArrayList<>();
+        for (char c : prefix.toCharArray()) {
+            if (!curr.children.containsKey(c)) return results;
+            curr = curr.children.get(c);
+        }
+        dfs(curr, new StringBuilder(prefix), results);
+        return results;
+    }
+    private void dfs(Node node, StringBuilder sb, List<String> res) {
+        if (node.isEnd) res.add(sb.toString());
+        for (char c : node.children.keySet()) {
+            sb.append(c);
+            dfs(node.children.get(c), sb, res);
+            sb.setLength(sb.length() - 1);
+        }
+    }
+}""",
+            "Python": """
+class AutocompleteTrie:
+    def __init__(self):
+        self.root = {}
+        
+    def insert(self, word):
+        curr = self.root
+        for c in word:
+            if c not in curr: curr[c] = {}
+            curr = curr[c]
+        curr['#'] = True # Word end marker
+        
+    def autocomplete(self, prefix):
+        curr = self.root
+        for c in prefix:
+            if c not in curr: return []
+            curr = curr[c]
+            
+        res = []
+        def dfs(node, path):
+            if '#' in node: res.append(path)
+            for k in node:
+                if k != '#': dfs(node[k], path + k)
+                
+        dfs(curr, prefix)
+        return res""",
+            "JavaScript": """
+class AutocompleteTrie {
+    constructor() { this.root = {}; }
+    insert(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr[c]) curr[c] = {};
+            curr = curr[c];
+        }
+        curr['#'] = true;
+    }
+    autocomplete(prefix) {
+        let curr = this.root;
+        for (let c of prefix) {
+            if (!curr[c]) return [];
+            curr = curr[c];
+        }
+        const res = [];
+        const dfs = (node, path) => {
+            if (node['#']) res.push(path);
+            for (let k in node) {
+                if (k !== '#') dfs(node[k], path + k);
+            }
+        };
+        dfs(curr, prefix);
+        return res;
+    }
+}"""
+          }
+        },
+        basicProblems: [
+          DsaProblem(
+            id: "tr-1",
+            title: "1. Implement Trie - Prefix Tree (LeetCode #208)",
+            category: "Trie Basic",
+            keyIdeaEn: "Build Trie class with `insert(word)`, `search(word)`, and `startsWith(prefix)` methods in O(L) time.",
+            keyIdeaBn: "O(L) সময়ে `insert(word)`, `search(word)`, এবং `startsWith(prefix)` মেথড বিশিষ্ট Trie ক্লাস তৈরি করুন।",
+            codeCpp: """
+class Trie {
+    struct Node {
+        unordered_map<char, Node*> children;
+        bool isEnd = false;
+    } *root;
+public:
+    Trie() { root = new Node(); }
+    void insert(string word) {
+        Node* curr = root;
+        for (char c : word) {
+            if (!curr->children.count(c)) curr->children[c] = new Node();
+            curr = curr->children[c];
+        }
+        curr->isEnd = true;
+    }
+    bool search(string word) {
+        Node* curr = root;
+        for (char c : word) {
+            if (!curr->children.count(c)) return false;
+            curr = curr->children[c];
+        }
+        return curr->isEnd;
+    }
+    bool startsWith(string prefix) {
+        Node* curr = root;
+        for (char c : prefix) {
+            if (!curr->children.count(c)) return false;
+            curr = curr->children[c];
+        }
+        return true;
+    }
+};""",
+            codeJava: """
+class Trie {
+    static class Node {
+        Node[] children = new Node[26];
+        boolean isEnd = false;
+    }
+    private Node root = new Node();
+    public void insert(String word) {
+        Node curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) curr.children[idx] = new Node();
+            curr = curr.children[idx];
+        }
+        curr.isEnd = true;
+    }
+    public boolean search(String word) {
+        Node curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) return false;
+            curr = curr.children[idx];
+        }
+        return curr.isEnd;
+    }
+    public boolean startsWith(String prefix) {
+        Node curr = root;
+        for (char c : prefix.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) return false;
+            curr = curr.children[idx];
+        }
+        return true;
+    }
+}""",
+            codePython: """
+class Trie:
+    def __init__(self): self.root = {}
+    def insert(self, word: str) -> None:
+        curr = self.root
+        for c in word:
+            if c not in curr: curr[c] = {}
+            curr = curr[c]
+        curr['#'] = True
+    def search(self, word: str) -> bool:
+        curr = self.root
+        for c in word:
+            if c not in curr: return False
+            curr = curr[c]
+        return '#' in curr
+    def startsWith(self, prefix: str) -> bool:
+        curr = self.root
+        for c in prefix:
+            if c not in curr: return False
+            curr = curr[c]
+        return True""",
+            codeJs: """
+class Trie {
+    constructor() { this.root = {}; }
+    insert(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr[c]) curr[c] = {};
+            curr = curr[c];
+        }
+        curr['#'] = true;
+    }
+    search(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr[c]) return false;
+            curr = curr[c];
+        }
+        return !!curr['#'];
+    }
+    startsWith(prefix) {
+        let curr = this.root;
+        for (let c of prefix) {
+            if (!curr[c]) return false;
+            curr = curr[c];
+        }
+        return true;
+    }
+}""",
+            descriptionEn: "Implement a Trie (Prefix Tree) supporting `insert`, `search`, and `startsWith` operations.",
+            descriptionBn: "`insert`, `search`, এবং `startsWith` সাপোর্ট করে এমন একটি Trie (প্রিফিক্স ট্রি) ইমপ্লিমেন্ট করুন।",
+            sampleInputs: ["insert(\"apple\"), search(\"apple\"), search(\"app\"), startsWith(\"app\"), insert(\"app\"), search(\"app\")"],
+            sampleOutputs: ["search(\"apple\"): true, search(\"app\"): false, startsWith(\"app\"): true, search(\"app\"): true"],
+          ),
+          DsaProblem(
+            id: "tr-2",
+            title: "2. Design Add and Search Words Data Structure (LeetCode #211)",
+            category: "Trie Pattern",
+            keyIdeaEn: "Build a Trie supporting '.' wildcard matching. When encountering '.', recursively search all 26 children.",
+            keyIdeaBn: "ওয়াইল্ডকার্ড '.' ম্যাচিং সাপোর্ট করে এমন Trie ডিজাইন করুন। '.' পেলে রিকার্সিভলি সব চাইল্ড নোডে খুঁজুন।",
+            codeCpp: """
+class WordDictionary {
+    struct Node {
+        unordered_map<char, Node*> children;
+        bool isEnd = false;
+    } *root;
+    
+    bool dfs(string& word, int idx, Node* curr) {
+        if (!curr) return false;
+        if (idx == word.length()) return curr->isEnd;
+        char c = word[idx];
+        if (c == '.') {
+            for (auto& p : curr->children) {
+                if (dfs(word, idx + 1, p.second)) return true;
+            }
+            return false;
+        } else {
+            if (!curr->children.count(c)) return false;
+            return dfs(word, idx + 1, curr->children[c]);
+        }
+    }
+public:
+    WordDictionary() { root = new Node(); }
+    void addWord(string word) {
+        Node* curr = root;
+        for (char c : word) {
+            if (!curr->children.count(c)) curr->children[c] = new Node();
+            curr = curr->children[c];
+        }
+        curr->isEnd = true;
+    }
+    bool search(string word) { return dfs(word, 0, root); }
+};""",
+            codeJava: """
+class WordDictionary {
+    static class Node {
+        Node[] children = new Node[26];
+        boolean isEnd = false;
+    }
+    private Node root = new Node();
+    public void addWord(String word) {
+        Node curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) curr.children[idx] = new Node();
+            curr = curr.children[idx];
+        }
+        curr.isEnd = true;
+    }
+    public boolean search(String word) { return dfs(word.toCharArray(), 0, root); }
+    private boolean dfs(char[] word, int idx, Node curr) {
+        if (curr == null) return false;
+        if (idx == word.length) return curr.isEnd;
+        char c = word[idx];
+        if (c == '.') {
+            for (Node child : curr.children) {
+                if (child != null && dfs(word, idx + 1, child)) return true;
+            }
+            return false;
+        } else {
+            int i = c - 'a';
+            return dfs(word, idx + 1, curr.children[i]);
+        }
+    }
+}""",
+            codePython: """
+class WordDictionary:
+    def __init__(self): self.root = {}
+    def addWord(self, word: str) -> None:
+        curr = self.root
+        for c in word:
+            if c not in curr: curr[c] = {}
+            curr = curr[c]
+        curr['#'] = True
+        
+    def search(self, word: str) -> bool:
+        def dfs(idx, curr):
+            if idx == len(word): return '#' in curr
+            c = word[idx]
+            if c == '.':
+                return any(dfs(idx + 1, curr[k]) for k in curr if k != '#')
+            if c not in curr: return False
+            return dfs(idx + 1, curr[c])
+        return dfs(0, self.root)""",
+            codeJs: """
+class WordDictionary {
+    constructor() { this.root = {}; }
+    addWord(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr[c]) curr[c] = {};
+            curr = curr[c];
+        }
+        curr['#'] = true;
+    }
+    search(word) {
+        const dfs = (idx, curr) => {
+            if (idx === word.length) return !!curr['#'];
+            let c = word[idx];
+            if (c === '.') {
+                for (let k in curr) {
+                    if (k !== '#' && dfs(idx + 1, curr[k])) return true;
+                }
+                return false;
+            }
+            if (!curr[c]) return false;
+            return dfs(idx + 1, curr[c]);
+        };
+        return dfs(0, this.root);
+    }
+}""",
+            descriptionEn: "Design a data structure that supports adding new words and finding if a string matches any previously added string with '.' wildcard.",
+            descriptionBn: "নতুন শব্দ যোগ করা এবং ওয়াইল্ডকার্ড '.' দিয়ে পূর্বে যোগ করা শব্দের মিল খোঁজার ডেটা স্ট্রাকচার তৈরি করুন।",
+            sampleInputs: ["addWord(\"bad\"), addWord(\"dad\"), search(\"pad\"), search(\"bad\"), search(\".ad\"), search(\"b..\")"],
+            sampleOutputs: ["search(\"pad\"): false, search(\"bad\"): true, search(\".ad\"): true, search(\"b..\"): true"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Forgetting `isEndOfWord = true` Flag",
+            "desc": "Failing to mark the final node when inserting a word breaks exact word search functionality (e.g. `search('app')` when 'apple' exists)."
+          },
+          {
+            "title": "2. Confusing Exact Word `search()` vs `startsWith()`",
+            "desc": "Using `search()` when checking prefix existence. `search()` requires `isEndOfWord == true`, while `startsWith()` only checks node path."
+          },
+          {
+            "title": "3. Off-by-one ASCII Array Math Bug",
+            "desc": "Using `c - 'A'` instead of `c - 'a'` for lowercase characters causes index out-of-bounds error in fixed 26-element array."
+          },
+          {
+            "title": "4. Memory Leak in C++ Trie Deletion",
+            "desc": "Failing to recursively delete allocated TrieNode heap objects when resetting or clearing the dictionary."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. `isEndOfWord = true` ফ্ল্যাগ দিতে ভুলে যাওয়া",
+            "desc": "শব্দের শেষ নোডে ফ্ল্যাগ না দিলে 'apple' থাকলেও 'app' শব্দটি পৃথক শব্দ হিসেবে খুঁজে পাওয়া যাবে না।"
+          },
+          {
+            "title": "২. `search()` এবং `startsWith()` গুলিয়ে ফেলা",
+            "desc": "প্রিফিক্স চেক করতে `search()` ব্যবহার করা। `search()` এর জন্য শব্দের শেষ ফ্ল্যাগ সত্য হতে হয়, কিন্তু `startsWith()` কেবল নোড লিংক চেক করে।"
+          },
+          {
+            "title": "৩. ASCII ইন্ডেক্স সূত্রের ভুল",
+            "desc": "ছোট হাতের অক্ষরের জন্য `c - 'a'` এর জায়গায় `c - 'A'` লিখলে ২৬-সাইজের অ্যারেতে আউট অফ বাউন্ডস ঘটে।"
+          },
+          {
+            "title": "৪. C++ হিপ নোড ডিলিট না করায় মেমোরি লিক",
+            "desc": "ট্রি রিসেট করার সময় রিকার্সিভলি `delete` না করলে মেমোরি লিক হয়।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand N-ary Character Tree Anatomy",
+            "desc": "Master TrieNode struct, child map/array `children[26]`, and `isEndOfWord` boolean flag."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master O(L) Insert, Search & StartsWith",
+            "desc": "Implement insert, search exact word, and startsWith prefix methods in O(L) time."
+          },
+          {
+            "step": "Step 3",
+            "title": "Build Autocomplete Search Engine",
+            "desc": "Navigate to prefix node and run DFS to collect all suggested matching words."
+          },
+          {
+            "step": "Step 4",
+            "title": "Solve Wildcard '.' Pattern Search",
+            "desc": "Implement recursive DFS branching to search wildcard patterns like `b.d`."
+          },
+          {
+            "step": "Step 5",
+            "title": "Solve Advanced Word Search II & Suffix Trees",
+            "desc": "Combine Trie with 2D Grid DFS for Word Search II and introduce Compressed Tries (Radix Tree)."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "N-ary ক্যারেক্টার ট্রি নোড স্ট্রাকচার শিখুন",
+            "desc": "TrieNode স্ট্রাকচার, চাইল্ড ম্যাপ `children[26]`, এবং `isEndOfWord` ফ্ল্যাগ আয়ত্ত করুন।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "O(L) ইনসার্ট, সার্চ ও প্রিফিক্স ম্যাচিং",
+            "desc": "শব্দ যোগ, হুবহু শব্দ খোঁজা এবং প্রিফিক্স ম্যাচিং মেথড O(L) সময়ে কোড করুন।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "অটো-কমপ্লিট সার্চ ইঞ্জিন তৈরি করুন",
+            "desc": "প্রিফিক্স নোডে গিয়ে DFS চালিয়ে সমস্ত প্রস্তাবিত শব্দ সাজেস্ট করা শিখুন।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "ওয়াইল্ডকার্ড '.' প্যাটার্ন সার্চ প্রবলেম",
+            "desc": "রিকার্সিভ DFS দিয়ে `b.d` টাইপের ওয়াইল্ডকার্ড শব্দ ম্যাচিং সলভ করুন।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "Word Search II ও সাফিক্স ট্রি",
+            "desc": "২D গ্রিডের সাথে Trie মিলিয়ে Word Search II এবং কম্প্রেসড ট্রাই (Radix Tree) ধারণা।"
+          }
+        ],
       ),
     ];
   }
