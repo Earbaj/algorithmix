@@ -103,6 +103,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 17) {
       // Greedy Algorithms dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.greedyAlgorithmDetail);
+    } else if (pattern.id == 18) {
+      // Dynamic Programming dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.dpDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
