@@ -619,6 +619,85 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     );
   }
 
+  int _getActiveLineNumber() {
+    if (widget.problem.id.contains("1") || widget.problem.id == "arr-1") {
+      if (_p1Pointer == 0) return 2;
+      if (_p1Pointer < _p1Arr.length - 1) return 4;
+      return 7;
+    } else if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
+      if (_p2Left < _p2Right) return 4;
+      return 5;
+    } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
+      if (_p3Row < 2) return 6;
+      return 8;
+    } else {
+      if (_p4Layer == 0) return 3;
+      return 6;
+    }
+  }
+
+  Widget _buildHighlightedCodeBlock() {
+    final code = _getCodeForSelectedLanguage();
+    final lines = code.trim().split('\n');
+    final activeLine = _getActiveLineNumber();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(lines.length, (idx) {
+        final lineNumber = idx + 1;
+        final isActive = lineNumber == activeLine;
+
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+          margin: const EdgeInsets.symmetric(vertical: 1),
+          decoration: BoxDecoration(
+            color: isActive ? AppTheme.accentNeonCyan.withOpacity(0.2) : Colors.transparent,
+            borderRadius: BorderRadius.circular(6),
+            border: isActive ? Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.6)) : null,
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 28,
+                child: Text(
+                  "$lineNumber",
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontFamily: 'monospace',
+                    color: isActive ? AppTheme.accentNeonCyan : const Color(0xFF64748B),
+                    fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+              ),
+              if (isActive)
+                const Padding(
+                  padding: EdgeInsets.only(right: 6),
+                  child: Icon(Icons.arrow_right_alt, color: AppTheme.accentNeonCyan, size: 16),
+                )
+              else
+                const SizedBox(width: 22),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    lines[idx],
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 12.5,
+                      color: isActive ? Colors.white : const Color(0xFF38BDF8),
+                      fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
   // TAB 3: Multi-Language Code with Embedded Visualizer and Controls
   Widget _buildCodeTab(double hPadding) {
     String currentLog = _p1Log;
@@ -655,19 +734,34 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
             const SizedBox(height: 10),
 
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(color: const Color(0xFF090D16), borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFF1E293B))),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.copy, color: AppTheme.accentNeonCyan, size: 20),
-                    onPressed: () => _copyToClipboard(_getCodeForSelectedLanguage()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(width: 10, height: 10, decoration: const BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle)),
+                          const SizedBox(width: 6),
+                          Container(width: 10, height: 10, decoration: const BoxDecoration(color: Colors.amberAccent, shape: BoxShape.circle)),
+                          const SizedBox(width: 6),
+                          Container(width: 10, height: 10, decoration: const BoxDecoration(color: Colors.greenAccent, shape: BoxShape.circle)),
+                          const SizedBox(width: 10),
+                          Text(_isEnglish ? "Line-by-Line Code Execution Highlight" : "লাইন-বাই-লাইন কোড এক্সিকিউশন হাইলাইট", style: const TextStyle(color: AppTheme.accentNeonCyan, fontSize: 11, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.copy, color: AppTheme.accentNeonCyan, size: 18),
+                        onPressed: () => _copyToClipboard(_getCodeForSelectedLanguage()),
+                      ),
+                    ],
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Text(_getCodeForSelectedLanguage(), style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: Color(0xFF38BDF8), height: 1.4)),
-                  ),
+                  const Divider(color: Color(0xFF1E293B)),
+                  const SizedBox(height: 6),
+                  _buildHighlightedCodeBlock(),
                 ],
               ),
             ),
