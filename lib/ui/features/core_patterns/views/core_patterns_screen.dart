@@ -79,6 +79,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 9) {
       // In-place Reversal of Linked List dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.inplaceReversalDetail);
+    } else if (pattern.id == 10) {
+      // Tree BFS dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.treeBfsDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
