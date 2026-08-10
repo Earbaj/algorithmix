@@ -94,6 +94,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 14) {
       // Modified Binary Search dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.modifiedBinarySearchDetail);
+    } else if (pattern.id == 15) {
+      // Top K Elements dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.topKElementsDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
