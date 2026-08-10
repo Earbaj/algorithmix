@@ -1989,23 +1989,6 @@ function maxSlidingWindow(nums, k) {
         roadmapStepsEn: [],
         roadmapStepsBn: [],
       ),
-        descriptionBn: "হ্যাশ টেবিল হলো একটি কী-ভ্যালু ডিকশনারি যা হ্যাশ ফাংশন দিয়ে ইনডেক্সিং করে।",
-        keyConceptsEn: ["O(1) Average Lookup", "Collision Handling"],
-        keyConceptsBn: ["O(1) গড়ে সমাধান", "কলিশন হ্যান্ডলিং"],
-        multiDimCodeTemplates: {
-          "Hash Map (Key-Value)": {
-            "C++": "unordered_map<string, int> mp;",
-            "Java": "Map<String, Integer> map = new HashMap<>();",
-            "Python": "mp = {}",
-            "JavaScript": "const map = new Map();"
-          }
-        },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
-      ),
 
       // 6. BINARY SEARCH TREE (BST)
       DsaTopic(
