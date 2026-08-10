@@ -1497,6 +1497,17 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     ),
   ];
 
+  String _getMinValHeaderLabel(DebugArrayStep step) {
+    if (step.minVal == null) return "";
+    final pid = widget.problem.id;
+    if (pid.startsWith("hp-")) return "Heap Top / Minimum: ${step.minVal}";
+    if (pid.startsWith("ll-")) return "Result / Pointer: ${step.minVal}";
+    if (pid.startsWith("st-")) return "Min Val: ${step.minVal}";
+    if (pid.startsWith("hm-")) return "Count / Sum: ${step.minVal}";
+    if (pid.startsWith("bst-")) return "Insertion Target: ${step.minVal}";
+    return "Min: ${step.minVal}";
+  }
+
   List<DebugArrayStep> get _currentSteps {
     if (widget.problem.id == "hp-1") return _hp1Steps;
     if (widget.problem.id == "hp-2") return _hp2Steps;
@@ -2038,9 +2049,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (step.minVal != null)
-                  Text(widget.problem.id.startsWith("hp-") ? "Heap Top / Minimum: ${step.minVal}" : (widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : (widget.problem.id.startsWith("hm-") ? "Count / Sum: ${step.minVal}" : (widget.problem.id.startsWith("bst-") ? "Insertion Target: ${step.minVal}" : "Min: ${step.minVal}"))), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(
+                    _getMinValHeaderLabel(step),
+                    style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
                 if (step.maxVal != null)
-                  Text("Max Bound: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(
+                    "Max Bound: ${step.maxVal}",
+                    style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
               ],
             ),
             const SizedBox(height: 16),
