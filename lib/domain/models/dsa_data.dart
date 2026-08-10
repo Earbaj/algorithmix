@@ -2376,27 +2376,345 @@ function subarraySum(nums, k) {
         id: 206,
         title: "Binary Search Tree (BST)",
         category: "Hierarchical Tree Structure",
-        timeComplexity: "Search O(log N) avg | Insert O(log N) avg | Delete O(log N) avg",
+        timeComplexity: "Search: O(log N) avg | Insert: O(log N) avg | Delete: O(log N) avg | Worst: O(N)",
         spaceComplexity: "O(N)",
         icon: Icons.account_tree_outlined,
         themeColor: const Color(0xFF06B6D4),
-        descriptionEn: "A BST is a node-based binary tree maintaining the invariant Left Subtree < Root < Right Subtree.",
-        descriptionBn: "বাইনারি সার্চ ট্রি হলো নোড-ভিত্তিক গাছ যা বাম সাবট্রি < রুট < ডান সাবট্রি নিয়ম মানে।",
-        keyConceptsEn: ["BST Invariant", "Inorder Sorted Traversal"],
-        keyConceptsBn: ["BST নিয়ম", "Inorder সর্টেড ট্রাভার্সাল"],
+        descriptionEn:
+            "A Binary Search Tree (BST) is a hierarchical node-based binary tree structure that strictly enforces the BST Invariant: for every node, all values in its Left Subtree are strictly smaller (`val < root->val`), and all values in its Right Subtree are strictly greater (`val > root->val`). This invariant allows Binary Search over dynamic data in average O(log N) logarithmic time. Inorder Traversal (`Left -> Root -> Right`) of a valid BST always yields a perfectly sorted array.",
+        descriptionBn:
+            "বাইনারি সার্চ ট্রি (BST) হলো একটি নোড-ভিত্তিক হায়ারার্কিকাল ট্রি ডেটা স্ট্রাকচার যা BST নিয়ম মেনে চলে: যেকোনো নোডের বাম সাবট্রির সমস্ত মান মূল রুটের চেয়ে ছোট (`val < root->val`) এবং ডান সাবট্রির সমস্ত মান মূল রুটের চেয়ে বড় (`val > root->val`) হয়। এই নিয়মের ফলে ডাইনামিক ডেটাতে O(log N) সময়ে অনুসন্ধান (Search) ও সংযোজন (Insert) করা যায়। একটি সঠিক BST এর Inorder Traversal করলে সব উপাদান ক্রমানুসারে (Sorted) পাওয়া যায়।",
+        keyConceptsEn: [
+          "BST Invariant: Every node satisfies Left Subtree < Node < Right Subtree.",
+          "Inorder Sorted Property: Inorder Traversal (`Left -> Root -> Right`) visits BST values in strictly ascending sorted order.",
+          "O(log N) Logarithmic Search: Halving search space at each level by branching left or right based on value comparison.",
+          "Lowest Common Ancestor (LCA): Finding the lowest node where two target nodes `p` and `q` split into opposite subtrees."
+        ],
+        keyConceptsBn: [
+          "BST নিয়ম: প্রতিটি নোডের বাম সাবট্রি < নোড < ডান সাবট্রি শর্ত মেনে চলা।",
+          "Inorder সর্টেড বৈশিষ্ট্য: Inorder Traversal করলে BST এর সমস্ত মান ছোট থেকে বড় ক্রমানুসারে পাওয়া যায়।",
+          "O(log N) অনুসন্ধান: প্রতিটি ধাপে মান তুলনা করে ডানে বা বামে গিয়ে সার্চ স্পেস অর্ধেক করা।",
+          "Lowest Common Ancestor (LCA): যে সর্বনিম্ন নোডে দুটি লক্ষ্য নোড `p` ও `q` দুই দিকে আলাদা হয়ে যায়।"
+        ],
         multiDimCodeTemplates: {
-          "Standard BST": {
-            "C++": "struct TreeNode { int val; TreeNode *left, *right; };",
-            "Java": "class TreeNode { int val; TreeNode left, right; }",
-            "Python": "class TreeNode: pass",
-            "JavaScript": "class TreeNode {}"
+          "TreeNode Node Definition": {
+            "C++": """
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};""",
+            "Java": """
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int val) { this.val = val; }
+}""",
+            "Python": """
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right""",
+            "JavaScript": """
+class TreeNode {
+    constructor(val = 0, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}"""
+          },
+          "BST Inorder Traversal (Sorted)": {
+            "C++": """
+void inorder(TreeNode* root, vector<int>& res) {
+    if (!root) return;
+    inorder(root->left, res);
+    res.push_back(root->val);
+    inorder(root->right, res);
+}""",
+            "Java": """
+public void inorder(TreeNode root, List<Integer> res) {
+    if (root == null) return;
+    inorder(root.left, res);
+    res.add(root.val);
+    inorder(root.right, res);
+}""",
+            "Python": """
+def inorder(root, res):
+    if not root: return
+    inorder(root.left, res)
+    res.append(root.val)
+    inorder(root.right, res)""",
+            "JavaScript": """
+function inorder(root, res = []) {
+    if (!root) return res;
+    inorder(root.left, res);
+    res.push(root.val);
+    inorder(root.right, res);
+    return res;
+}"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "bst-1",
+            title: "1. Search in a Binary Search Tree",
+            category: "BST Search Basic",
+            keyIdeaEn: "Compare `val` with `root->val`. If `val < root->val`, search left subtree. If `val > root->val`, search right subtree. If equal, return `root`.",
+            keyIdeaBn: "মান রুটের সাথে তুলনা করুন। ছোট হলে বামে যান, বড় হলে ডানে যান। মিলে গেলে ওই নোডের পয়েন্টার রিটার্ন করুন।",
+            codeCpp: """
+TreeNode* searchBST(TreeNode* root, int val) {
+    if (!root || root->val == val) return root;
+    if (val < root->val) return searchBST(root->left, val);
+    return searchBST(root->right, val);
+}""",
+            codeJava: """
+public TreeNode searchBST(TreeNode root, int val) {
+    if (root == null || root.val == val) return root;
+    if (val < root.val) return searchBST(root.left, val);
+    return searchBST(root.right, val);
+}""",
+            codePython: """
+def searchBST(root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+    if not root or root.val == val:
+        return root
+    if val < root.val:
+        return searchBST(root.left, val)
+    return searchBST(root.right, val)""",
+            codeJs: """
+function searchBST(root, val) {
+    if (!root || root.val === val) return root;
+    if (val < root.val) return searchBST(root.left, val);
+    return searchBST(root.right, val);
+}""",
+            descriptionEn: "Find the node in a Binary Search Tree that matches a target value in average O(log N) time.",
+            descriptionBn: "একটি বাইনারি সার্চ ট্রি থেকে টার্গেট মানের নোডটি ওয়ান (O(log N)) টাইমে খুঁজে বের করুন।",
+            sampleInputs: ["root = [4, 2, 7, 1, 3], val = 2"],
+            sampleOutputs: ["Subtree = [2, 1, 3]"],
+          ),
+          DsaProblem(
+            id: "bst-2",
+            title: "2. Insert into a Binary Search Tree",
+            category: "BST Mutation Pattern",
+            keyIdeaEn: "Traverse tree comparing insertion value. Reaching a `nullptr` spot, create and return new `TreeNode(val)` attached to parent.",
+            keyIdeaBn: "ট্রি ট্রাভার্স করে খালি নাল (`nullptr`) স্থান খুঁজে নিয়ে সেখানে নতুন `TreeNode(val)` যোগ করুন।",
+            codeCpp: """
+TreeNode* insertIntoBST(TreeNode* root, int val) {
+    if (!root) return new TreeNode(val);
+    if (val < root->val) root->left = insertIntoBST(root->left, val);
+    else root->right = insertIntoBST(root->right, val);
+    return root;
+}""",
+            codeJava: """
+public TreeNode insertIntoBST(TreeNode root, int val) {
+    if (root == null) return new TreeNode(val);
+    if (val < root.val) root.left = insertIntoBST(root.left, val);
+    else root.right = insertIntoBST(root.right, val);
+    return root;
+}""",
+            codePython: """
+def insertIntoBST(root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+    if not root:
+        return TreeNode(val)
+    if val < root.val:
+        root.left = insertIntoBST(root.left, val)
+    else:
+        root.right = insertIntoBST(root.right, val)
+    return root""",
+            codeJs: """
+function insertIntoBST(root, val) {
+    if (!root) return new TreeNode(val);
+    if (val < root.val) root.left = insertIntoBST(root.left, val);
+    else root.right = insertIntoBST(root.right, val);
+    return root;
+}""",
+            descriptionEn: "Insert a new key into a Binary Search Tree while preserving the BST property.",
+            descriptionBn: "BST নিয়ম বজায় রেখে একটি নতুন মান সঠিক স্থানে ইনসার্ট করুন।",
+            sampleInputs: ["root = [4, 2, 7, 1, 3], val = 5"],
+            sampleOutputs: ["root = [4, 2, 7, 1, 3, 5]"],
+          ),
+          DsaProblem(
+            id: "bst-3",
+            title: "3. Validate Binary Search Tree",
+            category: "BST Invariant Pattern",
+            keyIdeaEn: "Recursively validate `validate(node, minBound, maxBound)`. Left child must be `< node.val`; right child must be `> node.val`.",
+            keyIdeaBn: "রিকার্সিভলি প্রতিটি নোডের সীমানা (`minBound < node.val < maxBound`) ভ্যালিডেট করুন।",
+            codeCpp: """
+bool validate(TreeNode* node, long minBound, long maxBound) {
+    if (!node) return true;
+    if (node->val <= minBound || node->val >= maxBound) return false;
+    return validate(node->left, minBound, node->val) &&
+           validate(node->right, node->val, maxBound);
+}
+bool isValidBST(TreeNode* root) {
+    return validate(root, LONG_MIN, LONG_MAX);
+}""",
+            codeJava: """
+public boolean validate(TreeNode node, Integer min, Integer max) {
+    if (node == null) return true;
+    if ((min != null && node.val <= min) || (max != null && node.val >= max)) return false;
+    return validate(node.left, min, node.val) && validate(node.right, node.val, max);
+}
+public boolean isValidBST(TreeNode root) {
+    return validate(root, null, null);
+}""",
+            codePython: """
+def isValidBST(root: Optional[TreeNode]) -> bool:
+    def validate(node, low=float('-inf'), high=float('inf')):
+        if not node: return True
+        if node.val <= low or node.val >= high: return False
+        return validate(node.left, low, node.val) and validate(node.right, node.val, high)
+    return validate(root)""",
+            codeJs: """
+function isValidBST(root) {
+    function validate(node, min = -Infinity, max = Infinity) {
+        if (!node) return true;
+        if (node.val <= min || node.val >= max) return false;
+        return validate(node.left, min, node.val) && validate(node.right, node.val, max);
+    }
+    return validate(root);
+}""",
+            descriptionEn: "Determine if a binary tree is a valid Binary Search Tree using min/max range constraints.",
+            descriptionBn: "একটি বাইনারি ট্রি সঠিক BST নিয়ম অনুসরণ করছে কিনা তা মিনিমাম/ম্যাক্সিমাম রেঞ্জ চেক করে যাচাই করুন।",
+            sampleInputs: ["root = [2, 1, 3]", "root = [5, 1, 4, null, null, 3, 6]"],
+            sampleOutputs: ["True", "False"],
+          ),
+          DsaProblem(
+            id: "bst-4",
+            title: "4. Lowest Common Ancestor (LCA) in a BST",
+            category: "BST Navigation Pattern",
+            keyIdeaEn: "If both `p` and `q` are smaller than `root`, go left. If both are greater, go right. The split node is the Lowest Common Ancestor!",
+            keyIdeaBn: "যদি `p` ও `q` উভয়েই রুটের চেয়ে ছোট হয় বামে যান, বড় হলে ডানে যান। যে নোডে দুটি মান দুই দিকে ভাগ হয়ে যায় সেটিই LCA!",
+            codeCpp: """
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (p->val < root->val && q->val < root->val)
+        return lowestCommonAncestor(root->left, p, q);
+    if (p->val > root->val && q->val > root->val)
+        return lowestCommonAncestor(root->right, p, q);
+    return root;
+}""",
+            codeJava: """
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (p.val < root.val && q.val < root.val)
+        return lowestCommonAncestor(root.left, p, q);
+    if (p.val > root.val && q.val > root.val)
+        return lowestCommonAncestor(root.right, p, q);
+    return root;
+}""",
+            codePython: """
+def lowestCommonAncestor(root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+    if p.val < root.val and q.val < root.val:
+        return lowestCommonAncestor(root.left, p, q)
+    if p.val > root.val and q.val > root.val:
+        return lowestCommonAncestor(root.right, p, q)
+    return root""",
+            codeJs: """
+function lowestCommonAncestor(root, p, q) {
+    if (p.val < root.val && q.val < root.val)
+        return lowestCommonAncestor(root.left, p, q);
+    if (p.val > root.val && q.val > root.val)
+        return lowestCommonAncestor(root.right, p, q);
+    return root;
+}""",
+            descriptionEn: "Find the lowest common ancestor node of two given nodes p and q in a BST.",
+            descriptionBn: "একটি BST এর যেকোনো দুটি নোড p ও q এর সর্বনিম্ন সাধারণ পূর্বপুরুষ (LCA) নোড বের করুন।",
+            sampleInputs: ["root = [6, 2, 8, 0, 4, 7, 9], p = 2, q = 8"],
+            sampleOutputs: ["LCA Node = 6"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Validating Only Immediate Parent-Child Relationship",
+            "desc": "Checking `node.left < node` and `node.right > node` locally is insufficient. All nodes in right subtree must be strictly greater than root."
+          },
+          {
+            "title": "2. Degeneration into Skewed Linked List (O(N) Worst Case)",
+            "desc": "Inserting sorted data `1, 2, 3, 4, 5` into an unbalanced BST degenerates tree height to O(N), ruining O(log N) performance."
+          },
+          {
+            "title": "3. Null Pointer Dereference on Missing Subtrees",
+            "desc": "Traversing `curr.left.val` without verifying `curr.left != null` causes NullPointerException."
+          },
+          {
+            "title": "4. Duplicate Values Handling Bug",
+            "desc": "Forgetting to define explicit rules for duplicate values (strictly less `<` vs `<=`) causes infinite loops or invalid node placements."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. কেবল রুট ও চাইল্ডের সাময়িক মান চেক করার ভুল",
+            "desc": "শুধু `node.left < node` চেক করা ভুল; ডান সাবট্রির সমস্ত নোডের মান মূল রুটের চেয়ে বড় হতে হবে।"
+          },
+          {
+            "title": "২. আনব্যালেন্সড ট্রিতে ওয়ান (O(N)) এ অবনতি",
+            "desc": "সর্টেড ডেটা `1, 2, 3, 4, 5` ইনসার্ট করলে BST স্কিউড লিঙ্কড লিস্টের রূপ নেয় এবং O(log N) স্পিড নষ্ট হয়।"
+          },
+          {
+            "title": "৩. নাল চাইল্ড পয়েন্টার চেক না করা",
+            "desc": "`curr.left != null` চেক না করে `curr.left.val` ডাইরেক্ট অ্যাক্সেস করলে অ্যাপ ক্র্যাশ করা।"
+          },
+          {
+            "title": "৪. ডুপ্লিকেট মানের শর্ত মিস হওয়া",
+            "desc": "সমান মান পাওয়ার কন্ডিশন না রাখলে ইনফিনিট লুপ তৈরি হওয়া।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand BST Invariant (Left Subtree < Root < Right Subtree)",
+            "desc": "Master BST structural invariant and tree height logarithmic bounds."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Search O(log N) and Insert O(log N) Traversals",
+            "desc": "Master tree searching, node insertion, and recursion/iteration patterns."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Inorder Traversal (Sorted Output Generation)",
+            "desc": "Master Inorder (`Left -> Root -> Right`) to output sorted tree values."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Tree Range Validation & Bounded Min/Max Constraints",
+            "desc": "Master valid BST detection using range bounds `(minBound, maxBound)`."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Lowest Common Ancestor (LCA) & Deletion",
+            "desc": "Master split point navigation for LCA and Hibbard Deletion node replacement."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "BST নিয়ম (বাম সাবট্রি < রুট < ডান সাবট্রি) বোঝা",
+            "desc": "BST এর মূল নিয়ম এবং ট্রি হাইটের লগারিমিক স্পিড কনসেপ্ট বোঝা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "খোঁজা (Search) ও সংযোজন (Insert) ট্রাভার্সাল",
+            "desc": "O(log N) সময়ে অনুসন্ধান এবং নতুন নোড সঠিক স্থানে যুক্ত করা।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "Inorder Traversal (সর্টেড ডেটা তৈরি)",
+            "desc": "Inorder (`Left -> Root -> Right`) ট্রাভার্সাল করে ট্রি ডেটা ছোট থেকে বড় সাজানো।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "মিনিমাম/ম্যাক্সিমাম বাউন্ড দিয়ে BST ভ্যালিডেশন",
+            "desc": "রিকার্সিভ সীমানা `(minBound, maxBound)` ব্যবহার করে ভ্যালিড BST নির্ণয়।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "Lowest Common Ancestor (LCA) ও নোড ডিলেশন",
+            "desc": "LCA সপ্লিট পয়েন্ট নেভিগেশন এবং নোড ডিলেট করার অ্যালগরিদম শেখা।"
+          }
+        ],
       ),
 
       // 7. MIN & MAX HEAP

@@ -1103,7 +1103,153 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     ),
   ];
 
+  // BINARY SEARCH TREE (BST) CODE LINES & STEPS
+  final List<String> _bst1CodeLines = [
+    "TreeNode* searchBST(TreeNode* root, int val) {",
+    "    if (!root || root->val == val) return root;",
+    "    if (val < root->val) return searchBST(root->left, val);",
+    "    return searchBST(root->right, val);",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _bst1Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1,
+      pointer1: 4,
+      minVal: 2,
+      array1D: [4, 2, 7, 1, 3],
+      explanationEn: "Line 2: Start search at Root node (val 4). Target val = 2.",
+      explanationBn: "লাইন ২: রুট নোড 4 থেকে সার্চ শুরু। টার্গেট মান = 2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 2,
+      pointer1: 2,
+      minVal: 2,
+      array1D: [4, 2, 7, 1, 3],
+      explanationEn: "Line 3: Target 2 < 4 -> Branch LEFT to node 2.",
+      explanationBn: "লাইন ৩: টার্গেট 2 < 4 -> বাম সাবট্রি নোড 2 এ যান।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 1,
+      pointer1: 2,
+      minVal: 2,
+      array1D: [4, 2, 7, 1, 3],
+      explanationEn: "🎉 Line 2: MATCH FOUND! root->val == 2. Return subtree rooted at 2!",
+      explanationBn: "🎉 লাইন ২: কাঙ্ক্ষিত মান পাওয়া গেছে! root->val == 2। Subtree 2 রিটার্ন!",
+    ),
+  ];
+
+  final List<String> _bst2CodeLines = [
+    "TreeNode* insertIntoBST(TreeNode* root, int val) {",
+    "    if (!root) return new TreeNode(val);",
+    "    if (val < root->val) root->left = insertIntoBST(root->left, val);",
+    "    else root->right = insertIntoBST(root->right, val);",
+    "    return root;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _bst2Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 2,
+      pointer1: 4,
+      minVal: 5,
+      array1D: [4, 2, 7, 1, 3],
+      explanationEn: "Line 3: Insert val 5: Compare with root (4). 5 > 4 -> Branch RIGHT to node 7.",
+      explanationBn: "লাইন ৩: মান 5 ইনসার্ট: রুট 4 এর সাথে তুলনা। 5 > 4 -> ডান সাবট্রি নোড 7 এ যান।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3,
+      pointer1: 7,
+      minVal: 5,
+      array1D: [4, 2, 7, 1, 3],
+      explanationEn: "Line 4: Compare with node (7). 5 < 7 -> Branch LEFT to nullptr.",
+      explanationBn: "লাইন ৪: নোড 7 এর সাথে তুলনা। 5 < 7 -> বামে নাল (nullptr) স্থানে যান।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 1,
+      pointer1: 5,
+      minVal: 5,
+      array1D: [4, 2, 7, 1, 3, 5],
+      explanationEn: "🎉 Line 2: Reached nullptr! Created new TreeNode(5) attached as left child of 7!",
+      explanationBn: "🎉 লাইন ২: খালি নাল স্থান পাওয়া গেছে! নতুন TreeNode(5) নোড 7 এর বামে যুক্ত হলো!",
+    ),
+  ];
+
+  final List<String> _bst3CodeLines = [
+    "bool validate(TreeNode* node, long minBound, long maxBound) {",
+    "    if (!node) return true;",
+    "    if (node->val <= minBound || node->val >= maxBound) return false;",
+    "    return validate(node->left, minBound, node->val) &&",
+    "           validate(node->right, node->val, maxBound);",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _bst3Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 2,
+      pointer1: 2,
+      minVal: -999,
+      maxVal: 999,
+      array1D: [2, 1, 3],
+      explanationEn: "Line 3: Root (2): Check -INF < 2 < INF -> Valid OK!",
+      explanationBn: "লাইন ৩: রুট (2): শর্ত -INF < 2 < INF সঠিক!",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3,
+      pointer1: 1,
+      minVal: -999,
+      maxVal: 2,
+      array1D: [2, 1, 3],
+      explanationEn: "Line 4: Left Child (1): Check -INF < 1 < 2 -> Valid OK!",
+      explanationBn: "লাইন ৪: বাম চাইল্ড (1): শর্ত -INF < 1 < 2 সঠিক!",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      pointer1: 3,
+      minVal: 2,
+      maxVal: 999,
+      array1D: [2, 1, 3],
+      explanationEn: "🎉 Line 5: Right Child (3): Check 2 < 3 < INF -> Valid OK! Return TRUE!",
+      explanationBn: "🎉 লাইন ৫: ডান চাইল্ড (3): শর্ত 2 < 3 < INF সঠিক! Return TRUE!",
+    ),
+  ];
+
+  final List<String> _bst4CodeLines = [
+    "TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {",
+    "    if (p->val < root->val && q->val < root->val)",
+    "        return lowestCommonAncestor(root->left, p, q);",
+    "    if (p->val > root->val && q->val > root->val)",
+    "        return lowestCommonAncestor(root->right, p, q);",
+    "    return root;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _bst4Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1,
+      pointer1: 6,
+      minVal: 2,
+      maxVal: 8,
+      array1D: [6, 2, 8, 0, 4, 7, 9],
+      explanationEn: "Line 2: Start at Root (6). Target p = 2, q = 8.",
+      explanationBn: "লাইন ২: রুট নোড 6 থেকে শুরু। টার্গেট p = 2, q = 8।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      pointer1: 6,
+      minVal: 2,
+      maxVal: 8,
+      array1D: [6, 2, 8, 0, 4, 7, 9],
+      explanationEn: "🎉 Line 6: p=2 < 6 and q=8 > 6 -> Nodes diverge at Root 6! Lowest Common Ancestor = 6!",
+      explanationBn: "🎉 লাইন ৬: p=2 < 6 এবং q=8 > 6 -> রুট 6 এ নোড দুটো দুই দিকে ভাগ হয়ে যায়! LCA = 6!",
+    ),
+  ];
+
   List<DebugArrayStep> get _currentSteps {
+    if (widget.problem.id == "bst-1") return _bst1Steps;
+    if (widget.problem.id == "bst-2") return _bst2Steps;
+    if (widget.problem.id == "bst-3") return _bst3Steps;
+    if (widget.problem.id == "bst-4") return _bst4Steps;
     if (widget.problem.id == "hm-1") return _hm1Steps;
     if (widget.problem.id == "hm-2") return _hm2Steps;
     if (widget.problem.id == "hm-3") return _hm3Steps;
@@ -1127,6 +1273,10 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   }
 
   List<String> get _currentCodeLines {
+    if (widget.problem.id == "bst-1") return _bst1CodeLines;
+    if (widget.problem.id == "bst-2") return _bst2CodeLines;
+    if (widget.problem.id == "bst-3") return _bst3CodeLines;
+    if (widget.problem.id == "bst-4") return _bst4CodeLines;
     if (widget.problem.id == "hm-1") return _hm1CodeLines;
     if (widget.problem.id == "hm-2") return _hm2CodeLines;
     if (widget.problem.id == "hm-3") return _hm3CodeLines;
@@ -1628,9 +1778,53 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (step.minVal != null)
-                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : (widget.problem.id.startsWith("hm-") ? "Count / Sum: ${step.minVal}" : "Min: ${step.minVal}")), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : (widget.problem.id.startsWith("hm-") ? "Count / Sum: ${step.minVal}" : (widget.problem.id.startsWith("bst-") ? "Target / Active Val: ${step.minVal}" : "Min: ${step.minVal}"))), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
                 if (step.maxVal != null)
-                  Text("Max: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text("Max Bound: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14)),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // BST Hierarchy Tree Visualizer Container
+          if (widget.problem.id.startsWith("bst-")) ...[
+            Column(
+              children: [
+                const Text("Binary Search Tree Invariant Canvas (Root <-> Subtrees)", style: TextStyle(color: Color(0xFF06B6D4), fontWeight: FontWeight.bold, fontSize: 13)),
+                const SizedBox(height: 14),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF090D16),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFF06B6D4), width: 2),
+                  ),
+                  child: Column(
+                    children: [
+                      // Level 1: Root Node (4 / 2 / 6)
+                      _buildBstNodeCircle(step.array1D != null && step.array1D!.isNotEmpty ? step.array1D![0] : 4, isHighlighted: step.pointer1 == (step.array1D != null && step.array1D!.isNotEmpty ? step.array1D![0] : 4)),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.north_west, color: AppTheme.accentNeonCyan.withOpacity(0.6), size: 16),
+                          const SizedBox(width: 40),
+                          Icon(Icons.north_east, color: AppTheme.accentNeonCyan.withOpacity(0.6), size: 16),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      // Level 2: Left & Right Children
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildBstNodeCircle(step.array1D != null && step.array1D!.length > 1 ? step.array1D![1] : 2, isHighlighted: step.pointer1 == (step.array1D != null && step.array1D!.length > 1 ? step.array1D![1] : 2)),
+                          _buildBstNodeCircle(step.array1D != null && step.array1D!.length > 2 ? step.array1D![2] : 7, isHighlighted: step.pointer1 == (step.array1D != null && step.array1D!.length > 2 ? step.array1D![2] : 7)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -1784,7 +1978,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
           ],
 
           // 1D Array or Linked List Canvas
-          if (step.array1D != null) ...[
+          if (step.array1D != null && !widget.problem.id.startsWith("bst-")) ...[
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -1868,6 +2062,26 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
             ),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildBstNodeCircle(int val, {required bool isHighlighted}) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      width: 48,
+      height: 48,
+      decoration: BoxDecoration(
+        color: isHighlighted ? AppTheme.accentNeonCyan : AppTheme.surfaceDark,
+        shape: BoxShape.circle,
+        border: Border.all(color: isHighlighted ? Colors.white : const Color(0xFF06B6D4), width: isHighlighted ? 3 : 1.5),
+        boxShadow: isHighlighted ? [BoxShadow(color: AppTheme.accentNeonCyan.withOpacity(0.6), blurRadius: 10)] : [],
+      ),
+      child: Center(
+        child: Text(
+          "$val",
+          style: TextStyle(color: isHighlighted ? AppTheme.primaryDark : Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+        ),
       ),
     );
   }
