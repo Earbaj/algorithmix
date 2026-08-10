@@ -361,6 +361,18 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     );
   }
 
+  Widget _buildCurrentProblemVisualizerCanvas() {
+    if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
+      return _buildReverseVisualizerCanvas();
+    } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
+      return _buildTransposeVisualizerCanvas();
+    } else if (widget.problem.id.contains("4") || widget.problem.id == "arr-4") {
+      return _buildLayerSumVisualizerCanvas();
+    } else {
+      return _buildMinMaxVisualizerCanvas();
+    }
+  }
+
   // TAB 2: Step Visualizer tailored to current problem
   Widget _buildVisualizerTab(double hPadding) {
     String currentLog = _p1Log;
