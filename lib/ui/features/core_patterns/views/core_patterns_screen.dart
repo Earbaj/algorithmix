@@ -97,6 +97,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 15) {
       // Top K Elements dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.topKElementsDetail);
+    } else if (pattern.id == 16) {
+      // K-way Merge dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.kwayMergeDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
