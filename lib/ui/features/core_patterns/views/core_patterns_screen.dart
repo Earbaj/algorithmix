@@ -106,6 +106,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 18) {
       // Dynamic Programming dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.dpDetail);
+    } else if (pattern.id == 19) {
+      // Topological Sort dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.topologicalSortDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }

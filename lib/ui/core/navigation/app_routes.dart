@@ -20,6 +20,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/top_k_elements_detai
 import 'package:algorithmix/ui/features/core_patterns/views/kway_merge_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/greedy_algorithm_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/dp_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/topological_sort_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -78,6 +79,7 @@ class AppRoutes {
   static const String kwayMergeDetail = '/kway-merge-detail';
   static const String greedyAlgorithmDetail = '/greedy-algorithm-detail';
   static const String dpDetail = '/dp-detail';
+  static const String topologicalSortDetail = '/topological-sort-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -130,6 +132,7 @@ class AppRoutes {
       kwayMergeDetail: (context) => const KWayMergeDetailScreen(),
       greedyAlgorithmDetail: (context) => const GreedyAlgorithmDetailScreen(),
       dpDetail: (context) => const DPDetailScreen(),
+      topologicalSortDetail: (context) => const TopologicalSortDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
