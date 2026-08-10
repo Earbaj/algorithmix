@@ -15,6 +15,7 @@ class _DsaScreenState extends State<DsaScreen> {
   final List<DsaTopic> _allTopics = DsaDataRepository.getTopics();
   String _searchQuery = "";
   String _selectedCategory = "All";
+  bool _isSearchVisible = false;
 
   List<DsaTopic> get _filteredTopics {
     return _allTopics.where((topic) {
@@ -37,6 +38,13 @@ class _DsaScreenState extends State<DsaScreen> {
       appBar: AppBar(
         title: const Text('Data Structures (DSA)'),
         centerTitle: true,
+        actions: [GestureDetector(
+          onTap: (){
+            setState(() {
+              _isSearchVisible = !_isSearchVisible;
+            });
+          },
+            child: Icon(Icons.filter_list_rounded,size: 30,))],
       ),
       body: ResponsiveCenter(
         padding: EdgeInsets.symmetric(horizontal: hPadding, vertical: 16),
@@ -44,52 +52,54 @@ class _DsaScreenState extends State<DsaScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Search Bar
-            TextField(
-              onChanged: (val) => setState(() => _searchQuery = val),
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: 'Search Data Structures (e.g. Arrays, Linked Lists)...',
-                hintStyle: const TextStyle(color: AppTheme.textMuted),
-                prefixIcon: const Icon(Icons.search, color: AppTheme.accentNeonCyan),
-                filled: true,
-                fillColor: AppTheme.surfaceDark,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: Color(0xFF334155)),
+
+            if (_isSearchVisible) ...[
+              TextField(
+                onChanged: (val) => setState(() => _searchQuery = val),
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  hintText: 'Search Data Structures (e.g. Arrays, Linked Lists)...',
+                  hintStyle: const TextStyle(color: AppTheme.textMuted),
+                  prefixIcon: const Icon(Icons.search, color: AppTheme.accentNeonCyan),
+                  filled: true,
+                  fillColor: AppTheme.surfaceDark,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: Color(0xFF334155)),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 12),
 
-            // Category Filter Chips
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: categories.map((cat) {
-                  final isSelected = cat == _selectedCategory;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FilterChip(
-                      selected: isSelected,
-                      label: Text(cat),
-                      selectedColor: AppTheme.accentPurple,
-                      backgroundColor: AppTheme.surfaceDark,
-                      labelStyle: TextStyle(
-                        color: isSelected ? Colors.white : AppTheme.textSecondary,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              // Category Filter Chips
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: categories.map((cat) {
+                    final isSelected = cat == _selectedCategory;
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: FilterChip(
+                        selected: isSelected,
+                        label: Text(cat),
+                        selectedColor: AppTheme.accentPurple,
+                        backgroundColor: AppTheme.surfaceDark,
+                        labelStyle: TextStyle(
+                          color: isSelected ? Colors.white : AppTheme.textSecondary,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                        onSelected: (selected) {
+                          setState(() {
+                            _selectedCategory = cat;
+                          });
+                        },
                       ),
-                      onSelected: (selected) {
-                        setState(() {
-                          _selectedCategory = cat;
-                        });
-                      },
-                    ),
-                  );
-                }).toList(),
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-
+              const SizedBox(height: 16),
+            ],
             // Topics Grid / List
             Expanded(
               child: _filteredTopics.isEmpty
