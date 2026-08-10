@@ -247,7 +247,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Dimension: $_selectedDimension", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold)),
+                Text("$_selectedDimension", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold)),
                 DropdownButton<String>(
                   value: _selectedLang,
                   dropdownColor: AppTheme.surfaceDark,
