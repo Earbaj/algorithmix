@@ -415,51 +415,6 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     }
   }
 
-  // TAB 2: Step Visualizer tailored to current problem
-  Widget _buildVisualizerTab(double hPadding) {
-    String currentLog = _p1Log;
-    if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
-      currentLog = _p2Log;
-    } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
-      currentLog = _p3Log;
-    } else if (widget.problem.id.contains("4") || widget.problem.id == "arr-4") {
-      currentLog = _p4Log;
-    }
-
-    return ResponsiveCenter(
-      padding: EdgeInsets.all(hPadding),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Status Log Banner
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: AppTheme.accentNeonCyan.withOpacity(0.12),
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.5)),
-              ),
-              child: Text(
-                currentLog,
-                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Visualization Display Canvas
-            _buildCurrentProblemVisualizerCanvas(),
-
-            const SizedBox(height: 20),
-
-            // Controls: Play, Step, Reset
-            _buildVisualizerControlsRow(),
-          ],
-        ),
-      ),
-    );
-  }
-
   // Min Max Canvas
   Widget _buildMinMaxVisualizerCanvas() {
     return Container(
