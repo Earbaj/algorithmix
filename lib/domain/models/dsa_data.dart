@@ -3100,27 +3100,455 @@ class MedianFinder {
         id: 208,
         title: "Graph (Adjacency List & Matrix)",
         category: "Non-Linear Network Structure",
-        timeComplexity: "BFS O(V + E) | DFS O(V + E)",
-        spaceComplexity: "Adj List: O(V + E) | Matrix: O(V²)",
+        timeComplexity: "BFS: O(V + E) | DFS: O(V + E) | Adj Matrix Lookup: O(1) | Adj List Space: O(V + E)",
+        spaceComplexity: "Adj List: O(V + E) | Adj Matrix: O(V²)",
         icon: Icons.hub_outlined,
         themeColor: const Color(0xFF0284C7),
-        descriptionEn: "A Graph is a non-linear network of Vertices and Edges.",
-        descriptionBn: "গ্রাফ হলো নোড ও এজের নন-লিনিয়ার নেটওয়ার্ক।",
-        keyConceptsEn: ["Adj List & Matrix", "BFS & DFS"],
-        keyConceptsBn: ["অ্যাডজাসেন্সি লিস্ট ও ম্যাট্রিক্স", "BFS ও DFS"],
+        descriptionEn:
+            "A Graph is a non-linear network data structure consisting of a finite set of Vertices (Nodes, V) connected by Edges (Links, E). Graphs can be Directed or Undirected, Weighted or Unweighted, Cyclic or Acyclic (DAG). The two primary memory representations are Adjacency List (`vector<vector<int>>` taking O(V + E) space, optimal for sparse graphs) and Adjacency Matrix (`vector<vector<int>>` of size V x V taking O(V²) space, optimal for dense graphs). Fundamental graph traversals include Breadth-First Search (BFS using FIFO Queue for shortest path in unweighted graphs) and Depth-First Search (DFS using recursive Call Stack for pathfinding, connected components, and topological sorting).",
+        descriptionBn:
+            "গ্রাফ (Graph) হলো নোড বা ভার্টেক্স (Vertices, V) এবং সংযোগকারী এজ বা বাহু (Edges, E) দ্বারা গঠিত একটি অ-রেখীয় (Non-Linear) নেটওয়ার্ক ডেটা স্ট্রাকচার। গ্রাফ দিকনির্দেশিত (Directed) বা দিকহীন (Undirected), ওয়েটেড (Weighted) বা আনওয়েটেড (Unweighted) হতে পারে। মেমোরিতে গ্রাফ প্রকাশ করার প্রধান দুটি উপায় হলো অ্যাডজাসেন্সি লিস্ট (`vector<vector<int>>`, স্থান O(V + E), স্পার্স গ্রাফের জন্য উপযোগী) এবং অ্যাডজাসেন্সি ম্যাট্রিক্স (V x V আকারের ২D গ্রিড, স্থান O(V²))। প্রধান গ্রাফ ট্রাভার্সাল অ্যালগরিদম দুটি হলো ব্র্যাডথ-ফার্স্ট সার্চ (BFS - FIFO কিউ ব্যবহার করে সর্বনিম্ন দূরত্ব নির্ণয়) এবং ডেপথ-ফার্স্ট সার্চ (DFS - রিকার্সিভ কল স্ট্যাক ব্যবহার করে গভীরের পথ অনুসন্ধান ও সাব-গ্রাফ ট্র্যাকিং)।",
+        keyConceptsEn: [
+          "Graph Memory Representation: Adjacency List `vector<vector<int>> adj(V)` (O(V+E)) vs Adjacency Matrix `matrix[V][V]` (O(V²)).",
+          "Breadth-First Search (BFS): Level-order queue traversal. Finds shortest path in unweighted graphs in O(V + E) time.",
+          "Depth-First Search (DFS): Deep recursive path traversal. Explores components and paths using Call Stack in O(V + E) time.",
+          "Parent Tracking & Cycle Detection: Detecting cycles in undirected graphs by tracking parent vertex during traversal."
+        ],
+        keyConceptsBn: [
+          "গ্রাফ মেমোরি প্রকাশ: অ্যাডজাসেন্সি লিস্ট `vector<vector<int>> adj(V)` (O(V+E)) বনাম অ্যাডজাসেন্সি ম্যাট্রিক্স (O(V²))।",
+          "ব্র্যাডথ-ফার্স্ট সার্চ (BFS): লেভেল-বাই-লেভেল FIFO কিউ ট্রাভার্সাল। আনওয়েটেড গ্রাফে O(V + E) সময়ে সর্বনিম্ন দূরত্ব বের করা।",
+          "ডেপথ-ফার্স্ট সার্চ (DFS): রিকার্সিভ ব্যাকট্র্যাকিং দিয়ে গভীরে পথ অনুসন্ধান এবং গ্রাফের কম্পোনেন্ট ট্র্যাকিং।",
+          "প্যারেন্ট ট্র্যাকিং ও সাইকেল ডিটেকশন: ডিরেক্টেড বা আনডিরেক্টেড গ্রাফে সাইকেল বা বৃত্তাকার পথ সনাক্ত করা।"
+        ],
         multiDimCodeTemplates: {
-          "Graph": {
-            "C++": "vector<vector<int>> adj;",
-            "Java": "List<List<Integer>> adj = new ArrayList<>();",
-            "Python": "adj = collections.defaultdict(list)",
-            "JavaScript": "const adj = {};"
+          "Adjacency List Construction": {
+            "C++": """
+// C++ Adjacency List for Undirected Graph
+#include <vector>
+int V = 5;
+std::vector<std::vector<int>> adj(V);
+void addEdge(int u, int v) {
+    adj[u].push_back(v);
+    adj[v].push_back(u); // Undirected edge
+}""",
+            "Java": """
+// Java Adjacency List
+import java.util.*;
+List<List<Integer>> adj = new ArrayList<>();
+for (int i = 0; i < V; i++) adj.add(new ArrayList<>());
+void addEdge(int u, int v) {
+    adj.get(u).add(v);
+    adj.get(v).add(u);
+}""",
+            "Python": """
+# Python Adjacency List using defaultdict
+from collections import defaultdict
+adj = defaultdict(list)
+def addEdge(u, v):
+    adj[u].append(v)
+    adj[v].append(u)""",
+            "JavaScript": """
+// JavaScript Adjacency List Map
+const adj = new Map();
+function addEdge(u, v) {
+    if (!adj.has(u)) adj.set(u, []);
+    if (!adj.has(v)) adj.set(v, []);
+    adj.get(u).push(v);
+    adj.get(v).push(u);
+}"""
+          },
+          "Adjacency Matrix Construction": {
+            "C++": """
+// C++ Adjacency Matrix (V x V)
+std::vector<std::vector<int>> matrix(V, std::vector<int>(V, 0));
+void addEdgeMatrix(int u, int v) {
+    matrix[u][v] = 1;
+    matrix[v][u] = 1;
+}""",
+            "Java": """
+// Java Adjacency Matrix
+int[][] matrix = new int[V][V];
+void addEdgeMatrix(int u, int v) {
+    matrix[u][v] = 1;
+    matrix[v][u] = 1;
+}""",
+            "Python": """
+# Python 2D Matrix
+matrix = [[0] * V for _ in range(V)]
+def addEdgeMatrix(u, v):
+    matrix[u][v] = 1
+    matrix[v][u] = 1""",
+            "JavaScript": """
+// JavaScript 2D Matrix
+const matrix = Array.from({ length: V }, () => Array(V).fill(0));
+function addEdgeMatrix(u, v) {
+    matrix[u][v] = 1;
+    matrix[v][u] = 1;
+}"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "gr-1",
+            title: "1. Breadth-First Search (BFS) Traversal",
+            category: "Graph Level Order BFS Pattern",
+            keyIdeaEn: "Maintain a FIFO Queue and `visited` boolean array. Push start node 0 into queue and mark visited. Pop node `u`, append to res, and push all unvisited neighbors into queue.",
+            keyIdeaBn: "একটি FIFO Queue এবং `visited` অ্যারে বজায় রাখুন। রুট নোড 0 কিউতে পুশ ও ভিজিটেড মার্ক করুন। নোড পপ করে রেজাল্টে যোগ করুন এবং অপ্রকাশিত প্রতিবেশীদের কিউতে যুক্ত করুন।",
+            codeCpp: """
+vector<int> bfsOfGraph(int V, vector<vector<int>>& adj) {
+    vector<int> bfs;
+    vector<bool> vis(V, false);
+    queue<int> q;
+    q.push(0); vis[0] = true;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        bfs.push_back(u);
+        for (int v : adj[u]) {
+            if (!vis[v]) { vis[v] = true; q.push(v); }
+        }
+    }
+    return bfs;
+}""",
+            codeJava: """
+public ArrayList<Integer> bfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+    ArrayList<Integer> bfs = new ArrayList<>();
+    boolean[] vis = new boolean[V];
+    Queue<Integer> q = new LinkedList<>();
+    q.add(0); vis[0] = true;
+    while (!q.isEmpty()) {
+        int u = q.poll(); bfs.add(u);
+        for (int v : adj.get(u)) {
+            if (!vis[v]) { vis[v] = true; q.add(v); }
+        }
+    }
+    return bfs;
+}""",
+            codePython: """
+def bfsOfGraph(V: int, adj: List[List[int]]) -> List[int]:
+    bfs, vis = [], [False] * V
+    q = deque([0])
+    vis[0] = True
+    while q:
+        u = q.popleft()
+        bfs.append(u)
+        for v in adj[u]:
+            if not vis[v]:
+                vis[v] = True
+                q.append(v)
+    return bfs""",
+            codeJs: """
+function bfsOfGraph(V, adj) {
+    const bfs = [], vis = new Array(V).fill(false);
+    const q = [0]; vis[0] = true;
+    while (q.length > 0) {
+        const u = q.shift(); bfs.push(u);
+        for (let v of adj[u]) {
+            if (!vis[v]) { vis[v] = true; q.push(v); }
+        }
+    }
+    return bfs;
+}""",
+            descriptionEn: "Return the BFS level-order traversal of an unweighted graph starting from node 0 in O(V + E) time.",
+            descriptionBn: "নোড 0 থেকে শুরু করে O(V + E) সময়ে গ্রাফের লেভেল-বাই-লেভেল BFS ট্রাভার্সাল সম্পন্ন করুন।",
+            sampleInputs: ["V = 5, adj = [[1, 2], [0, 3, 4], [0], [1], [1]]"],
+            sampleOutputs: ["BFS Traversal = [0, 1, 2, 3, 4]"],
+          ),
+          DsaProblem(
+            id: "gr-2",
+            title: "2. Depth-First Search (DFS) Traversal",
+            category: "Graph Deep Path Recursive DFS Pattern",
+            keyIdeaEn: "Use recursive call stack and `visited` array. Mark active node `u` as visited, append to result, and recursively visit all unvisited neighbors `v`.",
+            keyIdeaBn: "রিকার্সিভ কল স্ট্যাক এবং `visited` অ্যারে ব্যবহার করুন। নোড `u` ভিজিটেড চিহ্নিত করে রেজাল্টে যোগ করুন এবং এর অপ্রকাশিত প্রতিবেশীদের রিকার্সিভলি ভিসিট করুন।",
+            codeCpp: """
+void dfsHelper(int u, vector<vector<int>>& adj, vector<bool>& vis, vector<int>& res) {
+    vis[u] = true;
+    res.push_back(u);
+    for (int v : adj[u]) {
+        if (!vis[v]) dfsHelper(v, adj, vis, res);
+    }
+}
+vector<int> dfsOfGraph(int V, vector<vector<int>>& adj) {
+    vector<int> res; vector<bool> vis(V, false);
+    dfsHelper(0, adj, vis, res);
+    return res;
+}""",
+            codeJava: """
+private void dfs(int u, ArrayList<ArrayList<Integer>> adj, boolean[] vis, ArrayList<Integer> res) {
+    vis[u] = true; res.add(u);
+    for (int v : adj.get(u)) {
+        if (!vis[v]) dfs(v, adj, vis, res);
+    }
+}
+public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
+    ArrayList<Integer> res = new ArrayList<>();
+    boolean[] vis = new boolean[V];
+    dfs(0, adj, vis, res);
+    return res;
+}""",
+            codePython: """
+def dfsOfGraph(V: int, adj: List[List[int]]) -> List[int]:
+    res, vis = [], [False] * V
+    def dfs(u):
+        vis[u] = True
+        res.append(u)
+        for v in adj[u]:
+            if not vis[v]: dfs(v)
+    dfs(0)
+    return res""",
+            codeJs: """
+function dfsOfGraph(V, adj) {
+    const res = [], vis = new Array(V).fill(false);
+    function dfs(u) {
+        vis[u] = true; res.push(u);
+        for (let v of adj[u]) {
+            if (!vis[v]) dfs(v);
+        }
+    }
+    dfs(0); return res;
+}""",
+            descriptionEn: "Return the DFS deep-path traversal of an undirected graph starting from node 0 in O(V + E) time.",
+            descriptionBn: "নোড 0 থেকে শুরু করে O(V + E) সময়ে গ্রাফের গভীরের পথ অনুসন্ধানমুখী (DFS) ট্রাভার্সাল বের করুন।",
+            sampleInputs: ["V = 5, adj = [[1, 2], [0, 3], [0, 4], [1], [2]]"],
+            sampleOutputs: ["DFS Traversal = [0, 1, 3, 2, 4]"],
+          ),
+          DsaProblem(
+            id: "gr-3",
+            title: "3. Number of Islands (Grid Graph BFS/DFS)",
+            category: "Matrix Grid Graph Component Pattern",
+            keyIdeaEn: "Iterate 2D grid cells. When a land cell '1' is found, increment island count and launch BFS/DFS to sink all connected land cells ('1' -> '0').",
+            keyIdeaBn: "২D গ্রিড সেলগুলো ঘুরুন। যখন মাটি '1' পাবেন, দ্বীপ গণনা ১ বাড়ান এবং BFS/DFS চালিয়ে সংযুক্ত সমস্ত মাটি ডুবিয়ে ('1' -> '0') দিয়ে প্রসেস করুন।",
+            codeCpp: """
+void sinkIsland(vector<vector<char>>& grid, int r, int c) {
+    if (r < 0 || c < 0 || r >= grid.size() || c >= grid[0].size() || grid[r][c] == '0') return;
+    grid[r][c] = '0'; // Sink land
+    sinkIsland(grid, r + 1, c); sinkIsland(grid, r - 1, c);
+    sinkIsland(grid, r, c + 1); sinkIsland(grid, r, c - 1);
+}
+int numIslands(vector<vector<char>>& grid) {
+    int count = 0;
+    for (int r = 0; r < grid.size(); r++) {
+        for (int c = 0; c < grid[0].size(); c++) {
+            if (grid[r][c] == '1') { count++; sinkIsland(grid, r, c); }
+        }
+    }
+    return count;
+}""",
+            codeJava: """
+public int numIslands(char[][] grid) {
+    int count = 0;
+    for (int r = 0; r < grid.length; r++) {
+        for (int c = 0; c < grid[0].length; c++) {
+            if (grid[r][c] == '1') { count++; sink(grid, r, c); }
+        }
+    }
+    return count;
+}
+private void sink(char[][] grid, int r, int c) {
+    if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == '0') return;
+    grid[r][c] = '0';
+    sink(grid, r + 1, c); sink(grid, r - 1, c);
+    sink(grid, r, c + 1); sink(grid, r, c - 1);
+}""",
+            codePython: """
+def numIslands(grid: List[List[str]]) -> int:
+    if not grid: return 0
+    rows, cols, count = len(grid), len(grid[0]), 0
+    def sink(r, c):
+        if r < 0 or c < 0 or r >= rows or c >= cols or grid[r][c] == '0': return
+        grid[r][c] = '0'
+        sink(r+1, c); sink(r-1, c); sink(r, c+1); sink(r, c-1)
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                count += 1; sink(r, c)
+    return count""",
+            codeJs: """
+function numIslands(grid) {
+    let count = 0;
+    const R = grid.length, C = grid[0].length;
+    function sink(r, c) {
+        if (r < 0 || c < 0 || r >= R || c >= C || grid[r][c] === '0') return;
+        grid[r][c] = '0';
+        sink(r + 1, c); sink(r - 1, c); sink(r, c + 1); sink(r, c - 1);
+    }
+    for (let r = 0; r < R; r++) {
+        for (let c = 0; c < C; c++) {
+            if (grid[r][c] === '1') { count++; sink(r, c); }
+        }
+    }
+    return count;
+}""",
+            descriptionEn: "Count the total number of connected land islands in a 2D binary grid using Matrix Graph Traversal.",
+            descriptionBn: "২D বাইনারি গ্রিডে কটি বিচ্ছিন্ন বা সংযুক্ত দ্বীপের ভূমি রয়েছে তা গ্রাফ ট্রাভার্সাল দিয়ে নির্ণয় করুন।",
+            sampleInputs: ["grid = [[\"1\",\"1\",\"0\"], [\"1\",\"1\",\"0\"], [\"0\",\"0\",\"1\"]]"],
+            sampleOutputs: ["Number of Islands = 2"],
+          ),
+          DsaProblem(
+            id: "gr-4",
+            title: "4. Detect Cycle in an Undirected Graph",
+            category: "Parent Tracking Graph Cycle Pattern",
+            keyIdeaEn: "Traverse graph storing `(node, parent)`. If an adjacent neighbor `v` is already visited AND `v != parent`, a CYCLE exists!",
+            keyIdeaBn: "গ্রাফ ট্রাভার্স করার সময় `(node, parent)` ট্র্যাক রাখুন। যদি কোনো প্রতিবেশী `v` আগে থেকেই ভিজিটেড হয় এবং `v != parent` হয়, তবে গ্রাফে সাইকেল বা বৃত্ত রয়েছে!",
+            codeCpp: """
+bool isCycleDFS(int u, int parent, vector<vector<int>>& adj, vector<bool>& vis) {
+    vis[u] = true;
+    for (int v : adj[u]) {
+        if (!vis[v]) {
+            if (isCycleDFS(v, u, adj, vis)) return true;
+        } else if (v != parent) return true; // Cycle detected!
+    }
+    return false;
+}
+bool isCycle(int V, vector<vector<int>>& adj) {
+    vector<bool> vis(V, false);
+    for (int i = 0; i < V; i++) {
+        if (!vis[i] && isCycleDFS(i, -1, adj, vis)) return true;
+    }
+    return false;
+}""",
+            codeJava: """
+public boolean isCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+    boolean[] vis = new boolean[V];
+    for (int i = 0; i < V; i++) {
+        if (!vis[i] && dfs(i, -1, adj, vis)) return true;
+    }
+    return false;
+}
+private boolean dfs(int u, int parent, ArrayList<ArrayList<Integer>> adj, boolean[] vis) {
+    vis[u] = true;
+    for (int v : adj.get(u)) {
+        if (!vis[v]) {
+            if (dfs(v, u, adj, vis)) return true;
+        } else if (v != parent) return true;
+    }
+    return false;
+}""",
+            codePython: """
+def isCycle(V: int, adj: List[List[int]]) -> bool:
+    vis = [False] * V
+    def dfs(u, parent):
+        vis[u] = True
+        for v in adj[u]:
+            if not vis[v]:
+                if dfs(v, u): return True
+            elif v != parent: return True
+        return False
+    for i in range(V):
+        if not vis[i] and dfs(i, -1): return True
+    return False""",
+            codeJs: """
+function isCycle(V, adj) {
+    const vis = new Array(V).fill(false);
+    function dfs(u, parent) {
+        vis[u] = true;
+        for (let v of adj[u]) {
+            if (!vis[v]) {
+                if (dfs(v, u)) return true;
+            } else if (v !== parent) return true;
+        }
+        return false;
+    }
+    for (let i = 0; i < V; i++) {
+        if (!vis[i] && dfs(i, -1)) return true;
+    }
+    return false;
+}""",
+            descriptionEn: "Detect if a cycle or loop exists in an undirected graph using DFS/BFS parent node tracking.",
+            descriptionBn: "প্যারেন্ট নোড ট্র্যাক করে গ্রাফের ভেতর কোনো ক্লোজড সাইকেল বা বৃত্ত রয়েছে কিনা তা সনাক্ত করুন।",
+            sampleInputs: ["V = 4, edges = [[0, 1], [1, 2], [2, 3], [3, 0]]"],
+            sampleOutputs: ["Cycle Detected = true"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Forgetting to Mark Nodes as Visited When Pushing to Queue (BFS)",
+            "desc": "In BFS, nodes must be marked visited immediately when pushed into the queue, not when popped! Delaying marking causes duplicate node pushes and infinite loops."
+          },
+          {
+            "title": "2. Infinite Recursion in Undirected Graphs (DFS Parent Tracking)",
+            "desc": "In undirected graphs, an edge (u, v) means v has neighbor u. Without passing parent parameter, DFS will immediately recurse back to u causing infinite recursion."
+          },
+          {
+            "title": "3. 1-based vs 0-based Vertex Indexing",
+            "desc": "Graphs in problems can be 1-indexed (vertices 1 to V) or 0-indexed (vertices 0 to V-1). Allocating visited[V] for a 1-indexed graph causes Out of Bounds errors!"
+          },
+          {
+            "title": "4. Missing Disconnected Graph Components",
+            "desc": "Assuming the graph is fully connected and running BFS/DFS from node 0 only misses nodes in other disconnected components! Must loop for (int i = 0; i < V; i++)."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. BFS কিউতে ইনসার্ট করার সাথে সাথে Visited মার্ক না করা",
+            "desc": "BFS এ কিউতে পুশ করার মুহূর্তেই `visited[v] = true` করতে হয়। পপ করার সময় মার্ক করলে একই নোড বহুবার কিউতে ঢুকে মেমোরি ওভারফ্লো ঘটায়।"
+          },
+          {
+            "title": "২. আনডিরেক্টেড গ্রাফের রিকার্সনে প্যারেন্ট নোড ট্র্যাক না করা",
+            "desc": "দ্বিমুখী এজ (u, v) থাকায় `parent` ফিল্টার না করলে রিকার্সিভ DFS সাথে সাথে আবার উল্টো ফিরে এসে অসীম লুপ তৈরি করে।"
+          },
+          {
+            "title": "৩. ১-ভিত্তিক বনাম ০-ভিত্তিক নোড ইনডেক্সিংয়ের গোলমাল",
+            "desc": "সমস্যায় ১ থেকে V নাকি ০ থেকে V-১ ইনডেক্সিং রয়েছে তা না দেখে `vis[V]` অ্যারে বানালে Index Out of Bounds এক্সেপশন ঘটে।"
+          },
+          {
+            "title": "৪. বিচ্ছিন্ন বা ডিসকানেক্টেড সাব-গ্রাফ মিস করা",
+            "desc": "শুধু নোড ০ থেকে BFS/DFS রান করলে গ্রাফের অন্যান্য বিচ্ছিন্ন সাব-গ্রাফ বা দ্বীপগুলো বাদ পড়ে যায়। তাই সব নোডে লুপ চালানো উচিত।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Master Graph Representations (Adj List vs Matrix)",
+            "desc": "Master space-time tradeoffs between `adj[V]` (O(V+E)) and `matrix[V][V]` (O(V²))."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Breadth-First Search (BFS) Queue Traversal",
+            "desc": "Master level-by-level queue traversal for shortest path in unweighted graphs."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Depth-First Search (DFS) Component Traversal",
+            "desc": "Master deep recursive path exploration, connected components, and grid sinking."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Cycle Detection Algorithms",
+            "desc": "Master parent vertex tracking for undirected graphs and recursion stack state for directed graphs."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Advanced Graph Algorithms (Topological Sort, Dijkstra, DSU)",
+            "desc": "Master Kahn's Algo, Dijkstra's Shortest Path Priority Queue, and Disjoint Set Union (DSU)."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "গ্রাফ মেমোরি রিপ্রেজেন্টেশন (লিস্ট ও ম্যাট্রিক্স)",
+            "desc": "অ্যাডজাসেন্সি লিস্ট `adj[V]` (O(V+E)) এবং অ্যাডজাসেন্সি ম্যাট্রিক্স `matrix[V][V]` (O(V²)) এর প্রয়োগ ও মেমোরি পার্থক্য বোঝা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "ব্র্যাডথ-ফার্স্ট সার্চ (BFS) লেভেল ট্রাভার্সাল",
+            "desc": "FIFO কিউ ব্যবহার করে লেভেল-বাই-লেভেল ট্রাভার্সাল এবং সর্বনিম্ন দূরত্ব নির্ণয়।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "ডেপথ-ফার্স্ট সার্চ (DFS) গভীরের পথ অনুসন্ধান",
+            "desc": "রিকার্সিভ কল স্ট্যাক দিয়ে গ্রাফের গভীরে পথ অনুসন্ধান ও গ্রিড কম্পোনেন্ট সিঙ্কিং।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "সাইকেল বা লুপ সনাক্তকরণ অ্যালগরিদম",
+            "desc": "প্যারেন্ট ট্র্যাকিং এবং ইন-ডিগ্রি কিউ দিয়ে গ্রাফের ভেতরে সাইকেল সনাক্ত করা।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "এডভান্সড গ্রাফ অ্যালগরিদম (Topological Sort, Dijkstra, DSU)",
+            "desc": "টপোলজিক্যাল সর্ট, ডাইকস্ট্রার শর্টেস্ট পাথ প্রাইওরিটি কিউ এবং Disjoint Set Union (DSU) প্রয়োগ।"
+          }
+        ],
       ),
 
       // 9. TRIE
