@@ -91,6 +91,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 13) {
       // Subsets / Backtracking dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.subsetsBacktrackingDetail);
+    } else if (pattern.id == 14) {
+      // Modified Binary Search dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.modifiedBinarySearchDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }

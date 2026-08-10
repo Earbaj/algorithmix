@@ -15,6 +15,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/tree_bfs_detail_scre
 import 'package:algorithmix/ui/features/core_patterns/views/tree_dfs_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/two_heaps_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/subsets_backtracking_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/modified_binary_search_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -68,6 +69,7 @@ class AppRoutes {
   static const String treeDfsDetail = '/tree-dfs-detail';
   static const String twoHeapsDetail = '/two-heaps-detail';
   static const String subsetsBacktrackingDetail = '/subsets-backtracking-detail';
+  static const String modifiedBinarySearchDetail = '/modified-binary-search-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -115,6 +117,7 @@ class AppRoutes {
       treeDfsDetail: (context) => const TreeDfsDetailScreen(),
       twoHeapsDetail: (context) => const TwoHeapsDetailScreen(),
       subsetsBacktrackingDetail: (context) => const SubsetsBacktrackingDetailScreen(),
+      modifiedBinarySearchDetail: (context) => const ModifiedBinarySearchDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
