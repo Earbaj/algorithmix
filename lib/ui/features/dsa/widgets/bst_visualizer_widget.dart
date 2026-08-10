@@ -494,8 +494,9 @@ class BstTreeBranchPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (root == null) return;
-    _drawBranches(canvas, root);
+    final rootNode = root;
+    if (rootNode == null) return;
+    _drawBranches(canvas, rootNode);
   }
 
   void _drawBranches(Canvas canvas, BstNode node) {
