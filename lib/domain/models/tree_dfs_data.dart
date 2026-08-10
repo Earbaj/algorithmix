@@ -222,8 +222,8 @@ class TreeDfsData {
           "desc": "Failing to check for null pointers causes immediate call stack overflow or NullPointerDereference crashes."
         },
         {
-          "title": "2. Re-calculating Subtree Properties ($O(N^2)$ Time)",
-          "desc": "Computing height inside recursive calls at every node without passing results bottom-up converts $O(N)$ solution to $O(N^2)$."
+          "title": "2. Re-calculating Subtree Properties (O(N^2) Time)",
+          "desc": "Computing height inside recursive calls at every node without passing results bottom-up converts O(N) solution to O(N^2)."
         },
         {
           "title": "3. Modifying Passed Path Vector Without Backtracking",
@@ -235,7 +235,7 @@ class TreeDfsData {
         },
         {
           "title": "5. Stack Overflow on Skewed Trees",
-          "desc": "Skewed linked-list-like trees trigger call stack overflow ($O(N)$ call stack depth) if stack depth limits are exceeded."
+          "desc": "Skewed linked-list-like trees trigger call stack overflow (O(N) call stack depth) if stack depth limits are exceeded."
         },
       ];
     } else {
@@ -245,8 +245,8 @@ class TreeDfsData {
           "desc": "নাল চেক না করলে স্ট্যাক ওভারফ্লো বা নাল পয়েন্টার ডিরিফারেন্স ক্র্যাশ ঘটবে।"
         },
         {
-          "title": "২. নিচ থেকে হিসাব না করে বারবার সাব-ট্রি হাইট বের করা ($O(N^2)$)",
-          "desc": "প্রতি নোডে গিয়ে আবার নিচ পর্যন্ত লুপ চালালে অ্যালগরিদমের টাইম কমপ্লেক্সিটি $O(N)$ থেকে $O(N^2)$ হয়ে যাবে।"
+          "title": "২. নিচ থেকে হিসাব না করে বারবার সাব-ট্রি হাইট বের করা (O(N^2))",
+          "desc": "প্রতি নোডে গিয়ে আবার নিচ পর্যন্ত লুপ চালালে অ্যালগরিদমের টাইম কমপ্লেক্সিটি O(N) থেকে O(N^2) হয়ে যাবে।"
         },
         {
           "title": "৩. ব্যাকট্র্যাকিং না করে পাথ ভেক্টর পাস করা",
