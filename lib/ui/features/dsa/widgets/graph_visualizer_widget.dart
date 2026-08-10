@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
@@ -11,6 +12,20 @@ class GraphVisualizerWidget extends StatefulWidget {
   State<GraphVisualizerWidget> createState() => _GraphVisualizerWidgetState();
 }
 
+class _GraphVisualizerStep {
+  final int currentNode;
+  final List<int> visitedNodes;
+  final List<int> containerState; // Queue or Stack state
+  final String description;
+
+  _GraphVisualizerStep({
+    required this.currentNode,
+    required this.visitedNodes,
+    required this.containerState,
+    required this.description,
+  });
+}
+
 class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
   int _selectedTypeMode = 0; // 0 = Network Canvas, 1 = Adjacency List, 2 = 2D Matrix Grid
 
@@ -21,8 +36,12 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
   late Map<int, List<int>> _adjList;
   late List<List<int>> _adjMatrix;
 
-  List<int> _traversalPath = [];
-  int _activeNode = -1;
+  // Step-by-Step Animation state
+  bool _isAnimating = false;
+  bool _isBfsMode = true; // true = BFS (Queue), false = DFS (Stack)
+  int _currentAnimatedNode = -1;
+  List<int> _animatedVisitedNodes = [];
+  List<int> _animatedContainerItems = [];
   String _statusMessage = "";
 
   @override
@@ -32,6 +51,7 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
   }
 
   void _resetGraph() {
+    _isAnimating = false;
     _adjList = {
       0: [1, 2],
       1: [0, 3, 4],
@@ -41,11 +61,12 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
     };
     _updateMatrixFromList();
 
-    _traversalPath.clear();
-    _activeNode = -1;
+    _currentAnimatedNode = -1;
+    _animatedVisitedNodes.clear();
+    _animatedContainerItems.clear();
     _statusMessage = widget.isEnglish
-        ? "Graph Network Ready! Vertices V = 5, Edges E = 5 (Adjacency List & Matrix)"
-        : "গ্রাফ নেটওয়ার্ক প্রস্তুত! Vertices V = 5, Edges E = 5 (Adjacency List & Matrix)";
+        ? "Graph Network Ready! Click 'Run BFS' or 'Run DFS' to see node-by-node animation."
+        : "গ্রাফ নেটওয়ার্ক প্রস্তুত! নোড-বাই-নোড অ্যানিমেশন দেখতে 'Run BFS' বা 'Run DFS' এ চাপ দিন।";
   }
 
   void _updateMatrixFromList() {
@@ -67,12 +88,13 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
   }
 
   void _handleAddEdge() {
+    if (_isAnimating) return;
     final u = int.tryParse(_uController.text.trim()) ?? 0;
     final v = int.tryParse(_vController.text.trim()) ?? 3;
 
     if (u < 0 || u >= _vCount || v < 0 || v >= _vCount) {
       setState(() {
-        _statusMessage = widget.isEnglish ? "⚠️ Invalid Node index! Must be between 0 and ${_vCount - 1}" : "⚠️ ইনভ্যালিড নোড ইন্ডেক্স!";
+        _statusMessage = widget.isEnglish ? "⚠️ Invalid Node index! Must be 0 to ${_vCount - 1}" : "⚠️ ইনভ্যালিড নোড ইন্ডেক্স!";
       });
       return;
     }
@@ -83,62 +105,150 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
         _adjList[v]?.add(u);
         _updateMatrixFromList();
         _statusMessage = widget.isEnglish
-            ? "Added Undirected Edge ($u ⟷ $v)! Updated Adjacency List & Matrix."
+            ? "Added Undirected Edge ($u ⟷ $v)! Graph updated."
             : "নতুন এজ ($u ⟷ $v) যুক্ত করা হলো!";
       }
     });
   }
 
-  void _runBfs() {
-    final List<int> path = [];
-    final Set<int> visited = {};
+  // Node-by-Node Animated BFS Simulation
+  Future<void> _runAnimatedBfs() async {
+    if (_isAnimating) return;
+
+    setState(() {
+      _isAnimating = true;
+      _isBfsMode = true;
+      _currentAnimatedNode = -1;
+      _animatedVisitedNodes.clear();
+      _animatedContainerItems.clear();
+      _statusMessage = widget.isEnglish ? "Starting BFS Node-by-Node Queue Animation..." : "BFS নোড-বাই-নোড অ্যানিমেশন শুরু হচ্ছে...";
+    });
+
+    final List<_GraphVisualizerStep> steps = [];
     final List<int> queue = [0];
-    visited.add(0);
+    final Set<int> visited = {0};
+
+    steps.add(_GraphVisualizerStep(
+      currentNode: 0,
+      visitedNodes: [0],
+      containerState: List.from(queue),
+      description: widget.isEnglish ? "Step 1: Start at Node 0 ➔ Enqueued Node 0 in Queue" : "ধাপ ১: নোড 0 এ শুরু ➔ কিউতে নোড 0 পুশ করা হলো",
+    ));
 
     while (queue.isNotEmpty) {
       final u = queue.removeAt(0);
-      path.add(u);
+
+      steps.add(_GraphVisualizerStep(
+        currentNode: u,
+        visitedNodes: List.from(visited),
+        containerState: List.from(queue),
+        description: widget.isEnglish ? "Visiting Node $u (Dequeued from Queue Front)" : "নোড $u ভিজিট করা হচ্ছে (কিউয়ের ফ্রন্ট থেকে ডিকেল)",
+      ));
 
       for (int v in (_adjList[u] ?? [])) {
         if (!visited.contains(v)) {
           visited.add(v);
           queue.add(v);
+
+          steps.add(_GraphVisualizerStep(
+            currentNode: v,
+            visitedNodes: List.from(visited),
+            containerState: List.from(queue),
+            description: widget.isEnglish ? "Discovered Neighbor Node $v ➔ Enqueued in Queue Rear" : "নতুন প্রতিবেশী নোড $v পাওয়া গেছে ➔ কিউয়ের পেছনে যুক্ত",
+          ));
         }
       }
     }
 
-    setState(() {
-      _traversalPath = path;
-      _activeNode = 0;
-      _statusMessage = widget.isEnglish
-          ? "BFS Traversal (Queue Level-Order): ${path.join(' ➔ ')}"
-          : "BFS ট্রাভার্সাল (Queue Level-Order): ${path.join(' ➔ ')}";
-    });
+    // Execute step-by-step animation loop with delays
+    for (var step in steps) {
+      if (!mounted) return;
+      setState(() {
+        _currentAnimatedNode = step.currentNode;
+        _animatedVisitedNodes = step.visitedNodes;
+        _animatedContainerItems = step.containerState;
+        _statusMessage = step.description;
+      });
+      await Future.delayed(const Duration(milliseconds: 800));
+    }
+
+    if (mounted) {
+      setState(() {
+        _isAnimating = false;
+        _statusMessage = widget.isEnglish
+            ? "✅ BFS Animation Complete! Traversal Order: [${_animatedVisitedNodes.join(', ')}]"
+            : "✅ BFS অ্যানিমেশন সম্পন্ন! ট্রাভার্সাল ক্রম: [${_animatedVisitedNodes.join(', ')}]";
+      });
+    }
   }
 
-  void _runDfs() {
-    final List<int> path = [];
+  // Node-by-Node Animated DFS Simulation
+  Future<void> _runAnimatedDfs() async {
+    if (_isAnimating) return;
+
+    setState(() {
+      _isAnimating = true;
+      _isBfsMode = false;
+      _currentAnimatedNode = -1;
+      _animatedVisitedNodes.clear();
+      _animatedContainerItems.clear();
+      _statusMessage = widget.isEnglish ? "Starting DFS Node-by-Node Stack Animation..." : "DFS নোড-বাই-নোড অ্যানিমেশন শুরু হচ্ছে...";
+    });
+
+    final List<_GraphVisualizerStep> steps = [];
+    final List<int> stack = [];
     final Set<int> visited = {};
 
-    void dfsHelper(int u) {
+    void dfsRecursive(int u) {
       visited.add(u);
-      path.add(u);
+      stack.add(u);
+
+      steps.add(_GraphVisualizerStep(
+        currentNode: u,
+        visitedNodes: List.from(visited),
+        containerState: List.from(stack),
+        description: widget.isEnglish ? "Visiting Node $u ➔ Pushed to Call Stack" : "নোড $u ভিজিট করা হচ্ছে ➔ স্ট্যাকে পুশ করা হলো",
+      ));
+
       for (int v in (_adjList[u] ?? [])) {
         if (!visited.contains(v)) {
-          dfsHelper(v);
+          dfsRecursive(v);
         }
+      }
+
+      stack.removeLast();
+      if (stack.isNotEmpty) {
+        steps.add(_GraphVisualizerStep(
+          currentNode: stack.last,
+          visitedNodes: List.from(visited),
+          containerState: List.from(stack),
+          description: widget.isEnglish ? "Backtracking from Node $u ➔ Returned to Node ${stack.last}" : "নোড $u থেকে ব্যাকট্র্যাক ➔ নোড ${stack.last} এ ফিরে আসা হলো",
+        ));
       }
     }
 
-    dfsHelper(0);
+    dfsRecursive(0);
 
-    setState(() {
-      _traversalPath = path;
-      _activeNode = 0;
-      _statusMessage = widget.isEnglish
-          ? "DFS Traversal (Stack/Recursive): ${path.join(' ➔ ')}"
-          : "DFS ট্রাভার্সাল (Stack/Recursive): ${path.join(' ➔ ')}";
-    });
+    // Execute step-by-step animation loop with delays
+    for (var step in steps) {
+      if (!mounted) return;
+      setState(() {
+        _currentAnimatedNode = step.currentNode;
+        _animatedVisitedNodes = step.visitedNodes;
+        _animatedContainerItems = step.containerState;
+        _statusMessage = step.description;
+      });
+      await Future.delayed(const Duration(milliseconds: 850));
+    }
+
+    if (mounted) {
+      setState(() {
+        _isAnimating = false;
+        _statusMessage = widget.isEnglish
+            ? "✅ DFS Animation Complete! Traversal Order: [${_animatedVisitedNodes.join(', ')}]"
+            : "✅ DFS অ্যানিমেশন সম্পন্ন! ট্রাভার্সাল ক্রম: [${_animatedVisitedNodes.join(', ')}]";
+      });
+    }
   }
 
   @override
@@ -164,7 +274,7 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
         ),
         const SizedBox(height: 16),
 
-        // Status Banner
+        // Animated Status Banner
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(14),
@@ -175,7 +285,11 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
           ),
           child: Row(
             children: [
-              const Icon(Icons.hub, color: Color(0xFF0284C7), size: 20),
+              Icon(
+                _isAnimating ? Icons.sync : Icons.hub,
+                color: const Color(0xFF0284C7),
+                size: 20,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
@@ -203,6 +317,75 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
             border: Border.all(color: const Color(0xFF1E293B)),
           ),
           child: _buildCanvasContent(),
+        ),
+        const SizedBox(height: 16),
+
+        // Live Queue / Stack Container Display
+        Container(
+          padding: const EdgeInsets.all(16),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: const Color(0xFF334155)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _isBfsMode ? "Live Queue State (FIFO - Enqueue Rear / Dequeue Front)" : "Live Stack State (LIFO - Push / Pop Top)",
+                    style: TextStyle(
+                      color: _isBfsMode ? AppTheme.accentGreen : AppTheme.accentNeonCyan,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Text(
+                    _isBfsMode ? "Front ➔ Rear" : "Bottom ➔ Top",
+                    style: const TextStyle(color: AppTheme.textMuted, fontSize: 10, fontFamily: 'monospace'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+
+              if (_animatedContainerItems.isEmpty)
+                Text(
+                  widget.isEnglish ? "Queue / Stack is empty" : "কিউ / স্ট্যাক খালি",
+                  style: const TextStyle(color: AppTheme.textMuted, fontSize: 12),
+                )
+              else
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: _animatedContainerItems.map((nodeVal) {
+                      final isCurrent = nodeVal == _currentAnimatedNode;
+                      return Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: isCurrent
+                              ? AppTheme.accentPink
+                              : (_isBfsMode ? AppTheme.accentGreen : AppTheme.accentNeonCyan),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: isCurrent ? Colors.white : Colors.transparent),
+                        ),
+                        child: Text(
+                          "Node $nodeVal",
+                          style: TextStyle(
+                            color: isCurrent ? Colors.white : AppTheme.primaryDark,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+            ],
+          ),
         ),
         const SizedBox(height: 16),
 
@@ -265,15 +448,15 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
                   ),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.play_arrow, size: 16),
-                    label: Text(widget.isEnglish ? "Run BFS (Queue)" : "BFS রান করুন"),
+                    label: Text(widget.isEnglish ? "Node-by-Node BFS (Queue)" : "অ্যানিমেটেড BFS"),
                     style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentGreen, foregroundColor: AppTheme.primaryDark),
-                    onPressed: _runBfs,
+                    onPressed: _isAnimating ? null : _runAnimatedBfs,
                   ),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.alt_route, size: 16),
-                    label: Text(widget.isEnglish ? "Run DFS (Stack)" : "DFS রান করুন"),
+                    label: Text(widget.isEnglish ? "Node-by-Node DFS (Stack)" : "অ্যানিমেটেড DFS"),
                     style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentNeonCyan, foregroundColor: AppTheme.primaryDark),
-                    onPressed: _runDfs,
+                    onPressed: _isAnimating ? null : _runAnimatedDfs,
                   ),
                   OutlinedButton.icon(
                     icon: const Icon(Icons.refresh, size: 16),
@@ -304,15 +487,22 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
             const SizedBox(height: 12),
             ...List.generate(_vCount, (u) {
               final neighbors = _adjList[u] ?? [];
+              final isCurrent = u == _currentAnimatedNode;
+              final isVisited = _animatedVisitedNodes.contains(u);
+
               return Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                decoration: BoxDecoration(color: AppTheme.surfaceDark, borderRadius: BorderRadius.circular(10), border: Border.all(color: const Color(0xFF334155))),
+                decoration: BoxDecoration(
+                  color: isCurrent ? AppTheme.accentPink.withOpacity(0.2) : AppTheme.surfaceDark,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: isCurrent ? AppTheme.accentPink : (isVisited ? AppTheme.accentGreen : const Color(0xFF334155))),
+                ),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: const Color(0xFF0284C7), borderRadius: BorderRadius.circular(6)),
+                      decoration: BoxDecoration(color: isCurrent ? AppTheme.accentPink : const Color(0xFF0284C7), borderRadius: BorderRadius.circular(6)),
                       child: Text("Node $u", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
                     ),
                     const SizedBox(width: 10),
@@ -358,9 +548,10 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
                   ),
                   // Matrix Rows
                   ...List.generate(_vCount, (u) {
+                    final isCurrent = u == _currentAnimatedNode;
                     return Row(
                       children: [
-                        SizedBox(width: 45, height: 40, child: Center(child: Text("N$u", style: const TextStyle(color: Color(0xFF0284C7), fontWeight: FontWeight.bold, fontSize: 12)))),
+                        SizedBox(width: 45, height: 40, child: Center(child: Text("N$u", style: TextStyle(color: isCurrent ? AppTheme.accentPink : const Color(0xFF0284C7), fontWeight: FontWeight.bold, fontSize: 12)))),
                         ...List.generate(_vCount, (v) {
                           final hasEdge = _adjMatrix[u][v] == 1;
                           return Container(
@@ -413,12 +604,14 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
                 painter: GraphEdgePainter(
                   adjList: _adjList,
                   nodePositions: nodePositions,
-                  traversalPath: _traversalPath,
+                  visitedNodes: _animatedVisitedNodes,
+                  currentNode: _currentAnimatedNode,
                 ),
               ),
               ...List.generate(_vCount, (i) {
                 final pos = nodePositions[i]!;
-                final isVisited = _traversalPath.contains(i);
+                final isCurrent = i == _currentAnimatedNode;
+                final isVisited = _animatedVisitedNodes.contains(i);
 
                 return Positioned(
                   left: pos.dx - 22,
@@ -428,10 +621,19 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: isVisited ? AppTheme.accentGreen : const Color(0xFF0284C7),
+                      color: isCurrent
+                          ? AppTheme.accentPink
+                          : (isVisited
+                              ? (_isBfsMode ? AppTheme.accentGreen : AppTheme.accentNeonCyan)
+                              : const Color(0xFF0284C7)),
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: isVisited ? 2.5 : 1),
-                      boxShadow: isVisited ? [BoxShadow(color: AppTheme.accentGreen.withOpacity(0.5), blurRadius: 10)] : [],
+                      border: Border.all(
+                        color: (isCurrent || isVisited) ? Colors.white : const Color(0xFF0284C7),
+                        width: (isCurrent || isVisited) ? 2.5 : 1,
+                      ),
+                      boxShadow: isCurrent
+                          ? [BoxShadow(color: AppTheme.accentPink.withOpacity(0.6), blurRadius: 12)]
+                          : (isVisited ? [BoxShadow(color: AppTheme.accentGreen.withOpacity(0.5), blurRadius: 10)] : []),
                     ),
                     child: Center(
                       child: Text(
@@ -439,7 +641,7 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: isVisited ? AppTheme.primaryDark : Colors.white,
+                          color: (isCurrent || isVisited) ? AppTheme.primaryDark : Colors.white,
                         ),
                       ),
                     ),
@@ -498,12 +700,14 @@ class _GraphVisualizerWidgetState extends State<GraphVisualizerWidget> {
 class GraphEdgePainter extends CustomPainter {
   final Map<int, List<int>> adjList;
   final Map<int, Offset> nodePositions;
-  final List<int> traversalPath;
+  final List<int> visitedNodes;
+  final int currentNode;
 
   GraphEdgePainter({
     required this.adjList,
     required this.nodePositions,
-    required this.traversalPath,
+    required this.visitedNodes,
+    required this.currentNode,
   });
 
   @override
@@ -518,13 +722,10 @@ class GraphEdgePainter extends CustomPainter {
       ..strokeWidth = 3.0
       ..style = PaintingStyle.stroke;
 
-    final visitedEdges = <String>{};
-    for (int i = 0; i < traversalPath.length - 1; i++) {
-      int u = traversalPath[i];
-      int v = traversalPath[i + 1];
-      visitedEdges.add("$u-$v");
-      visitedEdges.add("$v-$u");
-    }
+    final activePaint = Paint()
+      ..color = AppTheme.accentPink
+      ..strokeWidth = 3.5
+      ..style = PaintingStyle.stroke;
 
     adjList.forEach((u, neighbors) {
       final p1 = nodePositions[u];
@@ -534,8 +735,16 @@ class GraphEdgePainter extends CustomPainter {
         final p2 = nodePositions[v];
         if (p2 == null || u >= v) continue; // Draw each edge once
 
-        final isVisitedEdge = visitedEdges.contains("$u-$v");
-        canvas.drawLine(p1, p2, isVisitedEdge ? visitedPaint : defaultPaint);
+        final isCurrentEdge = (u == currentNode && visitedNodes.contains(v)) || (v == currentNode && visitedNodes.contains(u));
+        final isVisitedEdge = visitedNodes.contains(u) && visitedNodes.contains(v);
+
+        if (isCurrentEdge) {
+          canvas.drawLine(p1, p2, activePaint);
+        } else if (isVisitedEdge) {
+          canvas.drawLine(p1, p2, visitedPaint);
+        } else {
+          canvas.drawLine(p1, p2, defaultPaint);
+        }
       }
     });
   }
