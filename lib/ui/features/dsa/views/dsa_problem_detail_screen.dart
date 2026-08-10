@@ -11,6 +11,7 @@ class DebugArrayStep {
   final List<List<int>>? matrix2D;
   final List<String>? stackItems;
   final List<String>? queueItems;
+  final Map<String, String>? hashMapItems;
   final int? pointer1;
   final int? pointer2;
   final int? minVal;
@@ -24,6 +25,7 @@ class DebugArrayStep {
     this.matrix2D,
     this.stackItems,
     this.queueItems,
+    this.hashMapItems,
     this.pointer1,
     this.pointer2,
     this.minVal,
@@ -777,7 +779,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     ),
   ];
 
-  // QUEUE (FIFO) & DEQUE CODE LINES & STEPS
+  // QUEUE (FIFO) CODE LINES & STEPS
   final List<String> _q1CodeLines = [
     "class MyQueue {",
     "    stack<int> stIn, stOut;",
@@ -940,7 +942,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       activeLineIndex: 5,
       queueItems: ["5"],
       explanationEn: "Line 6: Window [-1, -3, 5]: 5 > 3 & -3 -> Pop all smaller! Deque = [5]. Max = 5.",
-      explanationBn: "লাইন ৬: উইন্ডো [-1, -3, 5]: 5 বড় হওয়ায় সব ছোট মান পপ! Deque = [5]। ম্যাক্স = 5।",
+      explanationBn: "লাইন ৬: উইন্ডো [-1, -3, 5]: 5 বড় থাকায় সব ছোট মান পপ! Deque = [5]। ম্যাক্স = 5।",
     ),
     DebugArrayStep(
       activeLineIndex: 6,
@@ -950,7 +952,162 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     ),
   ];
 
+  // HASH TABLE & HASH MAP CODE LINES & STEPS
+  final List<String> _hm1CodeLines = [
+    "vector<int> twoSum(vector<int>& nums, int target) {",
+    "    unordered_map<int, int> mp;",
+    "    for (int i = 0; i < nums.size(); i++) {",
+    "        int complement = target - nums[i];",
+    "        if (mp.count(complement)) return {mp[complement], i};",
+    "        mp[nums[i]] = i;",
+    "    }",
+    "    return {};",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _hm1Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1,
+      hashMapItems: {},
+      array1D: [2, 7, 11, 15],
+      explanationEn: "Line 2: Initialize empty Hash Map mp = {}. Target = 9.",
+      explanationBn: "লাইন ২: খালি হ্যাশ ম্যাপ mp = {} সূচনা। টার্গেট = 9।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      hashMapItems: {"2": "0"},
+      array1D: [2, 7, 11, 15],
+      pointer1: 0,
+      explanationEn: "Line 6: i = 0 (val 2): complement (9 - 2 = 7) not in map -> Store mp[2] = 0.",
+      explanationBn: "লাইন ৬: i = 0 (মান 2): কমপ্লিমেন্ট (9 - 2 = 7) ম্যাপে নেই -> mp[2] = 0 সেভ।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      hashMapItems: {"2": "0"},
+      array1D: [2, 7, 11, 15],
+      pointer1: 1,
+      explanationEn: "🎉 Line 5: i = 1 (val 7): complement (9 - 7 = 2) MATCH FOUND at mp[2] = 0! Return {0, 1}!",
+      explanationBn: "🎉 লাইন ৫: i = 1 (মান 7): কমপ্লিমেন্ট (9 - 7 = 2) ম্যাপে পাওয়া গেছে! Return {0, 1}!",
+    ),
+  ];
+
+  final List<String> _hm2CodeLines = [
+    "bool isAnagram(string s, string t) {",
+    "    if (s.length() != t.length()) return false;",
+    "    unordered_map<char, int> freq;",
+    "    for (char c : s) freq[c]++;",
+    "    for (char c : t) { if (--freq[c] < 0) return false; }",
+    "    return true;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _hm2Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 3,
+      hashMapItems: {"a": "3", "n": "1", "g": "1", "r": "1", "m": "1"},
+      explanationEn: "Line 4: Count s = 'anagram' char frequencies -> {a:3, n:1, g:1, r:1, m:1}.",
+      explanationBn: "লাইন ৪: s = 'anagram' ক্যারেক্টার কাউন্ট -> {a:3, n:1, g:1, r:1, m:1}।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      hashMapItems: {"a": "0", "n": "0", "g": "0", "r": "0", "m": "0"},
+      explanationEn: "Line 5: Decrement counts for t = 'nagaram' -> All frequencies decremented to 0.",
+      explanationBn: "লাইন ৫: t = 'nagaram' ক্যারেক্টার বিয়োগ -> সব ফ্রিকোয়েন্সি কমে ০ হলো।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      hashMapItems: {"a": "0", "n": "0", "g": "0", "r": "0", "m": "0"},
+      explanationEn: "🎉 Line 6: All character counts match perfectly! Return TRUE!",
+      explanationBn: "🎉 লাইন ৬: সমস্ত অক্ষরের গণনাসংখ্যা হুবহু মিলেছে! Return TRUE!",
+    ),
+  ];
+
+  final List<String> _hm3CodeLines = [
+    "vector<vector<string>> groupAnagrams(vector<string>& strs) {",
+    "    unordered_map<string, vector<string>> mp;",
+    "    for (string& s : strs) {",
+    "        string key = s; sort(key.begin(), key.end());",
+    "        mp[key].push_back(s);",
+    "    }",
+    "    return getValues(mp);",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _hm3Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 4,
+      hashMapItems: {"aet": "[\"eat\", \"tea\", \"ate\"]"},
+      explanationEn: "Line 5: Grouped sorted key 'aet' -> [eat, tea, ate].",
+      explanationBn: "লাইন ৫: সর্টেড কী 'aet' দিয়ে গ্রুপ -> [eat, tea, ate]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      hashMapItems: {"aet": "[\"eat\", \"tea\", \"ate\"]", "ant": "[\"tan\", \"nat\"]", "abt": "[\"bat\"]"},
+      explanationEn: "Line 5: Grouped sorted keys 'ant' -> [tan, nat] and 'abt' -> [bat].",
+      explanationBn: "লাইন ৫: সর্টেড কী 'ant' -> [tan, nat] এবং 'abt' -> [bat] গ্রুপ।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6,
+      hashMapItems: {"aet": "[\"eat\", \"tea\", \"ate\"]", "ant": "[\"tan\", \"nat\"]", "abt": "[\"bat\"]"},
+      explanationEn: "🎉 Line 7: Group Anagrams Complete! Return 3 grouped anagram buckets.",
+      explanationBn: "🎉 লাইন ৭: অ্যানাগ্রাম গ্রুপিং সম্পন্ন! ৩টি অ্যানাগ্রাম বাকেট রিটার্ন করা হলো।",
+    ),
+  ];
+
+  final List<String> _hm4CodeLines = [
+    "int subarraySum(vector<int>& nums, int k) {",
+    "    unordered_map<int, int> mp; mp[0] = 1;",
+    "    int sum = 0, count = 0;",
+    "    for (int num : nums) {",
+    "        sum += num;",
+    "        if (mp.count(sum - k)) count += mp[sum - k];",
+    "        mp[sum]++;",
+    "    }",
+    "    return count;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _hm4Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1,
+      hashMapItems: {"0": "1"},
+      array1D: [1, 1, 1],
+      explanationEn: "Line 2: Set mp[0] = 1 (base prefix sum 0), k = 2.",
+      explanationBn: "লাইন ২: বেস প্রেফিক্স সাম mp[0] = 1 সেট, k = 2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      hashMapItems: {"0": "1", "1": "1"},
+      array1D: [1, 1, 1],
+      pointer1: 0,
+      explanationEn: "Line 6: i = 0 (val 1): sum = 1. sum - k = -1 not in map. Store mp[1] = 1.",
+      explanationBn: "লাইন ৬: i = 0 (মান 1): sum = 1। (1 - 2 = -1) ম্যাপে নেই -> mp[1] = 1 সেভ।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      hashMapItems: {"0": "1", "1": "1", "2": "1"},
+      array1D: [1, 1, 1],
+      pointer1: 1,
+      minVal: 1,
+      explanationEn: "Line 6: i = 1 (val 1): sum = 2. sum - k = 0 (FOUND in mp). count = 1. Store mp[2] = 1.",
+      explanationBn: "লাইন ৬: i = 1 (মান 1): sum = 2। (2 - 2 = 0) ম্যাপে পাওয়া গেছে! count = 1।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 8,
+      hashMapItems: {"0": "1", "1": "1", "2": "1", "3": "1"},
+      array1D: [1, 1, 1],
+      pointer1: 2,
+      minVal: 2,
+      explanationEn: "🎉 Line 9: i = 2 (val 1): sum = 3. sum - k = 1 (FOUND in mp). Final Subarray Count = 2!",
+      explanationBn: "🎉 লাইন ৯: i = 2 (মান 1): sum = 3। (3 - 2 = 1) ম্যাপে পাওয়া গেছে! চূড়ান্ত গণনা = 2!",
+    ),
+  ];
+
   List<DebugArrayStep> get _currentSteps {
+    if (widget.problem.id == "hm-1") return _hm1Steps;
+    if (widget.problem.id == "hm-2") return _hm2Steps;
+    if (widget.problem.id == "hm-3") return _hm3Steps;
+    if (widget.problem.id == "hm-4") return _hm4Steps;
     if (widget.problem.id == "q-1") return _q1Steps;
     if (widget.problem.id == "q-2") return _q2Steps;
     if (widget.problem.id == "q-3") return _q3Steps;
@@ -970,6 +1127,10 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   }
 
   List<String> get _currentCodeLines {
+    if (widget.problem.id == "hm-1") return _hm1CodeLines;
+    if (widget.problem.id == "hm-2") return _hm2CodeLines;
+    if (widget.problem.id == "hm-3") return _hm3CodeLines;
+    if (widget.problem.id == "hm-4") return _hm4CodeLines;
     if (widget.problem.id == "q-1") return _q1CodeLines;
     if (widget.problem.id == "q-2") return _q2CodeLines;
     if (widget.problem.id == "q-3") return _q3CodeLines;
@@ -1467,9 +1628,52 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (step.minVal != null)
-                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : "Min: ${step.minVal}"), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : (widget.problem.id.startsWith("hm-") ? "Count / Sum: ${step.minVal}" : "Min: ${step.minVal}")), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
                 if (step.maxVal != null)
                   Text("Max: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14)),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // Hash Map Key-Value Bucket Inspector
+          if (widget.problem.id.startsWith("hm-") && step.hashMapItems != null) ...[
+            Column(
+              children: [
+                const Text("Hash Map Bucket Container (Key -> Value)", style: TextStyle(color: AppTheme.accentPink, fontWeight: FontWeight.bold, fontSize: 13)),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF090D16),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppTheme.accentPink, width: 2),
+                  ),
+                  child: step.hashMapItems!.isEmpty
+                      ? Center(child: Text(_isEnglish ? "[Hash Map Empty]" : "[হ্যাশ ম্যাপ খালি]", style: const TextStyle(color: AppTheme.textMuted, fontSize: 12)))
+                      : Column(
+                          children: step.hashMapItems!.entries.map((entry) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: AppTheme.surfaceDark,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: AppTheme.accentPink.withOpacity(0.5)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("KEY: ${entry.key}", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13)),
+                                  const Icon(Icons.arrow_right_alt, color: AppTheme.accentPink, size: 18),
+                                  Text("VAL: ${entry.value}", style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 13)),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -1597,6 +1801,8 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
                   if (widget.problem.id == "ll-2" || widget.problem.id == "ll-4") {
                     badge1 = "slow [$i]";
                     badge2 = "fast [$i]";
+                  } else if (widget.problem.id.startsWith("hm-")) {
+                    badge1 = "i [$i]";
                   }
 
                   return Row(

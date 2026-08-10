@@ -1967,27 +1967,408 @@ function maxSlidingWindow(nums, k) {
         id: 205,
         title: "Hash Table & Hash Map",
         category: "Associative Dictionary",
-        timeComplexity: "Lookup O(1) avg | Insert O(1) avg | Delete O(1) avg",
+        timeComplexity: "Lookup: O(1) avg | Insert: O(1) avg | Delete: O(1) avg | Worst: O(N)",
         spaceComplexity: "O(N)",
         icon: Icons.grid_view_outlined,
         themeColor: const Color(0xFFEC4899),
-        descriptionEn: "A Hash Table is an associative dictionary mapping keys to array indices using a Hash Function.",
-        descriptionBn: "হ্যাশ টেবিল হলো একটি কী-ভ্যালু ডিকশনারি যা হ্যাশ ফাংশন দিয়ে ইনডেক্সিং করে।",
-        keyConceptsEn: ["O(1) Average Lookup", "Collision Handling"],
-        keyConceptsBn: ["O(1) গড়ে সমাধান", "কলিশন হ্যান্ডলিং"],
+        descriptionEn:
+            "A Hash Table is an associative key-value dictionary structure that converts arbitrary key objects into integer array indices using a Hash Function. It enables lightning-fast average O(1) constant time lookups, insertions, and deletions. Hash collisions are resolved via Separate Chaining (Linked Lists / Red-Black Trees) or Open Addressing (Linear Probing). Hash Maps power database indexing, caching systems, frequency counting, and instant complement search algorithms.",
+        descriptionBn:
+            "হ্যাশ টেবিল (Hash Table) হলো একটি কী-ভ্যালু ডিকশনারি ডেটা স্ট্রাকচার যা হ্যাশ ফাংশন (Hash Function) ব্যবহার করে যেকোনো কী-কে অ্যারে ইনডেক্সে রূপান্তর করে। এর ফলে উপাদান খোঁজা (Lookup), যোগ (Insert) এবং ডিলেট করার কাজ গড়ে O(1) কনস্ট্যান্ট সময়ে সম্পন্ন হয়। ক্যালিগ্রাফি বা হ্যাশ কলিশন এড়াতে সেপারেট চেইনিং বা ওপেন এড্রেসিং পদ্ধতি ব্যবহার করা হয়। ডেটাবেজ ইনডেক্সিং, ক্যাশিং এবং টু-সাম সমস্যার জন্য হ্যাশ ম্যাপ অপরিহার্য।",
+        keyConceptsEn: [
+          "O(1) Average Complexity: Instant key lookup, insert, and delete operations via hash index calculation.",
+          "Hash Collision Resolution: Handling duplicate hash indices using Separate Chaining (Linked List / Red-Black Tree) or Open Addressing.",
+          "Frequency Map Pattern: Counting occurrences of characters or integers in O(N) time and O(K) space.",
+          "Prefix Sum + Hash Map: Finding continuous subarrays matching target sum K by storing running prefix sum frequencies."
+        ],
+        keyConceptsBn: [
+          "O(1) গড় জটিলতা: হ্যাশ ফাংশনের ইনডেক্স হিসাবের মাধ্যমে যেকোনো কী দ্রুত খুঁজে পাওয়া।",
+          "হ্যাশ কলিশন হ্যান্ডলিং: একই ইনডেক্সে দুটি কী পাওয়া গেলে সেপারেট চেইনিং বা লিনিয়ার প্রোবিং ব্যবহার করা।",
+          "ফ্রিকোয়েন্সি ম্যাপ প্যাটার্ন: ক্যারেক্টার বা সংখ্যার উপস্থিতি গণনা ও বালতি সাজানো।",
+          "প্রেফিক্স সাম + হ্যাশ ম্যাপ: পূর্ববর্তী রানিং সাম জমা রেখে সাব-অ্যারে সাম K খুব সহজে বের করা।"
+        ],
         multiDimCodeTemplates: {
-          "Hash Map (Key-Value)": {
-            "C++": "unordered_map<string, int> mp;",
-            "Java": "Map<String, Integer> map = new HashMap<>();",
-            "Python": "mp = {}",
-            "JavaScript": "const map = new Map();"
+          "Hash Map (Key-Value Pair)": {
+            "C++": """
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+int main() {
+    unordered_map<string, int> mp;
+    mp["apple"] = 5; // Insert O(1)
+    mp["banana"] = 3;
+    if (mp.find("apple") != mp.end()) {
+        cout << "Apple count: " << mp["apple"] << endl;
+    }
+    return 0;
+}""",
+            "Java": """
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMapDemo {
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("apple", 5); // Insert O(1)
+        map.put("banana", 3);
+        System.out.println("Apple: " + map.get("apple"));
+    }
+}""",
+            "Python": """
+# Python dict implementation
+mp = {}
+mp["apple"] = 5 # Insert O(1)
+mp["banana"] = 3
+print("Apple count:", mp.get("apple", 0))""",
+            "JavaScript": """
+// JS Map object
+const map = new Map();
+map.set("apple", 5); // Insert O(1)
+map.set("banana", 3);
+console.log("Apple:", map.get("apple"));"""
+          },
+          "Hash Set (Unique Values)": {
+            "C++": """
+#include <iostream>
+#include <unordered_set>
+using namespace std;
+
+int main() {
+    unordered_set<int> st = {10, 20, 30};
+    if (st.count(20)) cout << "Found 20!" << endl;
+    return 0;
+}""",
+            "Java": """
+import java.util.HashSet;
+import java.util.Set;
+
+public class SetDemo {
+    public static void main(String[] args) {
+        Set<Integer> set = new HashSet<>();
+        set.add(10); set.add(20);
+        System.out.println("Contains 20? " + set.contains(20));
+    }
+}""",
+            "Python": """
+st = {10, 20, 30}
+if 20 in st:
+    print("Found 20!")""",
+            "JavaScript": """
+const set = new Set([10, 20, 30]);
+console.log(set.has(20));"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "hm-1",
+            title: "1. Two Sum (Hash Map Complement Lookup)",
+            category: "Hash Map Lookup Basic",
+            keyIdeaEn: "Iterate array. Check if `target - nums[i]` exists in map. If found, return pair indices `{map[target - nums[i]], i}`. Otherwise store `map[nums[i]] = i`.",
+            keyIdeaBn: "অ্যারে লুপ চালান। ম্যাপে `target - nums[i]` আছে কিনা চেক করুন। থাকলে ইনডেক্স জোড়া রিটার্ন করুন, না থাকলে `map[nums[i]] = i` সেভ করুন।",
+            codeCpp: """
+vector<int> twoSum(vector<int>& nums, int target) {
+    unordered_map<int, int> mp;
+    for (int i = 0; i < nums.size(); i++) {
+        int complement = target - nums[i];
+        if (mp.count(complement)) return {mp[complement], i};
+        mp[nums[i]] = i;
+    }
+    return {};
+}""",
+            codeJava: """
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[]{map.get(complement), i};
+        }
+        map.put(nums[i], i);
+    }
+    return new int[0];
+}""",
+            codePython: """
+def twoSum(nums: List[int], target: int) -> List[int]:
+    mp = {}
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in mp:
+            return [mp[complement], i]
+        mp[num] = i
+    return []""",
+            codeJs: """
+function twoSum(nums, target) {
+    const map = new Map();
+    for (let i = 0; i < nums.length; i++) {
+        const complement = target - nums[i];
+        if (map.has(complement)) {
+            return [map.get(complement), i];
+        }
+        map.set(nums[i], i);
+    }
+    return [];
+}""",
+            descriptionEn: "Return indices of two numbers in an array that add up to a target sum in O(N) time.",
+            descriptionBn: "একটি অ্যারে থেকে দুটি সংখ্যার ইনডেক্স বের করুন যাদের যোগফল target এর সমান হয়।",
+            sampleInputs: ["nums = [2, 7, 11, 15], target = 9"],
+            sampleOutputs: ["indices = [0, 1]"],
+          ),
+          DsaProblem(
+            id: "hm-2",
+            title: "2. Valid Anagram (Frequency Bucket Map)",
+            category: "Frequency Counter Pattern",
+            keyIdeaEn: "Count character frequencies for string `s` (+1) and string `t` (-1) using a Hash Map or 26-size frequency array. Return true if all counts are 0.",
+            keyIdeaBn: "প্রথম স্ট্রিং `s` এর ক্যারেক্টার ফ্রিকোয়েন্সি বাড়িয়ে এবং `t` এর ফ্রিকোয়েন্সি কমিয়ে চেক করুন। সব গণনাসংখ্যা ০ হলে এটি সঠিক এনগ্রাম।",
+            codeCpp: """
+bool isAnagram(string s, string t) {
+    if (s.length() != t.length()) return false;
+    unordered_map<char, int> freq;
+    for (char c : s) freq[c]++;
+    for (char c : t) {
+        if (--freq[c] < 0) return false;
+    }
+    return true;
+}""",
+            codeJava: """
+public boolean isAnagram(String s, String t) {
+    if (s.length() != t.length()) return false;
+    int[] count = new int[26];
+    for (int i = 0; i < s.length(); i++) {
+        count[s.charAt(i) - 'a']++;
+        count[t.charAt(i) - 'a']--;
+    }
+    for (int c : count) if (c != 0) return false;
+    return true;
+}""",
+            codePython: """
+def isAnagram(s: str, t: str) -> bool:
+    if len(s) != len(t): return False
+    freq = {}
+    for c in s: freq[c] = freq.get(c, 0) + 1
+    for c in t:
+        if c not in freq or freq[c] == 0: return False
+        freq[c] -= 1
+    return True""",
+            codeJs: """
+function isAnagram(s, t) {
+    if (s.length !== t.length) return false;
+    const map = {};
+    for (let c of s) map[c] = (map[c] || 0) + 1;
+    for (let c of t) {
+        if (!map[c]) return false;
+        map[c]--;
+    }
+    return true;
+}""",
+            descriptionEn: "Determine if two strings contain identical character frequencies.",
+            descriptionBn: "দুটি স্ট্রিংয়ের সমস্ত অক্ষরের ফ্রিকোয়েন্সি হুবহু একই কিনা তা ওয়ান (O(N)) টাইমে যাচাই করুন।",
+            sampleInputs: ["s = \"anagram\", t = \"nagaram\"", "s = \"rat\", t = \"car\""],
+            sampleOutputs: ["True", "False"],
+          ),
+          DsaProblem(
+            id: "hm-3",
+            title: "3. Group Anagrams (Sorted String Key Hash)",
+            category: "Hash Bucket Pattern",
+            keyIdeaEn: "Sort characters of each string alphabetically to form a unique bucket key. Store `key -> List<string>` in a Hash Map.",
+            keyIdeaBn: "প্রতিটি স্ট্রিং অ্যালফাবেটিক্যালি সর্ট করে একটি নতুন কী বানান। সেই কী অনুযায়ী `key -> List<string>` ম্যাপে গ্রুপ করুন।",
+            codeCpp: """
+vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    unordered_map<string, vector<string>> mp;
+    for (string& s : strs) {
+        string key = s;
+        sort(key.begin(), key.end());
+        mp[key].push_back(s);
+    }
+    vector<vector<string>> res;
+    for (auto& pair : mp) res.push_back(pair.second);
+    return res;
+}""",
+            codeJava: """
+public List<List<String>> groupAnagrams(String[] strs) {
+    Map<String, List<String>> map = new HashMap<>();
+    for (String s : strs) {
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        String key = new String(chars);
+        map.putIfAbsent(key, new ArrayList<>());
+        map.get(key).add(s);
+    }
+    return new ArrayList<>(map.values());
+}""",
+            codePython: """
+def groupAnagrams(strs: List[str]) -> List[List[str]]:
+    mp = defaultdict(list)
+    for s in strs:
+        key = "".join(sorted(s))
+        mp[key].append(s)
+    return list(mp.values())""",
+            codeJs: """
+function groupAnagrams(strs) {
+    const map = {};
+    for (let s of strs) {
+        let key = s.split('').sort().join('');
+        if (!map[key]) map[key] = [];
+        map[key].push(s);
+    }
+    return Object.values(map);
+}""",
+            descriptionEn: "Group an array of strings into anagram buckets using a sorted key Hash Map.",
+            descriptionBn: "স্ট্রিংয়ের অ্যারে থেকে একই বর্ণ দিয়ে গঠিত অ্যানাগ্রামগুলোকে একসাথে গ্রুপ (Group) করুন।",
+            sampleInputs: ["strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]"],
+            sampleOutputs: ["result = [[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]"],
+          ),
+          DsaProblem(
+            id: "hm-4",
+            title: "4. Subarray Sum Equals K (Prefix Sum + Hash Map)",
+            category: "Prefix Sum Hash Pattern",
+            keyIdeaEn: "Maintain running `prefixSum`. At each index, check if `prefixSum - K` exists in map; add frequency to total count. Store `map[prefixSum]++`.",
+            keyIdeaBn: "রানিং `prefixSum` হিসাব করুন। প্রতিটি ধাপে ম্যাপে `prefixSum - K` এর ফ্রিকোয়েন্সি যোগ করুন এবং `map[prefixSum]++` আপডেট করুন।",
+            codeCpp: """
+int subarraySum(vector<int>& nums, int k) {
+    unordered_map<int, int> mp;
+    mp[0] = 1;
+    int sum = 0, count = 0;
+    for (int num : nums) {
+        sum += num;
+        if (mp.count(sum - k)) count += mp[sum - k];
+        mp[sum]++;
+    }
+    return count;
+}""",
+            codeJava: """
+public int subarraySum(int[] nums, int k) {
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);
+    int sum = 0, count = 0;
+    for (int num : nums) {
+        sum += num;
+        if (map.containsKey(sum - k)) {
+            count += map.get(sum - k);
+        }
+        map.put(sum, map.getOrDefault(sum, 0) + 1);
+    }
+    return count;
+}""",
+            codePython: """
+def subarraySum(nums: List[int], k: int) -> int:
+    mp = {0: 1}
+    sum = 0
+    count = 0
+    for num in nums:
+        sum += num
+        if (sum - k) in mp:
+            count += mp[sum - k]
+        mp[sum] = mp.get(sum, 0) + 1
+    return count""",
+            codeJs: """
+function subarraySum(nums, k) {
+    const map = new Map();
+    map.set(0, 1);
+    let sum = 0, count = 0;
+    for (let num of nums) {
+        sum += num;
+        if (map.has(sum - k)) count += map.get(sum - k);
+        map.set(sum, (map.get(sum) || 0) + 1);
+    }
+    return count;
+}""",
+            descriptionEn: "Find total number of continuous subarrays whose elements sum to K using Prefix Sum Hash Map.",
+            descriptionBn: "অ্যারের ভেতরে যেসব সাব-অ্যারের উপাদানগুলোর যোগফল K এর সমান তাদের মোট সংখ্যা O(N) এ নির্ণয় করুন।",
+            sampleInputs: ["nums = [1, 1, 1], k = 2"],
+            sampleOutputs: ["Subarray Count: 2"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Using Custom Object Keys Without `hashCode()` and `equals()`",
+            "desc": "Storing custom objects as map keys without overriding `hashCode()` and `equals()` leads to duplicate key insertion or lookup failures."
+          },
+          {
+            "title": "2. Modifying Keys While Stored in Hash Map",
+            "desc": "Mutating an object key after inserting it into a map alters its hash code, corrupting internal bucket lookup."
+          },
+          {
+            "title": "3. Hash Collision Degradation to O(N)",
+            "desc": "Poor hash functions causing all keys to hash to the same bucket degrade O(1) operations into O(N) linked list traversals."
+          },
+          {
+            "title": "4. Off-By-One Insertion Bug in Two Sum",
+            "desc": "Inserting current element into map before checking `target - nums[i]` causes matching an element with itself."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. কাস্টম অবজেক্ট কী-তে `hashCode()` মিস হওয়া",
+            "desc": "কাস্টম ক্লাস অবজেক্টকে কী হিসাবে রাখার সময় `hashCode()` এবং `equals()` ওভাররাইড না করলে ম্যাপ লুকআপ ফেইল করে।"
+          },
+          {
+            "title": "২. ম্যাপে থাকার সময় কী (Key) অবজেক্ট মিউটেট করা",
+            "desc": "হ্যাশ ম্যাপে সেভ করার পর অবজেক্টের মান পরিবর্তন করলে তার হ্যাশ কোড বদলে ইন্টারনাল বাকেট নষ্ট হয়ে যায়।"
+          },
+          {
+            "title": "৩. হ্যাশ কলিশনের কারণে ওয়ান (O(1)) থেকে O(N) এ অবনতি",
+            "desc": "খারাপ হ্যাশ ফাংশনের কারণে সব মান একটি বাকেটে জমা হলে O(1) অপারেশনের সুবিধা নষ্ট হয়।"
+          },
+          {
+            "title": "৪. Two Sum এ চেক করার আগে মান পুশ করার ভুল",
+            "desc": "`target - nums[i]` ম্যাপে খোঁজার আগেই বর্তমান সংখ্যাটি ম্যাপে পুশ করলে সংখ্যাটি নিজের সাথেই যোগফল পেয়ে যায়।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand Hash Function & Bucket Array Mapping",
+            "desc": "Master hash code generation, bucket indexing, and key-value storage principles."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master O(1) Average Operations & Collision Handling",
+            "desc": "Master lookup O(1), insert O(1), delete O(1), separate chaining, and open addressing."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Frequency Counter & Set De-duplication Patterns",
+            "desc": "Master character frequency maps, duplicate detection, and anagram string grouping."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Complement Search & Pair Matching",
+            "desc": "Master Two Sum complement lookup (`target - x`) and pair matching in O(N) time."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Prefix Sum + Hash Map Pattern",
+            "desc": "Master running prefix sum tracking to solve Subarray Sum Equals K in O(N) time."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "হ্যাশ ফাংশন ও বাকেট অ্যারে ম্যাপিং",
+            "desc": "হ্যাশ কোড জেনারেট, অ্যারে ইনডেক্সিং এবং কী-ভ্যালু পেয়ার কনসেপ্ট বোঝা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "O(1) গড়ে সমাধান ও কলিশন হ্যান্ডলিং",
+            "desc": "লুকআপ, ইনসার্ট, ডিলেট এবং সেপারেট চেইনিং অ্যালগরিদম শেখা।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "ফ্রিকোয়েন্সি কাউন্টার ও ইউনিক সেট ডি-ডুপ্লিকেশন",
+            "desc": "ফ্রিকোয়েন্সি ম্যাপ, ডুপ্লিকেট সংখ্যা শনাক্ত এবং অ্যানাগ্রাম গ্রুপ তৈরি।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "কমপ্লিমেন্ট সার্চ ও টু-সাম জোড়া খোঁজা",
+            "desc": "Two Sum কমপ্লিমেন্ট লুকআপ (`target - x`) এবং O(N) এ পেয়ার ম্যাচিং।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "প্রেফিক্স সাম + হ্যাশ ম্যাপ প্যাটার্ন",
+            "desc": "রানিং প্রেফিক্স সাম ট্র্যাকিং দিয়ে সাব-অ্যারে সাম K অত্যন্ত সহজে সলভ করা।"
+          }
+        ],
       ),
 
       // 6. BINARY SEARCH TREE (BST)
