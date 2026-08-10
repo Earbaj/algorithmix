@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DsaProblem {
   final String id;
   final String title;
-  final String category; // e.g. "Heap Basic", "Priority Queue Pattern"
+  final String category; // e.g. "Graph Basic", "Graph Traversal"
   final String keyIdeaEn;
   final String keyIdeaBn;
   final String codeCpp;
@@ -44,7 +44,7 @@ class DsaTopic {
   final Color themeColor;
   final List<String> keyConceptsEn;
   final List<String> keyConceptsBn;
-  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Min Heap, Max Heap, Custom Heapify) -> (Language -> Code)
+  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Adj List, Adj Matrix, BFS/DFS) -> (Language -> Code)
   final List<DsaProblem> basicProblems;
   final List<Map<String, String>> commonMistakesEn;
   final List<Map<String, String>> commonMistakesBn;
@@ -243,585 +243,25 @@ class DsaDataRepository {
         roadmapStepsBn: [],
       ),
 
-      // 7. MIN & MAX HEAP (PRIORITY QUEUE)
+      // 7. MIN & MAX HEAP
       DsaTopic(
         id: 207,
         title: "Min & Max Heap (Priority Queue)",
         category: "Priority Tree & Array Structure",
-        timeComplexity: "Peek O(1) | Push O(log N) | Extract Top O(log N) | Build Heap O(N)",
+        timeComplexity: "Peek O(1) | Push O(log N) | Extract Top O(log N)",
         spaceComplexity: "O(N)",
         icon: Icons.unfold_more_double_outlined,
         themeColor: const Color(0xFF84CC16),
-        descriptionEn:
-            "A Binary Heap (Min Heap or Max Heap) is a Complete Binary Tree mapped directly onto a 1D Array without pointers (`parent(i) = (i-1)/2`, `left = 2i+1`, `right = 2i+2`). In a Min Heap, every parent node is smaller than or equal to its children (`parent <= child`), guaranteeing the overall minimum element is at the root `arr[0]` in O(1) time. In a Max Heap, every parent is larger than its children. Priority Queues, HeapSort, Dijkstra's algorithm, and Top-K problems rely heavily on Binary Heaps.",
-        descriptionBn:
-            "বাইনারি হিপ (Min Heap বা Max Heap) হলো একটি সম্পূর্ণ বাইনারি ট্রি (Complete Binary Tree) যা পয়েন্টার ছাড়াই মেমোরিতে ১D অ্যারেতে সাজানো থাকে (`parent(i) = (i-1)/2`, `left = 2i+1`, `right = 2i+2`)। Min Heap এ প্রতিটি প্যারেন্ট নোড তার চাইল্ডের চেয়ে ছোট বা সমান হয় (`parent <= child`), যা রুটে `arr[0]` সর্বনিম্ন মানটি O(1) সময়ে নিশ্চিত করে। Max Heap এ প্যারেন্ট নোড চাইল্ডের চেয়ে বড় হয়। প্রাইওরিটি কিউ (Priority Queue), HeapSort, ডাইকস্ট্রা অ্যালগরিদম এবং Top-K প্রবলেমে হিপ ব্যবহৃত হয়।",
-        keyConceptsEn: [
-          "Heap Invariant Property: Min Heap root `arr[0]` is smallest element (`parent <= child`); Max Heap root `arr[0]` is largest element (`parent >= child`).",
-          "Complete Binary Tree Array Mapping: Parent index = `(i - 1) / 2`, Left child = `2i + 1`, Right child = `2i + 2` without memory pointer overhead.",
-          "Bubble Up (Percolate Up): Inserting a new element at array end `arr[N-1]` and swapping upwards until heap property holds.",
-          "Bubble Down (Percolate Down): Extracting root element, replacing root with `arr[N-1]`, and swapping downwards with smallest/largest child.",
-          "Build Heap in O(N) Time: Bottom-up heapify starting from the last non-leaf node `(N/2 - 1)` constructs a heap in linear O(N) time."
-        ],
-        keyConceptsBn: [
-          "হিপ ইনভেরিয়েন্ট নিয়ম: Min Heap এর রুট `arr[0]` সর্বদা সর্বনিম্ন মান (`parent <= child`); Max Heap এর রুট `arr[0]` সর্বদা সর্বোচ্চ মান (`parent >= child`)।",
-          "কমপ্লিট বাইনারি ট্রি অ্যারে ম্যাপিং: পয়েন্টার ছাড়াই ১D অ্যারেতে Parent = `(i - 1) / 2`, Left = `2i + 1`, Right = `2i + 2` মেমোরি ইমেজিং।",
-          "Bubble Up (পার্কোলেট আপ): নতুন মান অ্যারের শেষে পুশ করে ওপরের প্যারেন্টের সাথে তুলনা করে উপরে নিয়ে যাওয়া (O(log N))।",
-          "Bubble Down (পার্কোলেট ডাউন): রুটের মান এক্সট্র্যাক্ট করে শেষের এলিমেন্ট দিয়ে রিপ্লেস করা এবং চাইল্ডের সাথে তুলনা করে নিচে নামানো (O(log N))।",
-          "O(N) সময়ে Build Heap: শেষ নন-লিফ নোড `(N/2 - 1)` থেকে নিচ থেকে উপরে হিপ তৈরি করা O(N) সময়ে সম্পন্ন হয়।"
-        ],
+        descriptionEn: "A Binary Heap is a complete binary tree mapped onto a 1D array.",
+        descriptionBn: "বাইনারি হিপ হলো ১D অ্যারেতে সাজানো কমপ্লিট বাইনারি ট্রি।",
+        keyConceptsEn: ["Heap Invariant", "Bubble Up & Down"],
+        keyConceptsBn: ["হিপ ইনভেরিয়েন্ট", "বাবল আপ ও বাবল ডাউন"],
         multiDimCodeTemplates: {
-          "Min Heap & Priority Queue": {
-            "C++": """
-#include <iostream>
-#include <queue>
-#include <vector>
-using namespace std;
-
-int main() {
-    // Min Heap Priority Queue (smallest item on top O(1))
-    priority_queue<int, vector<int>, greater<int>> minHeap;
-    
-    // O(log N) Push
-    minHeap.push(30);
-    minHeap.push(10);
-    minHeap.push(20);
-    
-    // O(1) Peek Top
-    cout << "Min Element: " << minHeap.top() << endl; // 10
-    
-    // O(log N) Pop Top
-    minHeap.pop();
-    cout << "Next Min: " << minHeap.top() << endl; // 20
-    return 0;
-}""",
-            "Java": """
-import java.util.PriorityQueue;
-
-public class MinHeapDemo {
-    public static void main(String[] args) {
-        // Min Heap by default in Java PriorityQueue
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-        
-        minHeap.add(30);
-        minHeap.add(10);
-        minHeap.add(20);
-        
-        System.out.println("Min Element: " + minHeap.peek()); // 10
-        minHeap.poll(); // Removes 10
-        System.out.println("Next Min: " + minHeap.peek()); // 20
-    }
-}""",
-            "Python": """
-import heapq
-
-# Python heapq module provides Min Heap operations on standard list
-min_heap = []
-
-# O(log N) Push
-heapq.heappush(min_heap, 30)
-heapq.heappush(min_heap, 10)
-heapq.heappush(min_heap, 20)
-
-# O(1) Peek Top
-print("Min Element:", min_heap[0]) # 10
-
-# O(log N) Pop Top
-popped = heapq.heappop(min_heap)
-print("Dequeued Min:", popped) # 10
-print("Next Min:", min_heap[0]) # 20""",
-            "JavaScript": """
-class MinHeap {
-    constructor() { this.heap = []; }
-    
-    push(val) {
-        this.heap.push(val);
-        this._bubbleUp(this.heap.length - 1);
-    }
-    pop() {
-        if (this.heap.length === 0) return null;
-        const top = this.heap[0];
-        const bottom = this.heap.pop();
-        if (this.heap.length > 0) {
-            this.heap[0] = bottom;
-            this.bubbleDown(0);
-        }
-        return top;
-    }
-    peek() { return this.heap[0]; }
-    
-    _bubbleUp(i) {
-        while (i > 0) {
-            let parent = Math.floor((i - 1) / 2);
-            if (this.heap[i] < this.heap[parent]) {
-                [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
-                i = parent;
-            } else break;
-        }
-    }
-    bubbleDown(i) {
-        const n = this.heap.length;
-        while (2 * i + 1 < n) {
-            let left = 2 * i + 1, right = 2 * i + 2, smallest = i;
-            if (this.heap[left] < this.heap[smallest]) smallest = left;
-            if (right < n && this.heap[right] < this.heap[smallest]) smallest = right;
-            if (smallest !== i) {
-                [this.heap[i], this.heap[smallest]] = [this.heap[smallest], this.heap[i]];
-                i = smallest;
-            } else break;
-        }
-    }
-}"""
-          },
-          "Max Heap & Priority Queue": {
-            "C++": """
-#include <iostream>
-#include <queue>
-using namespace std;
-
-int main() {
-    // Max Heap Priority Queue (largest item on top O(1))
-    priority_queue<int> maxHeap;
-    
-    maxHeap.push(10);
-    maxHeap.push(50);
-    maxHeap.push(30);
-    
-    cout << "Max Element: " << maxHeap.top() << endl; // 50
-    maxHeap.pop();
-    cout << "Next Max: " << maxHeap.top() << endl; // 30
-    return 0;
-}""",
-            "Java": """
-import java.util.Collections;
-import java.util.PriorityQueue;
-
-public class MaxHeapDemo {
-    public static void main(String[] args) {
-        // Reverse Comparator for Max Heap
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-        
-        maxHeap.add(10);
-        maxHeap.add(50);
-        maxHeap.add(30);
-        
-        System.out.println("Max Element: " + maxHeap.peek()); // 50
-        maxHeap.poll();
-        System.out.println("Next Max: " + maxHeap.peek()); // 30
-    }
-}""",
-            "Python": """
-import heapq
-
-# Invert signs to implement Max Heap using Python heapq
-max_heap = []
-
-def push(val):
-    heapq.heappush(max_heap, -val)
-
-def pop():
-    return -heapq.heappop(max_heap)
-
-def peek():
-    return -max_heap[0]
-
-push(10); push(50); push(30)
-print("Max Element:", peek()) # 50
-pop()
-print("Next Max:", peek()) # 30""",
-            "JavaScript": """
-class MaxHeap {
-    constructor() { this.heap = []; }
-    push(val) {
-        this.heap.push(val);
-        this._bubbleUp(this.heap.length - 1);
-    }
-    pop() {
-        if (this.heap.length === 0) return null;
-        const top = this.heap[0];
-        const bottom = this.heap.pop();
-        if (this.heap.length > 0) {
-            this.heap[0] = bottom;
-            this._bubbleDown(0);
-        }
-        return top;
-    }
-    peek() { return this.heap[0]; }
-    _bubbleUp(i) {
-        while (i > 0) {
-            let p = Math.floor((i - 1) / 2);
-            if (this.heap[i] > this.heap[p]) {
-                [this.heap[i], this.heap[p]] = [this.heap[p], this.heap[i]];
-                i = p;
-            } else break;
-        }
-    }
-    _bubbleDown(i) {
-        const n = this.heap.length;
-        while (2 * i + 1 < n) {
-            let l = 2 * i + 1, r = 2 * i + 2, largest = i;
-            if (this.heap[l] > this.heap[largest]) largest = l;
-            if (r < n && this.heap[r] > this.heap[largest]) largest = r;
-            if (largest !== i) {
-                [this.heap[i], this.heap[largest]] = [this.heap[largest], this.heap[i]];
-                i = largest;
-            } else break;
-        }
-    }
-}"""
-          },
-          "Build Heap O(N) Algorithm": {
-            "C++": """
-// Bottom-up Heapify Build Heap in O(N) time
-void heapify(vector<int>& arr, int n, int i) {
-    int smallest = i;
-    int l = 2 * i + 1;
-    int r = 2 * i + 2;
-    if (l < n && arr[l] < arr[smallest]) smallest = l;
-    if (r < n && arr[r] < arr[smallest]) smallest = r;
-    if (smallest != i) {
-        swap(arr[i], arr[smallest]);
-        heapify(arr, n, smallest);
-    }
-}
-
-void buildMinHeap(vector<int>& arr) {
-    int n = arr.size();
-    // Start from last non-leaf node down to root
-    for (int i = n / 2 - 1; i >= 0; i--) {
-        heapify(arr, n, i);
-    }
-}""",
-            "Java": """
-public static void buildMinHeap(int[] arr) {
-    int n = arr.length;
-    for (int i = n / 2 - 1; i >= 0; i--) {
-        heapify(arr, n, i);
-    }
-}
-private static void heapify(int[] arr, int n, int i) {
-    int smallest = i, l = 2 * i + 1, r = 2 * i + 2;
-    if (l < n && arr[l] < arr[smallest]) smallest = l;
-    if (r < n && arr[r] < arr[smallest]) smallest = r;
-    if (smallest != i) {
-        int temp = arr[i]; arr[i] = arr[smallest]; arr[smallest] = temp;
-        heapify(arr, n, smallest);
-    }
-}""",
-            "Python": """
-import heapq
-
-# heapq.heapify converts list to heap in-place in O(N) time
-arr = [40, 10, 30, 50, 20]
-heapq.heapify(arr) # O(N) time
-print("Min Heap:", arr)""",
-            "JavaScript": """
-function buildMinHeap(arr) {
-    const n = arr.length;
-    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-        heapifyDown(arr, n, i);
-    }
-}
-function heapifyDown(arr, n, i) {
-    let smallest = i, l = 2 * i + 1, r = 2 * i + 2;
-    if (l < n && arr[l] < arr[smallest]) smallest = l;
-    if (r < n && arr[r] < arr[smallest]) smallest = r;
-    if (smallest !== i) {
-        [arr[i], arr[smallest]] = [arr[smallest], arr[i]];
-        heapifyDown(arr, n, smallest);
-    }
-}"""
-          }
-        },
-        basicProblems: [
-          DsaProblem(
-            id: "hp-1",
-            title: "1. K-th Largest Element in an Array (LeetCode #215)",
-            category: "Heap Basic",
-            keyIdeaEn: "Maintain a Min Heap of size `k`. Push elements and pop when size exceeds `k`. The top element is the K-th largest in O(N log k) time.",
-            keyIdeaBn: "সাইজ `k` এর একটি Min Heap রাখুন। উপাদান পুশ করুন এবং সাইজ `k` ছাড়ালে পপ করুন। রুটে K-তম বৃহত্তম উপাদান পাওয়া যাবে (O(N log k))।",
-            codeCpp: """
-int findKthLargest(vector<int>& nums, int k) {
-    priority_queue<int, vector<int>, greater<int>> minHeap;
-    for (int n : nums) {
-        minHeap.push(n);
-        if (minHeap.size() > k) minHeap.pop();
-    }
-    return minHeap.top();
-}""",
-            codeJava: """
-public static int findKthLargest(int[] nums, int k) {
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-    for (int n : nums) {
-        minHeap.add(n);
-        if (minHeap.size() > k) minHeap.poll();
-    }
-    return minHeap.peek();
-}""",
-            codePython: """
-import heapq
-
-def findKthLargest(nums, k):
-    return heapq.nlargest(k, nums)[-1]""",
-            codeJs: """
-function findKthLargest(nums, k) {
-    nums.sort((a, b) => b - a);
-    return nums[k - 1];
-}""",
-            descriptionEn: "Find the `k`-th largest element in an unsorted integer array.",
-            descriptionBn: "আনসর্টেড পূর্ণসংখ্যার অ্যারে থেকে `k`-তম বৃহত্তম উপাদানটি খুঁজুন।",
-            sampleInputs: ["nums = [3,2,1,5,6,4], k = 2"],
-            sampleOutputs: ["5"],
-          ),
-          DsaProblem(
-            id: "hp-2",
-            title: "2. Top K Frequent Elements (LeetCode #347)",
-            category: "Priority Queue Pattern",
-            keyIdeaEn: "Count frequencies in a HashMap, then push `(freq, num)` pairs into a Min Heap of size `k`.",
-            keyIdeaBn: "হ্যাশ ম্যাপে ফ্রিকোয়েন্সি গুনে সাইজ `k` এর Min Heap এ `(freq, num)` পেয়ার পুশ ও পপ করুন।",
-            codeCpp: """
-vector<int> topKFrequent(vector<int>& nums, int k) {
-    unordered_map<int, int> freq;
-    for (int n : nums) freq[n]++;
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
-    for (auto p : freq) {
-        minHeap.push({p.second, p.first});
-        if (minHeap.size() > k) minHeap.pop();
-    }
-    vector<int> res;
-    while (!minHeap.empty()) {
-        res.push_back(minHeap.top().second);
-        minHeap.pop();
-    }
-    return res;
-}""",
-            codeJava: """
-public static int[] topKFrequent(int[] nums, int k) {
-    Map<Integer, Integer> freq = new HashMap<>();
-    for (int n : nums) freq.put(n, freq.getOrDefault(n, 0) + 1);
-    PriorityQueue<Map.Entry<Integer, Integer>> minHeap =
-        new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
-    for (var entry : freq.entrySet()) {
-        minHeap.add(entry);
-        if (minHeap.size() > k) minHeap.poll();
-    }
-    return minHeap.stream().mapToInt(Map.Entry::getKey).toArray();
-}""",
-            codePython: """
-from collections import Counter
-import heapq
-
-def topKFrequent(nums, k):
-    count = Counter(nums)
-    return heapq.nlargest(k, count.keys(), key=count.get)""",
-            codeJs: """
-function topKFrequent(nums, k) {
-    const freq = {};
-    for (let n of nums) freq[n] = (freq[n] || 0) + 1;
-    return Object.keys(freq).sort((a, b) => freq[b] - freq[a]).slice(0, k).map(Number);
-}""",
-            descriptionEn: "Given an integer array `nums` and an integer `k`, return the `k` most frequent elements.",
-            descriptionBn: "পূর্ণসংখ্যার অ্যারে `nums` থেকে সর্বাধিক উপস্থিত হওয়া `k` টি উপাদান বের করুন।",
-            sampleInputs: ["nums = [1,1,1,2,2,3], k = 2"],
-            sampleOutputs: ["[1, 2]"],
-          ),
-          DsaProblem(
-            id: "hp-3",
-            title: "3. Find Median from Data Stream (LeetCode #295)",
-            category: "Dual Heap Pattern",
-            keyIdeaEn: "Maintain two heaps: a Max Heap for lower half numbers, and a Min Heap for upper half numbers. Balance sizes within 1 element difference.",
-            keyIdeaBn: "দুটি হিপ রাখুন: ছোট অর্ধেক উপাদানের জন্য Max Heap এবং বড় অর্ধেকের জন্য Min Heap। উভয়ের সাইজ সামঞ্জস্য রেখে O(1) সময়ে মধ্যমা (Median) বের করুন।",
-            codeCpp: """
-class MedianFinder {
-    priority_queue<int> maxHeap; // Lower half
-    priority_queue<int, vector<int>, greater<int>> minHeap; // Upper half
-public:
-    void addNum(int num) {
-        maxHeap.push(num);
-        minHeap.push(maxHeap.top());
-        maxHeap.pop();
-        if (minHeap.size() > maxHeap.size()) {
-            maxHeap.push(minHeap.top());
-            minHeap.pop();
-        }
-    }
-    double findMedian() {
-        if (maxHeap.size() > minHeap.size()) return maxHeap.top();
-        return (maxHeap.top() + minHeap.top()) / 2.0;
-    }
-};""",
-            codeJava: """
-class MedianFinder {
-    private PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b)->b-a);
-    private PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-    
-    public void addNum(int num) {
-        maxHeap.add(num);
-        minHeap.add(maxHeap.poll());
-        if (minHeap.size() > maxHeap.size()) {
-            maxHeap.add(minHeap.poll());
-        }
-    }
-    public double findMedian() {
-        if (maxHeap.size() > minHeap.size()) return maxHeap.peek();
-        return (maxHeap.peek() + minHeap.peek()) / 2.0;
-    }
-}""",
-            codePython: """
-import heapq
-
-class MedianFinder:
-    def __init__(self):
-        self.small = [] # Max Heap (negated)
-        self.large = [] # Min Heap
-        
-    def addNum(self, num: int) -> None:
-        heapq.heappush(self.small, -num)
-        heapq.heappush(self.large, -heapq.heappop(self.small))
-        if len(self.large) > len(self.small):
-            heapq.heappush(self.small, -heapq.heappop(self.large))
-            
-    def findMedian(self) -> float:
-        if len(self.small) > len(self.large):
-            return -self.small[0]
-        return (-self.small[0] + self.large[0]) / 2.0""",
-            codeJs: """
-class MedianFinder {
-    constructor() {
-        this.nums = [];
-    }
-    addNum(num) {
-        let low = 0, high = this.nums.length;
-        while (low < high) {
-            let mid = (low + high) >> 1;
-            if (this.nums[mid] < num) low = mid + 1;
-            else high = mid;
-        }
-        this.nums.splice(low, 0, num);
-    }
-    findMedian() {
-        const n = this.nums.length;
-        if (n % 2 === 1) return this.nums[Math.floor(n / 2)];
-        return (this.nums[n / 2 - 1] + this.nums[n / 2]) / 2;
-    }
-}""",
-            descriptionEn: "Design a data structure that receives a data stream of numbers and computes the median in O(1) time.",
-            descriptionBn: "একটি ডেটা স্ট্রাকচার ডিজাইন করুন যা স্ট্রিম থেকে সংখ্যা গ্রহণ করে O(1) সময়ে মধ্যমা (Median) বের করে।",
-            sampleInputs: ["addNum(1), addNum(2), findMedian(), addNum(3), findMedian()"],
-            sampleOutputs: ["findMedian(): 1.5, findMedian(): 2.0"],
-          ),
-        ],
-        commonMistakesEn: [
-          {
-            "title": "1. Building Heap via N Insertions (O(N log N))",
-            "desc": "Calling `push()` N times takes O(N log N) time, whereas bottom-up `heapify()` builds heap in optimal linear O(N) time."
-          },
-          {
-            "title": "2. Confusing Min Heap vs Max Heap for Top-K Problems",
-            "desc": "Using a Max Heap for K-th largest problem forces storing all N elements. Use a Min Heap of size K to retain the top K elements."
-          },
-          {
-            "title": "3. 0-based vs 1-based Index Array Math Bug",
-            "desc": "Swapping 0-based index formula `(2i + 1, 2i + 2)` with 1-based formula `(2i, 2i + 1)` causes array index out-of-bounds."
-          },
-          {
-            "title": "4. Out of Bounds Error during Bubble Down",
-            "desc": "Failing to check `rightChild < arrayLength` before accessing `arr[rightChild]` during Heapify Down."
-          }
-        ],
-        commonMistakesBn: [
-          {
-            "title": "১. N ইনসারশনে হিপ বানিয়ে সময় নষ্ট (O(N log N))",
-            "desc": "লুপে `push()` ডেকে হিপ বানাতে O(N log N) সময় লাগে; অথচ নিচ থেকে `heapify()` করলে O(N) টাইমে হিপ তৈরি হয়।"
-          },
-          {
-            "title": "২. Top-K প্রবলেমে ভুল হিপ চয়েস",
-            "desc": "K-তম বৃহত্তম উপাদান বের করার জন্য Max Heap বেছে নিলে সব N এলিমেন্ট সেভ করতে হয়। সাইজ K এর Min Heap ব্যবহার করুন।"
-          },
-          {
-            "title": "৩. ০-ইনডেক্স ও ১-ইনডেক্স সূত্রের ভুল",
-            "desc": "০-ভিত্তিক সূত্রের `(2i + 1, 2i + 2)` সাথে ১-ভিত্তিক সূত্রের `(2i, 2i + 1)` গুলিয়ে ফেললে ইন্ডেক্স আউট অফ বাউন্ডস ঘটে।"
-          },
-          {
-            "title": "৪. Bubble Down এ অ্যারে বাউন্ড মিস করা",
-            "desc": "Bubble Down করার সময় `rightChild < arrayLength` চেক না করে সরাসরি `arr[rightChild]` পড়তে গেলে রানটাইম এরর হয়।"
-          }
-        ],
-        roadmapStepsEn: [
-          {
-            "step": "Step 1",
-            "title": "Understand Complete Binary Tree & 1D Array Mapping",
-            "desc": "Master 0-based array index math: parent = (i-1)/2, left = 2i+1, right = 2i+2."
-          },
-          {
-            "step": "Step 2",
-            "title": "Master Bubble Up & Bubble Down Algorithms",
-            "desc": "Implement push (Bubble Up) and extract top (Bubble Down) in O(log N) time."
-          },
-          {
-            "step": "Step 3",
-            "title": "Master O(N) Bottom-Up Build Heap",
-            "desc": "Understand linear O(N) heap construction starting from last non-leaf node (N/2 - 1)."
-          },
-          {
-            "step": "Step 4",
-            "title": "Solve Top-K & Priority Queue Pattern Problems",
-            "desc": "Solve K-th largest, Top-K frequent elements using fixed size K Min Heap."
-          },
-          {
-            "step": "Step 5",
-            "title": "Master Dual Heap & Graph Algorithms",
-            "desc": "Solve Data Stream Median using Dual Heaps and apply Priority Queue in Dijkstra's shortest path."
-          }
-        ],
-        roadmapStepsBn: [
-          {
-            "step": "ধাপ ১",
-            "title": "কমপ্লিট বাইনারি ট্রি ও ১D অ্যারে ম্যাপিং",
-            "desc": "০-ভিত্তিক সূত্রের parent = (i-1)/2, left = 2i+1, right = 2i+2 ইনডেক্সিং আয়ত্ত করুন।"
-          },
-          {
-            "step": "ধাপ ২",
-            "title": "Bubble Up ও Bubble Down অ্যালগরিদম",
-            "desc": "O(log N) সময়ে ইনসার্ট (Bubble Up) এবং টপ বাদ দেওয়ার (Bubble Down) কোড লিখুন।"
-          },
-          {
-            "step": "ধাপ ৩",
-            "title": "O(N) টাইমে লিনিয়ার Build Heap",
-            "desc": "শেষ নন-লিফ নোড (N/2 - 1) থেকে নিচ থেকে উপরে O(N) সময়ে হিপ বানানোর কৌশল।"
-          },
-          {
-            "step": "ধাপ ৪",
-            "title": "Top-K ও প্রাইওরিটি কিউ প্যাটার্ন প্রবলেমস",
-            "desc": "সাইজ K এর Min Heap ব্যবহার করে K-তম বৃহত্তম উপাদান ও সর্বাধিক উপস্থিত উপাদান সলভ করুন।"
-          },
-          {
-            "step": "ধাপ ৫",
-            "title": "Dual Heap ও গ্রাফে Priority Queue প্রয়োগ",
-            "desc": "Dual Heap দিয়ে ডেটা স্ট্রিমের মধ্যমা (Median) বের করা এবং ডাইকস্ট্রা শর্টেস্ট পাথে প্রাইওরিটি কিউ ব্যবহার।"
-          }
-        ],
-      ),
-
-      // 8. GRAPH
-      DsaTopic(
-        id: 208,
-        title: "Graph (Adjacency List & Matrix)",
-        category: "Non-Linear Network",
-        timeComplexity: "BFS/DFS O(V + E)",
-        spaceComplexity: "O(V + E)",
-        icon: Icons.hub_outlined,
-        themeColor: const Color(0xFF0284C7),
-        descriptionEn: "Network of vertices and edges.",
-        descriptionBn: "নোড এবং এজের গ্রাফ নেটওয়ার্ক।",
-        keyConceptsEn: ["Graph BFS/DFS"],
-        keyConceptsBn: ["গ্রাফ ট্রাভার্সাল"],
-        multiDimCodeTemplates: {
-          "Graph": {
-            "C++": "vector<vector<int>> adj;",
-            "Java": "List<List<Integer>> adj = new ArrayList<>();",
-            "Python": "adj = collections.defaultdict(list)",
-            "JavaScript": "const adj = {};"
+          "Min Heap": {
+            "C++": "priority_queue<int, vector<int>, greater<int>> minHeap;",
+            "Java": "PriorityQueue<Integer> pq = new PriorityQueue<>();",
+            "Python": "import heapq",
+            "JavaScript": "class MinHeap {}"
           }
         },
         basicProblems: [],
@@ -829,6 +269,547 @@ class MedianFinder {
         commonMistakesBn: [],
         roadmapStepsEn: [],
         roadmapStepsBn: [],
+      ),
+
+      // 8. GRAPH (ADJACENCY LIST & MATRIX)
+      DsaTopic(
+        id: 208,
+        title: "Graph (Adjacency List & Matrix)",
+        category: "Non-Linear Network Structure",
+        timeComplexity: "BFS O(V + E) | DFS O(V + E) | Edge Lookup O(1) Matrix",
+        spaceComplexity: "Adj List: O(V + E) | Adj Matrix: O(V²)",
+        icon: Icons.hub_outlined,
+        themeColor: const Color(0xFF0284C7),
+        descriptionEn:
+            "A Graph is a non-linear network structure composed of Vertices (nodes) connected by Edges (links). Graphs are categorized as Directed vs Undirected and Weighted vs Unweighted. In memory, graphs are represented via an Adjacency List (dynamic array of neighbors per node, O(V + E) space) or an Adjacency Matrix (V×V 2D grid, O(V²) space for O(1) edge checks). Graph algorithms include Breadth-First Search (BFS using Queue for shortest path in unweighted graphs) and Depth-First Search (DFS using Stack/Recursion for deep exploration).",
+        descriptionBn:
+            "গ্রাফ হলো একটি নন-লিনিয়ার নেটওয়ার্ক স্ট্রাকচার যা ভার্টেক্স বা নোড (Vertices) এবং এজ বা সংযোগকারী লাইন (Edges) নিয়ে গঠিত। গ্রাফকে ডাইরেক্টেড (Directed) বনাম আনডাইরেক্টেড (Undirected) এবং ওয়েটেড (Weighted) বনাম আনওয়েটেড (Unweighted) হিসেবে ভাগ করা হয়। মেমোরিতে গ্রাফ সংরক্ষণের ২টি মূল উপায়: অ্যাডজাসেন্সি লিস্ট (Adjacency List, O(V + E) স্পেস) এবং অ্যাডজাসেন্সি ম্যাট্রিক্স (Adjacency Matrix, V×V 2D গ্রিড, O(1) এজ চেকিং)। গ্রাফ অ্যালগরিদমের মূল ভিত্তি হলো BFS (কিউ দিয়ে লেভেল-বাই-লেভেল শর্টেস্ট পাথ) এবং DFS (স্ট্যাক/রিকার্শন দিয়ে ডিপ ট্রাভার্সাল)।",
+        keyConceptsEn: [
+          "Vertices & Edges: V represents nodes/entities; E represents connections between node pairs.",
+          "Adjacency List Representation: Dynamic array `adj[u] = [v1, v2]` taking memory-efficient O(V + E) space.",
+          "Adjacency Matrix Representation: 2D Grid `matrix[u][v] = 1` taking O(V²) space allowing O(1) instant edge verification.",
+          "Breadth-First Search (BFS): Level-by-level traversal using Queue guaranteeing Shortest Path in unweighted graphs.",
+          "Depth-First Search (DFS): Deep branch exploration using Stack/Recursion used in Topological Sort and Cycle Detection."
+        ],
+        keyConceptsBn: [
+          "ভার্টেক্স ও এজ: V হলো নোড বা শহরের তালিকা; E হলো নোডসমূহের মধ্যকার সংযোগকারী রাস্তা।",
+          "অ্যাডজাসেন্সি লিস্ট: ডাইনামিক অ্যারে `adj[u] = [v1, v2]` যা মেমোরি-দক্ষ O(V + E) স্পেস নেয়।",
+          "অ্যাডজাসেন্সি ম্যাট্রিক্স: V×V 2D গ্রিড `matrix[u][v] = 1` যা O(V²) স্পেস নিলেও O(1) সময়ে এজ আছে কিনা চেক করে।",
+          "Breadth-First Search (BFS): কিউ দিয়ে লেভেল-বাই-লেভেল ট্রাভার্সাল যা আনওয়েটেড গ্রাফে শর্টেস্ট পাথ গ্যারান্টি দেয়।",
+          "Depth-First Search (DFS): স্ট্যাক বা রিকার্শন দিয়ে ডিপ ব্রাঞ্চ সার্চ যা সাইকেল ডিটেকশন ও টপোলজিক্যাল সর্টে ব্যবহৃত হয়।"
+        ],
+        multiDimCodeTemplates: {
+          "Adjacency List (O(V+E))": {
+            "C++": """
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Graph {
+    int V;
+    vector<vector<int>> adj;
+public:
+    Graph(int v) : V(v), adj(v) {}
+    
+    // Undirected Edge O(1)
+    void addEdge(int u, int v) {
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    
+    void printAdjList() {
+        for (int i = 0; i < V; i++) {
+            cout << "Node " << i << " -> ";
+            for (int neighbor : adj[i]) cout << neighbor << " ";
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    Graph g(4);
+    g.addEdge(0, 1); g.addEdge(0, 2); g.addEdge(1, 3);
+    g.printAdjList();
+    return 0;
+}""",
+            "Java": """
+import java.util.ArrayList;
+import java.util.List;
+
+public class GraphAdjList {
+    private int V;
+    private List<List<Integer>> adj;
+    
+    public GraphAdjList(int v) {
+        this.V = v;
+        adj = new ArrayList<>();
+        for (int i = 0; i < v; i++) adj.add(new ArrayList<>());
+    }
+    public void addEdge(int u, int v) {
+        adj.get(u).add(v);
+        adj.get(v).add(u);
+    }
+}""",
+            "Python": """
+from collections import defaultdict
+
+class GraphAdjList:
+    def __init__(self):
+        self.adj = defaultdict(list)
+        
+    def add_edge(self, u, v, directed=False):
+        self.adj[u].append(v)
+        if not directed:
+            self.adj[v].append(u)
+
+g = GraphAdjList()
+g.add_edge(0, 1); g.add_edge(0, 2); g.add_edge(1, 3)
+print("Graph Adj List:", dict(g.adj))""",
+            "JavaScript": """
+class GraphAdjList {
+    constructor() {
+        this.adj = new Map();
+    }
+    addNode(node) {
+        if (!this.adj.has(node)) this.adj.set(node, []);
+    }
+    addEdge(u, v) {
+        this.addNode(u); this.addNode(v);
+        this.adj.get(u).push(v);
+        this.adj.get(v).push(u);
+    }
+}
+
+const g = new GraphAdjList();
+g.addEdge(0, 1); g.addEdge(0, 2);"""
+          },
+          "Adjacency Matrix (O(V²))": {
+            "C++": """
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class GraphMatrix {
+    int V;
+    vector<vector<int>> matrix;
+public:
+    GraphMatrix(int v) : V(v), matrix(v, vector<int>(v, 0)) {}
+    
+    void addEdge(int u, int v) {
+        matrix[u][v] = 1;
+        matrix[v][u] = 1;
+    }
+    
+    bool hasEdge(int u, int v) {
+        return matrix[u][v] == 1; // O(1) Edge Lookup
+    }
+};""",
+            "Java": """
+public class GraphMatrix {
+    private int V;
+    private int[][] matrix;
+    
+    public GraphMatrix(int v) {
+        this.V = v;
+        matrix = new int[v][v];
+    }
+    public void addEdge(int u, int v) {
+        matrix[u][v] = 1;
+        matrix[v][u] = 1;
+    }
+    public boolean hasEdge(int u, int v) {
+        return matrix[u][v] == 1;
+    }
+}""",
+            "Python": """
+class GraphMatrix:
+    def __init__(self, v):
+        self.V = v
+        self.matrix = [[0] * v for _ in range(v)]
+        
+    def add_edge(self, u, v):
+        self.matrix[u][v] = 1
+        self.matrix[v][u] = 1
+        
+    def has_edge(self, u, v):
+        return self.matrix[u][v] == 1""",
+            "JavaScript": """
+class GraphMatrix {
+    constructor(v) {
+        this.V = v;
+        this.matrix = Array.from({length: v}, () => new Array(v).fill(0));
+    }
+    addEdge(u, v) {
+        this.matrix[u][v] = 1;
+        this.matrix[v][u] = 1;
+    }
+}"""
+          },
+          "BFS & DFS Traversals": {
+            "C++": """
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+// BFS Traversal using Queue O(V + E)
+void bfs(int startNode, vector<vector<int>>& adj, int V) {
+    vector<bool> visited(V, false);
+    queue<int> q;
+    
+    visited[startNode] = true;
+    q.push(startNode);
+    
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        cout << u << " ";
+        
+        for (int v : adj[u]) {
+            if (!visited[v]) {
+                visited[v] = true;
+                q.push(v);
+            }
+        }
+    }
+}
+
+// DFS Recursive Traversal O(V + E)
+void dfs(int u, vector<vector<int>>& adj, vector<bool>& visited) {
+    visited[u] = true;
+    cout << u << " ";
+    for (int v : adj[u]) {
+        if (!visited[v]) dfs(v, adj, visited);
+    }
+}""",
+            "Java": """
+public static void bfs(int start, List<List<Integer>> adj, int V) {
+    boolean[] visited = new boolean[V];
+    Queue<Integer> q = new ArrayDeque<>();
+    visited[start] = true;
+    q.offer(start);
+    while (!q.isEmpty()) {
+        int u = q.poll();
+        System.out.print(u + " ");
+        for (int v : adj.get(u)) {
+            if (!visited[v]) {
+                visited[v] = true;
+                q.offer(v);
+            }
+        }
+    }
+}""",
+            "Python": """
+from collections import deque
+
+def bfs(start, adj):
+    visited = set([start])
+    q = deque([start])
+    res = []
+    while q:
+        u = q.popleft()
+        res.append(u)
+        for v in adj[u]:
+            if v not in visited:
+                visited.add(v)
+                q.append(v)
+    return res""",
+            "JavaScript": """
+function bfs(start, adj) {
+    const visited = new Set([start]);
+    const q = [start];
+    const res = [];
+    while (q.length > 0) {
+        const u = q.shift();
+        res.push(u);
+        for (let v of (adj.get(u) || [])) {
+            if (!visited.has(v)) {
+                visited.add(v);
+                q.push(v);
+            }
+        }
+    }
+    return res;
+}"""
+          }
+        },
+        basicProblems: [
+          DsaProblem(
+            id: "gr-1",
+            title: "1. Number of Islands (LeetCode #200)",
+            category: "Graph Basic",
+            keyIdeaEn: "Iterate over 2D grid matrix. When finding '1', increment island count and run BFS/DFS to sink connected land cells to '0'.",
+            keyIdeaBn: "২D গ্রিড ম্যাট্রিক্স ট্রাভার্স করুন। '1' পেলে আইল্যান্ড কাউন্ট বাড়ান এবং BFS/DFS চালিয়ে সংলগ্ন সব '1' কে '0' বানিয়ে দিন।",
+            codeCpp: """
+void dfs(vector<vector<char>>& grid, int r, int c) {
+    int R = grid.size(), C = grid[0].size();
+    if (r < 0 || r >= R || c < 0 || c >= C || grid[r][c] == '0') return;
+    grid[r][c] = '0'; // Sink land
+    dfs(grid, r+1, c); dfs(grid, r-1, c);
+    dfs(grid, r, c+1); dfs(grid, r, c-1);
+}
+int numIslands(vector<vector<char>>& grid) {
+    int count = 0;
+    for (int r = 0; r < grid.size(); r++) {
+        for (int c = 0; c < grid[0].size(); c++) {
+            if (grid[r][c] == '1') {
+                count++;
+                dfs(grid, r, c);
+            }
+        }
+    }
+    return count;
+}""",
+            codeJava: """
+public static int numIslands(char[][] grid) {
+    int count = 0;
+    for (int r = 0; r < grid.length; r++) {
+        for (int c = 0; c < grid[0].length; c++) {
+            if (grid[r][c] == '1') {
+                count++;
+                dfs(grid, r, c);
+            }
+        }
+    }
+    return count;
+}
+private static void dfs(char[][] grid, int r, int c) {
+    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == '0') return;
+    grid[r][c] = '0';
+    dfs(grid, r + 1, c); dfs(grid, r - 1, c);
+    dfs(grid, r, c + 1); dfs(grid, r, c - 1);
+}""",
+            codePython: """
+def numIslands(grid):
+    if not grid: return 0
+    R, C = len(grid), len(grid[0])
+    count = 0
+    
+    def dfs(r, c):
+        if r < 0 or r >= R or c < 0 or c >= C or grid[r][c] == '0':
+            return
+        grid[r][c] = '0'
+        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1)
+        
+    for r in range(R):
+        for c in range(C):
+            if grid[r][c] == '1':
+                count += 1
+                dfs(r, c)
+    return count""",
+            codeJs: """
+function numIslands(grid) {
+    let count = 0;
+    const R = grid.length, C = grid[0].length;
+    function dfs(r, c) {
+        if (r < 0 || r >= R || c < 0 || c >= C || grid[r][c] === '0') return;
+        grid[r][c] = '0';
+        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1);
+    }
+    for (let r = 0; r < R; r++) {
+        for (let c = 0; c < C; c++) {
+            if (grid[r][c] === '1') {
+                count++;
+                dfs(r, c);
+            }
+        }
+    }
+    return count;
+}""",
+            descriptionEn: "Given an `m x n` 2D binary grid representing a map of '1's (land) and '0's (water), return the total number of islands.",
+            descriptionBn: "'1' (ডাঙা) এবং '0' (পানি) সমৃদ্ধ `m x n` ২D বাইনারি গ্রিড থেকে মোট দ্বীপের সংখ্যা (Islands) গণনা করুন।",
+            sampleInputs: ["grid = [[\"1\",\"1\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\"],[\"0\",\"0\",\"1\",\"0\"],[\"0\",\"0\",\"0\",\"1\"]]"],
+            sampleOutputs: ["3 Islands"],
+          ),
+          DsaProblem(
+            id: "gr-2",
+            title: "2. Course Schedule - Cycle Detection (LeetCode #207)",
+            category: "Graph Pattern",
+            keyIdeaEn: "Build directed graph and calculate in-degree of all nodes. Run BFS (Kahn's Algorithm). If processed nodes count == V, course schedule is possible!",
+            keyIdeaBn: "ডাইরেক্টেড গ্রাফ তৈরি করে প্রতিটি নোডের In-degree হিসেব করুন। Kahn's BFS অ্যালগরিদম রান করে সাইকেল আছে কিনা চেক করুন।",
+            codeCpp: """
+bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+    vector<vector<int>> adj(numCourses);
+    vector<int> inDegree(numCourses, 0);
+    for (auto& p : prerequisites) {
+        adj[p[1]].push_back(p[0]);
+        inDegree[p[0]]++;
+    }
+    queue<int> q;
+    for (int i = 0; i < numCourses; i++) {
+        if (inDegree[i] == 0) q.push(i);
+    }
+    int count = 0;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        count++;
+        for (int v : adj[u]) {
+            if (--inDegree[v] == 0) q.push(v);
+        }
+    }
+    return count == numCourses;
+}""",
+            codeJava: """
+public static boolean canFinish(int numCourses, int[][] prerequisites) {
+    List<List<Integer>> adj = new ArrayList<>();
+    int[] inDegree = new int[numCourses];
+    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+    for (int[] p : prerequisites) {
+        adj.get(p[1]).add(p[0]);
+        inDegree[p[0]]++;
+    }
+    Queue<Integer> q = new ArrayDeque<>();
+    for (int i = 0; i < numCourses; i++) {
+        if (inDegree[i] == 0) q.offer(i);
+    }
+    int count = 0;
+    while (!q.isEmpty()) {
+        int u = q.poll();
+        count++;
+        for (int v : adj.get(u)) {
+            if (--inDegree[v] == 0) q.offer(v);
+        }
+    }
+    return count == numCourses;
+}""",
+            codePython: """
+from collections import defaultdict, deque
+
+def canFinish(numCourses, prerequisites):
+    adj = defaultdict(list)
+    in_degree = [0] * numCourses
+    for dest, src in prerequisites:
+        adj[src].append(dest)
+        in_degree[dest] += 1
+        
+    q = deque([i for i in range(numCourses) if in_degree[i] == 0])
+    count = 0
+    while q:
+        u = q.popleft()
+        count += 1
+        for v in adj[u]:
+            in_degree[v] -= 1
+            if in_degree[v] == 0:
+                q.append(v)
+    return count == numCourses""",
+            codeJs: """
+function canFinish(numCourses, prerequisites) {
+    const adj = Array.from({length: numCourses}, () => []);
+    const inDegree = new Array(numCourses).fill(0);
+    for (let [dest, src] of prerequisites) {
+        adj[src].push(dest);
+        inDegree[dest]++;
+    }
+    const q = [];
+    for (let i = 0; i < numCourses; i++) {
+        if (inDegree[i] === 0) q.push(i);
+    }
+    let count = 0;
+    while (q.length > 0) {
+        const u = q.shift();
+        count++;
+        for (let v of adj[u]) {
+            inDegree[v]--;
+            if (inDegree[v] === 0) q.push(v);
+        }
+    }
+    return count === numCourses;
+}""",
+            descriptionEn: "Determine if it is possible to complete all `numCourses` given a list of prerequisite course pairs.",
+            descriptionBn: "কোর্স পূর্বশর্তের (Prerequisites) তালিকা থেকে সাইকেল চেক করে সব কোর্স সম্পন্ন করা সম্ভব কিনা নিরূপণ করুন।",
+            sampleInputs: ["numCourses = 2, prerequisites = [[1,0]]"],
+            sampleOutputs: ["true (Take course 0 then course 1)"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Missing `visited[]` Set causing Infinite Loop",
+            "desc": "Traversing a cyclic graph without marking visited nodes causes infinite recursive recursion or queue overflow."
+          },
+          {
+            "title": "2. Using Adjacency Matrix for Sparse Graphs",
+            "desc": "Using a V×V matrix when E is small wastes O(V²) memory space. Use an Adjacency List instead."
+          },
+          {
+            "title": "3. Confusing Directed vs Undirected Edge Insertions",
+            "desc": "Forgetting `adj[v].push_back(u)` when adding an undirected edge breaks two-way navigation."
+          },
+          {
+            "title": "4. StackOverflowError in Deep DFS Recursion",
+            "desc": "Running recursive DFS on deep linear graphs exceeds system call stack limit. Use iterative DFS with Stack."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. `visited[]` সেট ব্যবহার করতে ভুলে যাওয়া",
+            "desc": "সাইক্লিক গ্রাফে ভিজিটেড নোড ট্র্যাক না করলে রিকার্শন বা কিউ অসীম লুপে পড়ে অ্যাপ ক্র্যাশ করে।"
+          },
+          {
+            "title": "২. ছোট গ্রাফে অ্যাডজাসেন্সি ম্যাট্রিক্স ব্যবহার",
+            "desc": "এজের সংখ্যা কম থাকলে V×V ম্যাট্রিক্স বিশাল O(V²) মেমোরি অপচয় করে। অ্যাডজাসেন্সি লিস্ট ব্যবহার করুন।"
+          },
+          {
+            "title": "৩. ডাইরেক্টেড ও আনডাইরেক্টেড এজের পজিশন গুলিয়ে ফেলা",
+            "desc": "আনডাইরেক্টেড এজে `adj[v].push_back(u)` বাদ দিলে দুইমুখী পথ বন্ধ হয়ে যায়।"
+          },
+          {
+            "title": "৪. গভীর DFS রিকার্শনে StackOverflowError",
+            "desc": "গভীর গ্রাফে রিকার্সিভ DFS চালালে সিস্টেমের কল স্ট্যাক সীমা পার হয়ে যায়। ইটারেটিভ DFS ব্যবহার করুন।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand Graph Components (Vertices & Edges)",
+            "desc": "Master Directed vs Undirected, Weighted vs Unweighted graphs and memory representations."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Adjacency List & Adjacency Matrix",
+            "desc": "Build Adjacency List O(V+E) and 2D Matrix O(V²) representation classes in code."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Breadth-First Search (BFS)",
+            "desc": "Implement Queue-based BFS for level order traversal and unweighted Shortest Path."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Depth-First Search (DFS) & 2D Grid Search",
+            "desc": "Solve Number of Islands, Flood Fill, and connected components using DFS."
+          },
+          {
+            "step": "Step 5",
+            "title": "Learn Cycle Detection & Topological Sort",
+            "desc": "Master Kahn's algorithm for Course Schedule, Topological Sort, and Dijkstra's algorithm."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "গ্রাফের মূল উপাদান (ভার্টেক্স ও এজ) শিখুন",
+            "desc": "ডাইরেক্টেড বনাম আনডাইরেক্টেড, ওয়েটেড বনাম আনওয়েটেড গ্রাফের কনসেপ্ট পরিষ্কার করুন।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "অ্যাডজাসেন্সি লিস্ট ও অ্যাডজাসেন্সি ম্যাট্রিক্স",
+            "desc": "কোডে O(V+E) অ্যাডজাসেন্সি লিস্ট এবং O(V²) ২D ম্যাট্রিক্স ক্লাস ইমপ্লিমেন্ট করুন।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "Breadth-First Search (BFS) মাস্টার করুন",
+            "desc": "কিউ নির্ভর BFS দিয়ে লেভেল অর্ডার ট্রাভার্সাল এবং শর্টেস্ট পাথ বের করা শিখুন।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "Depth-First Search (DFS) ও ২D গ্রিড সার্চ",
+            "desc": "DFS দিয়ে Number of Islands, Flood Fill এবং কানেক্টেড কম্পোনেন্ট প্রবলেমস সলভ করুন।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "সাইকেল ডিটেকশন ও টপোলজিক্যাল সর্ট",
+            "desc": "Kahn's algorithm দিয়ে কোর্স সিডিউল, টপোলজিক্যাল সর্ট এবং ডাইকস্ট্রা শর্টেস্ট পাথ।"
+          }
+        ],
       ),
 
       // 9. TRIE
