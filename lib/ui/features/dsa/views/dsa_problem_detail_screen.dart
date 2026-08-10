@@ -129,7 +129,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   void _nextStep() {
     setState(() {
-      if (widget.problem.id == "basic-1") {
+      if (widget.problem.id.contains("1") || widget.problem.id == "arr-1") {
         // Min Max
         if (_p1Pointer < _p1Arr.length - 1) {
           _p1Pointer++;
@@ -137,12 +137,16 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
           if (val < _p1Min) _p1Min = val;
           if (val > _p1Max) _p1Max = val;
           _p1Log = _isEnglish
-              ? "Checked index $_p1Pointer (val $val). Updated Min = $_p1Min, Max = $_p1Max"
-              : "index $_p1Pointer (মান $val) চেক করা হলো। আপডেট Min = $_p1Min, Max = $_p1Max";
+              ? "Step ${_p1Pointer + 1}: Checked index $_p1Pointer (val $val). Min = $_p1Min, Max = $_p1Max"
+              : "ধাপ ${_p1Pointer + 1}: index $_p1Pointer (মান $val) চেক করা হলো। আপডেট Min = $_p1Min, Max = $_p1Max";
         } else {
           _p1Log = _isEnglish ? "🎉 Traversal Complete! Final Min = $_p1Min, Max = $_p1Max" : "🎉 ট্রাভার্সাল সম্পন্ন! চূড়ান্ত Min = $_p1Min, Max = $_p1Max";
+          if (_isPlaying) {
+            _timer?.cancel();
+            _isPlaying = false;
+          }
         }
-      } else if (widget.problem.id == "basic-2") {
+      } else if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
         // Reverse
         if (_p2Left < _p2Right) {
           final temp = _p2Arr[_p2Left];
@@ -155,49 +159,87 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
           _p2Right--;
         } else {
           _p2Log = _isEnglish ? "🎉 Array Reversal Completed in-place!" : "🎉 অ্যারে উল্টানো সম্পন্ন হয়েছে!";
-        }
-      } else if (widget.problem.id == "basic-3") {
-        // Transpose
-        _p3Result[_p3Col][_p3Row] = _p3Matrix[_p3Row][_p3Col];
-        _p3Log = _isEnglish
-            ? "Transposed matrix[$_p3Row][$_p3Col] = ${_p3Matrix[_p3Row][_p3Col]} into result[$_p3Col][$_p3Row]"
-            : "matrix[$_p3Row][$_p3Col] = ${_p3Matrix[_p3Row][_p3Col]} ট্রান্সপোজ হয়ে result[$_p3Col][$_p3Row] এ গেল";
-
-        _p3Col++;
-        if (_p3Col >= 3) {
-          _p3Col = 0;
-          _p3Row++;
-          if (_p3Row >= 2) {
-            _p3Row = 1;
-            _p3Col = 2;
-            _p3Log = _isEnglish ? "🎉 2D Matrix Transpose Complete!" : "🎉 ২D ম্যাট্রিক্স ট্রান্সপোজ সম্পন্ন!";
+          if (_isPlaying) {
+            _timer?.cancel();
+            _isPlaying = false;
           }
         }
-      } else if (widget.problem.id == "basic-4") {
+      } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
+        // Transpose
+        if (_p3Row < 2) {
+          _p3Result[_p3Col][_p3Row] = _p3Matrix[_p3Row][_p3Col];
+          _p3Log = _isEnglish
+              ? "Transposed matrix[$_p3Row][$_p3Col] = ${_p3Matrix[_p3Row][_p3Col]} into result[$_p3Col][$_p3Row]"
+              : "matrix[$_p3Row][$_p3Col] = ${_p3Matrix[_p3Row][_p3Col]} ট্রান্সপোজ হয়ে result[$_p3Col][$_p3Row] এ গেল";
+
+          _p3Col++;
+          if (_p3Col >= 3) {
+            _p3Col = 0;
+            _p3Row++;
+          }
+        } else {
+          _p3Log = _isEnglish ? "🎉 2D Matrix Transpose Complete!" : "🎉 ২D ম্যাট্রিক্স ট্রান্সপোজ সম্পন্ন!";
+          if (_isPlaying) {
+            _timer?.cancel();
+            _isPlaying = false;
+          }
+        }
+      } else {
         // 3D Layer Sum
         if (_p4Layer == 0) {
           _p4Layer = 1;
-          _p4Sum = 26;
-          _p4Log = _isEnglish ? "Inspecting Layer 1: Elements [[5,6],[7,8]] -> Layer Sum = 26" : "লেয়ার ১: যোগফল ২৬";
+          _p4Sum = 36;
+          _p4Log = _isEnglish ? "Inspecting Layer 1: Elements [[5,6],[7,8]] -> Total Sum = 36" : "লেয়ার ১ এর উপাদান যোগ করা হলো -> মোট যোগফল ৩৬";
         } else {
           _p4Log = _isEnglish ? "🎉 All 3D Layers Summed Successfully!" : "🎉 সব ৩D লেয়ারের যোগফল সম্পন্ন!";
+          if (_isPlaying) {
+            _timer?.cancel();
+            _isPlaying = false;
+          }
         }
       }
     });
   }
 
   void _togglePlay() {
-    setState(() {
-      _isPlaying = !_isPlaying;
-    });
-
     if (_isPlaying) {
-      _timer = Timer.periodic(const Duration(milliseconds: 1400), (timer) {
-        _nextStep();
+      _timer?.cancel();
+      setState(() {
+        _isPlaying = false;
       });
     } else {
-      _timer?.cancel();
+      setState(() {
+        _isPlaying = true;
+      });
+      _timer = Timer.periodic(const Duration(milliseconds: 1000), (timer) {
+        _nextStep();
+      });
     }
+  }
+
+  Widget _buildVisualizerControlsRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton.icon(
+          onPressed: _togglePlay,
+          icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+          label: Text(_isPlaying ? "Pause" : "Auto Play"),
+          style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentPurple),
+        ),
+        const SizedBox(width: 12),
+        OutlinedButton.icon(
+          onPressed: _nextStep,
+          icon: const Icon(Icons.skip_next),
+          label: Text(_isEnglish ? "Next Step" : "পরবর্তী ধাপ"),
+        ),
+        const SizedBox(width: 12),
+        IconButton(
+          icon: const Icon(Icons.refresh, color: AppTheme.accentNeonCyan),
+          onPressed: _resetVisualizerState,
+        ),
+      ],
+    );
   }
 
   void _copyToClipboard(String text) {
@@ -411,28 +453,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
             const SizedBox(height: 20),
 
             // Controls: Play, Step, Reset
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: _togglePlay,
-                  icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-                  label: Text(_isPlaying ? "Pause" : "Auto Play"),
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentPurple),
-                ),
-                const SizedBox(width: 12),
-                OutlinedButton.icon(
-                  onPressed: _nextStep,
-                  icon: const Icon(Icons.skip_next),
-                  label: Text(_isEnglish ? "Next Step" : "পরবর্তী ধাপ"),
-                ),
-                const SizedBox(width: 12),
-                IconButton(
-                  icon: const Icon(Icons.refresh, color: AppTheme.accentNeonCyan),
-                  onPressed: _resetVisualizerState,
-                ),
-              ],
-            ),
+            _buildVisualizerControlsRow(),
           ],
         ),
       ),
@@ -598,8 +619,17 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     );
   }
 
-  // TAB 3: Multi-Language Code with Embedded Visualizer
+  // TAB 3: Multi-Language Code with Embedded Visualizer and Controls
   Widget _buildCodeTab(double hPadding) {
+    String currentLog = _p1Log;
+    if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
+      currentLog = _p2Log;
+    } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
+      currentLog = _p3Log;
+    } else if (widget.problem.id.contains("4") || widget.problem.id == "arr-4") {
+      currentLog = _p4Log;
+    }
+
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
       child: SingleChildScrollView(
@@ -644,9 +674,30 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
             const SizedBox(height: 20),
 
             // Live Problem Step Visualizer integrated inside Solution Code Tab
-            Text(_isEnglish ? "Interactive Execution Visualizer" : "ইন্টারেক্টিভ ভিজ্যুয়ালাইজার সলিউশন প্রিভিউ", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan)),
+            Text(_isEnglish ? "Interactive Execution Visualizer" : "ইন্টারেক্টিভ ভিজ্যুয়ালাইজার ও কন্ট্রোলস", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan)),
+            const SizedBox(height: 8),
+
+            // Status Log Banner inside Code Tab
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppTheme.accentNeonCyan.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.4)),
+              ),
+              child: Text(
+                currentLog,
+                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+            ),
             const SizedBox(height: 10),
+
             _buildCurrentProblemVisualizerCanvas(),
+            const SizedBox(height: 14),
+
+            // Play, Step, Reset controls in Code Tab
+            _buildVisualizerControlsRow(),
           ],
         ),
       ),
