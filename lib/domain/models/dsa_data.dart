@@ -3556,27 +3556,460 @@ function isCycle(V, adj) {
         id: 209,
         title: "Trie (Prefix Tree)",
         category: "Advanced Character Tree",
-        timeComplexity: "Insert O(L) | Search O(L) | StartsWith O(L)",
+        timeComplexity: "Insert: O(L) | Search: O(L) | StartsWith: O(L) | Space: O(N × L)",
         spaceComplexity: "O(N × L)",
         icon: Icons.sort_by_alpha_outlined,
         themeColor: const Color(0xFFA855F7),
-        descriptionEn: "A Trie is an N-ary tree data structure used for fast string prefix searching.",
-        descriptionBn: "ট্রাই হলো একটি ক্যারেক্টার ট্রি যা দ্রুত প্রিফিক্স সার্চ করতে ব্যবহৃত হয়।",
-        keyConceptsEn: ["O(L) Fast Lookup", "Prefix Sharing"],
-        keyConceptsBn: ["O(L) দ্রুত লুকআপ", "প্রিফিক্স শেয়ারিং"],
+        descriptionEn:
+            "A Trie (pronounced 'try', also known as a Prefix Tree) is a specialized N-ary Search Tree data structure engineered for ultra-fast string and key retrieval operations. Unlike standard Binary Search Trees, nodes in a Trie do not store keys directly; instead, a node's position within the tree defines its associated character prefix, allowing multiple words with common prefixes (e.g., 'app', 'apple', 'apricot') to share identical prefix branch paths. Each `TrieNode` maintains an array or hash map of 26 child pointers (`TrieNode* children[26]`) and a boolean flag (`isEndOfWord`) marking string termination. Operations execute in deterministic O(L) time proportional strictly to string length L.",
+        descriptionBn:
+            "ট্রাই (Trie বা Prefix Tree) হলো একটি বিশেষায়িত N-আকার সার্চ ট্রি ডেটা স্ট্রাকচার যা দ্রুত স্ট্রিং এবং প্রিফিক্স অনুসন্ধানের জন্য অত্যন্ত দক্ষ। সাধারণ বাইনারি সার্চ ট্রির মতো নোডগুলোতে সরাসরি মান থাকে না; বরং ট্রিতে নোডের অবস্থান নির্দিষ্ট অক্ষরের পথ নির্দেশ করে। এর ফলে একই প্রিফিক্সযুক্ত শব্দগুলো (যেমন: 'app', 'apple', 'apricot') মেমোরিতে একই পথ শেয়ার করতে পারে। প্রতিটি `TrieNode` ২৬টি চাইল্ড পয়েন্টারের অ্যারে বা হ্যাশ ম্যাপ এবং একটি বুলিয়ান ফ্ল্যাগ (`isEndOfWord`) ধারণ করে যা শব্দের সমাপ্তি চিহ্নিত করে। প্রতিটি ইনসার্ট বা সার্চ অপারেশন মাত্র O(L) সময়ে সম্পন্ন হয়, যা স্ট্রিংয়ের দৈর্ঘ্য L এর ওপর নির্ভরশীল।",
+        keyConceptsEn: [
+          "Prefix Sharing Architecture: Common string prefixes share identical top-down tree branch paths, minimizing memory.",
+          "TrieNode Structure: Contains `children[26]` array for characters 'a'-'z' and boolean `isEndOfWord` flag.",
+          "O(L) Deterministic Lookup: Search time is bound strictly by word length L, independent of dictionary size N.",
+          "Wildcard Backtracking Search: Supporting '.' wildcards by recursively testing all available non-null children."
+        ],
+        keyConceptsBn: [
+          "প্রিফিক্স শেয়ারিং আর্কিটেকচার: সাধারণ অক্ষরের প্রিফিক্স মেমোরিতে একই ব্রাঞ্চ পথ ব্যবহার করায় স্পেস অপটিমাইজ হয়।",
+          "TrieNode স্ট্রাকচার: ২৬টি চাইল্ড পয়েন্টারের অ্যারে এবং শব্দের সমাপ্তি নির্ধারণকারী বুলিয়ান `isEndOfWord` ফ্ল্যাগ।",
+          "O(L) নির্দিষ্ট লুকআপ: অনুসন্ধানের সময় ডিকশনারির মোট শব্দ সংখ্যা N এর ওপর নির্ভরশীল নয়, কেবল স্ট্রিংয়ের দৈর্ঘ্য L।",
+          "ওয়াইল্ডকার্ড ডট ('.') সার্চ: রিকার্সিভ ব্যাকট্র্যাকিং দিয়ে যেকোনো অক্ষরের সাথে মিল রাখার ক্ষমতা।"
+        ],
         multiDimCodeTemplates: {
-          "Standard Trie": {
-            "C++": "class TrieNode { unordered_map<char, TrieNode*> children; };",
-            "Java": "class TrieNode { TrieNode[] children = new TrieNode[26]; }",
-            "Python": "class TrieNode: pass",
-            "JavaScript": "class TrieNode {}"
+          "TrieNode & Operations": {
+            "C++": """
+// C++ Trie Implementation
+struct TrieNode {
+    TrieNode* children[26];
+    bool isEndOfWord;
+    TrieNode() {
+        isEndOfWord = false;
+        for (int i = 0; i < 26; i++) children[i] = nullptr;
+    }
+};""",
+            "Java": """
+// Java TrieNode Class
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isEndOfWord = false;
+}""",
+            "Python": """
+# Python TrieNode Class using dict
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isEndOfWord = False""",
+            "JavaScript": """
+// JavaScript TrieNode Class
+class TrieNode {
+    constructor() {
+        this.children = {};
+        this.isEndOfWord = false;
+    }
+}"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "tr-1",
+            title: "1. Implement Trie (Prefix Tree)",
+            category: "Trie Fundamentals & N-ary Tree Creation",
+            keyIdeaEn: "Traverse character by character. If child pointer is null, create new TrieNode(). Mark isEndOfWord = true at final character node.",
+            keyIdeaBn: "প্রতিটি ক্যারেক্টার ধরে ট্রাভার্স করুন। চাইল্ড পয়েন্টার নাল হলে নতুন TrieNode() তৈরি করুন। শেষ নোডে isEndOfWord = true ফ্ল্যাগ দিন।",
+            codeCpp: """
+class Trie {
+    TrieNode* root;
+public:
+    Trie() { root = new TrieNode(); }
+    void insert(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (!curr->children[idx]) curr->children[idx] = new TrieNode();
+            curr = curr->children[idx];
+        }
+        curr->isEndOfWord = true;
+    }
+    bool search(string word) {
+        TrieNode* curr = root;
+        for (char c : word) {
+            int idx = c - 'a';
+            if (!curr->children[idx]) return false;
+            curr = curr->children[idx];
+        }
+        return curr->isEndOfWord;
+    }
+    bool startsWith(string prefix) {
+        TrieNode* curr = root;
+        for (char c : prefix) {
+            int idx = c - 'a';
+            if (!curr->children[idx]) return false;
+            curr = curr->children[idx];
+        }
+        return true;
+    }
+};""",
+            codeJava: """
+class Trie {
+    private TrieNode root;
+    public Trie() { root = new TrieNode(); }
+    public void insert(String word) {
+        TrieNode curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) curr.children[idx] = new TrieNode();
+            curr = curr.children[idx];
+        }
+        curr.isEndOfWord = true;
+    }
+    public boolean search(String word) {
+        TrieNode curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) return false;
+            curr = curr.children[idx];
+        }
+        return curr.isEndOfWord;
+    }
+    public boolean startsWith(String prefix) {
+        TrieNode curr = root;
+        for (char c : prefix.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) return false;
+            curr = curr.children[idx];
+        }
+        return true;
+    }
+}""",
+            codePython: """
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+    def insert(self, word: str) -> None:
+        curr = self.root
+        for c in word:
+            if c not in curr.children:
+                curr.children[c] = TrieNode()
+            curr = curr.children[c]
+        curr.isEndOfWord = True
+    def search(self, word: str) -> bool:
+        curr = self.root
+        for c in word:
+            if c not in curr.children: return False
+            curr = curr.children[c]
+        return curr.isEndOfWord
+    def startsWith(self, prefix: str) -> bool:
+        curr = self.root
+        for c in prefix:
+            if c not in curr.children: return False
+            curr = curr.children[c]
+        return True""",
+            codeJs: """
+class Trie {
+    constructor() { this.root = new TrieNode(); }
+    insert(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr.children[c]) curr.children[c] = new TrieNode();
+            curr = curr.children[c];
+        }
+        curr.isEndOfWord = true;
+    }
+    search(word) {
+        let curr = this.root;
+        for (let c of word) {
+            if (!curr.children[c]) return false;
+            curr = curr.children[c];
+        }
+        return curr.isEndOfWord;
+    }
+    startsWith(prefix) {
+        let curr = this.root;
+        for (let c of prefix) {
+            if (!curr.children[c]) return false;
+            curr = curr.children[c];
+        }
+        return true;
+    }
+}""",
+            descriptionEn: "Implement a complete Trie with insert, search, and startsWith operations in O(L) time per query.",
+            descriptionBn: "প্রতিটি কুয়েরির জন্য O(L) সময়ে insert, search এবং startsWith সাপোর্ট করে এমন একটি পূর্ণাঙ্গ ট্রাই স্ট্রাকচার বানান।",
+            sampleInputs: ["insert(\"apple\"), search(\"apple\"), startsWith(\"app\")"],
+            sampleOutputs: ["true, true"],
+          ),
+          DsaProblem(
+            id: "tr-2",
+            title: "2. Design Add and Search Words Data Structure",
+            category: "Trie Backtracking & Wildcard Matching Pattern",
+            keyIdeaEn: "Support dot '.' wildcard. For exact char, follow child pointer. For wildcard '.', recursively search all non-null children using DFS backtracking.",
+            keyIdeaBn: "ডট '.' ডাব্লিউল্ডকার্ড সাপেক্ষে ট্রাই সার্চ। সাধারণ অক্ষরের জন্য চাইল্ডে যান, ডট '.' পেলে রিকার্সিভ DFS ব্যাকট্র্যাকিং করে সব চাইল্ড চেক করুন।",
+            codeCpp: """
+bool searchHelper(string& word, int idx, TrieNode* node) {
+    if (!node) return false;
+    if (idx == word.length()) return node->isEndOfWord;
+    char c = word[idx];
+    if (c == '.') {
+        for (int i = 0; i < 26; i++) {
+            if (node->children[i] && searchHelper(word, idx + 1, node->children[i])) return true;
+        }
+        return false;
+    } else {
+        int i = c - 'a';
+        return searchHelper(word, idx + 1, node->children[i]);
+    }
+}""",
+            codeJava: """
+private boolean searchInNode(String word, int index, TrieNode node) {
+    if (node == null) return false;
+    if (index == word.length()) return node.isEndOfWord;
+    char c = word.charAt(index);
+    if (c == '.') {
+        for (int i = 0; i < 26; i++) {
+            if (node.children[i] != null && searchInNode(word, index + 1, node.children[i])) return true;
+        }
+        return false;
+    } else {
+        return searchInNode(word, index + 1, node.children[c - 'a']);
+    }
+}""",
+            codePython: """
+def search(self, word: str) -> bool:
+    def dfs(index, node):
+        if not node: return False
+        if index == len(word): return node.isEndOfWord
+        c = word[index]
+        if c == '.':
+            return any(dfs(index + 1, child) for child in node.children.values())
+        else:
+            return dfs(index + 1, node.children.get(c))
+    return dfs(0, self.root)""",
+            codeJs: """
+search(word) {
+    const dfs = (idx, node) => {
+        if (!node) return false;
+        if (idx === word.length) return node.isEndOfWord;
+        const c = word[idx];
+        if (c === '.') {
+            for (let child in node.children) {
+                if (dfs(idx + 1, node.children[child])) return true;
+            }
+            return false;
+        } else {
+            return dfs(idx + 1, node.children[c]);
+        }
+    };
+    return dfs(0, this.root);
+}""",
+            descriptionEn: "Design a data structure supporting exact word search and wildcard '.' matching using Trie DFS backtracking.",
+            descriptionBn: "ডট '.' ওয়াইল্ডকার্ড ক্যারেক্টার দিয়ে ট্রাই সার্চ সমর্থন করে এমন ডেটা স্ট্রাকচার ডিজাইন করুন।",
+            sampleInputs: ["addWord(\"bad\"), search(\".ad\")"],
+            sampleOutputs: ["true"],
+          ),
+          DsaProblem(
+            id: "tr-3",
+            title: "3. Replace Words (Shortest Prefix Root Replacement)",
+            category: "Dictionary Prefix Lookup Pattern",
+            keyIdeaEn: "Insert roots into Trie. For each word in sentence, walk Trie to find shortest matching prefix with `isEndOfWord == true`. If found, replace word.",
+            keyIdeaBn: "ডিকশনারির শব্দগুলো ট্রাই এ ইনসার্ট করুন। সেন্টেন্সের প্রতিটি শব্দের সংক্ষিপ্ততম সর্টেস্ট প্রিফিক্স ট্রাই থেকে খুঁজে প্রতিস্থাপন করুন।",
+            codeCpp: """
+string replaceWords(vector<string>& dictionary, string sentence) {
+    Trie trie;
+    for (string& root : dictionary) trie.insert(root);
+    stringstream ss(sentence); string word, res = "";
+    while (ss >> word) {
+        if (!res.empty()) res += " ";
+        res += trie.getShortestRoot(word);
+    }
+    return res;
+}""",
+            codeJava: """
+public String replaceWords(List<String> dictionary, String sentence) {
+    Trie trie = new Trie();
+    for (String root : dictionary) trie.insert(root);
+    StringBuilder sb = new StringBuilder();
+    for (String word : sentence.split(" ")) {
+        if (sb.length() > 0) sb.append(" ");
+        sb.append(trie.getShortestRoot(word));
+    }
+    return sb.toString();
+}""",
+            codePython: """
+def replaceWords(dictionary: List[str], sentence: str) -> str:
+    trie = Trie()
+    for root in dictionary: trie.insert(root)
+    words = sentence.split()
+    return " ".join([trie.getShortestRoot(w) for w in words])""",
+            codeJs: """
+function replaceWords(dictionary, sentence) {
+    const trie = new Trie();
+    for (let r of dictionary) trie.insert(r);
+    return sentence.split(" ").map(w => trie.getShortestRoot(w)).join(" ");
+}""",
+            descriptionEn: "Replace words in a sentence with their shortest root prefix found in the dictionary Trie in O(N x L) time.",
+            descriptionBn: "সেন্টেন্সের শব্দগুলোকে ডিকশনারির সংক্ষিপ্ততম রুট প্রিফিক্স দিয়ে O(N x L) সময়ে প্রতিস্থাপন করুন।",
+            sampleInputs: ["dict = [\"cat\",\"bat\",\"rat\"], sentence = \"the cattle was ratted by the battery\""],
+            sampleOutputs: ["Output = \"the cat was rat by the bat\""],
+          ),
+          DsaProblem(
+            id: "tr-4",
+            title: "4. Word Search II (Multi-Word Matrix Search)",
+            category: "Grid Backtracking + Trie Optimization Pattern",
+            keyIdeaEn: "Build Trie of target words. Run 4-directional DFS on each grid cell, pruning search paths early if current prefix is NOT in Trie!",
+            keyIdeaBn: "টার্গেট ওয়ার্ডগুলোর ট্রাই বানান। ২D গ্রিডের প্রতিটি সেলে ৪-দিকমুখী DFS চেলেন এবং ট্রাই প্রিফিক্স না থাকলে সার্চ পাথ প্রুন (Prune) বা বাদ দিন!",
+            codeCpp: """
+void dfsGrid(vector<vector<char>>& board, int r, int c, TrieNode* node, vector<string>& res) {
+    if (r < 0 || c < 0 || r >= board.size() || c >= board[0].size() || board[r][c] == '#') return;
+    char ch = board[r][c];
+    if (!node->children[ch - 'a']) return; // Prune!
+    node = node->children[ch - 'a'];
+    if (!node->word.empty()) { res.push_back(node->word); node->word = ""; }
+    board[r][c] = '#'; // Mark visited
+    dfsGrid(board, r+1, c, node, res); dfsGrid(board, r-1, c, node, res);
+    dfsGrid(board, r, c+1, node, res); dfsGrid(board, r, c-1, node, res);
+    board[r][c] = ch; // Backtrack
+}""",
+            codeJava: """
+private void dfs(char[][] board, int r, int c, TrieNode node, List<String> res) {
+    if (r < 0 || c < 0 || r >= board.length || c >= board[0].length || board[r][c] == '#') return;
+    char ch = board[r][c];
+    if (node.children[ch - 'a'] == null) return;
+    node = node.children[ch - 'a'];
+    if (node.word != null) { res.add(node.word); node.word = null; }
+    board[r][c] = '#';
+    dfs(board, r+1, c, node, res); dfs(board, r-1, c, node, res);
+    dfs(board, r, c+1, node, res); dfs(board, r, c-1, node, res);
+    board[r][c] = ch;
+}""",
+            codePython: """
+def findWords(board: List[List[str]], words: List[str]) -> List[str]:
+    root = TrieNode()
+    for w in words: root.insert(w)
+    res, rows, cols = [], len(board), len(board[0])
+    def dfs(r, c, node):
+        if r < 0 or c < 0 or r >= rows or c >= cols or board[r][c] not in node.children: return
+        ch = board[r][c]
+        node = node.children[ch]
+        if node.word: res.append(node.word); node.word = None
+        board[r][c] = '#'
+        for dr, dc in [(1,0),(-1,0),(0,1),(0,-1)]: dfs(r+dr, c+dc, node)
+        board[r][c] = ch
+    for r in range(rows):
+        for c in range(cols): dfs(r, c, root)
+    return res""",
+            codeJs: """
+function findWords(board, words) {
+    const root = new TrieNode();
+    for (let w of words) root.insert(w);
+    const res = [], R = board.length, C = board[0].length;
+    function dfs(r, c, node) {
+        if (r < 0 || c < 0 || r >= R || c >= C || !node.children[board[r][c]]) return;
+        const ch = board[r][c];
+        node = node.children[ch];
+        if (node.word) { res.push(node.word); node.word = null; }
+        board[r][c] = '#';
+        dfs(r+1, c, node); dfs(r-1, c, node); dfs(r, c+1, node); dfs(r, c-1, node);
+        board[r][c] = ch;
+    }
+    for (let r = 0; r < R; r++) { for (let c = 0; c < C; c++) dfs(r, c, root); }
+    return res;
+}""",
+            descriptionEn: "Find all words from a dictionary present in a 2D character matrix using Trie Prefix Pruning & Backtracking.",
+            descriptionBn: "ট্রাই প্রিফিক্স প্রুনিং এবং ২D গ্রিড ব্যাকট্র্যাকিং ব্যবহার করে ডিকশনারির শব্দগুলো ম্যাট্রিক্সে অনুসন্ধান করুন।",
+            sampleInputs: ["board = [[\"o\",\"a\",\"a\",\"n\"], [\"e\",\"t\",\"a\",\"e\"]], words = [\"oath\",\"pea\",\"eat\"]"],
+            sampleOutputs: ["Found = [\"oath\", \"eat\"]"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Forgetting to Mark isEndOfWord = true at Word Termination",
+            "desc": "In a Trie, inserting 'app' and 'apple' means node 'p' for 'app' MUST have isEndOfWord = true. Forgetting this causes search('app') to return false!"
+          },
+          {
+            "title": "2. Confusing search(word) with startsWith(prefix)",
+            "desc": "search(word) requires matching the complete word AND checking isEndOfWord == true at the final node. startsWith(prefix) only requires character path existence."
+          },
+          {
+            "title": "3. Memory Leaks and Deletion in C++",
+            "desc": "In C++, raw new TrieNode() allocations require a recursive destructor ~Trie() to delete all allocated children nodes, otherwise memory leaks occur."
+          },
+          {
+            "title": "4. Hardcoding Array Size to 26 for Non-ASCII Input",
+            "desc": "Using children[26] assumes lower-case English letters 'a'-'z'. If inputs contain upper-case or unicode, array indexing crashes! Use unordered_map<char, TrieNode*>."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. শব্দের শেষে isEndOfWord = true ফ্ল্যাগ দিতে ভুলে যাওয়া",
+            "desc": "ট্রাই এ 'app' এবং 'apple' সেভ করার সময় 'app' এর শেষ অক্ষরের নোডে `isEndOfWord = true` না দিলে `search('app')` ভুলবশত `false` রিটার্ন করবে।"
+          },
+          {
+            "title": "২. search(word) এবং startsWith(prefix) এর মধ্যে ভুল ধারণা",
+            "desc": "`search(word)` এর জন্য সম্পূর্ণ শব্দ এবং `isEndOfWord == true` আবশ্যক। আর `startsWith(prefix)` এর জন্য কেবল অক্ষরগুলোর অস্তিত্বই যথেষ্ট।"
+          },
+          {
+            "title": "৩. C++ এ মেমোরি লিক ঘটা",
+            "desc": "C++ এ ম্যানুয়ালি `new TrieNode()` ডাইনামিক মেমোরি অ্যালোকশন করলে রিকার্সিভ ডেস্ট্রাক্টর `~Trie()` দিয়ে মেমোরি ফ্রি না করলে মেমোরি লিক ঘটে।"
+          },
+          {
+            "title": "৪. ২৬ আকারের অ্যারেই ফিক্সড রাখা",
+            "desc": "শুধু ছোট হাতের অক্ষর 'a'-'z' ধরে `children[26]` বানালে বড় হাতের অক্ষর বা সংখ্যা আসলে Index Out of Bounds ঘটে।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand N-ary Tree Architecture & TrieNode",
+            "desc": "Master N-ary Tree structure (`children[26]`, `isEndOfWord` flag)."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Core Operations (insert, search, startsWith)",
+            "desc": "Master O(L) time string insertion, full search, and prefix matching."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Wildcard Backtracking Matching",
+            "desc": "Master dot '.' wildcard matching using recursive Trie DFS backtracking."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Dictionary Prefix Replacement",
+            "desc": "Master shortest root prefix lookup for word replacement and auto-complete."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Grid DFS + Trie Prefix Pruning",
+            "desc": "Master Word Search II multi-word matrix search and Bitwise Max XOR Trie."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "N-আকার ট্রি এবং TrieNode কাঠামো বোঝা",
+            "desc": "N-আকার ট্রির ধারণা (`children[26]`, `isEndOfWord` ফ্ল্যাগ) আয়ত্ত করা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "প্রধান অপারেশন (insert, search, startsWith)",
+            "desc": "O(L) সময়ে ইনসার্ট, ফুল সার্চ এবং প্রিফিক্স ম্যাচিং আয়ত্ত করা।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "ওয়াইল্ডকার্ড ব্যাকট্র্যাকিং সার্চ",
+            "desc": "ডট '.' ওয়াইল্ডকার্ড ক্যারেক্টার দিয়ে রিকার্সিভ ট্রাই DFS সার্চ।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "ডিকশনারি প্রিফিক্স রিপ্লেসমেন্ট",
+            "desc": "সংক্ষিপ্ততম রুট প্রিফিক্স ফিল্টার করে অটো-কমপ্লিট এবং শব্দ প্রতিস্থাপন।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "গ্রিড DFS + ট্রাই প্রিফিক্স প্রুনিং (Word Search II)",
+            "desc": "Word Search II এবং বিটওয়াইজ ম্যাক্স XOR ট্রাই তৈরি শেখা।"
+          }
+        ],
       ),
     ];
   }
