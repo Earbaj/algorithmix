@@ -141,57 +141,10 @@ class _TimeSpaceComplexityCodeFreeVisualizerState
             ),
             child: Row(
               children: [
-                Container(
-                  padding: EdgeInsets.all(isMobile ? 8 : 12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.accentNeonCyan.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.speed_rounded,
-                    color: AppTheme.accentNeonCyan,
-                    size: Responsive.sp(context, isMobile ? 22 : 28),
-                  ),
-                ),
-                SizedBox(width: isMobile ? 10 : 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: 8,
-                        children: [
-                          Text(
-                            isEng
-                                ? 'Big O Complexity Growth Visualizer'
-                                : 'বিগ ও (Big O) গ্রোথ রেট ভিজ্যুয়ালাইজার',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: Responsive.sp(context, 16),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: AppTheme.accentGreen.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: AppTheme.accentGreen),
-                            ),
-                            child: Text(
-                              isEng ? '100% Interactive' : '১০০% ইন্টারেক্টিভ',
-                              style: TextStyle(
-                                color: AppTheme.accentGreen,
-                                fontSize: Responsive.sp(context, 10.5),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
                       Text(
                         isEng
                             ? 'Adjust input size N and observe how operation counts scale across different Big O time complexities!'
