@@ -10,6 +10,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/sliding_window_detai
 import 'package:algorithmix/ui/features/core_patterns/views/fast_slow_pointers_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/merge_intervals_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/cyclic_sort_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/inplace_reversal_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -58,6 +59,7 @@ class AppRoutes {
   static const String fastSlowPointersDetail = '/fast-slow-pointers-detail';
   static const String mergeIntervalsDetail = '/merge-intervals-detail';
   static const String cyclicSortDetail = '/cyclic-sort-detail';
+  static const String inplaceReversalDetail = '/inplace-reversal-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -100,6 +102,7 @@ class AppRoutes {
       fastSlowPointersDetail: (context) => const FastSlowPointersDetailScreen(),
       mergeIntervalsDetail: (context) => const MergeIntervalsDetailScreen(),
       cyclicSortDetail: (context) => const CyclicSortDetailScreen(),
+      inplaceReversalDetail: (context) => const InplaceReversalDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),

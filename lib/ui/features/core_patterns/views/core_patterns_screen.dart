@@ -76,6 +76,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 8) {
       // Cyclic Sort dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.cyclicSortDetail);
+    } else if (pattern.id == 9) {
+      // In-place Reversal of Linked List dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.inplaceReversalDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
