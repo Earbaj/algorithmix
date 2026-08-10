@@ -598,27 +598,378 @@ function tensorSum(tensor) {
         id: 202,
         title: "Singly & Doubly Linked List",
         category: "Dynamic Pointer Structure",
-        timeComplexity: "Head Insert/Delete: O(1) | Search: O(N)",
+        timeComplexity: "Head Insert/Delete: O(1) | Search: O(N) | Access: O(N)",
         spaceComplexity: "O(N)",
         icon: Icons.link_outlined,
         themeColor: const Color(0xFF8B5CF6),
-        descriptionEn: "A Linked List is a linear data structure of heap-allocated Node objects connected via pointers.",
-        descriptionBn: "লিঙ্কড লিস্ট হলো হিপ মেমোরিতে পয়েন্টার দ্বারা সংযুক্ত নোড অবজেক্টের লিনিয়ার সিকোয়েন্স।",
-        keyConceptsEn: ["Singly Linked List", "Doubly Linked List", "Circular Linked List"],
-        keyConceptsBn: ["Singly Linked List", "Doubly Linked List", "Circular Linked List"],
+        descriptionEn:
+            "A Linked List is a dynamic linear data structure composed of node objects allocated non-contiguously in heap memory. Each node stores a data value (`val`) and pointer references (`next` in Singly Linked Lists; `prev` and `next` in Doubly Linked Lists). Unlike arrays, inserting or deleting nodes at the head occurs in instant O(1) constant time without shifting memory elements.",
+        descriptionBn:
+            "লিঙ্কড লিস্ট (Linked List) হলো হিপ মেমোরিতে পয়েন্টার দিয়ে একে অপরের সাথে সংযুক্ত ডাইনামিক নোড অবজেক্টের সিকোয়েন্স। প্রতিটি নোডে একটি ডেটা ভ্যালু (`val`) এবং পয়েন্টার রেফারেন্স (Singly এ `next`, Doubly এ `prev` ও `next`) থাকে। অ্যারের মতো মেমোরিতে পরপর না থাকলেও লিঙ্কড লিস্টের শুরুতে (Head) উপাদান ইনসার্ট বা ডিলেট করার কাজ O(1) কনস্ট্যান্ট টাইমে সম্পন্ন করা যায়।",
+        keyConceptsEn: [
+          "Singly Linked List: Unidirectional node chain linked via `curr->next` pointer.",
+          "Doubly Linked List: Bidirectional node chain linked via both `curr->prev` and `curr->next` pointers.",
+          "O(1) Head Insertion: Attaching a new node before the current head requires updating only 2 pointer links.",
+          "Fast & Slow Pointers (Floyd's Algorithm): Moving slow pointer 1 step and fast pointer 2 steps solves middle node and cycle detection in O(N) time."
+        ],
+        keyConceptsBn: [
+          "Singly Linked List: একমুখী নোড চেইন যা শুধুমাত্র `curr->next` পয়েন্টার দিয়ে সংযুক্ত।",
+          "Doubly Linked List: দ্বিমুখী নোড চেইন যা `curr->prev` এবং `curr->next` পয়েন্টার দ্বারা সংযুক্ত।",
+          "O(1) হেড ইনসার্শন: হেডের সামনে নতুন নোড যুক্ত করতে কোনো উপাদান সরাতে হয় না, কেবল ২টি পয়েন্টার লিংক আপডেট করতে হয়।",
+          "ফাস্ট ও স্লো পয়েন্টার (Floyd's Algorithm): স্লো পয়েন্টার ১ ধাপ ও ফাস্ট পয়েন্টার ২ ধাপ চালিয়ে মিডল নোড ও সাইকেল মেমোরিতে নির্ণয় করা।"
+        ],
         multiDimCodeTemplates: {
-          "Singly Linked List": {
-            "C++": "struct Node { int val; Node* next; };",
-            "Java": "class Node { int val; Node next; }",
-            "Python": "class Node: pass",
-            "JavaScript": "class Node {}"
+          "Singly Linked List Node": {
+            "C++": """
+struct ListNode {
+    int val;
+    ListNode* next;
+    ListNode(int x) : val(x), next(nullptr) {}
+};""",
+            "Java": """
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}""",
+            "Python": """
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next""",
+            "JavaScript": """
+class ListNode {
+    constructor(val = 0, next = null) {
+        this.val = val;
+        this.next = next;
+    }
+}"""
+          },
+          "Doubly Linked List Node": {
+            "C++": """
+struct Node {
+    int val;
+    Node* prev;
+    Node* next;
+    Node(int x) : val(x), prev(nullptr), next(nullptr) {}
+};""",
+            "Java": """
+class Node {
+    int val;
+    Node prev;
+    Node next;
+    Node(int val) { this.val = val; }
+}""",
+            "Python": """
+class Node:
+    def __init__(self, val=0, prev=None, next=None):
+        self.val = val
+        self.prev = prev
+        self.next = next""",
+            "JavaScript": """
+class Node {
+    constructor(val = 0, prev = null, next = null) {
+        this.val = val;
+        this.prev = prev;
+        this.next = next;
+    }
+}"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "ll-1",
+            title: "1. Reverse Singly Linked List (Iterative)",
+            category: "Singly Linked List Basic",
+            keyIdeaEn: "Maintain `prev = NULL`, `curr = head`. Flip `curr->next = prev`, advance `prev = curr` and `curr = next` until `curr == NULL` in O(N) time.",
+            keyIdeaBn: "`prev = NULL` ও `curr = head` ধরে লুপের প্রতিটি নোডের `curr->next = prev` উল্টে দিয়ে `prev` কে হেড বানান।",
+            codeCpp: """
+ListNode* reverseList(ListNode* head) {
+    ListNode *prev = nullptr, *curr = head;
+    while (curr != nullptr) {
+        ListNode* nextTemp = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nextTemp;
+    }
+    return prev;
+}""",
+            codeJava: """
+public ListNode reverseList(ListNode head) {
+    ListNode prev = null, curr = head;
+    while (curr != null) {
+        ListNode nextTemp = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = nextTemp;
+    }
+    return prev;
+}""",
+            codePython: """
+def reverseList(head):
+    prev, curr = None, head
+    while curr:
+        next_temp = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next_temp
+    return prev""",
+            codeJs: """
+function reverseList(head) {
+    let prev = null, curr = head;
+    while (curr !== null) {
+        let nextTemp = curr.next;
+        curr.next = prev;
+        prev = curr;
+        curr = nextTemp;
+    }
+    return prev;
+}""",
+            descriptionEn: "Reverse a Singly Linked List in-place by re-pointing next references backward.",
+            descriptionBn: "একটি Singly Linked List এর প্রতিটি পয়েন্টার রিভার্স করে লিঙ্কড লিস্টটি উল্টে দিন।",
+            sampleInputs: ["head = [1 -> 2 -> 3 -> 4 -> 5]"],
+            sampleOutputs: ["head = [5 -> 4 -> 3 -> 2 -> 1]"],
+          ),
+          DsaProblem(
+            id: "ll-2",
+            title: "2. Find Middle Node (Fast & Slow Pointers)",
+            category: "Fast & Slow Pointer Pattern",
+            keyIdeaEn: "Move `slow` 1 step and `fast` 2 steps. When `fast == NULL` or `fast->next == NULL`, `slow` points directly to the middle node.",
+            keyIdeaBn: "`slow` ১ ধাপ এবং `fast` ২ ধাপ সরান। `fast` শেষ নোডে পৌঁছালে `slow` নোডটিই মিডল নোড হবে।",
+            codeCpp: """
+ListNode* middleNode(ListNode* head) {
+    ListNode *slow = head, *fast = head;
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}""",
+            codeJava: """
+public ListNode middleNode(ListNode head) {
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}""",
+            codePython: """
+def middleNode(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow""",
+            codeJs: """
+function middleNode(head) {
+    let slow = head, fast = head;
+    while (fast !== null && fast.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    return slow;
+}""",
+            descriptionEn: "Find the middle node of a Singly Linked List in a single O(N) pass.",
+            descriptionBn: "মাত্র একটি O(N) ট্রাভার্সালে লিঙ্কড লিস্টের মাঝের নোডটি (Middle Node) নির্ণয় করুন।",
+            sampleInputs: ["head = [1 -> 2 -> 3 -> 4 -> 5]"],
+            sampleOutputs: ["Middle Node Val: 3"],
+          ),
+          DsaProblem(
+            id: "ll-3",
+            title: "3. Doubly Linked List In-Place Reversal",
+            category: "Doubly Linked List Basic",
+            keyIdeaEn: "Traverse nodes and swap `curr->next` and `curr->prev` pointers for each node using a temporary pointer.",
+            keyIdeaBn: "প্রতিটি নোডের `curr->next` এবং `curr->prev` পয়েন্টার অদলবদল (Swap) করে লিঙ্কড লিস্টটি উল্টান।",
+            codeCpp: """
+Node* reverseDLL(Node* head) {
+    Node *temp = nullptr, *curr = head;
+    while (curr != nullptr) {
+        temp = curr->prev;
+        curr->prev = curr->next;
+        curr->next = temp;
+        curr = curr->prev;
+    }
+    return temp ? temp->prev : head;
+}""",
+            codeJava: """
+public Node reverseDLL(Node head) {
+    Node temp = null, curr = head;
+    while (curr != null) {
+        temp = curr.prev;
+        curr.prev = curr.next;
+        curr.next = temp;
+        curr = curr.prev;
+    }
+    return temp != null ? temp.prev : head;
+}""",
+            codePython: """
+def reverseDLL(head):
+    temp = None
+    curr = head
+    while curr:
+        temp = curr.prev
+        curr.prev = curr.next
+        curr.next = temp
+        curr = curr.prev
+    return temp.prev if temp else head""",
+            codeJs: """
+function reverseDLL(head) {
+    let temp = null, curr = head;
+    while (curr !== null) {
+        temp = curr.prev;
+        curr.prev = curr.next;
+        curr.next = temp;
+        curr = curr.prev;
+    }
+    return temp !== null ? temp.prev : head;
+}""",
+            descriptionEn: "Reverse a Doubly Linked List by swapping both bidirectional pointers of every node.",
+            descriptionBn: "একটি Doubly Linked List এর প্রতিটি নোডের দ্বিমুখী পয়েন্টার Swap করে অদলবদল করুন।",
+            sampleInputs: ["head = [1 <-> 2 <-> 3 <-> 4]"],
+            sampleOutputs: ["head = [4 <-> 3 <-> 2 <-> 1]"],
+          ),
+          DsaProblem(
+            id: "ll-4",
+            title: "4. Detect Cycle in Linked List (Floyd's Algorithm)",
+            category: "Cycle Detection Pattern",
+            keyIdeaEn: "Move `slow` by 1 step and `fast` by 2 steps. If a cycle exists, `slow` and `fast` pointers will meet at the same node.",
+            keyIdeaBn: "`slow` ১ ধাপ এবং `fast` ২ ধাপ চালনা করুন। চক্র (Cycle) থাকলে `slow` ও `fast` পয়েন্টার একই নোডে মিলবে।",
+            codeCpp: """
+bool hasCycle(ListNode *head) {
+    ListNode *slow = head, *fast = head;
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast) return true;
+    }
+    return false;
+}""",
+            codeJava: """
+public boolean hasCycle(ListNode head) {
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) return true;
+    }
+    return false;
+}""",
+            codePython: """
+def hasCycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False""",
+            codeJs: """
+function hasCycle(head) {
+    let slow = head, fast = head;
+    while (fast !== null && fast.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast) return true;
+    }
+    return false;
+}""",
+            descriptionEn: "Determine if a Linked List contains a cycle where a node links back to a previous node.",
+            descriptionBn: "একটি লিঙ্কড লিস্টের ভেতর কোনো চক্র (Cycle) বা লুপ বিদ্যমান কিনা তা O(1) স্পেসে নির্ণয় করুন।",
+            sampleInputs: ["head = [3 -> 2 -> 0 -> -4] (pos = 1)"],
+            sampleOutputs: ["Has Cycle: True"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Null Pointer Dereference (NPE)",
+            "desc": "Accessing `curr->next->val` without checking if `curr` or `curr->next` is nullptr triggers a runtime crash."
+          },
+          {
+            "title": "2. Losing Head Pointer Reference",
+            "desc": "Advancing `head = head->next` during traversal permanently loses reference to list start."
+          },
+          {
+            "title": "3. Broken Prev Pointers in Doubly Linked List",
+            "desc": "Updating `curr->next` but forgetting to set `curr->next->prev = curr` breaks bidirectional links."
+          },
+          {
+            "title": "4. Memory Leak in C++",
+            "desc": "Deleting a node without saving its `next` pointer causes dangling unfreeable nodes."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. নাল পয়েন্টার ডিরিফারেন্স ভুল (NullPointerException)",
+            "desc": "`curr` বা `curr->next` নাল (nullptr) কিনা চেক না করে `curr->next->val` অ্যাক্সেস করতে গেলে অ্যাপ ক্র্যাশ করে।"
+          },
+          {
+            "title": "২. হেড পয়েন্টার রেফারেন্স হারিয়ে ফেলা",
+            "desc": "লিস্ট ট্রাভার্স করার সময় `head` পয়েন্টার সরানোর ফলে লিঙ্কড লিস্টের শুরুর এড্রেস হারিয়ে যাওয়া।"
+          },
+          {
+            "title": "৩. Doubly Linked List এ Prev পয়েন্টার মিস হওয়া",
+            "desc": "`curr->next` লিঙ্ক করার সময় `curr->next->prev = curr` লিঙ্ক করতে ভুলে যাওয়া।"
+          },
+          {
+            "title": "৪. মেমোরি লিক (Memory Leak)",
+            "desc": "C++ এ কোনো নোড `delete` করার আগে তার `next` পয়েন্টার ব্যাকআপ না রেখে ডিলিট করা।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand Heap Nodes & Pointer References",
+            "desc": "Master node memory allocation (`val` + `next`) and reference variables."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Singly Linked List Traversal & Insert/Delete",
+            "desc": "Learn linear node traversal, head insertion O(1), and tail insertion O(N)."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Iterative List Reversal (Pointer Flipping)",
+            "desc": "Learn 3-pointer manipulation (`prev`, `curr`, `next`) to reverse list in O(1) space."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Fast & Slow Pointer Pattern",
+            "desc": "Learn Floyd's Tortoise and Hare algorithm for finding middle node and cycle detection."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Doubly Linked List Bidirectional Operations",
+            "desc": "Master swapping `next` and `prev` pointers for bidirectional linked list operations."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "হিপ নোড মেমোরি ও পয়েন্টার রেফারেন্স",
+            "desc": "হিপ মেমোরিতে নোড তৈরি (`val` + `next`) এবং পয়েন্টারের কাজ বোঝা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "Singly Linked List ট্রাভার্সাল ও ইনসার্ট/ডিলেট",
+            "desc": "হেডে ও টেইলে নোড যোগ/বিয়োগ এবং নোড ট্রাভার্সিং আয়ত্ত করা।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "পয়েন্টার ফ্লিপিং দিয়ে লিস্ট রিভার্সাল",
+            "desc": "৩টি পয়েন্টার (`prev`, `curr`, `next`) ব্যবহার করে ওয়ান (O(1)) স্পেসে লিঙ্কড লিস্ট উল্টানো।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "ফাস্ট ও স্লো পয়েন্টার অ্যালগরিদম",
+            "desc": "মিডল নোড বের করা ও সাইকেল ডিটেকশনের জন্য Floyd's Tortoise and Hare পদ্ধতি শেখা।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "Doubly Linked List দ্বিমুখী পয়েন্টার মাস্টার",
+            "desc": "`prev` ও `next` পয়েন্টার অদলবদল করে দ্বিমুখী লিঙ্কড লিস্ট কন্ট্রোল করা।"
+          }
+        ],
       ),
 
       // 3. STACK (LIFO)

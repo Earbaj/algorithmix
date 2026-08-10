@@ -54,7 +54,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   bool _isPlaying = false;
   Timer? _timer;
 
-  // Code Snippets split into exact lines for 100% granular line-by-line debugging
+  // ARRAYS CODE LINES & STEPS
   final List<String> _arr1CodeLines = [
     "pair<int, int> findMinMax(vector<int>& arr) {",
     "    int minVal = arr[0], maxVal = arr[0];",
@@ -68,7 +68,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _arr1Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
+      activeLineIndex: 1,
       pointer1: 0,
       minVal: 15,
       maxVal: 15,
@@ -77,7 +77,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ২: minVal = 15 এবং maxVal = 15 সেট করে শুরু করা হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 2, // Line 3
+      activeLineIndex: 2,
       pointer1: 1,
       minVal: 15,
       maxVal: 15,
@@ -86,7 +86,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৩: লুপ i = 1 (মান 42)। শর্ত 1 < 5 সত্য।",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       pointer1: 1,
       minVal: 15,
       maxVal: 42,
@@ -95,7 +95,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৫: শর্ত 42 > 15 সত্য! maxVal আপডেট হয়ে 42 হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       pointer1: 2,
       minVal: 8,
       maxVal: 42,
@@ -104,7 +104,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৪: শর্ত 8 < 15 সত্য! minVal আপডেট হয়ে 8 হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       pointer1: 3,
       minVal: 8,
       maxVal: 99,
@@ -113,7 +113,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৫: শর্ত 99 > 42 সত্য! maxVal আপডেট হয়ে 99 হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       pointer1: 4,
       minVal: 8,
       maxVal: 99,
@@ -122,7 +122,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৪: arr[4] = 23 চেক করা হলো। মান অপরিবর্তিত রইল।",
     ),
     DebugArrayStep(
-      activeLineIndex: 6, // Line 7
+      activeLineIndex: 6,
       pointer1: 4,
       minVal: 8,
       maxVal: 99,
@@ -144,7 +144,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _arr2Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
+      activeLineIndex: 1,
       pointer1: 0,
       pointer2: 4,
       array1D: [1, 2, 3, 4, 5],
@@ -152,7 +152,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ২: left = 0 (মান 1) এবং right = 4 (মান 5) সেট করা হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 2, // Line 3
+      activeLineIndex: 2,
       pointer1: 0,
       pointer2: 4,
       array1D: [1, 2, 3, 4, 5],
@@ -160,7 +160,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৩: লুপ শর্ত (0 < 4) সত্য! লুপে প্রবেশ করুন।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       pointer1: 0,
       pointer2: 4,
       array1D: [5, 2, 3, 4, 1],
@@ -168,7 +168,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৪: arr[0] (1) এবং arr[4] (5) মেমোরিতে সোয়াপ করা হলো!",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       pointer1: 1,
       pointer2: 3,
       array1D: [5, 2, 3, 4, 1],
@@ -176,7 +176,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৫: পয়েন্টার কমানো/বাড়ানো: left = 1, right = 3।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       pointer1: 1,
       pointer2: 3,
       array1D: [5, 4, 3, 2, 1],
@@ -184,7 +184,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৪: arr[1] (2) এবং arr[3] (4) মেমোরিতে সোয়াপ করা হলো!",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       pointer1: 2,
       pointer2: 2,
       array1D: [5, 4, 3, 2, 1],
@@ -192,7 +192,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৫: পয়েন্টার কমানো/বাড়ানো: left = 2, right = 2।",
     ),
     DebugArrayStep(
-      activeLineIndex: 2, // Line 3
+      activeLineIndex: 2,
       pointer1: 2,
       pointer2: 2,
       array1D: [5, 4, 3, 2, 1],
@@ -216,7 +216,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _arr3Steps = const [
     DebugArrayStep(
-      activeLineIndex: 2, // Line 3
+      activeLineIndex: 2,
       pointer1: 0,
       pointer2: 0,
       matrix2D: [[0, 0], [0, 0], [0, 0]],
@@ -224,7 +224,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৩: ৩x২ সাইজের রেজাল্ট ম্যাট্রিক্স তৈরি।",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 0,
       pointer2: 0,
       matrix2D: [[1, 0], [0, 0], [0, 0]],
@@ -232,7 +232,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: matrix[0][0] = 1 -> result[0][0] = 1",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 0,
       pointer2: 1,
       matrix2D: [[1, 0], [2, 0], [0, 0]],
@@ -240,7 +240,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: matrix[0][1] = 2 -> result[1][0] = 2",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 0,
       pointer2: 2,
       matrix2D: [[1, 0], [2, 0], [3, 0]],
@@ -248,7 +248,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: matrix[0][2] = 3 -> result[2][0] = 3",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 1,
       pointer2: 0,
       matrix2D: [[1, 4], [2, 0], [3, 0]],
@@ -256,7 +256,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: matrix[1][0] = 4 -> result[0][1] = 4",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 1,
       pointer2: 1,
       matrix2D: [[1, 4], [2, 5], [3, 0]],
@@ -264,7 +264,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: matrix[1][1] = 5 -> result[1][1] = 5",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 1,
       pointer2: 2,
       matrix2D: [[1, 4], [2, 5], [3, 6]],
@@ -272,7 +272,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: matrix[1][2] = 6 -> result[2][1] = 6",
     ),
     DebugArrayStep(
-      activeLineIndex: 8, // Line 9
+      activeLineIndex: 8,
       pointer1: 1,
       pointer2: 2,
       matrix2D: [[1, 4], [2, 5], [3, 6]],
@@ -297,28 +297,28 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _arr4Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
+      activeLineIndex: 1,
       pointer1: 0,
       minVal: 0,
       explanationEn: "Line 2: Initialize total sum = 0.",
       explanationBn: "লাইন ২: মোট সমষ্টি total = 0 সূচনা করা হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 0,
       minVal: 10,
       explanationEn: "Line 6: Depth Layer 0: Summing elements [[1,2],[3,4]] -> total = 10.",
       explanationBn: "লাইন ৬: ডেপথ লেয়ার 0 উপাদান যোগ -> সমষ্টি = 10।",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       pointer1: 1,
       minVal: 36,
       explanationEn: "Line 6: Depth Layer 1: Summing elements [[5,6],[7,8]] -> total = 10 + 26 = 36.",
       explanationBn: "লাইন ৬: ডেপথ লেয়ার 1 উপাদান যোগ -> মোট সমষ্টি = 36।",
     ),
     DebugArrayStep(
-      activeLineIndex: 9, // Line 10
+      activeLineIndex: 9,
       pointer1: 1,
       minVal: 36,
       explanationEn: "🎉 Line 10: 3D Tensor Volume Sum Complete! Return total = 36.",
@@ -326,7 +326,244 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     ),
   ];
 
+  // LINKED LIST CODE LINES & STEPS
+  final List<String> _ll1CodeLines = [
+    "ListNode* reverseList(ListNode* head) {",
+    "    ListNode *prev = nullptr, *curr = head;",
+    "    while (curr != nullptr) {",
+    "        ListNode* nextTemp = curr->next;",
+    "        curr->next = prev;",
+    "        prev = curr;",
+    "        curr = nextTemp;",
+    "    }",
+    "    return prev;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _ll1Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1, // Line 2
+      pointer1: 0, // curr = 0
+      pointer2: -1, // prev = -1 (null)
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 2: Set prev = null, curr = head (node val 1).",
+      explanationBn: "লাইন ২: prev = null এবং curr = head (নোড মান 1) সূচনা।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 2, // Line 3
+      pointer1: 0,
+      pointer2: -1,
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 3: Check while (curr != null) -> (curr val 1) is TRUE. Enter loop.",
+      explanationBn: "লাইন ৩: শর্ত চেক (curr != null) সত্য! লুপে প্রবেশ করুন।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3, // Line 4
+      pointer1: 0,
+      pointer2: -1,
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 4: Backup next reference -> nextTemp = node (val 2).",
+      explanationBn: "লাইন ৪: পরবর্তী নোডের ব্যাকআপ: nextTemp = node 2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4, // Line 5
+      pointer1: 0,
+      pointer2: -1,
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 5: Flip link! Node 1 next now points to prev (null).",
+      explanationBn: "লাইন ৫: লিঙ্ক উল্টানো! নোড 1 এর পয়েন্টার এখন prev (null) কে দেখাচ্ছে।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5, // Line 6
+      pointer1: 1, // curr = 1
+      pointer2: 0, // prev = 0
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 6: Advance pointers -> prev = node 1, curr = node 2.",
+      explanationBn: "লাইন ৬: পয়েন্টার আগানো: prev = node 1, curr = node 2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4, // Line 5
+      pointer1: 1,
+      pointer2: 0,
+      array1D: [2, 1, 3, 4, 5],
+      explanationEn: "Line 5: Flip link! Node 2 next now points back to Node 1.",
+      explanationBn: "লাইন ৫: লিঙ্ক উল্টানো! নোড 2 এখন নোড 1 কে পয়েন্ট করছে।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 8, // Line 9
+      pointer1: 4,
+      pointer2: 4,
+      array1D: [5, 4, 3, 2, 1],
+      explanationEn: "🎉 Line 9: List reversed! Return new head prev (val 5).",
+      explanationBn: "🎉 লাইন ৯: লিঙ্কড লিস্ট উল্টানো সম্পন্ন! নতুন হেড prev (মান 5)।",
+    ),
+  ];
+
+  final List<String> _ll2CodeLines = [
+    "ListNode* middleNode(ListNode* head) {",
+    "    ListNode *slow = head, *fast = head;",
+    "    while (fast != nullptr && fast->next != nullptr) {",
+    "        slow = slow->next;",
+    "        fast = fast->next->next;",
+    "    }",
+    "    return slow;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _ll2Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1, // Line 2
+      pointer1: 0, // slow = 0
+      pointer2: 0, // fast = 0
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 2: Set slow = head (val 1) and fast = head (val 1).",
+      explanationBn: "লাইন ২: slow = 1 এবং fast = 1 সেট করে সূচনা।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 2, // Line 3
+      pointer1: 0,
+      pointer2: 0,
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 3: Check while (fast != null) -> (fast val 1) is TRUE.",
+      explanationBn: "লাইন ৩: শর্ত চেক (fast != null) সত্য!",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3, // Line 4
+      pointer1: 1, // slow = 1 (val 2)
+      pointer2: 0,
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 4: Advance slow 1 step -> slow = node 2 (val 2).",
+      explanationBn: "লাইন ৪: slow ১ ধাপ এগুলো -> slow = 2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4, // Line 5
+      pointer1: 1,
+      pointer2: 2, // fast = 2 (val 3)
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 5: Advance fast 2 steps -> fast = node 3 (val 3).",
+      explanationBn: "লাইন ৫: fast ২ ধাপ এগুলো -> fast = 3।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3, // Line 4
+      pointer1: 2, // slow = 2 (val 3)
+      pointer2: 4, // fast = 4 (val 5)
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "Line 4: Advance slow 1 step -> slow = node 3 (val 3).",
+      explanationBn: "লাইন ৪: slow ১ ধাপ এগুলো -> slow = 3।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6, // Line 7
+      pointer1: 2,
+      pointer2: 4,
+      array1D: [1, 2, 3, 4, 5],
+      explanationEn: "🎉 Line 7: Fast reached tail! Middle Node = slow (val 3).",
+      explanationBn: "🎉 লাইন ৭: fast শেষ নোডে পৌঁছেছে! মিডল নোড = 3 (slow)।",
+    ),
+  ];
+
+  final List<String> _ll3CodeLines = [
+    "Node* reverseDLL(Node* head) {",
+    "    Node *temp = nullptr, *curr = head;",
+    "    while (curr != nullptr) {",
+    "        temp = curr->prev;",
+    "        curr->prev = curr->next;",
+    "        curr->next = temp;",
+    "        curr = curr->prev;",
+    "    }",
+    "    return temp ? temp->prev : head;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _ll3Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1,
+      pointer1: 0,
+      array1D: [1, 2, 3, 4],
+      explanationEn: "Line 2: Set temp = null, curr = head (Node 1).",
+      explanationBn: "লাইন ২: temp = null এবং curr = head (নোড 1)।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      pointer1: 0,
+      array1D: [1, 2, 3, 4],
+      explanationEn: "Line 5: Swapped prev and next pointers of Node 1.",
+      explanationBn: "লাইন ৫: নোড 1 এর prev ও next পয়েন্টার অদলবদল করা হলো।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6,
+      pointer1: 1,
+      array1D: [1, 2, 3, 4],
+      explanationEn: "Line 7: Move to next node (Node 2).",
+      explanationBn: "লাইন ৭: পরবর্তী নোড 2 এ আগানো হলো।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      pointer1: 1,
+      array1D: [1, 2, 3, 4],
+      explanationEn: "Line 5: Swapped prev and next pointers of Node 2.",
+      explanationBn: "লাইন ৫: নোড 2 এর prev ও next পয়েন্টার অদলবদল করা হলো।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 8,
+      pointer1: 3,
+      array1D: [4, 3, 2, 1],
+      explanationEn: "🎉 Line 9: Doubly Linked List Reversal Complete! Return new head (val 4).",
+      explanationBn: "🎉 লাইন ৯: Doubly Linked List উল্টানো সম্পন্ন! নতুন হেড 4।",
+    ),
+  ];
+
+  final List<String> _ll4CodeLines = [
+    "bool hasCycle(ListNode *head) {",
+    "    ListNode *slow = head, *fast = head;",
+    "    while (fast != nullptr && fast->next != nullptr) {",
+    "        slow = slow->next;",
+    "        fast = fast->next->next;",
+    "        if (slow == fast) return true;",
+    "    }",
+    "    return false;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _ll4Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1,
+      pointer1: 0,
+      pointer2: 0,
+      array1D: [3, 2, 0, -4],
+      explanationEn: "Line 2: Set slow = head (3), fast = head (3). Cycle exists: -4 -> 2.",
+      explanationBn: "লাইন ২: slow = 3 এবং fast = 3 সেট। লিঙ্কড লিস্টে ৩->২->০->-৪->২ চক্র রয়েছে।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3,
+      pointer1: 1,
+      pointer2: 2,
+      array1D: [3, 2, 0, -4],
+      explanationEn: "Line 4: Advance slow = 2, fast = 0.",
+      explanationBn: "লাইন ৪: slow = 2, fast = 0 এ এগুলো।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      pointer1: 2,
+      pointer2: 1,
+      array1D: [3, 2, 0, -4],
+      explanationEn: "Line 5: Advance slow = 0, fast = 2 (entering cycle).",
+      explanationBn: "লাইন ৫: slow = 0, fast = 2 (চক্রের ভেতর)।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      pointer1: 1,
+      pointer2: 1,
+      array1D: [3, 2, 0, -4],
+      explanationEn: "🎉 Line 6: CYCLE DETECTED! slow == fast at Node 2! Return TRUE!",
+      explanationBn: "🎉 লাইন ৬: চক্র শনাক্ত করা হয়েছে! Node 2 এ slow == fast! Return TRUE!",
+    ),
+  ];
+
   List<DebugArrayStep> get _currentSteps {
+    if (widget.problem.id == "ll-1") return _ll1Steps;
+    if (widget.problem.id == "ll-2") return _ll2Steps;
+    if (widget.problem.id == "ll-3") return _ll3Steps;
+    if (widget.problem.id == "ll-4") return _ll4Steps;
     if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") return _arr2Steps;
     if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") return _arr3Steps;
     if (widget.problem.id.contains("4") || widget.problem.id == "arr-4") return _arr4Steps;
@@ -334,6 +571,10 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   }
 
   List<String> get _currentCodeLines {
+    if (widget.problem.id == "ll-1") return _ll1CodeLines;
+    if (widget.problem.id == "ll-2") return _ll2CodeLines;
+    if (widget.problem.id == "ll-3") return _ll3CodeLines;
+    if (widget.problem.id == "ll-4") return _ll4CodeLines;
     if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") return _arr2CodeLines;
     if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") return _arr3CodeLines;
     if (widget.problem.id.contains("4") || widget.problem.id == "arr-4") return _arr4CodeLines;
@@ -819,43 +1060,63 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (step.minVal != null)
-                  Text("Min: ${step.minVal}", style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 15)),
+                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : "Min: ${step.minVal}", style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
                 if (step.maxVal != null)
-                  Text("Max: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 15)),
+                  Text("Max: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14)),
               ],
             ),
             const SizedBox(height: 16),
           ],
 
-          // 1D Array Canvas
+          // 1D Array or Linked List Canvas
           if (step.array1D != null) ...[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(step.array1D!.length, (i) {
-                final isP1 = step.pointer1 == i;
-                final isP2 = step.pointer2 == i;
-                final color = isP1 ? AppTheme.accentNeonCyan : (isP2 ? AppTheme.accentPink : AppTheme.surfaceDark);
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(step.array1D!.length, (i) {
+                  final isP1 = step.pointer1 == i;
+                  final isP2 = step.pointer2 == i;
+                  final color = isP1 ? AppTheme.accentNeonCyan : (isP2 ? AppTheme.accentPink : AppTheme.surfaceDark);
+                  final isLinkedList = widget.problem.id.startsWith("ll-");
+                  final isDoubly = widget.problem.id == "ll-3";
 
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 52,
-                  height: 65,
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: (isP1 || isP2) ? Colors.white : AppTheme.textMuted.withOpacity(0.3), width: (isP1 || isP2) ? 2 : 1),
-                    boxShadow: (isP1 || isP2) ? [BoxShadow(color: color.withOpacity(0.5), blurRadius: 8)] : [],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  String badge1 = "curr [$i]";
+                  String badge2 = "prev [$i]";
+                  if (widget.problem.id == "ll-2" || widget.problem.id == "ll-4") {
+                    badge1 = "slow [$i]";
+                    badge2 = "fast [$i]";
+                  }
+
+                  return Row(
                     children: [
-                      Text("${step.array1D![i]}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: (isP1 || isP2) ? AppTheme.primaryDark : Colors.white)),
-                      const SizedBox(height: 4),
-                      Text(isP1 ? "i [$i]" : (isP2 ? "right [$i]" : "[$i]"), style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: (isP1 || isP2) ? AppTheme.primaryDark : AppTheme.textMuted)),
+                      Container(
+                        width: isLinkedList ? 58 : 52,
+                        height: 65,
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(isLinkedList ? 30 : 12),
+                          border: Border.all(color: (isP1 || isP2) ? Colors.white : AppTheme.textMuted.withOpacity(0.3), width: (isP1 || isP2) ? 2.5 : 1),
+                          boxShadow: (isP1 || isP2) ? [BoxShadow(color: color.withOpacity(0.5), blurRadius: 8)] : [],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("${step.array1D![i]}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: (isP1 || isP2) ? AppTheme.primaryDark : Colors.white)),
+                            const SizedBox(height: 4),
+                            Text(isP1 ? badge1 : (isP2 ? badge2 : "[$i]"), style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold, color: (isP1 || isP2) ? AppTheme.primaryDark : AppTheme.textMuted)),
+                          ],
+                        ),
+                      ),
+                      if (isLinkedList && i < step.array1D!.length - 1)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Icon(isDoubly ? Icons.swap_horiz : Icons.arrow_right_alt, color: AppTheme.accentNeonCyan, size: 20),
+                        ),
                     ],
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
           ],
 
