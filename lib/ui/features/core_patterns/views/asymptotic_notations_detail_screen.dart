@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'package:algorithmix/ui/features/core_patterns/widgets/asymptotic_notations_code_free_visualizer.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class AsymptoticNotationsDetailScreen extends StatefulWidget {
   const AsymptoticNotationsDetailScreen({super.key});
@@ -67,7 +68,17 @@ class _AsymptoticNotationsDetailScreenState
     return Scaffold(
       backgroundColor: AppTheme.primaryDark,
       appBar: AppBar(
-        title: Text(
+        title: Responsive.isMobile(context) ? TextScroll(
+          '1.1 Asymptotic Notations (Big O, Ω, Θ)',
+          mode: TextScrollMode.bouncing, // This makes it go right-to-left, then left-to-right
+          velocity: const Velocity(pixelsPerSecond: Offset(50, 0)), // Adjust speed here
+          delayBefore: const Duration(seconds: 1), // Waits 1 second before starting
+          pauseBetween: const Duration(seconds: 1), // Pauses before bouncing back
+          style: TextStyle(
+            fontSize: Responsive.sp(context, 16),
+            fontWeight: FontWeight.bold,
+          ),
+        ):Text(
           '1.1 Asymptotic Notations (Big O, Ω, Θ)',
           style: TextStyle(
             fontSize: Responsive.sp(context, 16),
@@ -227,28 +238,24 @@ class _AsymptoticNotationsDetailScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(title,
-                  style: TextStyle(
-                      fontSize: Responsive.sp(context, 15),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white)),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: color),
-                ),
-                child: Text(badge,
-                    style: TextStyle(
-                        color: color,
-                        fontWeight: FontWeight.bold,
-                        fontSize: Responsive.sp(context, 11))),
-              ),
-            ],
+          Text(title,
+              style: TextStyle(
+                  fontSize: Responsive.sp(context, 15),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white)),
+          const SizedBox(height: 10,),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: color),
+            ),
+            child: Text(badge,
+                style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Responsive.sp(context, 11))),
           ),
           const SizedBox(height: 10),
           Text(desc,
