@@ -141,12 +141,12 @@ class _DsaScreenState extends State<DsaScreen> {
           child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: topic.themeColor.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(topic.icon, color: topic.themeColor, size: 30),
+                child: Icon(topic.icon, color: topic.themeColor, size: 20),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -172,38 +172,33 @@ class _DsaScreenState extends State<DsaScreen> {
                       ),
                     ),
                     const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppTheme.surfaceDark,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: const Color(0xFF334155)),
-                          ),
-                          child: Text(
-                            topic.category,
-                            style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: topic.themeColor.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            "⚡ $totalProblems FAANG Problems",
-                            style: TextStyle(fontSize: 10, color: topic.themeColor, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: AppTheme.surfaceDark,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: const Color(0xFF334155)),
+                      ),
+                      child: Text(
+                        topic.category,
+                        style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: topic.themeColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Text(
+                        "⚡ $totalProblems FAANG Problems",
+                        style: TextStyle(fontSize: 10, color: topic.themeColor, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: AppTheme.textMuted),
             ],
           ),
         ),
