@@ -7,6 +7,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/core_patterns_screen
 import 'package:algorithmix/ui/features/core_patterns/views/two_pointers_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/recursion_backtracking_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/sliding_window_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/fast_slow_pointers_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -52,6 +53,7 @@ class AppRoutes {
   static const String twoPointersDetail = '/two-pointers-detail';
   static const String recursionBacktrackingDetail = '/recursion-backtracking-detail';
   static const String slidingWindowDetail = '/sliding-window-detail';
+  static const String fastSlowPointersDetail = '/fast-slow-pointers-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -91,6 +93,7 @@ class AppRoutes {
       twoPointersDetail: (context) => const TwoPointersDetailScreen(),
       recursionBacktrackingDetail: (context) => const RecursionBacktrackingDetailScreen(),
       slidingWindowDetail: (context) => const SlidingWindowDetailScreen(),
+      fastSlowPointersDetail: (context) => const FastSlowPointersDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),

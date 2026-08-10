@@ -67,6 +67,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 5) {
       // Sliding Window dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.slidingWindowDetail);
+    } else if (pattern.id == 6) {
+      // Fast & Slow Pointers dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.fastSlowPointersDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
