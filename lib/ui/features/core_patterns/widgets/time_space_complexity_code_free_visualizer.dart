@@ -117,9 +117,6 @@ class _TimeSpaceComplexityCodeFreeVisualizerState
     );
 
     return SingleChildScrollView(
-      padding: EdgeInsets.symmetric(
-        vertical: Responsive.verticalPadding(context),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
