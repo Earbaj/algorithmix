@@ -82,6 +82,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 10) {
       // Tree BFS dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.treeBfsDetail);
+    } else if (pattern.id == 11) {
+      // Tree DFS dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.treeDfsDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
