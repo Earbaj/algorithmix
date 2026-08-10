@@ -363,6 +363,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   // TAB 2: Step Visualizer tailored to current problem
   Widget _buildVisualizerTab(double hPadding) {
+    String currentLog = _p1Log;
+    if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
+      currentLog = _p2Log;
+    } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
+      currentLog = _p3Log;
+    } else if (widget.problem.id.contains("4") || widget.problem.id == "arr-4") {
+      currentLog = _p4Log;
+    }
+
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
       child: SingleChildScrollView(
@@ -378,26 +387,14 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
                 border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.5)),
               ),
               child: Text(
-                widget.problem.id == "basic-1"
-                    ? _p1Log
-                    : (widget.problem.id == "basic-2"
-                        ? _p2Log
-                        : (widget.problem.id == "basic-3" ? _p3Log : _p4Log)),
+                currentLog,
                 style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13),
               ),
             ),
             const SizedBox(height: 16),
 
             // Visualization Display Canvas
-            if (widget.problem.id == "basic-1") ...[
-              _buildMinMaxVisualizerCanvas(),
-            ] else if (widget.problem.id == "basic-2") ...[
-              _buildReverseVisualizerCanvas(),
-            ] else if (widget.problem.id == "basic-3") ...[
-              _buildTransposeVisualizerCanvas(),
-            ] else ...[
-              _buildLayerSumVisualizerCanvas(),
-            ],
+            _buildCurrentProblemVisualizerCanvas(),
 
             const SizedBox(height: 20),
 
@@ -589,7 +586,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     );
   }
 
-  // TAB 3: Multi-Language Code
+  // TAB 3: Multi-Language Code with Embedded Visualizer
   Widget _buildCodeTab(double hPadding) {
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
@@ -632,6 +629,12 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
                 ],
               ),
             ),
+            const SizedBox(height: 20),
+
+            // Live Problem Step Visualizer integrated inside Solution Code Tab
+            Text(_isEnglish ? "Interactive Execution Visualizer" : "ইন্টারেক্টিভ ভিজ্যুয়ালাইজার সলিউশন প্রিভিউ", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan)),
+            const SizedBox(height: 10),
+            _buildCurrentProblemVisualizerCanvas(),
           ],
         ),
       ),
