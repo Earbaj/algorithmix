@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DsaProblem {
   final String id;
   final String title;
-  final String category; // e.g. "Trie Basic", "Trie Pattern"
+  final String category; // e.g. "1D Array Basic", "2D Matrix Pattern"
   final String keyIdeaEn;
   final String keyIdeaBn;
   final String codeCpp;
@@ -44,7 +44,7 @@ class DsaTopic {
   final Color themeColor;
   final List<String> keyConceptsEn;
   final List<String> keyConceptsBn;
-  final Map<String, Map<String, String>> multiDimCodeTemplates; // Variant (Standard Trie, Autocomplete, Wildcard Search) -> (Language -> Code)
+  final Map<String, Map<String, String>> multiDimCodeTemplates;
   final List<DsaProblem> basicProblems;
   final List<Map<String, String>> commonMistakesEn;
   final List<Map<String, String>> commonMistakesBn;
@@ -84,23 +84,513 @@ class DsaDataRepository {
         spaceComplexity: "1D: O(N) | 2D: O(R×C) | 3D: O(D×R×C)",
         icon: Icons.view_column_outlined,
         themeColor: const Color(0xFF3B82F6),
-        descriptionEn: "An Array is a contiguous memory allocation storing elements of the same type.",
-        descriptionBn: "মেমোরিতে পরপর (Contiguous) সাজানো একই ধরনের উপাদানের স্ট্রাকচার।",
-        keyConceptsEn: ["1D Dynamic Array", "2D Matrix", "3D Tensor"],
-        keyConceptsBn: ["১D ডাইনামিক অ্যারে", "২D ম্যাট্রিক্স", "৩D টেনসর"],
+        descriptionEn:
+            "An Array is a contiguous memory allocation storing elements of the same data type. It supports instant O(1) constant time element access using zero-based indices (`arr[i]`). Dynamic Lists (like `vector` in C++, `ArrayList` in Java, `list` in Python, or `Array` in JS) automatically resize by doubling memory capacity when full. Multi-dimensional Arrays extend this into 2D Matrices (`matrix[row][col]`) and 3D Tensors (`tensor[depth][row][col]`).",
+        descriptionBn:
+            "অ্যারে (Array) হলো একই ধরনের ডেটা টাইপ মেমোরিতে পর পর (Contiguous) সাজিয়ে রাখার স্ট্রাকচার। এটি শূন্য-ভিত্তিক ইনডেক্স (`arr[i]`) ব্যবহার করে ওয়ান (O(1)) স্পিডে এলিমেন্ট অ্যাক্সেস করতে পারে। ডাইনামিক লিস্ট (যেমন C++ এর `vector`, Java এর `ArrayList`, Python এর `list`, JS এর `Array`) ফুল হয়ে গেলে ক্যাপাসিটি দ্বিগুণ বাড়িয়ে স্বয়ংক্রিয় রি-অ্যালকোপেশন করে। মাল্টি-ডাইমেনশনাল অ্যারে এটিকে ২টি মাত্রায় ২D ম্যাট্রিক্স (`matrix[row][col]`) এবং ৩টি মাত্রায় ৩D টেনসরে (`tensor[depth][row][col]`) রূপান্তরিত করে।",
+        keyConceptsEn: [
+          "O(1) Direct Access: `arr[i]` computes memory address in constant O(1) time using base address + (index × element_size).",
+          "Dynamic Array Resizing: When capacity is reached, memory is reallocated with 2x capacity, amortizing insertion time to O(1).",
+          "2D Matrix Grid: Formatted as rows and columns (`arr[r][c]`), mapped to 1D memory as `r * C + c` in Row-Major order.",
+          "3D Tensor Volume: Extends matrices into depth layers (`arr[d][r][c]`), mapped to 1D memory as `d * R * C + r * C + c`.",
+          "Cache Locality Advantage: Contiguous memory storage enables CPU spatial cache locality, making array iterations extremely fast."
+        ],
+        keyConceptsBn: [
+          "O(1) সরাসরি অ্যাক্সেস: `arr[i]` বেস এড্রেস + (ইন্ডেক্স × সাইজ) সূত্র ব্যবহার করে O(1) কনস্ট্যান্ট টাইমে মান বের করে।",
+          "ডাইনামিক অ্যারে রিসাইজিং: ক্যাপাসিটি ফুল হলে মেমোরি দ্বিগুণ (2x) বাড়িয়ে রিঅ্যালোকেশন ঘটে, যা গড় ইনসার্শন টাইম O(1) করে।",
+          "২D ম্যাট্রিক্স গ্রিড: সারি (Rows) ও কলাম (Cols) দ্বারা গঠিত (`arr[r][c]`), মেমোরিতে Row-Major নিয়মে `r * C + c` এ সংরক্ষিত থাকে।",
+          "৩D টেনসর ভলিউম: ডেপথ লেয়ার নিয়ে গঠিত ৩D ব্লক (`arr[d][r][c]`), মেমোরিতে `d * R * C + r * C + c` সূত্রের সাহায্যে থাকে।",
+          "ক্যাশ লোকালিটি সুবিধা: পরপর মেমোরি সাজানো থাকায় CPU Spatial Cache Locality এর কারণে অ্যারে লুপ অত্যন্ত দ্রুত কাজ করে।"
+        ],
         multiDimCodeTemplates: {
-          "1D Array": {
-            "C++": "vector<int> arr = {10, 20};",
-            "Java": "ArrayList<Integer> list = new ArrayList<>();",
-            "Python": "arr = [10, 20]",
-            "JavaScript": "const arr = [10, 20];"
+          "1D Dynamic Array": {
+            "C++": """
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    // 1D Dynamic Array (std::vector)
+    vector<int> arr = {10, 20, 30, 40};
+    
+    // O(1) Access & Update
+    arr[0] = 15;
+    
+    // Amortized O(1) Push Back
+    arr.push_back(50);
+    
+    // Iterate elements O(N)
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    return 0;
+}""",
+            "Java": """
+import java.util.ArrayList;
+
+public class Array1DDemo {
+    public static void main(String[] args) {
+        // 1D Dynamic Array (ArrayList)
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(10);
+        list.add(20);
+        list.add(30);
+        
+        // O(1) Access & Update
+        list.set(0, 15);
+        System.out.println("First Element: " + list.get(0));
+        
+        // Iterate elements O(N)
+        for (int num : list) {
+            System.out.print(num + " ");
+        }
+    }
+}""",
+            "Python": """
+# 1D Dynamic Array (Python list)
+arr = [10, 20, 30, 40]
+
+# O(1) Access & Update
+arr[0] = 15
+
+# Amortized O(1) Append
+arr.append(50)
+
+# Iterate elements O(N)
+for num in arr:
+    print(num, end=" ")""",
+            "JavaScript": """
+// 1D Dynamic Array (JS Array)
+const arr = [10, 20, 30, 40];
+
+// O(1) Access & Update
+arr[0] = 15;
+
+// Amortized O(1) Push
+arr.push(50);
+
+// Iterate elements O(N)
+arr.forEach(num => console.log(num));"""
+          },
+          "2D Matrix Grid": {
+            "C++": """
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    // 2D Matrix (3 rows x 3 cols)
+    vector<vector<int>> matrix = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {7, 8, 9}
+    };
+    
+    // O(1) Element Access: matrix[row][col]
+    cout << "Center element: " << matrix[1][1] << endl; // 5
+    
+    // Traversing 2D Matrix O(R x C)
+    for (int r = 0; r < matrix.size(); r++) {
+        for (int c = 0; c < matrix[0].size(); c++) {
+            cout << matrix[r][c] << " ";
+        }
+        cout << endl;
+    }
+    return 0;
+}""",
+            "Java": """
+public class Matrix2DDemo {
+    public static void main(String[] args) {
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        
+        System.out.println("Center element: " + matrix[1][1]);
+        
+        for (int r = 0; r < matrix.length; r++) {
+            for (int c = 0; c < matrix[0].length; c++) {
+                System.out.print(matrix[r][c] + " ");
+            }
+            System.out.println();
+        }
+    }
+}""",
+            "Python": """
+matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+
+print("Center element:", matrix[1][1])
+
+for row in matrix:
+    for val in row:
+        print(val, end=" ")
+    print()""",
+            "JavaScript": """
+const matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+];
+
+console.log("Center element:", matrix[1][1]);
+
+for (let r = 0; r < matrix.length; r++) {
+    let rowStr = "";
+    for (let c = 0; c < matrix[0].length; c++) {
+        rowStr += matrix[r][c] + " ";
+    }
+    console.log(rowStr);
+}"""
+          },
+          "3D Tensor Volume": {
+            "C++": """
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    // 3D Tensor: 2 depth layers x 2 rows x 2 cols
+    vector<vector<vector<int>>> tensor = {
+        { {1, 2}, {3, 4} },
+        { {5, 6}, {7, 8} }
+    };
+    
+    // O(1) Tensor element access: tensor[depth][row][col]
+    cout << "Layer 1, Row 1, Col 1: " << tensor[1][1][1] << endl; // 8
+    
+    // Traversing 3D Tensor O(D x R x C)
+    for (int d = 0; d < tensor.size(); d++) {
+        for (int r = 0; r < tensor[0].size(); r++) {
+            for (int c = 0; c < tensor[0][0].size(); c++) {
+                cout << tensor[d][r][c] << " ";
+            }
+        }
+    }
+    return 0;
+}""",
+            "Java": """
+public class Tensor3DDemo {
+    public static void main(String[] args) {
+        int[][][] tensor = {
+            { {1, 2}, {3, 4} },
+            { {5, 6}, {7, 8} }
+        };
+        
+        System.out.println("Layer 1, Row 1, Col 1: " + tensor[1][1][1]);
+    }
+}""",
+            "Python": """
+tensor = [
+    [[1, 2], [3, 4]],
+    [[5, 6], [7, 8]]
+]
+
+print("Layer 1, Row 1, Col 1:", tensor[1][1][1])""",
+            "JavaScript": """
+const tensor = [
+    [[1, 2], [3, 4]],
+    [[5, 6], [7, 8]]
+];
+
+console.log("Layer 1, Row 1, Col 1:", tensor[1][1][1]);"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "arr-1",
+            title: "1. Find Minimum & Maximum in 1D Array",
+            category: "1D Array Basic",
+            keyIdeaEn: "Initialize `minVal` and `maxVal` with `arr[0]`. Scan array from index 1 to N-1 and update bounds in O(N) time.",
+            keyIdeaBn: "`arr[0]` দিয়ে `minVal` এবং `maxVal` শুরু করুন। ইন্ডেক্স ১ থেকে N-1 পর্যন্ত লুপ চালিয়ে O(N) সময়ে সর্বনিম্ন ও সর্বোচ্চ মান আপডেট করুন।",
+            codeCpp: """
+pair<int, int> findMinMax(vector<int>& arr) {
+    int minVal = arr[0], maxVal = arr[0];
+    for (int i = 1; i < arr.size(); i++) {
+        if (arr[i] < minVal) minVal = arr[i];
+        if (arr[i] > maxVal) maxVal = arr[i];
+    }
+    return {minVal, maxVal};
+}""",
+            codeJava: """
+public static int[] findMinMax(int[] arr) {
+    int minVal = arr[0], maxVal = arr[0];
+    for (int i = 1; i < arr.length; i++) {
+        if (arr[i] < minVal) minVal = arr[i];
+        if (arr[i] > maxVal) maxVal = arr[i];
+    }
+    return new int[]{minVal, maxVal};
+}""",
+            codePython: """
+def findMinMax(arr):
+    min_val, max_val = arr[0], arr[0]
+    for num in arr[1:]:
+        if num < min_val: min_val = num
+        if num > max_val: max_val = num
+    return (min_val, max_val)""",
+            codeJs: """
+function findMinMax(arr) {
+    let minVal = arr[0], maxVal = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] < minVal) minVal = arr[i];
+        if (arr[i] > maxVal) maxVal = arr[i];
+    }
+    return [minVal, maxVal];
+}""",
+            descriptionEn: "Find the smallest (minimum) and largest (maximum) numbers in an unsorted 1D array.",
+            descriptionBn: "একটি আনসর্টেড ১D অ্যারে থেকে সবচেয়ে ছোট (Minimum) এবং সবচেয়ে বড় (Maximum) সংখ্যা দুটি বের করুন।",
+            sampleInputs: ["arr = [15, 42, 8, 99, 23]"],
+            sampleOutputs: ["Min: 8, Max: 99"],
+          ),
+          DsaProblem(
+            id: "arr-2",
+            title: "2. In-Place Array Reversal (Two Pointers)",
+            category: "Two Pointer Pattern",
+            keyIdeaEn: "Set `left = 0` and `right = N-1`. Swap `arr[left]` and `arr[right]`, then move `left++` and `right--` until pointers meet in O(N) time.",
+            keyIdeaBn: "`left = 0` এবং `right = N-1` সেট করুন। `arr[left]` এবং `arr[right]` অদলবদল (Swap) করে `left++` ও `right--` করতে থাকুন।",
+            codeCpp: """
+void reverseArray(vector<int>& arr) {
+    int left = 0, right = arr.size() - 1;
+    while (left < right) {
+        swap(arr[left], arr[right]);
+        left++;
+        right--;
+    }
+}""",
+            codeJava: """
+public static void reverseArray(int[] arr) {
+    int left = 0, right = arr.length - 1;
+    while (left < right) {
+        int temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+        left++; right--;
+    }
+}""",
+            codePython: """
+def reverseArray(arr):
+    left, right = 0, len(arr) - 1
+    while left < right:
+        arr[left], arr[right] = arr[right], arr[left]
+        left += 1
+        right -= 1""",
+            codeJs: """
+function reverseArray(arr) {
+    let left = 0, right = arr.length - 1;
+    while (left < right) {
+        let temp = arr[left];
+        arr[left] = arr[right];
+        arr[right] = temp;
+        left++; right--;
+    }
+}""",
+            descriptionEn: "Reverse an array in-place without using extra memory array space.",
+            descriptionBn: "কোনো অতিরিক্ত ইন-মেমোরি অ্যারে ব্যবহার না করেই মূল অ্যারের উপাদানগুলো উল্টে (Reverse) দিন।",
+            sampleInputs: ["arr = [1, 2, 3, 4, 5]"],
+            sampleOutputs: ["arr = [5, 4, 3, 2, 1]"],
+          ),
+          DsaProblem(
+            id: "arr-3",
+            title: "3. 2D Matrix Transpose (Swap Rows and Columns)",
+            category: "2D Matrix Pattern",
+            keyIdeaEn: "Swap elements across the main diagonal: `result[c][r] = matrix[r][c]` for an R × C matrix.",
+            keyIdeaBn: "ম্যাট্রিক্সের সারি এবং কলাম অদলবদল করুন: `result[c][r] = matrix[r][c]`।",
+            codeCpp: """
+vector<vector<int>> transposeMatrix(vector<vector<int>>& matrix) {
+    int R = matrix.size(), C = matrix[0].size();
+    vector<vector<int>> res(C, vector<int>(R));
+    for (int r = 0; r < R; r++) {
+        for (int c = 0; c < C; c++) {
+            res[c][r] = matrix[r][c];
+        }
+    }
+    return res;
+}""",
+            codeJava: """
+public static int[][] transposeMatrix(int[][] matrix) {
+    int R = matrix.length, C = matrix[0].length;
+    int[][] res = new int[C][R];
+    for (int r = 0; r < R; r++) {
+        for (int c = 0; c < C; c++) {
+            res[c][r] = matrix[r][c];
+        }
+    }
+    return res;
+}""",
+            codePython: """
+def transposeMatrix(matrix):
+    R, C = len(matrix), len(matrix[0])
+    res = [[0] * R for _ in range(C)]
+    for r in range(R):
+        for c in range(C):
+            res[c][r] = matrix[r][c]
+    return res""",
+            codeJs: """
+function transposeMatrix(matrix) {
+    const R = matrix.length, C = matrix[0].length;
+    const res = Array.from({length: C}, () => new Array(R).fill(0));
+    for (let r = 0; r < R; r++) {
+        for (let c = 0; c < C; c++) {
+            res[c][r] = matrix[r][c];
+        }
+    }
+    return res;
+}""",
+            descriptionEn: "Transpose an R x C matrix into a C x R matrix by swapping rows with columns.",
+            descriptionBn: "একটি R x C ম্যাট্রিক্সের সারিকে কলাম এবং কলামকে সারিতে রূপান্তর (Transpose) করে C x R ম্যাট্রিক্সে প্রকাশ করুন।",
+            sampleInputs: ["matrix = [[1,2,3],[4,5,6]]"],
+            sampleOutputs: ["result = [[1,4],[2,5],[3,6]]"],
+          ),
+          DsaProblem(
+            id: "arr-4",
+            title: "4. 3D Tensor Layer Depth Sum",
+            category: "3D Tensor Basic",
+            keyIdeaEn: "Iterate through 3D Tensor volume using 3 nested loops (depth d, row r, col c) and accumulate sum in O(D × R × C) time.",
+            keyIdeaBn: "৩টি নেস্টেড লুপ (ডেপথ d, রো r, কলাম c) ব্যবহার করে ৩D টেনসরের সব উপাদানের মোট সমষ্টি যোগ করুন।",
+            codeCpp: """
+int tensorSum(vector<vector<vector<int>>>& tensor) {
+    int total = 0;
+    for (int d = 0; d < tensor.size(); d++) {
+        for (int r = 0; r < tensor[0].size(); r++) {
+            for (int c = 0; c < tensor[0][0].size(); c++) {
+                total += tensor[d][r][c];
+            }
+        }
+    }
+    return total;
+}""",
+            codeJava: """
+public static int tensorSum(int[][][] tensor) {
+    int total = 0;
+    for (int d = 0; d < tensor.length; d++) {
+        for (int r = 0; r < tensor[0].length; r++) {
+            for (int c = 0; c < tensor[0][0].length; c++) {
+                total += tensor[d][r][c];
+            }
+        }
+    }
+    return total;
+}""",
+            codePython: """
+def tensorSum(tensor):
+    total = 0
+    for layer in tensor:
+        for row in layer:
+            for val in row:
+                total += val
+    return total""",
+            codeJs: """
+function tensorSum(tensor) {
+    let total = 0;
+    for (let d = 0; d < tensor.length; d++) {
+        for (let r = 0; r < tensor[0].length; r++) {
+            for (let c = 0; c < tensor[0][0].length; c++) {
+                total += tensor[d][r][c];
+            }
+        }
+    }
+    return total;
+}""",
+            descriptionEn: "Calculate the sum of all numerical values stored inside a 3D Tensor volume.",
+            descriptionBn: "একটি ৩D টেনসর ভলিউমের ভেতরে থাকা সমস্ত পূর্ণসংখ্যার সমষ্টি (Total Sum) হিসাব করুন।",
+            sampleInputs: ["tensor = [[[1,2],[3,4]], [[5,6],[7,8]]]"],
+            sampleOutputs: ["Total Sum: 36"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Array Index Out of Bounds Exception",
+            "desc": "Accessing `arr[N]` instead of `arr[N-1]` in zero-indexed arrays triggers ArrayIndexOutOfBoundsException or Segmentation Fault."
+          },
+          {
+            "title": "2. Off-by-One Loop Boundary Bug",
+            "desc": "Using `<=` instead of `<` when iterating `i = 0; i <= arr.length` causes index overflow past array end."
+          },
+          {
+            "title": "3. Inefficient Element Insertion / Deletion at Front",
+            "desc": "Calling `list.remove(0)` or `arr.unshift()` inside a loop causes hidden O(N) element shifting, leading to O(N²) overall time complexity."
+          },
+          {
+            "title": "4. Fixed-Size Array Overflow",
+            "desc": "Attempting to insert elements beyond pre-allocated fixed array capacity without dynamic resizing."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. অ্যারে ইনডেক্স আউট অফ বাউন্ডস ভুল",
+            "desc": "০-ভিত্তিক অ্যারেতে N টি উপাদানের শেষ ইনডেক্স N-1। `arr[N]` এক্সেস করতে গেলে Segmentation Fault বা Exception ঘটে।"
+          },
+          {
+            "title": "২. লুপের সীমানায় Off-by-One ভুল",
+            "desc": "লুপ চালানোর সময় `i < arr.length` এর জায়গায় `i <= arr.length` লিখলে শেষ ধাপে বাউন্ডের বাইরে চলে যায়।"
+          },
+          {
+            "title": "৩. লিস্টের শুরুতে ইনসার্ট বা ডিলেশনে O(N²) সময় নষ্ট",
+            "desc": "লুপের ভেতর `list.remove(0)` বা `shift()` কল করলে প্রতিটি উপাদান বামে সরানোর কারণে O(N²) সময় নষ্ট হয়।"
+          },
+          {
+            "title": "৪. ফিক্সড-সাইজ অ্যারে ওভারফ্লো",
+            "desc": "নির্দিষ্ট সাইজের অ্যারে ডাইনামিক না বাড়িয়ে অতিরিক্ত উপাদান যোগ করতে গিয়ে মেমোরি ওভারফ্লো ঘটানো।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand Contiguous Memory & 0-Based Index Math",
+            "desc": "Master direct memory addressing `base_addr + index * element_bytes` and O(1) element access."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master 1D Array Traversals & Two Pointer Reversal",
+            "desc": "Learn linear scanning, Min/Max searching, and in-place array reversal using Two Pointers."
+          },
+          {
+            "step": "Step 3",
+            "title": "Understand Dynamic Array Resizing (Amortized Analysis)",
+            "desc": "Learn dynamic array capacity doubling (vector/ArrayList) and amortized O(1) push operations."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master 2D Matrix Grid Traversals & Transpose",
+            "desc": "Master row-major vs column-major order, 2D matrix iteration, and grid transpose algorithms."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master 3D Tensors & Multi-Dimensional Array Flattening",
+            "desc": "Master 3D Tensor volume iteration and flattening multi-dimensional indices into 1D memory offset."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "পরপর মেমোরি সাজানো ও ০-ভিত্তিক ইনডেক্সিং",
+            "desc": "ডিরেক্ট মেমোরি এড্রেসিং `base_addr + index * element_bytes` এবং O(1) মান বের করার সুত্র শিখুন।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "১D অ্যারে ট্রাভার্সাল ও টু-পয়েন্টার রিভার্সাল",
+            "desc": "লিনিয়ার সার্চিং, Min/Max বের করা এবং টু-পয়েন্টার দিয়ে মেমোরি অপচয় না করে অ্যারে রিভার্স করা।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "ডাইনামিক অ্যারে মেমোরি রিসাইজিং (2x Capacity)",
+            "desc": "ডাইনামিক অ্যারের ক্যাপাসিটি ডাবল হওয়া (Vector/ArrayList) এবং Amortized O(1) ইনসার্শন শেখা।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "২D ম্যাট্রিক্স ট্রাভার্সাল ও ট্রান্সপোজ",
+            "desc": "Row-Major ট্রাভার্সাল, ২D গ্রিড সলভিং এবং সারি-কলাম অদলবদল (Transpose) অ্যালগরিদম মাস্টার করুন।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "৩D টেনসর ভলিউম ও মাল্টি-ডাইমেনশনাল ফ্ল্যাটেনিং",
+            "desc": "৩D টেনসর লুপ এবং ৩D ইনডেক্সকে ১D মেমোরি অফসেটে রূপান্তর সূত্র সলভ করা।"
+          }
+        ],
       ),
 
       // 2. SINGLY & DOUBLY LINKED LIST
@@ -299,7 +789,7 @@ class DsaDataRepository {
         roadmapStepsBn: [],
       ),
 
-      // 9. TRIE (PREFIX TREE)
+      // 9. TRIE
       DsaTopic(
         id: 209,
         title: "Trie (Prefix Tree)",
@@ -308,668 +798,23 @@ class DsaDataRepository {
         spaceComplexity: "O(N × L)",
         icon: Icons.sort_by_alpha_outlined,
         themeColor: const Color(0xFFA855F7),
-        descriptionEn:
-            "A Trie (pronounced 'try', short for Retrieval Tree) or Prefix Tree is a specialized N-ary tree data structure used for fast string matching and prefix searches. Nodes store character references (`unordered_map<char, TrieNode*>` or `TrieNode[26]`) and a boolean flag `isEndOfWord`. Operations like `insert(word)`, `search(word)`, and `startsWith(prefix)` run in O(L) time where L is the length of the target string — independent of the total number of words stored! Modern search engine autocomplete, spell-checking, and IP routing tables use Tries extensively.",
-        descriptionBn:
-            "ট্রাই (Trie или Prefix Tree) হলো একটি বিশেষায়িত N-ary ক্যারেক্টার ট্রি স্ট্রাকচার যা দ্রুত স্ট্রিং ম্যাচিং এবং প্রিফিক্স সার্চের জন্য ব্যবহৃত হয়। প্রতিটি নোডে অক্ষর সংযোগ (`unordered_map<char, TrieNode*>` বা `TrieNode[26]`) এবং একটি বুলিয়ান ফ্ল্যাগ `isEndOfWord` থাকে। `insert(word)`, `search(word)`, এবং `startsWith(prefix)` অপারেশনগুলো মাত্র O(L) টাইমে সম্পন্ন হয় (যেখানে L হলো শব্দটির দৈর্ঘ্য)। এতে অভিধানে যত লক্ষ শব্দই থাক না কেন সময়কাল সর্বদা O(L)! সার্চ ইঞ্জিন অটো-কমপ্লিট, স্পেল চেকার এবং IP রাউটিংয়ে ট্রাই ব্যবহৃত হয়।",
-        keyConceptsEn: [
-          "O(L) Fast Lookup: Operations depend ONLY on string length L, completely independent of the dictionary size N.",
-          "Character Branch Sharing: Words with common prefixes (e.g., 'app', 'apple', 'application') share identical prefix tree branches.",
-          "Trie Node Anatomy: Contains a child map/array `children[c]` and a boolean flag `isEndOfWord` marking word endings.",
-          "Autocomplete Engine: Navigating to the prefix node `startsWith('app')` and running DFS yields all matching suggested words.",
-          "Wildcard Matching: Supports pattern searches (e.g. `b.d` matching `bad`, `bed`, `bid`) via recursive DFS branching."
-        ],
-        keyConceptsBn: [
-          "O(L) সুপারফাস্ট লুকআপ: সার্চ স্পিড কেবল শব্দের দৈর্ঘ্য L এর ওপর নির্ভর করে; অভিধানে মোট শব্দের সংখ্যা N এর ওপর নয়।",
-          "প্রিফিক্স শেয়ারিং: একই প্রিফিক্স যুক্ত শব্দসমূহ (যেমন: 'app', 'apple', 'application') মেমোরিতে একই ব্রাঞ্চ শেয়ার করে।",
-          "ট্রাই নোড স্ট্রাকচার: নোডে চাইল্ড ম্যাপ `children[c]` এবং শব্দ সমাপ্তি চিহ্নিত করার বুলিয়ান ফ্ল্যাগ `isEndOfWord` থাকে।",
-          "অটো-কমপ্লিট ইঞ্জিন: প্রিফিক্স নোডে `startsWith('app')` গিয়ে DFS চালালে সকল প্রস্তাবিত শব্দ সাজেস্ট করা সম্ভব।",
-          "ওয়াইল্ডকার্ড প্যাটার্ন সার্চ: রিকার্সিভ DFS দিয়ে `b.d` টাইপের প্যাটার্ন সার্চ করে `bad`, `bed`, `bid` ম্যাচিং করা।"
-        ],
+        descriptionEn: "A Trie is an N-ary tree data structure used for fast string prefix searching.",
+        descriptionBn: "ট্রাই হলো একটি ক্যারেক্টার ট্রি যা দ্রুত প্রিফিক্স সার্চ করতে ব্যবহৃত হয়।",
+        keyConceptsEn: ["O(L) Fast Lookup", "Prefix Sharing"],
+        keyConceptsBn: ["O(L) দ্রুত লুকআপ", "প্রিফিক্স শেয়ারিং"],
         multiDimCodeTemplates: {
           "Standard Trie": {
-            "C++": """
-#include <iostream>
-#include <unordered_map>
-#include <string>
-using namespace std;
-
-class TrieNode {
-public:
-    unordered_map<char, TrieNode*> children;
-    bool isEndOfWord;
-    TrieNode() : isEndOfWord(false) {}
-};
-
-class Trie {
-    TrieNode* root;
-public:
-    Trie() { root = new TrieNode(); }
-    
-    // O(L) Insert
-    void insert(string word) {
-        TrieNode* curr = root;
-        for (char c : word) {
-            if (!curr->children.count(c)) {
-                curr->children[c] = new TrieNode();
-            }
-            curr = curr->children[c];
-        }
-        curr->isEndOfWord = true;
-    }
-    
-    // O(L) Search Exact Word
-    bool search(string word) {
-        TrieNode* curr = root;
-        for (char c : word) {
-            if (!curr->children.count(c)) return false;
-            curr = curr->children[c];
-        }
-        return curr->isEndOfWord;
-    }
-    
-    // O(L) StartsWith Prefix
-    bool startsWith(string prefix) {
-        TrieNode* curr = root;
-        for (char c : prefix) {
-            if (!curr->children.count(c)) return false;
-            curr = curr->children[c];
-        }
-        return true;
-    }
-};""",
-            "Java": """
-class TrieNode {
-    TrieNode[] children = new TrieNode[26];
-    boolean isEndOfWord = false;
-}
-
-public class Trie {
-    private TrieNode root;
-    public Trie() { root = new TrieNode(); }
-    
-    public void insert(String word) {
-        TrieNode curr = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) {
-                curr.children[idx] = new TrieNode();
-            }
-            curr = curr.children[idx];
-        }
-        curr.isEndOfWord = true;
-    }
-    
-    public boolean search(String word) {
-        TrieNode curr = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) return false;
-            curr = curr.children[idx];
-        }
-        return curr.isEndOfWord;
-    }
-    
-    public boolean startsWith(String prefix) {
-        TrieNode curr = root;
-        for (char c : prefix.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) return false;
-            curr = curr.children[idx];
-        }
-        return true;
-    }
-}""",
-            "Python": """
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.is_end_of_word = False
-
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
-        
-    def insert(self, word: str) -> None:
-        curr = self.root
-        for c in word:
-            if c not in curr.children:
-                curr.children[c] = TrieNode()
-            curr = curr.children[c]
-        curr.is_end_of_word = True
-        
-    def search(self, word: str) -> bool:
-        curr = self.root
-        for c in word:
-            if c not in curr.children:
-                return False
-            curr = curr.children[c]
-        return curr.is_end_of_word
-        
-    def startsWith(self, prefix: str) -> bool:
-        curr = self.root
-        for c in prefix:
-            if c not in curr.children:
-                return False
-            curr = curr.children[c]
-        return True""",
-            "JavaScript": """
-class TrieNode {
-    constructor() {
-        this.children = {};
-        this.isEndOfWord = false;
-    }
-}
-
-class Trie {
-    constructor() {
-        this.root = new TrieNode();
-    }
-    insert(word) {
-        let curr = this.root;
-        for (let c of word) {
-            if (!curr.children[c]) {
-                curr.children[c] = new TrieNode();
-            }
-            curr = curr.children[c];
-        }
-        curr.isEndOfWord = true;
-    }
-    search(word) {
-        let curr = this.root;
-        for (let c of word) {
-            if (!curr.children[c]) return false;
-            curr = curr.children[c];
-        }
-        return curr.isEndOfWord;
-    }
-    startsWith(prefix) {
-        let curr = this.root;
-        for (let c of prefix) {
-            if (!curr.children[c]) return false;
-            curr = curr.children[c];
-        }
-        return true;
-    }
-}"""
-          },
-          "Autocomplete Engine": {
-            "C++": """
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-using namespace std;
-
-class AutocompleteTrie {
-    struct Node {
-        unordered_map<char, Node*> children;
-        bool isEnd = false;
-    };
-    Node* root = new Node();
-    
-    void dfs(Node* curr, string currentWord, vector<string>& results) {
-        if (curr->isEnd) results.push_back(currentWord);
-        for (auto& p : curr->children) {
-            dfs(p.second, currentWord + p.first, results);
-        }
-    }
-public:
-    void insert(string word) {
-        Node* curr = root;
-        for (char c : word) {
-            if (!curr->children.count(c)) curr->children[c] = new Node();
-            curr = curr->children[c];
-        }
-        curr->isEnd = true;
-    }
-    
-    vector<string> autocomplete(string prefix) {
-        Node* curr = root;
-        vector<string> results;
-        for (char c : prefix) {
-            if (!curr->children.count(c)) return results;
-            curr = curr->children[c];
-        }
-        dfs(curr, prefix, results);
-        return results;
-    }
-};""",
-            "Java": """
-import java.util.*;
-
-public class AutocompleteTrie {
-    static class Node {
-        Map<Character, Node> children = new HashMap<>();
-        boolean isEnd = false;
-    }
-    private Node root = new Node();
-    
-    public void insert(String word) {
-        Node curr = root;
-        for (char c : word.toCharArray()) {
-            curr.children.putIfAbsent(c, new Node());
-            curr = curr.children.get(c);
-        }
-        curr.isEnd = true;
-    }
-    
-    public List<String> getSuggestions(String prefix) {
-        Node curr = root;
-        List<String> results = new ArrayList<>();
-        for (char c : prefix.toCharArray()) {
-            if (!curr.children.containsKey(c)) return results;
-            curr = curr.children.get(c);
-        }
-        dfs(curr, new StringBuilder(prefix), results);
-        return results;
-    }
-    private void dfs(Node node, StringBuilder sb, List<String> res) {
-        if (node.isEnd) res.add(sb.toString());
-        for (char c : node.children.keySet()) {
-            sb.append(c);
-            dfs(node.children.get(c), sb, res);
-            sb.setLength(sb.length() - 1);
-        }
-    }
-}""",
-            "Python": """
-class AutocompleteTrie:
-    def __init__(self):
-        self.root = {}
-        
-    def insert(self, word):
-        curr = self.root
-        for c in word:
-            if c not in curr: curr[c] = {}
-            curr = curr[c]
-        curr['#'] = True # Word end marker
-        
-    def autocomplete(self, prefix):
-        curr = self.root
-        for c in prefix:
-            if c not in curr: return []
-            curr = curr[c]
-            
-        res = []
-        def dfs(node, path):
-            if '#' in node: res.append(path)
-            for k in node:
-                if k != '#': dfs(node[k], path + k)
-                
-        dfs(curr, prefix)
-        return res""",
-            "JavaScript": """
-class AutocompleteTrie {
-    constructor() { this.root = {}; }
-    insert(word) {
-        let curr = this.root;
-        for (let c of word) {
-            if (!curr[c]) curr[c] = {};
-            curr = curr[c];
-        }
-        curr['#'] = true;
-    }
-    autocomplete(prefix) {
-        let curr = this.root;
-        for (let c of prefix) {
-            if (!curr[c]) return [];
-            curr = curr[c];
-        }
-        const res = [];
-        const dfs = (node, path) => {
-            if (node['#']) res.push(path);
-            for (let k in node) {
-                if (k !== '#') dfs(node[k], path + k);
-            }
-        };
-        dfs(curr, prefix);
-        return res;
-    }
-}"""
+            "C++": "class TrieNode { unordered_map<char, TrieNode*> children; };",
+            "Java": "class TrieNode { TrieNode[] children = new TrieNode[26]; }",
+            "Python": "class TrieNode: pass",
+            "JavaScript": "class TrieNode {}"
           }
         },
-        basicProblems: [
-          DsaProblem(
-            id: "tr-1",
-            title: "1. Implement Trie - Prefix Tree (LeetCode #208)",
-            category: "Trie Basic",
-            keyIdeaEn: "Build Trie class with `insert(word)`, `search(word)`, and `startsWith(prefix)` methods in O(L) time.",
-            keyIdeaBn: "O(L) সময়ে `insert(word)`, `search(word)`, এবং `startsWith(prefix)` মেথড বিশিষ্ট Trie ক্লাস তৈরি করুন।",
-            codeCpp: """
-class Trie {
-    struct Node {
-        unordered_map<char, Node*> children;
-        bool isEnd = false;
-    } *root;
-public:
-    Trie() { root = new Node(); }
-    void insert(string word) {
-        Node* curr = root;
-        for (char c : word) {
-            if (!curr->children.count(c)) curr->children[c] = new Node();
-            curr = curr->children[c];
-        }
-        curr->isEnd = true;
-    }
-    bool search(string word) {
-        Node* curr = root;
-        for (char c : word) {
-            if (!curr->children.count(c)) return false;
-            curr = curr->children[c];
-        }
-        return curr->isEnd;
-    }
-    bool startsWith(string prefix) {
-        Node* curr = root;
-        for (char c : prefix) {
-            if (!curr->children.count(c)) return false;
-            curr = curr->children[c];
-        }
-        return true;
-    }
-};""",
-            codeJava: """
-class Trie {
-    static class Node {
-        Node[] children = new Node[26];
-        boolean isEnd = false;
-    }
-    private Node root = new Node();
-    public void insert(String word) {
-        Node curr = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) curr.children[idx] = new Node();
-            curr = curr.children[idx];
-        }
-        curr.isEnd = true;
-    }
-    public boolean search(String word) {
-        Node curr = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) return false;
-            curr = curr.children[idx];
-        }
-        return curr.isEnd;
-    }
-    public boolean startsWith(String prefix) {
-        Node curr = root;
-        for (char c : prefix.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) return false;
-            curr = curr.children[idx];
-        }
-        return true;
-    }
-}""",
-            codePython: """
-class Trie:
-    def __init__(self): self.root = {}
-    def insert(self, word: str) -> None:
-        curr = self.root
-        for c in word:
-            if c not in curr: curr[c] = {}
-            curr = curr[c]
-        curr['#'] = True
-    def search(self, word: str) -> bool:
-        curr = self.root
-        for c in word:
-            if c not in curr: return False
-            curr = curr[c]
-        return '#' in curr
-    def startsWith(self, prefix: str) -> bool:
-        curr = self.root
-        for c in prefix:
-            if c not in curr: return False
-            curr = curr[c]
-        return True""",
-            codeJs: """
-class Trie {
-    constructor() { this.root = {}; }
-    insert(word) {
-        let curr = this.root;
-        for (let c of word) {
-            if (!curr[c]) curr[c] = {};
-            curr = curr[c];
-        }
-        curr['#'] = true;
-    }
-    search(word) {
-        let curr = this.root;
-        for (let c of word) {
-            if (!curr[c]) return false;
-            curr = curr[c];
-        }
-        return !!curr['#'];
-    }
-    startsWith(prefix) {
-        let curr = this.root;
-        for (let c of prefix) {
-            if (!curr[c]) return false;
-            curr = curr[c];
-        }
-        return true;
-    }
-}""",
-            descriptionEn: "Implement a Trie (Prefix Tree) supporting `insert`, `search`, and `startsWith` operations.",
-            descriptionBn: "`insert`, `search`, এবং `startsWith` সাপোর্ট করে এমন একটি Trie (প্রিফিক্স ট্রি) ইমপ্লিমেন্ট করুন।",
-            sampleInputs: ["insert(\"apple\"), search(\"apple\"), search(\"app\"), startsWith(\"app\"), insert(\"app\"), search(\"app\")"],
-            sampleOutputs: ["search(\"apple\"): true, search(\"app\"): false, startsWith(\"app\"): true, search(\"app\"): true"],
-          ),
-          DsaProblem(
-            id: "tr-2",
-            title: "2. Design Add and Search Words Data Structure (LeetCode #211)",
-            category: "Trie Pattern",
-            keyIdeaEn: "Build a Trie supporting '.' wildcard matching. When encountering '.', recursively search all 26 children.",
-            keyIdeaBn: "ওয়াইল্ডকার্ড '.' ম্যাচিং সাপোর্ট করে এমন Trie ডিজাইন করুন। '.' পেলে রিকার্সিভলি সব চাইল্ড নোডে খুঁজুন।",
-            codeCpp: """
-class WordDictionary {
-    struct Node {
-        unordered_map<char, Node*> children;
-        bool isEnd = false;
-    } *root;
-    
-    bool dfs(string& word, int idx, Node* curr) {
-        if (!curr) return false;
-        if (idx == word.length()) return curr->isEnd;
-        char c = word[idx];
-        if (c == '.') {
-            for (auto& p : curr->children) {
-                if (dfs(word, idx + 1, p.second)) return true;
-            }
-            return false;
-        } else {
-            if (!curr->children.count(c)) return false;
-            return dfs(word, idx + 1, curr->children[c]);
-        }
-    }
-public:
-    WordDictionary() { root = new Node(); }
-    void addWord(string word) {
-        Node* curr = root;
-        for (char c : word) {
-            if (!curr->children.count(c)) curr->children[c] = new Node();
-            curr = curr->children[c];
-        }
-        curr->isEnd = true;
-    }
-    bool search(string word) { return dfs(word, 0, root); }
-};""",
-            codeJava: """
-class WordDictionary {
-    static class Node {
-        Node[] children = new Node[26];
-        boolean isEnd = false;
-    }
-    private Node root = new Node();
-    public void addWord(String word) {
-        Node curr = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) curr.children[idx] = new Node();
-            curr = curr.children[idx];
-        }
-        curr.isEnd = true;
-    }
-    public boolean search(String word) { return dfs(word.toCharArray(), 0, root); }
-    private boolean dfs(char[] word, int idx, Node curr) {
-        if (curr == null) return false;
-        if (idx == word.length) return curr.isEnd;
-        char c = word[idx];
-        if (c == '.') {
-            for (Node child : curr.children) {
-                if (child != null && dfs(word, idx + 1, child)) return true;
-            }
-            return false;
-        } else {
-            int i = c - 'a';
-            return dfs(word, idx + 1, curr.children[i]);
-        }
-    }
-}""",
-            codePython: """
-class WordDictionary:
-    def __init__(self): self.root = {}
-    def addWord(self, word: str) -> None:
-        curr = self.root
-        for c in word:
-            if c not in curr: curr[c] = {}
-            curr = curr[c]
-        curr['#'] = True
-        
-    def search(self, word: str) -> bool:
-        def dfs(idx, curr):
-            if idx == len(word): return '#' in curr
-            c = word[idx]
-            if c == '.':
-                return any(dfs(idx + 1, curr[k]) for k in curr if k != '#')
-            if c not in curr: return False
-            return dfs(idx + 1, curr[c])
-        return dfs(0, self.root)""",
-            codeJs: """
-class WordDictionary {
-    constructor() { this.root = {}; }
-    addWord(word) {
-        let curr = this.root;
-        for (let c of word) {
-            if (!curr[c]) curr[c] = {};
-            curr = curr[c];
-        }
-        curr['#'] = true;
-    }
-    search(word) {
-        const dfs = (idx, curr) => {
-            if (idx === word.length) return !!curr['#'];
-            let c = word[idx];
-            if (c === '.') {
-                for (let k in curr) {
-                    if (k !== '#' && dfs(idx + 1, curr[k])) return true;
-                }
-                return false;
-            }
-            if (!curr[c]) return false;
-            return dfs(idx + 1, curr[c]);
-        };
-        return dfs(0, this.root);
-    }
-}""",
-            descriptionEn: "Design a data structure that supports adding new words and finding if a string matches any previously added string with '.' wildcard.",
-            descriptionBn: "নতুন শব্দ যোগ করা এবং ওয়াইল্ডকার্ড '.' দিয়ে পূর্বে যোগ করা শব্দের মিল খোঁজার ডেটা স্ট্রাকচার তৈরি করুন।",
-            sampleInputs: ["addWord(\"bad\"), addWord(\"dad\"), search(\"pad\"), search(\"bad\"), search(\".ad\"), search(\"b..\")"],
-            sampleOutputs: ["search(\"pad\"): false, search(\"bad\"): true, search(\".ad\"): true, search(\"b..\"): true"],
-          ),
-        ],
-        commonMistakesEn: [
-          {
-            "title": "1. Forgetting `isEndOfWord = true` Flag",
-            "desc": "Failing to mark the final node when inserting a word breaks exact word search functionality (e.g. `search('app')` when 'apple' exists)."
-          },
-          {
-            "title": "2. Confusing Exact Word `search()` vs `startsWith()`",
-            "desc": "Using `search()` when checking prefix existence. `search()` requires `isEndOfWord == true`, while `startsWith()` only checks node path."
-          },
-          {
-            "title": "3. Off-by-one ASCII Array Math Bug",
-            "desc": "Using `c - 'A'` instead of `c - 'a'` for lowercase characters causes index out-of-bounds error in fixed 26-element array."
-          },
-          {
-            "title": "4. Memory Leak in C++ Trie Deletion",
-            "desc": "Failing to recursively delete allocated TrieNode heap objects when resetting or clearing the dictionary."
-          }
-        ],
-        commonMistakesBn: [
-          {
-            "title": "১. `isEndOfWord = true` ফ্ল্যাগ দিতে ভুলে যাওয়া",
-            "desc": "শব্দের শেষ নোডে ফ্ল্যাগ না দিলে 'apple' থাকলেও 'app' শব্দটি পৃথক শব্দ হিসেবে খুঁজে পাওয়া যাবে না।"
-          },
-          {
-            "title": "২. `search()` এবং `startsWith()` গুলিয়ে ফেলা",
-            "desc": "প্রিফিক্স চেক করতে `search()` ব্যবহার করা। `search()` এর জন্য শব্দের শেষ ফ্ল্যাগ সত্য হতে হয়, কিন্তু `startsWith()` কেবল নোড লিংক চেক করে।"
-          },
-          {
-            "title": "৩. ASCII ইন্ডেক্স সূত্রের ভুল",
-            "desc": "ছোট হাতের অক্ষরের জন্য `c - 'a'` এর জায়গায় `c - 'A'` লিখলে ২৬-সাইজের অ্যারেতে আউট অফ বাউন্ডস ঘটে।"
-          },
-          {
-            "title": "৪. C++ হিপ নোড ডিলিট না করায় মেমোরি লিক",
-            "desc": "ট্রি রিসেট করার সময় রিকার্সিভলি `delete` না করলে মেমোরি লিক হয়।"
-          }
-        ],
-        roadmapStepsEn: [
-          {
-            "step": "Step 1",
-            "title": "Understand N-ary Character Tree Anatomy",
-            "desc": "Master TrieNode struct, child map/array `children[26]`, and `isEndOfWord` boolean flag."
-          },
-          {
-            "step": "Step 2",
-            "title": "Master O(L) Insert, Search & StartsWith",
-            "desc": "Implement insert, search exact word, and startsWith prefix methods in O(L) time."
-          },
-          {
-            "step": "Step 3",
-            "title": "Build Autocomplete Search Engine",
-            "desc": "Navigate to prefix node and run DFS to collect all suggested matching words."
-          },
-          {
-            "step": "Step 4",
-            "title": "Solve Wildcard '.' Pattern Search",
-            "desc": "Implement recursive DFS branching to search wildcard patterns like `b.d`."
-          },
-          {
-            "step": "Step 5",
-            "title": "Solve Advanced Word Search II & Suffix Trees",
-            "desc": "Combine Trie with 2D Grid DFS for Word Search II and introduce Compressed Tries (Radix Tree)."
-          }
-        ],
-        roadmapStepsBn: [
-          {
-            "step": "ধাপ ১",
-            "title": "N-ary ক্যারেক্টার ট্রি নোড স্ট্রাকচার শিখুন",
-            "desc": "TrieNode স্ট্রাকচার, চাইল্ড ম্যাপ `children[26]`, এবং `isEndOfWord` ফ্ল্যাগ আয়ত্ত করুন।"
-          },
-          {
-            "step": "ধাপ ২",
-            "title": "O(L) ইনসার্ট, সার্চ ও প্রিফিক্স ম্যাচিং",
-            "desc": "শব্দ যোগ, হুবহু শব্দ খোঁজা এবং প্রিফিক্স ম্যাচিং মেথড O(L) সময়ে কোড করুন।"
-          },
-          {
-            "step": "ধাপ ৩",
-            "title": "অটো-কমপ্লিট সার্চ ইঞ্জিন তৈরি করুন",
-            "desc": "প্রিফিক্স নোডে গিয়ে DFS চালিয়ে সমস্ত প্রস্তাবিত শব্দ সাজেস্ট করা শিখুন।"
-          },
-          {
-            "step": "ধাপ ৪",
-            "title": "ওয়াইল্ডকার্ড '.' প্যাটার্ন সার্চ প্রবলেম",
-            "desc": "রিকার্সিভ DFS দিয়ে `b.d` টাইপের ওয়াইল্ডকার্ড শব্দ ম্যাচিং সলভ করুন।"
-          },
-          {
-            "step": "ধাপ ৫",
-            "title": "Word Search II ও সাফিক্স ট্রি",
-            "desc": "২D গ্রিডের সাথে Trie মিলিয়ে Word Search II এবং কম্প্রেসড ট্রাই (Radix Tree) ধারণা।"
-          }
-        ],
+        basicProblems: [],
+        commonMistakesEn: [],
+        commonMistakesBn: [],
+        roadmapStepsEn: [],
+        roadmapStepsBn: [],
       ),
     ];
   }
