@@ -698,6 +698,171 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     );
   }
 
+  Widget _buildVariableWatcherPanel() {
+    List<Map<String, String>> variableState = [];
+    String explanation = "";
+
+    if (widget.problem.id.contains("1") || widget.problem.id == "arr-1") {
+      final currentVal = _p1Arr[_p1Pointer];
+      final isMinUpdated = currentVal < _p1Min;
+      final isMaxUpdated = currentVal > _p1Max;
+
+      variableState = [
+        {"var": "i (Loop Index)", "val": "$_p1Pointer"},
+        {"var": "arr[i] (Current)", "val": "$currentVal"},
+        {"var": "minVal (Minimum)", "val": "$_p1Min"},
+        {"var": "maxVal (Maximum)", "val": "$_p1Max"},
+      ];
+
+      explanation = _isEnglish
+          ? "Loop Step #${_p1Pointer + 1}: Inspecting element arr[$_p1Pointer] = $currentVal. Checking if $currentVal < minVal ($isMinUpdated) or $currentVal > maxVal ($isMaxUpdated)."
+          : "লুপের ধাপ #${_p1Pointer + 1}: ইনডেক্স arr[$_p1Pointer] = $currentVal পরীক্ষা করা হচ্ছে। $currentVal < minVal ($isMinUpdated) অথবা $currentVal > maxVal ($isMaxUpdated)।";
+    } else if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
+      variableState = [
+        {"var": "left Pointer", "val": "$_p2Left (val ${_p2Arr.isNotEmpty && _p2Left < _p2Arr.length ? _p2Arr[_p2Left] : 0})"},
+        {"var": "right Pointer", "val": "$_p2Right (val ${_p2Arr.isNotEmpty && _p2Right >= 0 ? _p2Arr[_p2Right] : 0})"},
+        {"var": "Swap Status", "val": _p2Left < _p2Right ? "SWAPPING IN-PLACE" : "COMPLETE"},
+      ];
+
+      explanation = _isEnglish
+          ? "Two-Pointer In-Place Reversal: Swapping left element at index $_p2Left with right element at index $_p2Right, then advancing pointers inwards."
+          : "টু-পয়েন্টার সোয়াপিং: বামের ইনডেক্স $_p2Left এর সাথে ডানের ইনডেক্স $_p2Right এর মান মেমোরিতে অদলবদল করে পয়েন্টার দুটিকে ভেতরের দিকে সরানো হচ্ছে।";
+    } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
+      variableState = [
+        {"var": "Row (r)", "val": "$_p3Row"},
+        {"var": "Col (c)", "val": "$_p3Col"},
+        {"var": "matrix[r][c]", "val": "${_p3Matrix[_p3Row][_p3Col]}"},
+        {"var": "result[c][r]", "val": "${_p3Result[_p3Col][_p3Row]}"},
+      ];
+
+      explanation = _isEnglish
+          ? "2D Grid Transpose: Reading element at row $_p3Row, col $_p3Col (${_p3Matrix[_p3Row][_p3Col]}) and assigning it to transposed grid at row $_p3Col, col $_p3Row."
+          : "২D গ্রিড ট্রান্সপোজ: সারি $_p3Row, কলাম $_p3Col এর মান (${_p3Matrix[_p3Row][_p3Col]}) পড়ে ট্রান্সপোজড রেজাল্ট ম্যাট্রিক্সের সারি $_p3Col, কলাম $_p3Row এ বসানো হচ্ছে।";
+    } else {
+      variableState = [
+        {"var": "3D Layer Depth", "val": "$_p4Layer"},
+        {"var": "Current Layer Sum", "val": _p4Layer == 0 ? "10" : "26"},
+        {"var": "Accumulated Total", "val": "$_p4Sum"},
+      ];
+
+      explanation = _isEnglish
+          ? "3D Tensor Volume Accumulation: Iterating depth layer $_p4Layer elements and adding to total sum."
+          : "৩D টেনসর ভলিউম যোগফল: ডেপথ লেয়ার $_p4Layer এর প্রতিটি উপাদান সমষ্টি যোগ করা হচ্ছে।";
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0F172A),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF334155)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.bug_report_outlined, color: AppTheme.accentAmber, size: 18),
+              const SizedBox(width: 8),
+              Text(
+                _isEnglish ? "Live Variable Watcher & Memory Inspector" : "লাইভ ভেরিয়েবল ওয়াচার ও মেমোরি ইন্সপেক্টর",
+                style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Variable Table Grid
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: variableState.map((item) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceDark,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: const Color(0xFF1E293B)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("${item['var']}: ", style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                    Text(item['val'] ?? "", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12)),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 12),
+
+          // Natural Language Step Explanation
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppTheme.accentPurple.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppTheme.accentPurple.withOpacity(0.3)),
+            ),
+            child: Text(
+              explanation,
+              style: const TextStyle(color: Colors.white, fontSize: 12, height: 1.4),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // TAB 2: Step Visualizer tailored to current problem
+  Widget _buildVisualizerTab(double hPadding) {
+    String currentLog = _p1Log;
+    if (widget.problem.id.contains("2") || widget.problem.id == "arr-2") {
+      currentLog = _p2Log;
+    } else if (widget.problem.id.contains("3") || widget.problem.id == "arr-3") {
+      currentLog = _p3Log;
+    } else if (widget.problem.id.contains("4") || widget.problem.id == "arr-4") {
+      currentLog = _p4Log;
+    }
+
+    return ResponsiveCenter(
+      padding: EdgeInsets.all(hPadding),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Status Log Banner
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppTheme.accentNeonCyan.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.5)),
+              ),
+              child: Text(
+                currentLog,
+                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Live Variable Watcher Panel
+            _buildVariableWatcherPanel(),
+            const SizedBox(height: 16),
+
+            // Visualization Display Canvas
+            _buildCurrentProblemVisualizerCanvas(),
+
+            const SizedBox(height: 20),
+
+            // Controls: Play, Step, Reset
+            _buildVisualizerControlsRow(),
+          ],
+        ),
+      ),
+    );
+  }
+
   // TAB 3: Multi-Language Code with Embedded Visualizer and Controls
   Widget _buildCodeTab(double hPadding) {
     String currentLog = _p1Log;
@@ -765,6 +930,10 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
                 ],
               ),
             ),
+            const SizedBox(height: 16),
+
+            // Live Variable Watcher & Inspector inside Code Tab
+            _buildVariableWatcherPanel(),
             const SizedBox(height: 20),
 
             // Live Problem Step Visualizer integrated inside Solution Code Tab
