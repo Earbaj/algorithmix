@@ -1191,57 +1191,57 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       activeLineIndex: 0,
       pointer1: 4,
       minVal: 5,
-      explanationEn: "Line 1: Enter insertIntoBST(root, val = 5). Active Root = 4.",
-      explanationBn: "লাইন ১: insertIntoBST(root, val = 5) এ প্রবেশ। সক্রিয় রুট = 4।",
+      explanationEn: "Step 1 (Line 1): Start insertIntoBST(root, val = 5). Compare target 5 with Root 4.",
+      explanationBn: "ধাপ ১ (লাইন ১): insertIntoBST(root, val = 5) শুরু। টার্গেট মান 5 কে রুট নোড 4 এর সাথে তুলনা করুন।",
     ),
     DebugArrayStep(
       activeLineIndex: 1,
       pointer1: 4,
       minVal: 5,
-      explanationEn: "Line 2: Check if (!root) -> FALSE (Root Node 4 exists).",
-      explanationBn: "লাইন ২: শর্ত (!root) মিথ্যা (রুট নোড 4 বিদ্যমান)।",
+      explanationEn: "Step 2 (Line 2): Check if (!root) -> FALSE (Root 4 is not null).",
+      explanationBn: "ধাপ ২ (লাইন ২): শর্ত (!root) চেক -> মিথ্যা (রুট নোড 4 বিদ্যমান)।",
     ),
     DebugArrayStep(
       activeLineIndex: 2,
       pointer1: 4,
       minVal: 5,
-      explanationEn: "Line 3: Check if (val < root->val) -> (5 < 4) is FALSE.",
-      explanationBn: "লাইন ৩: শর্ত (5 < 4) মিথ্যা। এলস কন্ডিশনে যান।",
+      explanationEn: "Step 3 (Line 3): Check if (val < root->val) -> (5 < 4) is FALSE. Target 5 is GREATER than 4!",
+      explanationBn: "ধাপ ৩ (লাইন ৩): শর্ত (5 < 4) মিথ্যা। 5 মানটি 4 এর চেয়ে বড়!",
     ),
     DebugArrayStep(
       activeLineIndex: 3,
       pointer1: 4,
       minVal: 5,
-      explanationEn: "Line 4: Branch RIGHT -> root->right = insertIntoBST(Node 7, val = 5).",
-      explanationBn: "লাইন ৪: ডানে আগান -> root->right = insertIntoBST(Node 7, val = 5)।",
+      explanationEn: "Step 4 (Line 4): Since 5 > 4, branch RIGHT: root->right = insertIntoBST(Node 7, val = 5).",
+      explanationBn: "ধাপ ৪ (লাইন ৪): যেহেতু 5 > 4, তাই ডানে যান: root->right = insertIntoBST(Node 7, val = 5)।",
     ),
     DebugArrayStep(
       activeLineIndex: 0,
       pointer1: 7,
       minVal: 5,
-      explanationEn: "Line 1: Enter insertIntoBST(Node 7, val = 5). Active Node = 7.",
-      explanationBn: "লাইন ১: insertIntoBST(Node 7, val = 5) এ রিকার্সিভ কল। সক্রিয় নোড = 7।",
+      explanationEn: "Step 5 (Line 1): Enter Node 7. Compare target 5 with Node 7.",
+      explanationBn: "ধাপ ৫ (লাইন ১): নোড 7 এ প্রবেশ। টার্গেট মান 5 কে নোড 7 এর সাথে তুলনা করুন।",
     ),
     DebugArrayStep(
       activeLineIndex: 2,
       pointer1: 7,
       minVal: 5,
-      explanationEn: "Line 3: Check if (val < root->val) -> (5 < 7) is TRUE! Branch LEFT.",
-      explanationBn: "লাইন ৩: শর্ত (5 < 7) সত্য! বামে আগান -> root->left = insertIntoBST(nullptr, 5)।",
+      explanationEn: "Step 6 (Line 3): Check if (val < root->val) -> (5 < 7) is TRUE! Target 5 is SMALLER than 7!",
+      explanationBn: "ধাপ ৬ (লাইন ৩): শর্ত (5 < 7) সত্য! 5 মানটি 7 এর চেয়ে ছোট! বামে আগান -> root->left = insertIntoBST(nullptr, 5)।",
     ),
     DebugArrayStep(
       activeLineIndex: 1,
       pointer1: 5,
       minVal: 5,
-      explanationEn: "Line 2: Reached nullptr! Create and return new TreeNode(5).",
-      explanationBn: "লাইন ২: খালি নাল স্থান পাওয়া গেছে! নতুন TreeNode(5) তৈরি ও রিটার্ন।",
+      explanationEn: "Step 7 (Line 2): Reached empty nullptr space under Node 7! Create new TreeNode(5).",
+      explanationBn: "ধাপ ৭ (লাইন ২): নোড 7 এর বামে খালি নাল স্থান পাওয়া গেছে! নতুন TreeNode(5) তৈরি করা হলো।",
     ),
     DebugArrayStep(
       activeLineIndex: 4,
       pointer1: 5,
       minVal: 5,
-      explanationEn: "🎉 Line 5: Attached new TreeNode(5) as Left child of Node 7. Return updated Root!",
-      explanationBn: "🎉 লাইন ৫: নতুন TreeNode(5) নোড 7 এর বামে চাইল্ড হিসেবে যুক্ত! আপডেট রুট রিটার্ন!",
+      explanationEn: "🎉 Step 8 (Line 5): Attached TreeNode(5) as Left Child of Node 7. BST Insertion Complete!",
+      explanationBn: "🎉 ধাপ ৮ (লাইন ৫): নোড 7 এর বাম চাইল্ড হিসেবে TreeNode(5) সফলভাবে যুক্ত করা হলো! BST ইনসার্ট সম্পন্ন!",
     ),
   ];
 
@@ -1875,7 +1875,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (step.minVal != null)
-                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : (widget.problem.id.startsWith("hm-") ? "Count / Sum: ${step.minVal}" : (widget.problem.id.startsWith("bst-") ? "Target / Active Val: ${step.minVal}" : "Min: ${step.minVal}"))), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : (widget.problem.id.startsWith("hm-") ? "Count / Sum: ${step.minVal}" : (widget.problem.id.startsWith("bst-") ? "Insertion Target: ${step.minVal}" : "Min: ${step.minVal}"))), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
                 if (step.maxVal != null)
                   Text("Max Bound: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14)),
               ],
@@ -1883,8 +1883,13 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
             const SizedBox(height: 16),
           ],
 
-          // BST Hierarchy Tree Visualizer Container with Branch Lines & Arrows
-          if (widget.problem.id.startsWith("bst-")) ...[
+          // Dedicated Arrow-Free Clean Insertion Canvas for BST Insert (bst-2)
+          if (widget.problem.id == "bst-2") ...[
+            _buildBstInsertCanvas(step),
+            const SizedBox(height: 16),
+          ]
+          // Standard Hierarchy Canvas for bst-1, bst-3, bst-4
+          else if (widget.problem.id.startsWith("bst-")) ...[
             _buildBstCanvas(step),
             const SizedBox(height: 16),
           ],
@@ -2125,7 +2130,68 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     );
   }
 
-  // BST CANVAS WITH BRANCH CONNECTOR LINES & ARROWS
+  // DEDICATED ARROW-FREE CLEAN BST INSERTION CANVAS FOR BST INSERT (bst-2)
+  Widget _buildBstInsertCanvas(DebugArrayStep step) {
+    final activeVal = step.pointer1;
+    final isInserted = _currentStepIndex >= 6;
+
+    return Column(
+      children: [
+        const Text("BST Insertion Step-by-Step Canvas (Target = 5)", style: TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 13)),
+        const SizedBox(height: 12),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppTheme.accentGreen, width: 2),
+          ),
+          child: Column(
+            children: [
+              // Level 1: Root Node (4)
+              _buildBstNodeCircle(4, isHighlighted: activeVal == 4, badge: "ROOT (4)"),
+              const SizedBox(height: 12),
+              // Level 2: Left Child (2) & Right Child (7)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildBstNodeCircle(2, isHighlighted: activeVal == 2, badge: "LEFT (2)"),
+                  _buildBstNodeCircle(7, isHighlighted: activeVal == 7, badge: "RIGHT (7)"),
+                ],
+              ),
+              const SizedBox(height: 12),
+              // Level 3: Newly Inserted Node under 7's Left Child!
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 400),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: isInserted ? AppTheme.accentGreen : (activeVal == 5 ? AppTheme.accentNeonCyan.withOpacity(0.2) : Colors.transparent),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isInserted ? Colors.white : (activeVal == 5 ? AppTheme.accentNeonCyan : AppTheme.textMuted.withOpacity(0.3)),
+                    width: isInserted ? 2.5 : 1,
+                  ),
+                ),
+                child: Text(
+                  isInserted
+                      ? "🎉 Newly Attached Left Child: TreeNode(5)"
+                      : (activeVal == 5 ? "⚡ Reached nullptr spot under Node 7! Creating TreeNode(5)..." : "[ Empty nullptr spot under Node 7 ]"),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: isInserted ? AppTheme.primaryDark : (activeVal == 5 ? AppTheme.accentNeonCyan : AppTheme.textMuted),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // STANDARD BST HIERARCHY CANVAS FOR bst-1, bst-3, bst-4
   Widget _buildBstCanvas(DebugArrayStep step) {
     int rootVal = 4;
     int leftVal = 2;
@@ -2158,18 +2224,12 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               // Level 1: Root Node
               _buildBstNodeCircle(rootVal, isHighlighted: step.pointer1 == rootVal, badge: "ROOT"),
               const SizedBox(height: 4),
-              // Branch Connecting Lines Custom Painter with Arrow Indicators
+              // Branch Connecting Lines Custom Painter
               SizedBox(
                 width: 220,
-                height: 44,
+                height: 38,
                 child: CustomPaint(
                   painter: TreeBranchPainter(color: AppTheme.accentNeonCyan),
-                  child: Stack(
-                    children: const [
-                      Positioned(left: 32, bottom: 0, child: Text("↙", style: TextStyle(color: AppTheme.accentNeonCyan, fontSize: 16, fontWeight: FontWeight.bold))),
-                      Positioned(right: 32, bottom: 0, child: Text("↘", style: TextStyle(color: AppTheme.accentNeonCyan, fontSize: 16, fontWeight: FontWeight.bold))),
-                    ],
-                  ),
                 ),
               ),
               const SizedBox(height: 4),
