@@ -70,6 +70,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 6) {
       // Fast & Slow Pointers dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.fastSlowPointersDetail);
+    } else if (pattern.id == 7) {
+      // Merge Intervals dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.mergeIntervalsDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
