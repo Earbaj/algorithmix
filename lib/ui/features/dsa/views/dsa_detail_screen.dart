@@ -76,6 +76,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           unselectedLabelColor: AppTheme.textSecondary,
           isScrollable: true,
           tabAlignment: TabAlignment.start,
+          padding: EdgeInsets.zero,
           tabs: [
             Tab(text: _isEnglish ? 'Concept & Code (1D/2D/3D)' : 'ধারণা ও কোড (১D/২D/৩D)'),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),

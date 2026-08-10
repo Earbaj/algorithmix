@@ -66,6 +66,8 @@ class _MergeIntervalsDetailScreenState extends State<MergeIntervalsDetailScreen>
           labelColor: AppTheme.accentNeonCyan,
           unselectedLabelColor: AppTheme.textSecondary,
           isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          padding: EdgeInsets.zero,
           tabs: [
             Tab(text: _isEnglish ? 'Concept & C++ Code' : 'ধারণা ও C++ কোড'),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),

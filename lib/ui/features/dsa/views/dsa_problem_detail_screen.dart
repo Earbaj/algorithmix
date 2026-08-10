@@ -2016,6 +2016,8 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
           labelColor: AppTheme.accentNeonCyan,
           unselectedLabelColor: AppTheme.textSecondary,
           isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          padding: EdgeInsets.zero,
           tabs: [
             Tab(text: _isEnglish ? '📘 Problem Description' : '📘 সমস্যা বিবরণী'),
             Tab(text: _isEnglish ? '⚡ Step Visualizer' : '⚡ স্টেপ ভিজ্যুয়ালাইজার'),

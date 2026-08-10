@@ -371,6 +371,8 @@ class _BoatsToSavePeopleDetailScreenState
           labelColor: AppTheme.accentNeonCyan,
           unselectedLabelColor: AppTheme.textSecondary,
           isScrollable: true,
+          tabAlignment: TabAlignment.start,
+          padding: EdgeInsets.zero,
           labelStyle: TextStyle(
               fontSize: Responsive.sp(context, 14), fontWeight: FontWeight.bold),
           unselectedLabelStyle:
