@@ -73,6 +73,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 7) {
       // Merge Intervals dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.mergeIntervalsDetail);
+    } else if (pattern.id == 8) {
+      // Cyclic Sort dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.cyclicSortDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
