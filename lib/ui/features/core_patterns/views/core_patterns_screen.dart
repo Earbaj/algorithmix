@@ -88,6 +88,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 12) {
       // Two Heaps dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.twoHeapsDetail);
+    } else if (pattern.id == 13) {
+      // Subsets / Backtracking dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.subsetsBacktrackingDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
