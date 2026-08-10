@@ -312,7 +312,10 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ArrayVisualizerWidget(isEnglish: _isEnglish),
+            DsaInteractiveVisualizer(
+              topicId: widget.topic.id,
+              isEnglish: _isEnglish,
+            ),
           ],
         ),
       ),
