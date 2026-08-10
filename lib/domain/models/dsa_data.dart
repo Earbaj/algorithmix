@@ -2722,27 +2722,377 @@ function lowestCommonAncestor(root, p, q) {
         id: 207,
         title: "Min & Max Heap (Priority Queue)",
         category: "Priority Tree & Array Structure",
-        timeComplexity: "Peek O(1) | Push O(log N) | Extract Top O(log N)",
+        timeComplexity: "Peek Top: O(1) | Push: O(log N) | Extract Top: O(log N) | Build Heap: O(N)",
         spaceComplexity: "O(N)",
         icon: Icons.unfold_more_double_outlined,
         themeColor: const Color(0xFF84CC16),
-        descriptionEn: "A Binary Heap is a complete binary tree mapped onto a 1D array.",
-        descriptionBn: "বাইনারি হিপ হলো ১D অ্যারেতে সাজানো কমপ্লিট বাইনারি ট্রি।",
-        keyConceptsEn: ["Heap Invariant", "Bubble Up & Down"],
-        keyConceptsBn: ["হিপ ইনভেরিয়েন্ট", "বাবল আপ ও বাবল ডাউন"],
+        descriptionEn:
+            "A Binary Heap is a specialized Complete Binary Tree mapped onto a contiguous 1D array where every parent node satisfies the Heap Property Invariant: in a Min-Heap, parent value is always smaller than or equal to its children (`parent <= children`), placing the Global Minimum at root `[0]`; in a Max-Heap, parent value is always greater than or equal to its children (`parent >= children`), placing the Global Maximum at root `[0]`. Insertions (`push`) and deletions (`pop`) perform O(log N) bubble-up or bubble-down operations.",
+        descriptionBn:
+            "বাইনারি হিপ (Binary Heap) হলো একটি ১D অ্যারেতে সাজানো কমপ্লিট বাইনারি ট্রি যা হিপ প্রপার্টি মেনে চলে: Min-Heap এ অভিভাবক (Parent) নোডের মান সবসময় তার সন্তানের (Children) চেয়ে ছোট বা সমান (`parent <= children`) হওয়ায় সর্বনিম্ন মান সর্বদা রুটে `[0]` থাকে; Max-Heap এ অভিভাবকের মান সবসময় সন্তানের চেয়ে বড় বা সমান (`parent >= children`) থাকায় সর্বোচ্চ মান সর্বদা রুটে `[0]` থাকে। নতুন মান পুশ বা পপ করলে O(log N) সময়ে বাবল-আপ (Bubble Up) বা বাবল-ডাউন (Bubble Down) করে ট্রি ব্যালেন্স রাখা হয়।",
+        keyConceptsEn: [
+          "Heap Property Invariant: Min-Heap Root = Minimum (O(1)); Max-Heap Root = Maximum (O(1)).",
+          "Complete Binary Tree Array Mapping: Parent index `i`, Left Child = `2i + 1`, Right Child = `2i + 2`, Parent = `(i - 1) / 2`.",
+          "Bubble-Up (Swim): Restoring heap property after `push()` by moving newly appended leaf up towards root.",
+          "Bubble-Down (Sink): Restoring heap property after `pop()` by swapping root with smaller/larger child down."
+        ],
+        keyConceptsBn: [
+          "হিপ ইনভেরিয়েন্ট: Min-Heap রুট = সর্বনিম্ন (O(1)); Max-Heap রুট = সর্বোচ্চ (O(1))।",
+          "১D অ্যারে ট্র্যাকিং: ইনডেক্স `i` হলে বাম সন্তান = `2i + 1`, ডান সন্তান = `2i + 2`, প্যারেন্ট = `(i - 1) / 2`।",
+          "বাবল-আপ (Swim): নতুন উপাদান নিচে যুক্ত করে প্যারেন্টের সাথে চেক করে উপরে তোলা।",
+          "বাবল-ডাউন (Sink): টপ মান পপ করার পর রুট উপাদানকে সঠিক চাইল্ডের সাথে সোয়াপ করে নিচে নামানো।"
+        ],
         multiDimCodeTemplates: {
-          "Min Heap": {
-            "C++": "priority_queue<int, vector<int>, greater<int>> minHeap;",
-            "Java": "PriorityQueue<Integer> pq = new PriorityQueue<>();",
-            "Python": "import heapq",
-            "JavaScript": "class MinHeap {}"
+          "Min Heap Declaration": {
+            "C++": """
+// C++ Min-Heap Priority Queue
+#include <queue>
+std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;""",
+            "Java": """
+// Java Min-Heap PriorityQueue
+import java.util.PriorityQueue;
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();""",
+            "Python": """
+# Python heapq module (default Min-Heap)
+import heapq
+minHeap = []
+heapq.heappush(minHeap, 5) # Push
+min_val = heapq.heappop(minHeap) # Pop""",
+            "JavaScript": """
+// JavaScript Min-Heap Class
+class MinHeap {
+    constructor() { this.heap = []; }
+    push(val) { this.heap.push(val); this._bubbleUp(); }
+    pop() { return this.heap.shift(); }
+}"""
+          },
+          "Max Heap Declaration": {
+            "C++": """
+// C++ Max-Heap (Default)
+#include <queue>
+std::priority_queue<int> maxHeap;""",
+            "Java": """
+// Java Max-Heap
+import java.util.Collections;
+import java.util.PriorityQueue;
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());""",
+            "Python": """
+# Python Max-Heap using negated values (-val)
+import heapq
+maxHeap = []
+heapq.heappush(maxHeap, -5) # Push negated
+max_val = -heapq.heappop(maxHeap) # Pop negated""",
+            "JavaScript": """
+// JavaScript Max-Heap
+class MaxHeap {
+    constructor() { this.heap = []; }
+    push(val) { this.heap.push(val); }
+}"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "hp-1",
+            title: "1. Kth Largest Element in an Array",
+            category: "Min Heap Top-K Pattern",
+            keyIdeaEn: "Maintain a Min-Heap of size K. Iterate array elements; if heap size exceeds K, pop the smallest. The top of the Min-Heap will be the Kth largest element!",
+            keyIdeaBn: "সাইজ K এর একটি Min-Heap বজায় রাখুন। অ্যারের উপাদান যুক্ত করুন এবং সাইজ K পার হলে পপ করুন। লুপ শেষে Min-Heap এর টপ মানটিই হবে K-তম বৃহত্তম উপাদান!",
+            codeCpp: """
+int findKthLargest(vector<int>& nums, int k) {
+    priority_queue<int, vector<int>, greater<int>> minHeap;
+    for (int num : nums) {
+        minHeap.push(num);
+        if (minHeap.size() > k) minHeap.pop();
+    }
+    return minHeap.top();
+}""",
+            codeJava: """
+public int findKthLargest(int[] nums, int k) {
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    for (int num : nums) {
+        minHeap.add(num);
+        if (minHeap.size() > k) minHeap.poll();
+    }
+    return minHeap.peek();
+}""",
+            codePython: """
+def findKthLargest(nums: List[int], k: int) -> int:
+    minHeap = []
+    for num in nums:
+        heapq.heappush(minHeap, num)
+        if len(minHeap) > k:
+            heapq.heappop(minHeap)
+    return minHeap[0]""",
+            codeJs: """
+function findKthLargest(nums, k) {
+    nums.sort((a, b) => b - a);
+    return nums[k - 1];
+}""",
+            descriptionEn: "Find the Kth largest element in an unsorted array in O(N log K) time using a Min-Heap.",
+            descriptionBn: "অবিন্যস্ত অ্যারে থেকে Min-Heap দিয়ে O(N log K) সময়ে K-তম বৃহত্তম উপাদানটি খুঁজে বের করুন।",
+            sampleInputs: ["nums = [3, 2, 1, 5, 6, 4], k = 2"],
+            sampleOutputs: ["Kth Largest = 5"],
+          ),
+          DsaProblem(
+            id: "hp-2",
+            title: "2. Top K Frequent Elements",
+            category: "Frequency Hash + Heap Pattern",
+            keyIdeaEn: "Count element frequencies in a Hash Map. Push pairs `(frequency, val)` into a Min-Heap of size K. Pop when size > K.",
+            keyIdeaBn: "হ্যাশ ম্যাপে উপকরণের গণনা রেখে `(frequency, val)` জোড়া আকারে সাইজ K এর Min-Heap এ পুশ ও পপ করুন।",
+            codeCpp: """
+vector<int> topKFrequent(vector<int>& nums, int k) {
+    unordered_map<int, int> counts;
+    for (int n : nums) counts[n]++;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minHeap;
+    for (auto& p : counts) {
+        minHeap.push({p.second, p.first});
+        if (minHeap.size() > k) minHeap.pop();
+    }
+    vector<int> res;
+    while (!minHeap.empty()) { res.push_back(minHeap.top().second); minHeap.pop(); }
+    return res;
+}""",
+            codeJava: """
+public int[] topKFrequent(int[] nums, int k) {
+    Map<Integer, Integer> counts = new HashMap<>();
+    for (int n : nums) counts.put(n, counts.getOrDefault(n, 0) + 1);
+    PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    for (int key : counts.keySet()) {
+        minHeap.add(new int[]{counts.get(key), key});
+        if (minHeap.size() > k) minHeap.poll();
+    }
+    int[] res = new int[k];
+    for (int i = 0; i < k; i++) res[i] = minHeap.poll()[1];
+    return res;
+}""",
+            codePython: """
+def topKFrequent(nums: List[int], k: int) -> List[int]:
+    count = Counter(nums)
+    return [item for item, freq in count.most_common(k)]""",
+            codeJs: """
+function topKFrequent(nums, k) {
+    const map = new Map();
+    for (let n of nums) map.set(n, (map.get(n) || 0) + 1);
+    return Array.from(map.keys()).sort((a, b) => map.get(b) - map.get(a)).slice(0, k);
+}""",
+            descriptionEn: "Return the K most frequent elements in an array using Hash Map frequency counting and Min-Heap.",
+            descriptionBn: "সবচেয়ে বেশি বার আসা K টি উপাদান হ্যাশ ম্যাপ এবং Min-Heap ব্যবহার করে বের করুন।",
+            sampleInputs: ["nums = [1, 1, 1, 2, 2, 3], k = 2"],
+            sampleOutputs: ["Top K Frequent = [1, 2]"],
+          ),
+          DsaProblem(
+            id: "hp-3",
+            title: "3. Merge K Sorted Lists",
+            category: "Multi-way Merge Heap Pattern",
+            keyIdeaEn: "Push the head node of all K sorted lists into a Min-Heap. Repeatedly extract the minimum node, attach to result list, and push its next node.",
+            keyIdeaBn: "সব K টি সর্টেড লিস্টের রুট নোড Min-Heap এ রাখুন। সর্বনিম্ন নোড পপ করে রেজাল্টে যুক্ত করুন এবং তার পরবর্তী নোড হিপ এ পুশ করুন।",
+            codeCpp: """
+ListNode* mergeKLists(vector<ListNode*>& lists) {
+    auto comp = [](ListNode* a, ListNode* b) { return a->val > b->val; };
+    priority_queue<ListNode*, vector<ListNode*>, decltype(comp)> minHeap(comp);
+    for (auto l : lists) if (l) minHeap.push(l);
+    ListNode dummy(0), *tail = &dummy;
+    while (!minHeap.empty()) {
+        ListNode* topNode = minHeap.top(); minHeap.pop();
+        tail->next = topNode; tail = tail->next;
+        if (topNode->next) minHeap.push(topNode->next);
+    }
+    return dummy.next;
+}""",
+            codeJava: """
+public ListNode mergeKLists(ListNode[] lists) {
+    PriorityQueue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val);
+    for (ListNode l : lists) if (l != null) minHeap.add(l);
+    ListNode dummy = new ListNode(0), tail = dummy;
+    while (!minHeap.isEmpty()) {
+        ListNode top = minHeap.poll();
+        tail.next = top; tail = tail.next;
+        if (top.next != null) minHeap.add(top.next);
+    }
+    return dummy.next;
+}""",
+            codePython: """
+def mergeKLists(lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+    minHeap = []
+    for i, l in enumerate(lists):
+        if l: heapq.heappush(minHeap, (l.val, i, l))
+    dummy = tail = ListNode(0)
+    while minHeap:
+        val, i, node = heapq.heappop(minHeap)
+        tail.next = node; tail = tail.next
+        if node.next: heapq.heappush(minHeap, (node.next.val, i, node.next))
+    return dummy.next""",
+            codeJs: """
+function mergeKLists(lists) {
+    const vals = [];
+    for (let l of lists) { while (l) { vals.push(l.val); l = l.next; } }
+    vals.sort((a, b) => a - b);
+    const dummy = new ListNode(0); let tail = dummy;
+    for (let v of vals) { tail.next = new ListNode(v); tail = tail.next; }
+    return dummy.next;
+}""",
+            descriptionEn: "Merge K sorted linked lists into one single sorted list in O(N log K) time using Min-Heap.",
+            descriptionBn: "Min-Heap দিয়ে O(N log K) সময়ে K টি সর্টেড লিঙ্কড লিস্টকে মার্জ করে একটি একক সর্টেড লিঙ্কড লিস্ট বানান।",
+            sampleInputs: ["lists = [[1, 4, 5], [1, 3, 4], [2, 6]]"],
+            sampleOutputs: ["Merged = [1, 1, 2, 3, 4, 4, 5, 6]"],
+          ),
+          DsaProblem(
+            id: "hp-4",
+            title: "4. Find Median from Data Stream (Two Heaps)",
+            category: "Two Heaps Pattern (Max-Heap + Min-Heap)",
+            keyIdeaEn: "Use a Max-Heap for the lower half of numbers and a Min-Heap for the upper half. Keep size balanced so median can be queried in O(1) constant time!",
+            keyIdeaBn: "ছোট অর্ধেকের জন্য Max-Heap এবং বড় অর্ধেকের জন্য Min-Heap রাখুন। সাইজ ব্যালেন্স করে ওয়ান O(1) টাইমে মিডিয়ান বের করুন!",
+            codeCpp: """
+class MedianFinder {
+    priority_queue<int> maxHeap; // Lower half
+    priority_queue<int, vector<int>, greater<int>> minHeap; // Upper half
+public:
+    void addNum(int num) {
+        maxHeap.push(num);
+        minHeap.push(maxHeap.top()); maxHeap.pop();
+        if (minHeap.size() > maxHeap.size()) {
+            maxHeap.push(minHeap.top()); minHeap.pop();
+        }
+    }
+    double findMedian() {
+        if (maxHeap.size() > minHeap.size()) return maxHeap.top();
+        return (maxHeap.top() + minHeap.top()) / 2.0;
+    }
+};""",
+            codeJava: """
+class MedianFinder {
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    public void addNum(int num) {
+        maxHeap.add(num);
+        minHeap.add(maxHeap.poll());
+        if (minHeap.size() > maxHeap.size()) maxHeap.add(minHeap.poll());
+    }
+    public double findMedian() {
+        if (maxHeap.size() > minHeap.size()) return maxHeap.peek();
+        return (maxHeap.peek() + minHeap.peek()) / 2.0;
+    }
+}""",
+            codePython: """
+class MedianFinder:
+    def __init__(self):
+        self.small = [] # Max-Heap (negated)
+        self.large = [] # Min-Heap
+    def addNum(self, num: int) -> None:
+        heapq.heappush(self.small, -num)
+        heapq.heappush(self.large, -heapq.heappop(self.small))
+        if len(self.large) > len(self.small):
+            heapq.heappush(self.small, -heapq.heappop(self.large))
+    def findMedian(self) -> float:
+        if len(self.small) > len(self.large): return -self.small[0]
+        return (-self.small[0] + self.large[0]) / 2.0""",
+            codeJs: """
+class MedianFinder {
+    constructor() { this.arr = []; }
+    addNum(num) {
+        this.arr.push(num); this.arr.sort((a, b) => a - b);
+    }
+    findMedian() {
+        const mid = Math.floor(this.arr.length / 2);
+        return this.arr.length % 2 !== 0 ? this.arr[mid] : (this.arr[mid - 1] + this.arr[mid]) / 2;
+    }
+}""",
+            descriptionEn: "Maintain live median of continuous incoming number stream using Two Heaps (Max-Heap + Min-Heap).",
+            descriptionBn: "টু-হিপস (Max-Heap + Min-Heap) দিয়ে রিয়েল-টাইমে যেকোনো ডেটা স্ট্রিমের মিডিয়ান ওয়ান (O(1)) টাইমে বের করুন।",
+            sampleInputs: ["Stream = [2, 3, 4]"],
+            sampleOutputs: ["Medians = [2, 2.5, 3]"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Confusing C++ priority_queue Default Order",
+            "desc": "std::priority_queue<int> in C++ is a Max-Heap by default! To create a Min-Heap, greater<int> must be specified."
+          },
+          {
+            "title": "2. 0-based vs 1-based Array Index Math",
+            "desc": "For 0-based array heap indexing: Left Child = 2i + 1, Right Child = 2i + 2, Parent = (i - 1) / 2. Using 1-based formulas causes off-by-one errors."
+          },
+          {
+            "title": "3. Inserting Elements Without Heapifying (O(N Log N) vs O(N))",
+            "desc": "Building a heap from an array by doing N pushes takes O(N log N). Using bottom-up heapify takes linear O(N) time!"
+          },
+          {
+            "title": "4. Modifying Heap Elements In-Place",
+            "desc": "Mutating an element inside a priority queue without calling push() / pop() breaks the Heap Property invariant."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. C++ priority_queue এর ডিফল্ট অর্ডারে ভুল ধারণা",
+            "desc": "C++ এ std::priority_queue<int> ডিফল্টভাবে Max-Heap! Min-Heap বানাতে হলে `greater<int>` কাস্টম কম্প্যারেটর ডিফাইন করতে হয়।"
+          },
+          {
+            "title": "২. 0-ভিত্তিক ইনডেক্সিংয়ের সূত্রে ভুল",
+            "desc": "অ্যারেতে ০-ভিত্তিক ইনডেক্সিং হলে Left Child = 2i + 1, Right Child = 2i + 2 এবং Parent = (i - 1) / 2।"
+          },
+          {
+            "title": "৩. ওয়ান (O(N)) হিপ ডিরেক্ট বিল্ড করার সুযোগ মিস করা",
+            "desc": "অ্যারে থেকে হিপ বানাতে N টি ইনসার্ট করলে O(N log N) লাগে, কিন্তু বটম-আপ heapify করলে মাত্র O(N) সময় লাগে।"
+          },
+          {
+            "title": "৪. হিপের উপাদান মেমোরিতে সরাসরি পরিবর্তন করা",
+            "desc": "পুশ/পপ না করে মেমোরিতে পরিবর্তন করলে হিপের বৈশিষ্ট্য নষ্ট হয়ে ভুল রেজাল্ট আসে।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand Complete Binary Tree Array Mapping",
+            "desc": "Master 0-based array index formulas (`2i+1`, `2i+2`, `(i-1)/2`)."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Heapify Operations (Bubble Up & Bubble Down)",
+            "desc": "Master `percolateUp` / `swim` and `percolateDown` / `sink` tree balancing."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Priority Queue API (push, pop, top)",
+            "desc": "Master PriorityQueue data structure operations (`push O(log N)`, `pop O(log N)`, `top O(1)`)."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Top-K Pattern (Min-Heap of Size K)",
+            "desc": "Master Min-Heap of size K pattern for Kth largest and K most frequent."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Two Heaps Pattern (Continuous Median)",
+            "desc": "Master Max-Heap + Min-Heap dual container for real-time median tracking."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "কমপ্লিট বাইনারি ট্রি অ্যারে ম্যাপিং বোঝা",
+            "desc": "০-ভিত্তিক ইনডেক্সিং সূত্র (`2i+1`, `2i+2`, `(i-1)/2`) আয়ত্ত করা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "হিপিফাই অপারেশন (বাবল আপ ও বাবল ডাউন)",
+            "desc": "নোড সোয়াপিং করে `percolateUp` এবং `percolateDown` ব্যালেন্সিং শেখা।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "প্রাইওরিটি কিউ API (push, pop, top)",
+            "desc": "`push O(log N)`, `pop O(log N)` এবং `top O(1)` অপারেশন শেখা।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "Top-K প্যাটার্ন (সাইজ K এর Min-Heap)",
+            "desc": "K-তম বৃহত্তম ও ক্যারেক্টার ফ্রিকোয়েন্সি বের করতে Min-Heap ব্যবহার।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "টু-হিপস (Two Heaps) রিয়েল-টাইম মিডিয়ান প্যাটার্ন",
+            "desc": "Max-Heap + Min-Heap দুটো কন্টেইনার দিয়ে রিয়েল-টাইমে মিডিয়ান ট্র্যাকিং।"
+          }
+        ],
       ),
 
       // 8. GRAPH
