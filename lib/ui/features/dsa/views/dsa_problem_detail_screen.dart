@@ -9,6 +9,7 @@ class DebugArrayStep {
   final int activeLineIndex;
   final List<int>? array1D;
   final List<List<int>>? matrix2D;
+  final List<String>? stackItems;
   final int? pointer1;
   final int? pointer2;
   final int? minVal;
@@ -20,6 +21,7 @@ class DebugArrayStep {
     required this.activeLineIndex,
     this.array1D,
     this.matrix2D,
+    this.stackItems,
     this.pointer1,
     this.pointer2,
     this.minVal,
@@ -342,15 +344,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _ll1Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
-      pointer1: 0, // curr = 0
-      pointer2: -1, // prev = -1 (null)
+      activeLineIndex: 1,
+      pointer1: 0,
+      pointer2: -1,
       array1D: [1, 2, 3, 4, 5],
       explanationEn: "Line 2: Set prev = null, curr = head (node val 1).",
       explanationBn: "লাইন ২: prev = null এবং curr = head (নোড মান 1) সূচনা।",
     ),
     DebugArrayStep(
-      activeLineIndex: 2, // Line 3
+      activeLineIndex: 2,
       pointer1: 0,
       pointer2: -1,
       array1D: [1, 2, 3, 4, 5],
@@ -358,7 +360,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৩: শর্ত চেক (curr != null) সত্য! লুপে প্রবেশ করুন।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       pointer1: 0,
       pointer2: -1,
       array1D: [1, 2, 3, 4, 5],
@@ -366,7 +368,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৪: পরবর্তী নোডের ব্যাকআপ: nextTemp = node 2।",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       pointer1: 0,
       pointer2: -1,
       array1D: [1, 2, 3, 4, 5],
@@ -374,15 +376,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৫: লিঙ্ক উল্টানো! নোড 1 এর পয়েন্টার এখন prev (null) কে দেখাচ্ছে।",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
-      pointer1: 1, // curr = 1
-      pointer2: 0, // prev = 0
+      activeLineIndex: 5,
+      pointer1: 1,
+      pointer2: 0,
       array1D: [1, 2, 3, 4, 5],
       explanationEn: "Line 6: Advance pointers -> prev = node 1, curr = node 2.",
       explanationBn: "লাইন ৬: পয়েন্টার আগানো: prev = node 1, curr = node 2।",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       pointer1: 1,
       pointer2: 0,
       array1D: [2, 1, 3, 4, 5],
@@ -390,7 +392,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৫: লিঙ্ক উল্টানো! নোড 2 এখন নোড 1 কে পয়েন্ট করছে।",
     ),
     DebugArrayStep(
-      activeLineIndex: 8, // Line 9
+      activeLineIndex: 8,
       pointer1: 4,
       pointer2: 4,
       array1D: [5, 4, 3, 2, 1],
@@ -412,15 +414,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _ll2Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
-      pointer1: 0, // slow = 0
-      pointer2: 0, // fast = 0
+      activeLineIndex: 1,
+      pointer1: 0,
+      pointer2: 0,
       array1D: [1, 2, 3, 4, 5],
       explanationEn: "Line 2: Set slow = head (val 1) and fast = head (val 1).",
       explanationBn: "লাইন ২: slow = 1 এবং fast = 1 সেট করে সূচনা।",
     ),
     DebugArrayStep(
-      activeLineIndex: 2, // Line 3
+      activeLineIndex: 2,
       pointer1: 0,
       pointer2: 0,
       array1D: [1, 2, 3, 4, 5],
@@ -428,31 +430,31 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৩: শর্ত চেক (fast != null) সত্য!",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
-      pointer1: 1, // slow = 1 (val 2)
+      activeLineIndex: 3,
+      pointer1: 1,
       pointer2: 0,
       array1D: [1, 2, 3, 4, 5],
       explanationEn: "Line 4: Advance slow 1 step -> slow = node 2 (val 2).",
       explanationBn: "লাইন ৪: slow ১ ধাপ এগুলো -> slow = 2।",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       pointer1: 1,
-      pointer2: 2, // fast = 2 (val 3)
+      pointer2: 2,
       array1D: [1, 2, 3, 4, 5],
       explanationEn: "Line 5: Advance fast 2 steps -> fast = node 3 (val 3).",
       explanationBn: "লাইন ৫: fast ২ ধাপ এগুলো -> fast = 3।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
-      pointer1: 2, // slow = 2 (val 3)
-      pointer2: 4, // fast = 4 (val 5)
+      activeLineIndex: 3,
+      pointer1: 2,
+      pointer2: 4,
       array1D: [1, 2, 3, 4, 5],
       explanationEn: "Line 4: Advance slow 1 step -> slow = node 3 (val 3).",
       explanationBn: "লাইন ৪: slow ১ ধাপ এগুলো -> slow = 3।",
     ),
     DebugArrayStep(
-      activeLineIndex: 6, // Line 7
+      activeLineIndex: 6,
       pointer1: 2,
       pointer2: 4,
       array1D: [1, 2, 3, 4, 5],
@@ -559,7 +561,225 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     ),
   ];
 
+  // STACK (LIFO) CODE LINES & STEPS
+  final List<String> _st1CodeLines = [
+    "bool isValid(string s) {",
+    "    stack<char> st;",
+    "    for (char c : s) {",
+    "        if (c == '(' || c == '[' || c == '{') st.push(c);",
+    "        else {",
+    "            if (st.empty()) return false;",
+    "            char top = st.top(); st.pop();",
+    "            if (mismatch) return false;",
+    "        }",
+    "    }",
+    "    return st.empty();",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _st1Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1, // Line 2
+      stackItems: [],
+      explanationEn: "Line 2: Initialize empty char stack st = []. Input string s = '({[]})'.",
+      explanationBn: "লাইন ২: খালি স্ট্যাক st = [] ডিক্লেয়ার। ইনপুট স্ট্রিং s = '({[]})'।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3, // Line 4
+      stackItems: ["("],
+      explanationEn: "Line 4: Encountered opening bracket '('. Push '(' onto stack. Stack = ['('].",
+      explanationBn: "লাইন ৪: ওপেনিং ব্র্যাকেট '(' পাওয়া গেল। স্ট্যাকে পুশ করুন। স্ট্যাক = ['(']।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3, // Line 4
+      stackItems: ["(", "{"],
+      explanationEn: "Line 4: Encountered opening bracket '{'. Push '{' onto stack. Stack = ['(', '{'].",
+      explanationBn: "লাইন ৪: ওপেনিং ব্র্যাকেট '{' পাওয়া গেল। স্ট্যাকে পুশ করুন। স্ট্যাক = ['(', '{']।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3, // Line 4
+      stackItems: ["(", "{", "["],
+      explanationEn: "Line 4: Encountered opening bracket '['. Push '[' onto stack. Stack = ['(', '{', '['].",
+      explanationBn: "লাইন ৪: ওপেনিং ব্র্যাকেট '[' পাওয়া গেল। স্ট্যাকে পুশ করুন। স্ট্যাক = ['(', '{', '[']।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6, // Line 7
+      stackItems: ["(", "{\""],
+      explanationEn: "Line 7: Encountered closing bracket ']'. Pop top '[' and verify match. Match OK!",
+      explanationBn: "লাইন ৭: ক্লোজিং ব্র্যাকেট ']' পাওয়া গেল। টপ '[' পপ করে ম্যাচ ভেরিফাই করা হলো।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6, // Line 7
+      stackItems: ["("],
+      explanationEn: "Line 7: Encountered closing bracket '}'. Pop top '{' and verify match. Match OK!",
+      explanationBn: "লাইন ৭: ক্লোজিং ব্র্যাকেট '}' পাওয়া গেল। টপ '{' পপ করে ম্যাচ ভেরিফাই করা হলো।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 10, // Line 11
+      stackItems: [],
+      explanationEn: "🎉 Line 11: All brackets matched! Stack is empty. Return TRUE!",
+      explanationBn: "🎉 লাইন ১১: সমস্ত ব্র্যাকেট সঠিকভাবে ম্যাচ করেছে! স্ট্যাক খালি। Return TRUE!",
+    ),
+  ];
+
+  final List<String> _st2CodeLines = [
+    "class MinStack {",
+    "    stack<int> st, minSt;",
+    "public:",
+    "    void push(int val) {",
+    "        st.push(val);",
+    "        int minVal = minSt.empty() ? val : min(val, minSt.top());",
+    "        minSt.push(minVal);",
+    "    }",
+    "    int getMin() { return minSt.top(); }",
+    "};",
+  ];
+
+  final List<DebugArrayStep> _st2Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1, // Line 2
+      stackItems: [],
+      minVal: 0,
+      explanationEn: "Line 2: Initialize main stack `st` and auxiliary `minSt` for O(1) min queries.",
+      explanationBn: "লাইন ২: মূল স্ট্যাক `st` এবং O(1) মিনিমাম কুয়েরির জন্য auxiliary `minSt` ডিক্লেয়ার।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4, // Line 5
+      stackItems: ["-2"],
+      minVal: -2,
+      explanationEn: "Line 5: Push (-2) -> st = [-2], minSt = [-2]. Minimum = -2.",
+      explanationBn: "লাইন ৫: পুশ (-2) -> st = [-2], minSt = [-2]। মিনিমাম = -2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4, // Line 5
+      stackItems: ["-2", "0"],
+      minVal: -2,
+      explanationEn: "Line 5: Push (0) -> st = [-2, 0], minSt = [-2, -2]. Minimum = -2.",
+      explanationBn: "লাইন ৫: পুশ (0) -> st = [-2, 0], minSt = [-2, -2]। মিনিমাম = -2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6, // Line 7
+      stackItems: ["-2", "0", "-3"],
+      minVal: -3,
+      explanationEn: "Line 7: Push (-3) -> min(-3, -2) = -3. st = [-2, 0, -3], minSt = [-2, -2, -3]. Minimum = -3.",
+      explanationBn: "লাইন ৭: পুশ (-3) -> মিনিমাম আপডেট হয়ে -3 হলো। minSt = [-2, -2, -3]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 8, // Line 9
+      stackItems: ["-2", "0", "-3"],
+      minVal: -3,
+      explanationEn: "🎉 Line 9: Call getMin() -> Query minSt.top() = -3 in O(1) constant time!",
+      explanationBn: "🎉 লাইন ৯: getMin() কল -> O(1) টাইমে minSt.top() = -3 রিটার্ন!",
+    ),
+  ];
+
+  final List<String> _st3CodeLines = [
+    "int evalRPN(vector<string>& tokens) {",
+    "    stack<int> st;",
+    "    for (string& t : tokens) {",
+    "        if (isOperator(t)) {",
+    "            int b = st.top(); st.pop();",
+    "            int a = st.top(); st.pop();",
+    "            st.push(eval(a, b, t));",
+    "        } else st.push(stoi(t));",
+    "    }",
+    "    return st.top();",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _st3Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 1, // Line 2
+      stackItems: [],
+      explanationEn: "Line 2: Evaluate Postfix RPN = ['2', '1', '+', '3', '*']. Initialize st = [].",
+      explanationBn: "লাইন ২: পোস্টফিক্স RPN = ['2', '1', '+', '3', '*'] মূল্যায়ন শুরু।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 7, // Line 8
+      stackItems: ["2", "1"],
+      explanationEn: "Line 8: Push operands 2 and 1 onto stack. Stack = [2, 1].",
+      explanationBn: "লাইন ৮: সংখ্যা ২ এবং ১ স্ট্যাকে পুশ করা হলো। স্ট্যাক = [2, 1]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6, // Line 7
+      stackItems: ["3"],
+      explanationEn: "Line 7: Operator '+' -> Pop 1 and 2. Evaluate (2 + 1 = 3). Push 3. Stack = [3].",
+      explanationBn: "লাইন ৭: '+' পেয়ে পপ (1, 2)। হিসাব (2 + 1 = 3)। পুশ 3। স্ট্যাক = [3]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 7, // Line 8
+      stackItems: ["3", "3"],
+      explanationEn: "Line 8: Push operand 3 onto stack. Stack = [3, 3].",
+      explanationBn: "লাইন ৮: সংখ্যা ৩ স্ট্যাকে পুশ করা হলো। স্ট্যাক = [3, 3]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 9, // Line 10
+      stackItems: ["9"],
+      explanationEn: "🎉 Line 10: Operator '*' -> Pop 3 and 3. Evaluate (3 * 3 = 9). Final Result = 9!",
+      explanationBn: "🎉 লাইন ১০: '*' পেয়ে পপ (3, 3)। হিসাব (3 * 3 = 9)। চূড়ান্ত ফলাফল = 9!",
+    ),
+  ];
+
+  final List<String> _st4CodeLines = [
+    "vector<int> nextGreaterElement(vector<int>& arr) {",
+    "    int n = arr.size();",
+    "    vector<int> res(n, -1); stack<int> st;",
+    "    for (int i = n - 1; i >= 0; i--) {",
+    "        while (!st.empty() && st.top() <= arr[i]) st.pop();",
+    "        if (!st.empty()) res[i] = st.top();",
+    "        st.push(arr[i]);",
+    "    }",
+    "    return res;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _st4Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 2, // Line 3
+      stackItems: [],
+      array1D: [4, 5, 2, 25],
+      explanationEn: "Line 3: Array arr = [4, 5, 2, 25]. Traverse right-to-left using Monotonic Stack.",
+      explanationBn: "লাইন ৩: অ্যারে arr = [4, 5, 2, 25]। মনোটোনিক স্ট্যাক দিয়ে ডান থেকে বামে ট্রাভার্স।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6, // Line 7
+      stackItems: ["25"],
+      array1D: [4, 5, 2, 25],
+      minVal: -1,
+      explanationEn: "Line 7: Index 3 (val 25): Stack empty -> Next Greater = -1. Push 25.",
+      explanationBn: "লাইন ৭: ইনডেক্স 3 (মান 25): স্ট্যাক খালি -> Next Greater = -1। পুশ 25।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5, // Line 6
+      stackItems: ["25", "2"],
+      array1D: [4, 5, 2, 25],
+      minVal: 25,
+      explanationEn: "Line 6: Index 2 (val 2): Top (25) > 2 -> Next Greater = 25. Push 2.",
+      explanationBn: "লাইন ৬: ইনডেক্স 2 (মান 2): টপ (25) > 2 -> Next Greater = 25। পুশ 2।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5, // Line 6
+      stackItems: ["25", "5"],
+      array1D: [4, 5, 2, 25],
+      minVal: 25,
+      explanationEn: "Line 6: Index 1 (val 5): Pop 2 (5 >= 2). Top (25) > 5 -> Next Greater = 25. Push 5.",
+      explanationBn: "লাইন ৬: ইনডেক্স 1 (মান 5): পপ 2 (5 >= 2)। টপ (25) > 5 -> Next Greater = 25। পুশ 5।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 8, // Line 9
+      stackItems: ["25", "5", "4"],
+      array1D: [4, 5, 2, 25],
+      minVal: 5,
+      explanationEn: "🎉 Line 9: Index 0 (val 4): Top (5) > 4 -> Next Greater = 5. Result = [5, 25, 25, -1]!",
+      explanationBn: "🎉 লাইন ৯: ইনডেক্স 0 (মান 4): টপ (5) > 4 -> Next Greater = 5। রেজাল্ট = [5, 25, 25, -1]!",
+    ),
+  ];
+
   List<DebugArrayStep> get _currentSteps {
+    if (widget.problem.id == "st-1") return _st1Steps;
+    if (widget.problem.id == "st-2") return _st2Steps;
+    if (widget.problem.id == "st-3") return _st3Steps;
+    if (widget.problem.id == "st-4") return _st4Steps;
     if (widget.problem.id == "ll-1") return _ll1Steps;
     if (widget.problem.id == "ll-2") return _ll2Steps;
     if (widget.problem.id == "ll-3") return _ll3Steps;
@@ -571,6 +791,10 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   }
 
   List<String> get _currentCodeLines {
+    if (widget.problem.id == "st-1") return _st1CodeLines;
+    if (widget.problem.id == "st-2") return _st2CodeLines;
+    if (widget.problem.id == "st-3") return _st3CodeLines;
+    if (widget.problem.id == "st-4") return _st4CodeLines;
     if (widget.problem.id == "ll-1") return _ll1CodeLines;
     if (widget.problem.id == "ll-2") return _ll2CodeLines;
     if (widget.problem.id == "ll-3") return _ll3CodeLines;
@@ -1060,12 +1284,60 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (step.minVal != null)
-                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : "Min: ${step.minVal}", style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(widget.problem.id.startsWith("ll-") ? "Result / Pointer: ${step.minVal}" : (widget.problem.id.startsWith("st-") ? "Min Val: ${step.minVal}" : "Min: ${step.minVal}"), style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
                 if (step.maxVal != null)
                   Text("Max: ${step.maxVal}", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 14)),
               ],
             ),
             const SizedBox(height: 16),
+          ],
+
+          // Stack LIFO Visualizer Container
+          if (widget.problem.id.startsWith("st-") && step.stackItems != null) ...[
+            Column(
+              children: [
+                const Text("Vertical Stack LIFO Container (Top)", style: TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 13)),
+                const SizedBox(height: 12),
+                Container(
+                  width: 180,
+                  height: 170,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF090D16),
+                    borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(16), bottomRight: Radius.circular(16)),
+                    border: Border.all(color: AppTheme.accentGreen, width: 2),
+                  ),
+                  child: step.stackItems!.isEmpty
+                      ? Center(child: Text(_isEnglish ? "[Stack Empty]" : "[স্ট্যাক খালি]", style: const TextStyle(color: AppTheme.textMuted, fontSize: 12)))
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: List.generate(step.stackItems!.length, (idx) {
+                            final reverseIdx = step.stackItems!.length - 1 - idx;
+                            final item = step.stackItems![reverseIdx];
+                            final isTop = reverseIdx == step.stackItems!.length - 1;
+
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: const EdgeInsets.symmetric(vertical: 3),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: isTop ? AppTheme.accentGreen : AppTheme.surfaceDark,
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: isTop ? Colors.white : AppTheme.accentGreen.withOpacity(0.4)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  isTop ? "TOP: $item" : item,
+                                  style: TextStyle(color: isTop ? AppTheme.primaryDark : Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                ),
+              ],
+            ),
           ],
 
           // 1D Array or Linked List Canvas

@@ -977,27 +977,475 @@ function hasCycle(head) {
         id: 203,
         title: "Stack (LIFO)",
         category: "Linear Container Structure",
-        timeComplexity: "Push O(1) | Pop O(1) | Top/Peek O(1)",
+        timeComplexity: "Push: O(1) | Pop: O(1) | Top/Peek: O(1) | Search: O(N)",
         spaceComplexity: "O(N)",
         icon: Icons.layers_outlined,
         themeColor: const Color(0xFF10B981),
-        descriptionEn: "A Stack is a linear data structure operating under the strict Last-In, First-Out (LIFO) discipline.",
-        descriptionBn: "স্ট্যাক হলো একটি লিনিয়ার কন্টেইনার যা লাস্ট-ইন, ফার্স্ট-আউট (LIFO) নীতিতে কাজ করে।",
-        keyConceptsEn: ["LIFO Discipline", "O(1) Push/Pop"],
-        keyConceptsBn: ["LIFO নীতি", "O(1) পুশ/পপ"],
+        descriptionEn:
+            "A Stack is a linear container structure that operates under the strict Last-In, First-Out (LIFO) order. Elements are added (pushed) and removed (popped) exclusively from one end called the Top. All fundamental operations (`push`, `pop`, `top`/`peek`) execute in instant O(1) constant time. Stacks form the foundation of function call stacks, recursion, undo/redo mechanisms, and expression parsing.",
+        descriptionBn:
+            "স্ট্যাক (Stack) হলো একটি লিনিয়ার কন্টেইনার স্ট্রাকচার যা লাস্ট-ইন, ফার্স্ট-আউট (LIFO) নীতিতে কাজ করে। এখানে সবার শেষ যোগ করা উপাদানটি সবার আগে বের (Pop) করা হয়। উপাদান যোগ (Push) এবং বিয়োগ (Pop) কেবল একটি মাত্র প্রান্ত দিয়ে সম্পন্ন হয় যাকে 'Top' বলা হয়। সমস্ত মূল অপারেশন (`push`, `pop`, `top`) ওয়ান O(1) স্পিডে কাজ করে। ফাংশন কল স্ট্যাক, রিকার্শন, আনডু/রিডু এবং ব্র্যাকেট ম্যাচিংয়ে স্ট্যাকের ভূমিকা অপরিসীম।",
+        keyConceptsEn: [
+          "LIFO Principle: The last element pushed onto the stack is the first element popped.",
+          "O(1) Top Operations: Constant time complexity for push, pop, and top/peek methods.",
+          "Parentheses Matching: Using stack to pair opening brackets with closing brackets in O(N) time.",
+          "Monotonic Stack: A stack maintained in strictly increasing or decreasing order to solve Next Greater Element in O(N) time."
+        ],
+        keyConceptsBn: [
+          "LIFO নীতি: সবার শেষে পুশ করা উপাদানটি সবার আগে পপ হয়।",
+          "O(1) টপ অপারেশন: পুশ, পপ এবং টপ দেখার মান বের করা O(1) কনস্ট্যান্ট টাইমে সম্পন্ন হয়।",
+          "ব্র্যাকেট ম্যাচিং: ওপেনিং ব্র্যাকেট স্ট্যাকে রেখে ক্লোজিং ব্র্যাকেটের সাথে জোড়া মেলানোর алгоритм।",
+          "মনোটোনিক স্ট্যাক: স্ট্যাকের উপাদান সর্টেড অর্ডারে রেখে Next Greater Element বা তাপমাত্রা সমস্যা O(N) এ সলভ করা।"
+        ],
         multiDimCodeTemplates: {
           "Array-Based Stack": {
-            "C++": "vector<int> st; st.push_back(10); st.pop_back();",
-            "Java": "Deque<Integer> st = new ArrayDeque<>();",
-            "Python": "st = []; st.append(10); st.pop()",
-            "JavaScript": "const st = []; st.push(10); st.pop()"
+            "C++": """
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class ArrayStack {
+    vector<int> st;
+public:
+    void push(int x) { st.push_back(x); }
+    void pop() { if (!st.empty()) st.pop_back(); }
+    int top() { return st.back(); }
+    bool empty() { return st.empty(); }
+};""",
+            "Java": """
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class StackDemo {
+    public static void main(String[] args) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(10); // Push O(1)
+        stack.push(20);
+        System.out.println("Top: " + stack.peek()); // 20
+        stack.pop(); // Pop O(1)
+    }
+}""",
+            "Python": """
+# Stack using Python list
+stack = []
+stack.append(10) # Push O(1)
+stack.append(20)
+print("Top:", stack[-1]) # 20
+stack.pop() # Pop O(1)""",
+            "JavaScript": """
+// Stack using JS Array
+const stack = [];
+stack.push(10); // Push O(1)
+stack.push(20);
+console.log("Top:", stack[stack.length - 1]); // 20
+stack.pop(); // Pop O(1)"""
+          },
+          "Monotonic Stack": {
+            "C++": """
+vector<int> nextGreaterElement(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> res(n, -1);
+    stack<int> st;
+    for (int i = 0; i < n; i++) {
+        while (!st.empty() && nums[st.top()] < nums[i]) {
+            res[st.top()] = nums[i];
+            st.pop();
+        }
+        st.push(i);
+    }
+    return res;
+}""",
+            "Java": """
+public int[] nextGreaterElement(int[] nums) {
+    int n = nums.length;
+    int[] res = new int[n];
+    Arrays.fill(res, -1);
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = 0; i < n; i++) {
+        while (!st.isEmpty() && nums[st.peek()] < nums[i]) {
+            res[st.pop()] = nums[i];
+        }
+        st.push(i);
+    }
+    return res;
+}""",
+            "Python": """
+def nextGreaterElement(nums):
+    res = [-1] * len(nums)
+    st = []
+    for i, num in enumerate(nums):
+        while st and nums[st[-1]] < num:
+            res[st.pop()] = num
+        st.append(i)
+    return res""",
+            "JavaScript": """
+function nextGreaterElement(nums) {
+    const res = new Array(nums.length).fill(-1);
+    const st = [];
+    for (let i = 0; i < nums.length; i++) {
+        while (st.length > 0 && nums[st[st.length - 1]] < nums[i]) {
+            res[st.pop()] = nums[i];
+        }
+        st.push(i);
+    }
+    return res;
+}"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "st-1",
+            title: "1. Valid Parentheses Matching (Balanced Brackets)",
+            category: "Stack LIFO Basic",
+            keyIdeaEn: "Push opening brackets '(', '[', '{' onto stack. When encountering closing bracket, verify top bracket matches and pop. Return stack.empty().",
+            keyIdeaBn: "ওপেনিং ব্র্যাকেট স্ট্যাকে পুশ করুন। ক্লোজিং ব্র্যাকেট পেলে টপ ব্র্যাকেট পপ করে ম্যাচ যাচাই করুন। শেষে স্ট্যাক খালি হওয়া আবশ্যক।",
+            codeCpp: """
+bool isValid(string s) {
+    stack<char> st;
+    for (char c : s) {
+        if (c == '(' || c == '[' || c == '{') st.push(c);
+        else {
+            if (st.empty()) return false;
+            char top = st.top(); st.pop();
+            if ((c == ')' && top != '(') ||
+                (c == ']' && top != '[') ||
+                (c == '}' && top != '{')) return false;
+        }
+    }
+    return st.empty();
+}""",
+            codeJava: """
+public boolean isValid(String s) {
+    Deque<Character> st = new ArrayDeque<>();
+    for (char c : s.toCharArray()) {
+        if (c == '(' || c == '[' || c == '{') st.push(c);
+        else {
+            if (st.isEmpty()) return false;
+            char top = st.pop();
+            if ((c == ')' && top != '(') ||
+                (c == ']' && top != '[') ||
+                (c == '}' && top != '{')) return false;
+        }
+    }
+    return st.isEmpty();
+}""",
+            codePython: """
+def isValid(s: str) -> bool:
+    st = []
+    mapping = {')': '(', ']': '[', '}': '{'}
+    for char in s:
+        if char in mapping:
+            top = st.pop() if st else '#'
+            if mapping[char] != top:
+                return False
+        else:
+            st.append(char)
+    return not st""",
+            codeJs: """
+function isValid(s) {
+    const st = [];
+    const map = { ')': '(', ']': '[', '}': '{' };
+    for (let c of s) {
+        if (c === '(' || c === '[' || c === '{') st.push(c);
+        else {
+            if (st.length === 0 || st.pop() !== map[c]) return false;
+        }
+    }
+    return st.length === 0;
+}""",
+            descriptionEn: "Determine if an input string of brackets '()[]{}' is valid and properly closed in correct order.",
+            descriptionBn: "একটি ব্র্যাকেট দিয়ে তৈরি স্ট্রিং '()[]{}' সঠিকভাবে সঠিক ক্রমানুসারে ক্লোজ করা হয়েছে কিনা স্ট্যাক দিয়ে যাচাই করুন।",
+            sampleInputs: ["s = \"()[]{}\"", "s = \"(]\""],
+            sampleOutputs: ["True", "False"],
+          ),
+          DsaProblem(
+            id: "st-2",
+            title: "2. Min Stack (Get Minimum Element in O(1))",
+            category: "Monotonic Stack Pattern",
+            keyIdeaEn: "Maintain an auxiliary minStack alongside main stack. Push min(val, minStack.top()) to auxiliary stack to query O(1) minimum.",
+            keyIdeaBn: "মূল স্ট্যাকের পাশাপাশি একটি সেকেন্ডারি minStack রাখুন। নতুন মান পুশ করার সময় সর্বনিম্ন মানও minStack এ পুশ করুন।",
+            codeCpp: """
+class MinStack {
+    stack<int> st, minSt;
+public:
+    void push(int val) {
+        st.push(val);
+        if (minSt.empty() || val <= minSt.top()) minSt.push(val);
+        else minSt.push(minSt.top());
+    }
+    void pop() { st.pop(); minSt.pop(); }
+    int top() { return st.top(); }
+    int getMin() { return minSt.top(); }
+};""",
+            codeJava: """
+class MinStack {
+    private Deque<Integer> st = new ArrayDeque<>();
+    private Deque<Integer> minSt = new ArrayDeque<>();
+    public void push(int val) {
+        st.push(val);
+        if (minSt.isEmpty() || val <= minSt.peek()) minSt.push(val);
+        else minSt.push(minSt.peek());
+    }
+    public void pop() { st.pop(); minSt.pop(); }
+    public int top() { return st.peek(); }
+    public int getMin() { return minSt.peek(); }
+}""",
+            codePython: """
+class MinStack:
+    def __init__(self):
+        self.st = []
+        self.minSt = []
+    def push(self, val: int) -> None:
+        self.st.append(val)
+        min_val = min(val, self.minSt[-1]) if self.minSt else val
+        self.minSt.append(min_val)
+    def pop(self) -> None:
+        self.st.pop(); self.minSt.pop()
+    def top(self) -> int: return self.st[-1]
+    def getMin(self) -> int: return self.minSt[-1]""",
+            codeJs: """
+class MinStack {
+    constructor() { this.st = []; this.minSt = []; }
+    push(val) {
+        this.st.push(val);
+        const minVal = this.minSt.length > 0 ? Math.min(val, this.minSt[this.minSt.length - 1]) : val;
+        this.minSt.push(minVal);
+    }
+    pop() { this.st.pop(); this.minSt.pop(); }
+    top() { return this.st[this.st.length - 1]; }
+    getMin() { return this.minSt[this.minSt.length - 1]; }
+}""",
+            descriptionEn: "Design a stack that supports push, pop, top, and retrieving the minimum element in constant O(1) time.",
+            descriptionBn: "এমন একটি স্ট্যাক ডিজাইন করুন যা ওয়ান (O(1)) কনস্ট্যান্ট টাইমে সর্বনিম্ন মান (Minimum Element) প্রদান করে।",
+            sampleInputs: ["push(-2), push(0), push(-3), getMin(), pop(), getMin()"],
+            sampleOutputs: ["min = -3", "min = -2"],
+          ),
+          DsaProblem(
+            id: "st-3",
+            title: "3. Evaluate Reverse Polish Notation (Postfix)",
+            category: "Expression Evaluation Pattern",
+            keyIdeaEn: "Iterate tokens. Push numbers onto stack. When encountering operator (+,-,*,/), pop two top values `b` and `a`, evaluate `a op b`, and push result.",
+            keyIdeaBn: "টোকেন ট্রাভার্স করুন। সংখ্যা পেলে স্ট্যাকে রাখুন। অপারেটর পেলে দুটি মান b ও a পপ করে a op b এর মান পুশ করুন।",
+            codeCpp: """
+int evalRPN(vector<string>& tokens) {
+    stack<int> st;
+    for (string& t : tokens) {
+        if (t == "+" || t == "-" || t == "*" || t == "/") {
+            int b = st.top(); st.pop();
+            int a = st.top(); st.pop();
+            if (t == "+") st.push(a + b);
+            else if (t == "-") st.push(a - b);
+            else if (t == "*") st.push(a * b);
+            else st.push(a / b);
+        } else {
+            st.push(stoi(t));
+        }
+    }
+    return st.top();
+}""",
+            codeJava: """
+public int evalRPN(String[] tokens) {
+    Deque<Integer> st = new ArrayDeque<>();
+    for (String t : tokens) {
+        if (t.equals("+") || t.equals("-") || t.equals("*") || t.equals("/")) {
+            int b = st.pop(), a = st.pop();
+            if (t.equals("+")) st.push(a + b);
+            else if (t.equals("-")) st.push(a - b);
+            else if (t.equals("*")) st.push(a * b);
+            else st.push(a / b);
+        } else {
+            st.push(Integer.parseInt(t));
+        }
+    }
+    return st.peek();
+}""",
+            codePython: """
+def evalRPN(tokens: List[str]) -> int:
+    st = []
+    for t in tokens:
+        if t in "+-*/":
+            b, a = st.pop(), st.pop()
+            if t == '+': st.append(a + b)
+            elif t == '-': st.append(a - b)
+            elif t == '*': st.append(a * b)
+            else: st.append(int(a / b))
+        else:
+            st.append(int(t))
+    return st[0]""",
+            codeJs: """
+function evalRPN(tokens) {
+    const st = [];
+    for (let t of tokens) {
+        if (t === "+" || t === "-" || t === "*" || t === "/") {
+            let b = st.pop(), a = st.pop();
+            if (t === "+") st.push(a + b);
+            else if (t === "-") st.push(a - b);
+            else if (t === "*") st.push(a * b);
+            else st.push(Math.trunc(a / b));
+        } else {
+            st.push(Number(t));
+        }
+    }
+    return st[0];
+}""",
+            descriptionEn: "Evaluate the value of an arithmetic expression in Reverse Polish Notation (Postfix).",
+            descriptionBn: "পোস্টফিক্স গাণিতিক এক্সপ্রেশন (Reverse Polish Notation) স্ট্যাক ব্যবহার করে সমাধান করুন।",
+            sampleInputs: ["tokens = [\"2\", \"1\", \"+\", \"3\", \"*\"]"],
+            sampleOutputs: ["Result: 9"],
+          ),
+          DsaProblem(
+            id: "st-4",
+            title: "4. Next Greater Element I (Monotonic Stack)",
+            category: "Monotonic Stack Pattern",
+            keyIdeaEn: "Use a monotonic decreasing stack. Iterate array right-to-left. Pop smaller elements from stack; stack top is next greater element.",
+            keyIdeaBn: "মনোটোনিক স্ট্যাক ব্যবহার করুন। অ্যারের ডান থেকে বামে হেঁটে স্ট্যাকের ছোট মানগুলো পপ করুন; টপ মানই Next Greater Element।",
+            codeCpp: """
+vector<int> nextGreaterElement(vector<int>& arr) {
+    int n = arr.size();
+    vector<int> res(n, -1);
+    stack<int> st;
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.empty() && st.top() <= arr[i]) st.pop();
+        if (!st.empty()) res[i] = st.top();
+        st.push(arr[i]);
+    }
+    return res;
+}""",
+            codeJava: """
+public int[] nextGreaterElement(int[] arr) {
+    int n = arr.length;
+    int[] res = new int[n];
+    Arrays.fill(res, -1);
+    Deque<Integer> st = new ArrayDeque<>();
+    for (int i = n - 1; i >= 0; i--) {
+        while (!st.isEmpty() && st.peek() <= arr[i]) st.pop();
+        if (!st.isEmpty()) res[i] = st.peek();
+        st.push(arr[i]);
+    }
+    return res;
+}""",
+            codePython: """
+def nextGreaterElement(arr):
+    n = len(arr)
+    res = [-1] * n
+    st = []
+    for i in range(n - 1, -1, -1):
+        while st and st[-1] <= arr[i]:
+            st.pop()
+        if st:
+            res[i] = st[-1]
+        st.append(arr[i])
+    return res""",
+            codeJs: """
+function nextGreaterElement(arr) {
+    const n = arr.length;
+    const res = new Array(n).fill(-1);
+    const st = [];
+    for (let i = n - 1; i >= 0; i--) {
+        while (st.length > 0 && st[st.length - 1] <= arr[i]) {
+            st.pop();
+        }
+        if (st.length > 0) res[i] = st[st.length - 1];
+        st.push(arr[i]);
+    }
+    return res;
+}""",
+            descriptionEn: "Find the first greater element to the right of each element in an array using a Monotonic Stack.",
+            descriptionBn: "মনোটোনিক স্ট্যাক ব্যবহার করে অ্যারের প্রতিটি উপাদানের ডানপাশের প্রথম বড় সংখ্যাটি (Next Greater Element) নির্ণয় করুন।",
+            sampleInputs: ["arr = [4, 5, 2, 25]"],
+            sampleOutputs: ["res = [5, 25, 25, -1]"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Stack Underflow Exception",
+            "desc": "Calling `st.top()` or `st.pop()` on an empty stack triggers a runtime crash."
+          },
+          {
+            "title": "2. Bracket Mismatch Type Error",
+            "desc": "Popping `(` when encountering `]` instead of validating exact bracket pairing."
+          },
+          {
+            "title": "3. Leftover Unmatched Opening Brackets",
+            "desc": "Forgetting to verify `st.empty()` at loop end (e.g. `s = \"((\"` leaves unmatched brackets)."
+          },
+          {
+            "title": "4. Incorrect Operand Order in Postfix Subtraction / Division",
+            "desc": "Popping `b` then `a` and incorrectly computing `b - a` instead of `a - b`."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. স্ট্যাক আন্ডারফ্লো এক্সেপশন (Empty Stack Pop)",
+            "desc": "খালি স্ট্যাকে `st.top()` বা `st.pop()` কল করলে অ্যাপ ক্র্যাশ করে।"
+          },
+          {
+            "title": "২. ভুল ব্র্যাকেট পেয়ারিং চেক",
+            "desc": "`]` ব্র্যাকেটের বিপরীতে `(` পপ করা বা ব্র্যাকেটের ধরন না মিলিয়ে পপ করা।"
+          },
+          {
+            "title": "৩. অবশিষ্ট ওপেনিং ব্র্যাকেট চেক না করা",
+            "desc": "লুপ শেষে `st.empty()` ভেরিফাই না করা (যেমন: `s = \"((\"` এর ক্ষেত্রে স্ট্যাকে মান থেকে যায়)।"
+          },
+          {
+            "title": "৪. পোস্টফিক্স বিয়োগ ও ভাগে অপারেটর অর্ডার ভুল",
+            "desc": "`b` ও `a` পপ করে সঠিক `a - b` এর বদলে ভুল করে `b - a` হিসাব করা।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand LIFO (Last-In, First-Out) Discipline",
+            "desc": "Master stack top pointer, LIFO order, and memory stack push/pop behavior."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Stack Operations & Array/List Implementation",
+            "desc": "Master push O(1), pop O(1), peek O(1), and array-based stack implementation."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Balanced Parentheses & String Reversal",
+            "desc": "Learn bracket matching, string reversal, and stack-based undo mechanisms."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Min Stack & Postfix Expression Evaluation",
+            "desc": "Learn auxiliary minStack O(1) queries and Reverse Polish Notation (RPN) evaluation."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Monotonic Stack Pattern",
+            "desc": "Learn monotonic stack for Next Greater Element, Daily Temperatures, and Histogram Area."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "LIFO (লাস্ট-ইন, ফার্স্ট-আউট) নীতি বোঝা",
+            "desc": "স্ট্যাক টপ পয়েন্টার, LIFO অর্ডার এবং পুশ/পপ আচরণ আয়ত্ত করা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "স্ট্যাক অপারেশন ও অ্যারে-ভিত্তিক ইমপ্লিমেন্টেশন",
+            "desc": "পুশ O(1), পপ O(1), পিক O(1) এবং অ্যারে দিয়ে স্ট্যাক তৈরি করা শেখা।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "ব্যালেন্সড ব্র্যাকেটস ও স্ট্রিং রিভার্সাল",
+            "desc": "ব্র্যাকেট ম্যাচিং, স্ট্রিং রিভার্স এবং স্ট্যাক-ভিত্তিক আনডু ফিচার তৈরি।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "Min Stack ও পোস্টফিক্স এক্সপ্রেশন মূল্যায়ন",
+            "desc": "O(1) মিনিমাম কুয়েরি এবং রিভার্স পোলিশ নোটেশন (RPN) সলভ করা।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "মনোটোনিক স্ট্যাক প্যাটার্ন মাস্টারি",
+            "desc": "Next Greater Element এবং ডেইলি টেম্পারেচার প্রবলেম মনোটোনিক স্ট্যাকে সমাধান করা।"
+          }
+        ],
       ),
 
       // 4. QUEUE (FIFO) & DEQUE
