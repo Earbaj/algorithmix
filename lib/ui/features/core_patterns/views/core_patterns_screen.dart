@@ -109,6 +109,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 19) {
       // Topological Sort dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.topologicalSortDetail);
+    } else if (pattern.id == 20) {
+      // Union Find dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.unionFindDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
