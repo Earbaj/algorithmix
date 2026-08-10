@@ -10,6 +10,7 @@ class DebugArrayStep {
   final List<int>? array1D;
   final List<List<int>>? matrix2D;
   final List<String>? stackItems;
+  final List<String>? queueItems;
   final int? pointer1;
   final int? pointer2;
   final int? minVal;
@@ -22,6 +23,7 @@ class DebugArrayStep {
     this.array1D,
     this.matrix2D,
     this.stackItems,
+    this.queueItems,
     this.pointer1,
     this.pointer2,
     this.minVal,
@@ -579,43 +581,43 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _st1Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
+      activeLineIndex: 1,
       stackItems: [],
       explanationEn: "Line 2: Initialize empty char stack st = []. Input string s = '({[]})'.",
       explanationBn: "লাইন ২: খালি স্ট্যাক st = [] ডিক্লেয়ার। ইনপুট স্ট্রিং s = '({[]})'।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       stackItems: ["("],
       explanationEn: "Line 4: Encountered opening bracket '('. Push '(' onto stack. Stack = ['('].",
       explanationBn: "লাইন ৪: ওপেনিং ব্র্যাকেট '(' পাওয়া গেল। স্ট্যাকে পুশ করুন। স্ট্যাক = ['(']।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       stackItems: ["(", "{"],
       explanationEn: "Line 4: Encountered opening bracket '{'. Push '{' onto stack. Stack = ['(', '{'].",
       explanationBn: "লাইন ৪: ওপেনিং ব্র্যাকেট '{' পাওয়া গেল। স্ট্যাকে পুশ করুন। স্ট্যাক = ['(', '{']।",
     ),
     DebugArrayStep(
-      activeLineIndex: 3, // Line 4
+      activeLineIndex: 3,
       stackItems: ["(", "{", "["],
       explanationEn: "Line 4: Encountered opening bracket '['. Push '[' onto stack. Stack = ['(', '{', '['].",
       explanationBn: "লাইন ৪: ওপেনিং ব্র্যাকেট '[' পাওয়া গেল। স্ট্যাকে পুশ করুন। স্ট্যাক = ['(', '{', '[']।",
     ),
     DebugArrayStep(
-      activeLineIndex: 6, // Line 7
+      activeLineIndex: 6,
       stackItems: ["(", "{\""],
       explanationEn: "Line 7: Encountered closing bracket ']'. Pop top '[' and verify match. Match OK!",
       explanationBn: "লাইন ৭: ক্লোজিং ব্র্যাকেট ']' পাওয়া গেল। টপ '[' পপ করে ম্যাচ ভেরিফাই করা হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 6, // Line 7
+      activeLineIndex: 6,
       stackItems: ["("],
       explanationEn: "Line 7: Encountered closing bracket '}'. Pop top '{' and verify match. Match OK!",
       explanationBn: "লাইন ৭: ক্লোজিং ব্র্যাকেট '}' পাওয়া গেল। টপ '{' পপ করে ম্যাচ ভেরিফাই করা হলো।",
     ),
     DebugArrayStep(
-      activeLineIndex: 10, // Line 11
+      activeLineIndex: 10,
       stackItems: [],
       explanationEn: "🎉 Line 11: All brackets matched! Stack is empty. Return TRUE!",
       explanationBn: "🎉 লাইন ১১: সমস্ত ব্র্যাকেট সঠিকভাবে ম্যাচ করেছে! স্ট্যাক খালি। Return TRUE!",
@@ -637,35 +639,35 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _st2Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
+      activeLineIndex: 1,
       stackItems: [],
       minVal: 0,
       explanationEn: "Line 2: Initialize main stack `st` and auxiliary `minSt` for O(1) min queries.",
       explanationBn: "লাইন ২: মূল স্ট্যাক `st` এবং O(1) মিনিমাম কুয়েরির জন্য auxiliary `minSt` ডিক্লেয়ার।",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       stackItems: ["-2"],
       minVal: -2,
       explanationEn: "Line 5: Push (-2) -> st = [-2], minSt = [-2]. Minimum = -2.",
       explanationBn: "লাইন ৫: পুশ (-2) -> st = [-2], minSt = [-2]। মিনিমাম = -2।",
     ),
     DebugArrayStep(
-      activeLineIndex: 4, // Line 5
+      activeLineIndex: 4,
       stackItems: ["-2", "0"],
       minVal: -2,
       explanationEn: "Line 5: Push (0) -> st = [-2, 0], minSt = [-2, -2]. Minimum = -2.",
       explanationBn: "লাইন ৫: পুশ (0) -> st = [-2, 0], minSt = [-2, -2]। মিনিমাম = -2।",
     ),
     DebugArrayStep(
-      activeLineIndex: 6, // Line 7
+      activeLineIndex: 6,
       stackItems: ["-2", "0", "-3"],
       minVal: -3,
       explanationEn: "Line 7: Push (-3) -> min(-3, -2) = -3. st = [-2, 0, -3], minSt = [-2, -2, -3]. Minimum = -3.",
       explanationBn: "লাইন ৭: পুশ (-3) -> মিনিমাম আপডেট হয়ে -3 হলো। minSt = [-2, -2, -3]।",
     ),
     DebugArrayStep(
-      activeLineIndex: 8, // Line 9
+      activeLineIndex: 8,
       stackItems: ["-2", "0", "-3"],
       minVal: -3,
       explanationEn: "🎉 Line 9: Call getMin() -> Query minSt.top() = -3 in O(1) constant time!",
@@ -689,31 +691,31 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _st3Steps = const [
     DebugArrayStep(
-      activeLineIndex: 1, // Line 2
+      activeLineIndex: 1,
       stackItems: [],
       explanationEn: "Line 2: Evaluate Postfix RPN = ['2', '1', '+', '3', '*']. Initialize st = [].",
       explanationBn: "লাইন ২: পোস্টফিক্স RPN = ['2', '1', '+', '3', '*'] মূল্যায়ন শুরু।",
     ),
     DebugArrayStep(
-      activeLineIndex: 7, // Line 8
+      activeLineIndex: 7,
       stackItems: ["2", "1"],
       explanationEn: "Line 8: Push operands 2 and 1 onto stack. Stack = [2, 1].",
       explanationBn: "লাইন ৮: সংখ্যা ২ এবং ১ স্ট্যাকে পুশ করা হলো। স্ট্যাক = [2, 1]।",
     ),
     DebugArrayStep(
-      activeLineIndex: 6, // Line 7
+      activeLineIndex: 6,
       stackItems: ["3"],
       explanationEn: "Line 7: Operator '+' -> Pop 1 and 2. Evaluate (2 + 1 = 3). Push 3. Stack = [3].",
       explanationBn: "লাইন ৭: '+' পেয়ে পপ (1, 2)। হিসাব (2 + 1 = 3)। পুশ 3। স্ট্যাক = [3]।",
     ),
     DebugArrayStep(
-      activeLineIndex: 7, // Line 8
+      activeLineIndex: 7,
       stackItems: ["3", "3"],
       explanationEn: "Line 8: Push operand 3 onto stack. Stack = [3, 3].",
       explanationBn: "লাইন ৮: সংখ্যা ৩ স্ট্যাকে পুশ করা হলো। স্ট্যাক = [3, 3]।",
     ),
     DebugArrayStep(
-      activeLineIndex: 9, // Line 10
+      activeLineIndex: 9,
       stackItems: ["9"],
       explanationEn: "🎉 Line 10: Operator '*' -> Pop 3 and 3. Evaluate (3 * 3 = 9). Final Result = 9!",
       explanationBn: "🎉 লাইন ১০: '*' পেয়ে পপ (3, 3)। হিসাব (3 * 3 = 9)। চূড়ান্ত ফলাফল = 9!",
@@ -735,14 +737,14 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
 
   final List<DebugArrayStep> _st4Steps = const [
     DebugArrayStep(
-      activeLineIndex: 2, // Line 3
+      activeLineIndex: 2,
       stackItems: [],
       array1D: [4, 5, 2, 25],
       explanationEn: "Line 3: Array arr = [4, 5, 2, 25]. Traverse right-to-left using Monotonic Stack.",
       explanationBn: "লাইন ৩: অ্যারে arr = [4, 5, 2, 25]। মনোটোনিক স্ট্যাক দিয়ে ডান থেকে বামে ট্রাভার্স।",
     ),
     DebugArrayStep(
-      activeLineIndex: 6, // Line 7
+      activeLineIndex: 6,
       stackItems: ["25"],
       array1D: [4, 5, 2, 25],
       minVal: -1,
@@ -750,7 +752,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৭: ইনডেক্স 3 (মান 25): স্ট্যাক খালি -> Next Greater = -1। পুশ 25।",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       stackItems: ["25", "2"],
       array1D: [4, 5, 2, 25],
       minVal: 25,
@@ -758,7 +760,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: ইনডেক্স 2 (মান 2): টপ (25) > 2 -> Next Greater = 25। পুশ 2।",
     ),
     DebugArrayStep(
-      activeLineIndex: 5, // Line 6
+      activeLineIndex: 5,
       stackItems: ["25", "5"],
       array1D: [4, 5, 2, 25],
       minVal: 25,
@@ -766,7 +768,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
       explanationBn: "লাইন ৬: ইনডেক্স 1 (মান 5): পপ 2 (5 >= 2)। টপ (25) > 5 -> Next Greater = 25। পুশ 5।",
     ),
     DebugArrayStep(
-      activeLineIndex: 8, // Line 9
+      activeLineIndex: 8,
       stackItems: ["25", "5", "4"],
       array1D: [4, 5, 2, 25],
       minVal: 5,
@@ -775,7 +777,184 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
     ),
   ];
 
+  // QUEUE (FIFO) & DEQUE CODE LINES & STEPS
+  final List<String> _q1CodeLines = [
+    "class MyQueue {",
+    "    stack<int> stIn, stOut;",
+    "    void transfer() {",
+    "        if (stOut.empty()) {",
+    "            while (!stIn.empty()) {",
+    "                stOut.push(stIn.top()); stIn.pop();",
+    "            }",
+    "        }",
+    "    }",
+    "public:",
+    "    void push(int x) { stIn.push(x); }",
+    "    int pop() { transfer(); int v = stOut.top(); stOut.pop(); return v; }",
+    "    int peek() { transfer(); return stOut.top(); }",
+    "};",
+  ];
+
+  final List<DebugArrayStep> _q1Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 10,
+      queueItems: ["1"],
+      explanationEn: "Line 11: Push 1 to stIn. Queue Pipeline = [1].",
+      explanationBn: "লাইন ১১: stIn এ 1 পুশ করা হলো। কিউ পাইপলাইন = [1]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 10,
+      queueItems: ["1", "2"],
+      explanationEn: "Line 11: Push 2 to stIn. Queue Pipeline = [1, 2].",
+      explanationBn: "লাইন ১১: stIn এ 2 পুশ করা হলো। কিউ পাইপলাইন = [1, 2]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      queueItems: ["1", "2"],
+      explanationEn: "Line 5: Call peek() -> Transfer elements to stOut. Front element = 1.",
+      explanationBn: "লাইন ৫: peek() কল -> stOut এ স্থানান্তরের মাধ্যমে ফ্রন্ট উপাদান = 1।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 11,
+      queueItems: ["2"],
+      explanationEn: "🎉 Line 12: Call pop() -> Dequeued Front element = 1. Remaining Queue = [2].",
+      explanationBn: "🎉 লাইন ১২: pop() কল -> ডিকিউড ফ্রন্ট উপাদান = 1। অবশিষ্ট কিউ = [2]।",
+    ),
+  ];
+
+  final List<String> _q2CodeLines = [
+    "class MyCircularQueue {",
+    "    vector<int> arr; int front = 0, rear = -1, size = 0, cap;",
+    "public:",
+    "    bool enQueue(int val) {",
+    "        if (isFull()) return false;",
+    "        rear = (rear + 1) % cap;",
+    "        arr[rear] = val; size++; return true;",
+    "    }",
+    "    bool deQueue() {",
+    "        if (isEmpty()) return false;",
+    "        front = (front + 1) % cap; size--; return true;",
+    "    }",
+    "};",
+  ];
+
+  final List<DebugArrayStep> _q2Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["1"],
+      explanationEn: "Line 6: enQueue(1): rear = (0) % 3 = 0. Queue Ring = [1].",
+      explanationBn: "লাইন ৬: enQueue(1): rear = 0। সার্কুলার রিং = [1]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["1", "2"],
+      explanationEn: "Line 6: enQueue(2): rear = (1) % 3 = 1. Queue Ring = [1, 2].",
+      explanationBn: "লাইন ৬: enQueue(2): rear = 1। সার্কুলার রিং = [1, 2]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["1", "2", "3"],
+      explanationEn: "Line 6: enQueue(3): rear = (2) % 3 = 2. Queue Ring Full = [1, 2, 3].",
+      explanationBn: "লাইন ৬: enQueue(3): rear = 2। সার্কুলার কিউ ফুল = [1, 2, 3]।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 9,
+      queueItems: ["2", "3"],
+      explanationEn: "Line 10: deQueue(): front = (0 + 1) % 3 = 1. Freed Slot 0!",
+      explanationBn: "লাইন ১০: deQueue(): front = 1। স্লট 0 খালি করা হলো!",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["2", "3", "4"],
+      explanationEn: "🎉 Line 6: enQueue(4): rear = (2 + 1) % 3 = 0 (Wrapped around)! Ring = [2, 3, 4]!",
+      explanationBn: "🎉 লাইন ৬: enQueue(4): rear = 0 (মডিউলো র্যাপ)। সার্কুলার রিং = [2, 3, 4]!",
+    ),
+  ];
+
+  final List<String> _q3CodeLines = [
+    "string firstNonRepeating(string s) {",
+    "    unordered_map<char, int> freq; queue<char> q; string res = \"\";",
+    "    for (char c : s) {",
+    "        freq[c]++; q.push(c);",
+    "        while (!q.empty() && freq[q.front()] > 1) q.pop();",
+    "        res += q.empty() ? '#' : q.front();",
+    "    }",
+    "    return res;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _q3Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 3,
+      queueItems: ["a"],
+      explanationEn: "Line 4: Process char 'a': freq['a']=1. Queue = ['a']. First Non-Repeating = 'a'.",
+      explanationBn: "লাইন ৪: ক্যারেক্টার 'a': freq=1। কিউ = ['a']। প্রথম অনাবৃত্ত ক্যারেক্টার = 'a'।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 4,
+      queueItems: [],
+      explanationEn: "Line 5: Process char 'a': freq['a']=2. Pop 'a'. Queue = []. Output '#'.",
+      explanationBn: "লাইন ৫: ক্যারেক্টার 'a': freq=2। পপ 'a'। ডুপ্লিকেট পাওয়ায় আউটপুট '#'।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 3,
+      queueItems: ["b"],
+      explanationEn: "Line 4: Process char 'b': freq['b']=1. Queue = ['b']. First Non-Repeating = 'b'.",
+      explanationBn: "লাইন ৪: ক্যারেক্টার 'b': freq=1। কিউ = ['b']। প্রথম অনাবৃত্ত ক্যারেক্টার = 'b'।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["b"],
+      explanationEn: "🎉 Line 6: Stream processed! Result string = \"a#bccxb\".",
+      explanationBn: "🎉 লাইন ৬: ক্যারেক্টার স্ট্রিম প্রসেস সম্পন্ন! ফলাফল = \"a#bccxb\"।",
+    ),
+  ];
+
+  final List<String> _q4CodeLines = [
+    "vector<int> maxSlidingWindow(vector<int>& nums, int k) {",
+    "    deque<int> dq; vector<int> res;",
+    "    for (int i = 0; i < nums.size(); i++) {",
+    "        if (!dq.empty() && dq.front() == i - k) dq.pop_front();",
+    "        while (!dq.empty() && nums[dq.back()] < nums[i]) dq.pop_back();",
+    "        dq.push_back(i);",
+    "        if (i >= k - 1) res.push_back(nums[dq.front()]);",
+    "    }",
+    "    return res;",
+    "}",
+  ];
+
+  final List<DebugArrayStep> _q4Steps = const [
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["3"],
+      explanationEn: "Line 6: Window [1, 3, -1]: Deque stores max val 3. Max = 3.",
+      explanationBn: "লাইন ৬: উইন্ডো [1, 3, -1]: Monotonic Deque টপ মান 3। উইন্ডো ম্যাক্স = 3।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["3", "-3"],
+      explanationEn: "Line 6: Window [3, -1, -3]: Deque stores [3, -3]. Max = 3.",
+      explanationBn: "লাইন ৬: উইন্ডো [3, -1, -3]: Deque = [3, -3]। উইন্ডো ম্যাক্স = 3।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 5,
+      queueItems: ["5"],
+      explanationEn: "Line 6: Window [-1, -3, 5]: 5 > 3 & -3 -> Pop all smaller! Deque = [5]. Max = 5.",
+      explanationBn: "লাইন ৬: উইন্ডো [-1, -3, 5]: 5 বড় হওয়ায় সব ছোট মান পপ! Deque = [5]। ম্যাক্স = 5।",
+    ),
+    DebugArrayStep(
+      activeLineIndex: 6,
+      queueItems: ["7"],
+      explanationEn: "🎉 Line 7: Sliding Window Max Complete! Result = [3, 3, 5, 5, 6, 7]!",
+      explanationBn: "🎉 লাইন ৭: স্লাইডিং উইন্ডো সর্বোচ্চ মান নির্ণয় সম্পন্ন! রেজাল্ট = [3, 3, 5, 5, 6, 7]!",
+    ),
+  ];
+
   List<DebugArrayStep> get _currentSteps {
+    if (widget.problem.id == "q-1") return _q1Steps;
+    if (widget.problem.id == "q-2") return _q2Steps;
+    if (widget.problem.id == "q-3") return _q3Steps;
+    if (widget.problem.id == "q-4") return _q4Steps;
     if (widget.problem.id == "st-1") return _st1Steps;
     if (widget.problem.id == "st-2") return _st2Steps;
     if (widget.problem.id == "st-3") return _st3Steps;
@@ -791,6 +970,10 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   }
 
   List<String> get _currentCodeLines {
+    if (widget.problem.id == "q-1") return _q1CodeLines;
+    if (widget.problem.id == "q-2") return _q2CodeLines;
+    if (widget.problem.id == "q-3") return _q3CodeLines;
+    if (widget.problem.id == "q-4") return _q4CodeLines;
     if (widget.problem.id == "st-1") return _st1CodeLines;
     if (widget.problem.id == "st-2") return _st2CodeLines;
     if (widget.problem.id == "st-3") return _st3CodeLines;
@@ -1290,6 +1473,62 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               ],
             ),
             const SizedBox(height: 16),
+          ],
+
+          // Queue FIFO Pipeline Visualizer Container
+          if (widget.problem.id.startsWith("q-") && step.queueItems != null) ...[
+            Column(
+              children: [
+                const Text("Horizontal Queue FIFO Pipeline (Front -> Rear)", style: TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 13)),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  height: 75,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF090D16),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppTheme.accentAmber, width: 2),
+                  ),
+                  child: step.queueItems!.isEmpty
+                      ? Center(child: Text(_isEnglish ? "[Queue Empty]" : "[কিউ খালি]", style: const TextStyle(color: AppTheme.textMuted, fontSize: 12)))
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: List.generate(step.queueItems!.length, (idx) {
+                              final item = step.queueItems![idx];
+                              final isFront = idx == 0;
+                              final isRear = idx == step.queueItems!.length - 1;
+
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                margin: const EdgeInsets.symmetric(horizontal: 4),
+                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: isFront ? AppTheme.accentAmber : (isRear ? AppTheme.accentNeonCyan : AppTheme.surfaceDark),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.white, width: (isFront || isRear) ? 2 : 1),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      item,
+                                      style: TextStyle(color: (isFront || isRear) ? AppTheme.primaryDark : Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                    ),
+                                    Text(
+                                      isFront ? "FRONT" : (isRear ? "REAR" : "[$idx]"),
+                                      style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold, color: (isFront || isRear) ? AppTheme.primaryDark : AppTheme.textMuted),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                ),
+              ],
+            ),
           ],
 
           // Stack LIFO Visualizer Container

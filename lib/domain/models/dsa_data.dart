@@ -1453,27 +1453,513 @@ function nextGreaterElement(arr) {
         id: 204,
         title: "Queue (FIFO) & Deque",
         category: "Linear Pipeline Structure",
-        timeComplexity: "Enqueue O(1) | Dequeue O(1) | Front O(1)",
+        timeComplexity: "Enqueue: O(1) | Dequeue: O(1) | Front: O(1) | Search: O(N)",
         spaceComplexity: "O(N)",
         icon: Icons.swap_horizontal_circle_outlined,
         themeColor: const Color(0xFFF59E0B),
-        descriptionEn: "A Queue is a linear pipeline operating under the strict First-In, First-Out (FIFO) discipline.",
-        descriptionBn: "কিউ হলো একটি ফার্স্ট-ইন, ফার্স্ট-আউট (FIFO) লিনিয়ার পাইপলাইন।",
-        keyConceptsEn: ["FIFO Discipline", "Circular Queue", "Deque"],
-        keyConceptsBn: ["FIFO নীতি", "সার্কুলার কিউ", "Deque"],
+        descriptionEn:
+            "A Queue is a linear pipeline operating under the strict First-In, First-Out (FIFO) discipline. Elements enter at the Rear (Enqueue) and exit from the Front (Dequeue). A Double-Ended Queue (Deque) extends this by supporting O(1) push and pop operations at both Front and Rear ends. Queues are essential for Breadth-First Search (BFS) graph traversals, CPU task scheduling, print queues, and Sliding Window Maximum algorithms.",
+        descriptionBn:
+            "কিউ (Queue) হলো একটি লিনিয়ার পাইপলাইন স্ট্রাকচার যা ফার্স্ট-ইন, ফার্স্ট-আউট (FIFO) নীতিতে কাজ করে। এখানে সবার আগে আসা উপাদানটি সবার আগে বের (Dequeue) হয়। পেছন দিকে (Rear) উপাদান যোগ এবং সামনের দিক (Front) থেকে উপাদান বের করা হয়। ডাবল-এন্ডেড কিউ (Deque) এর সামনের ও পিছনের উভয় প্রান্ত দিয়ে O(1) স্পিডে যোগ/বিয়োগ করার সুবিধা দেয়। গ্রাফের BFS ট্রাভার্সাল, প্রসেসর টাস্ক সিডিউলিং এবং স্লাইডিং উইন্ডো সমস্যায় কিউ ব্যাপকভাবে ব্যবহৃত হয়।",
+        keyConceptsEn: [
+          "FIFO Principle: The first element added to the queue is the first element removed.",
+          "O(1) Pipeline Operations: Constant time complexity for enqueue, dequeue, and front methods.",
+          "Circular Queue Modulo Math: Utilizing `(rear + 1) % capacity` to reuse freed array slots in constant space.",
+          "Monotonic Deque Pattern: Maintaining indices in a decreasing deque to find Sliding Window Maximum in O(N) time."
+        ],
+        keyConceptsBn: [
+          "FIFO নীতি: সবার আগে এনকিউ (Enqueue) করা উপাদানটি সবার আগে ডিকিউ (Dequeue) করা হয়।",
+          "O(1) পাইপলাইন অপারেশন: এনকিউ, ডিকিউ এবং ফ্রন্ট দেখার মান বের করা O(1) কনস্ট্যান্ট টাইমে সম্পন্ন হয়।",
+          "সার্কুলার কিউ মডিউলো ম্যাথ: `(rear + 1) % capacity` সূত্রের মাধ্যমে অ্যারের খালি হওয়া মেমোরি স্লটগুলো পুনরায় ব্যবহার করা।",
+          "মনোটোনিক Deque প্যাটার্ন: Deque এ ইনডেক্সসমূহ সাজিয়ে স্লাইডিং উইন্ডো ম্যাক্সিমাম O(N) টাইমে সমাধান করা।"
+        ],
         multiDimCodeTemplates: {
-          "Queue (FIFO)": {
-            "C++": "queue<int> q; q.push(10); q.pop();",
-            "Java": "Queue<Integer> q = new ArrayDeque<>();",
-            "Python": "q = deque(); q.append(10); q.popleft()",
-            "JavaScript": "const q = []; q.push(10); q.shift()"
+          "Standard FIFO Queue": {
+            "C++": """
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int main() {
+    queue<int> q;
+    q.push(10); // Enqueue O(1)
+    q.push(20);
+    cout << "Front: " << q.front() << endl; // 10
+    q.pop(); // Dequeue O(1)
+    return 0;
+}""",
+            "Java": """
+import java.util.ArrayDeque;
+import java.util.Queue;
+
+public class QueueDemo {
+    public static void main(String[] args) {
+        Queue<Integer> q = new ArrayDeque<>();
+        q.offer(10); // Enqueue O(1)
+        q.offer(20);
+        System.out.println("Front: " + q.peek()); // 10
+        q.poll(); // Dequeue O(1)
+    }
+}""",
+            "Python": """
+from collections import deque
+
+q = deque()
+q.append(10) # Enqueue O(1)
+q.append(20)
+print("Front:", q[0]) # 10
+q.popleft() # Dequeue O(1)""",
+            "JavaScript": """
+// Deque / Double-ended queue array
+const q = [];
+q.push(10); // Enqueue Rear O(1)
+q.push(20);
+console.log("Front:", q[0]); // 10
+q.shift(); // Dequeue Front"""
+          },
+          "Double-Ended Queue (Deque)": {
+            "C++": """
+#include <iostream>
+#include <deque>
+using namespace std;
+
+int main() {
+    deque<int> dq;
+    dq.push_back(10);  // Push Rear
+    dq.push_front(5);  // Push Front
+    dq.pop_back();     // Pop Rear
+    dq.pop_front();    // Pop Front
+    return 0;
+}""",
+            "Java": """
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class DequeDemo {
+    public static void main(String[] args) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.addLast(10);  // Push Rear
+        dq.addFirst(5);  // Push Front
+        dq.removeLast(); // Pop Rear
+        dq.removeFirst();// Pop Front
+    }
+}""",
+            "Python": """
+from collections import deque
+
+dq = deque()
+dq.append(10)     # Push Rear
+dq.appendleft(5)  # Push Front
+dq.pop()          # Pop Rear
+dq.popleft()      # Pop Front""",
+            "JavaScript": """
+const dq = [];
+dq.push(10);    // Push Rear
+dq.unshift(5);  // Push Front
+dq.pop();       // Pop Rear
+dq.shift();     // Pop Front"""
           }
         },
-        basicProblems: [],
-        commonMistakesEn: [],
-        commonMistakesBn: [],
-        roadmapStepsEn: [],
-        roadmapStepsBn: [],
+        basicProblems: [
+          DsaProblem(
+            id: "q-1",
+            title: "1. Implement Queue using Stacks (Two Stack FIFO)",
+            category: "Queue FIFO Basic",
+            keyIdeaEn: "Use 2 stacks: `stIn` and `stOut`. Push onto `stIn`. On pop/peek, if `stOut` is empty, transfer all elements from `stIn` to `stOut` to reverse order to FIFO.",
+            keyIdeaBn: "২টি স্ট্যাক ব্যবহার করুন: `stIn` এবং `stOut`। পুশ করার সময় `stIn` এ দিন। পপ/পিক করার সময় `stOut` খালি থাকলে `stIn` এর উপাদান স্থানান্তর করে FIFO অর্জন করুন।",
+            codeCpp: """
+class MyQueue {
+    stack<int> stIn, stOut;
+    void transfer() {
+        if (stOut.empty()) {
+            while (!stIn.empty()) {
+                stOut.push(stIn.top());
+                stIn.pop();
+            }
+        }
+    }
+public:
+    void push(int x) { stIn.push(x); }
+    int pop() { transfer(); int val = stOut.top(); stOut.pop(); return val; }
+    int peek() { transfer(); return stOut.top(); }
+    bool empty() { return stIn.empty() && stOut.empty(); }
+};""",
+            codeJava: """
+class MyQueue {
+    private Deque<Integer> stIn = new ArrayDeque<>();
+    private Deque<Integer> stOut = new ArrayDeque<>();
+    private void transfer() {
+        if (stOut.isEmpty()) {
+            while (!stIn.isEmpty()) stOut.push(stIn.pop());
+        }
+    }
+    public void push(int x) { stIn.push(x); }
+    public int pop() { transfer(); return stOut.pop(); }
+    public int peek() { transfer(); return stOut.peek(); }
+    public boolean empty() { return stIn.isEmpty() && stOut.isEmpty(); }
+}""",
+            codePython: """
+class MyQueue:
+    def __init__(self):
+        self.stIn = []
+        self.stOut = []
+    def push(self, x: int) -> None:
+        self.stIn.append(x)
+    def transfer(self):
+        if not self.stOut:
+            while self.stIn:
+                self.stOut.append(self.stIn.pop())
+    def pop(self) -> int:
+        self.transfer()
+        return self.stOut.pop()
+    def peek(self) -> int:
+        self.transfer()
+        return self.stOut[-1]
+    def empty(self) -> bool:
+        return not self.stIn and not self.stOut""",
+            codeJs: """
+class MyQueue {
+    constructor() { this.stIn = []; this.stOut = []; }
+    push(x) { this.stIn.push(x); }
+    transfer() {
+        if (this.stOut.length === 0) {
+            while (this.stIn.length > 0) this.stOut.push(this.stIn.pop());
+        }
+    }
+    pop() { this.transfer(); return this.stOut.pop(); }
+    peek() { this.transfer(); return this.stOut[this.stOut.length - 1]; }
+    empty() { return this.stIn.length === 0 && this.stOut.length === 0; }
+}""",
+            descriptionEn: "Implement a First-In, First-Out (FIFO) queue using only two standard stacks.",
+            descriptionBn: "কেবলমাত্র দুটি স্ট্যাক ব্যবহার করে ফার্স্ট-ইন, ফার্স্ট-আউট (FIFO) কিউ ইমপ্লিমেন্ট করুন।",
+            sampleInputs: ["push(1), push(2), peek(), pop(), empty()"],
+            sampleOutputs: ["peek: 1", "pop: 1", "empty: false"],
+          ),
+          DsaProblem(
+            id: "q-2",
+            title: "2. Circular Queue Implementation (Modulo Ring)",
+            category: "Circular Queue Pattern",
+            keyIdeaEn: "Design a fixed-size Circular Queue using modulo arithmetic `(rear + 1) % K` and `(front + 1) % K` to reuse freed array slots.",
+            keyIdeaBn: "মডিউলো পাটিগণিত `(rear + 1) % K` ব্যবহার করে ফিক্সড-সাইজ সার্কুলার কিউ ডিজাইন করুন যেন মেমোরি স্লট পুনরায় ব্যবহার করা যায়।",
+            codeCpp: """
+class MyCircularQueue {
+    vector<int> arr;
+    int front, rear, size, capacity;
+public:
+    MyCircularQueue(int k) {
+        capacity = k; size = 0; front = 0; rear = -1;
+        arr.resize(k);
+    }
+    bool enQueue(int value) {
+        if (isFull()) return false;
+        rear = (rear + 1) % capacity;
+        arr[rear] = value;
+        size++; return true;
+    }
+    bool deQueue() {
+        if (isEmpty()) return false;
+        front = (front + 1) % capacity;
+        size--; return true;
+    }
+    int Front() { return isEmpty() ? -1 : arr[front]; }
+    int Rear() { return isEmpty() ? -1 : arr[rear]; }
+    bool isEmpty() { return size == 0; }
+    bool isFull() { return size == capacity; }
+};""",
+            codeJava: """
+class MyCircularQueue {
+    private int[] arr;
+    private int front = 0, rear = -1, size = 0, capacity;
+    public MyCircularQueue(int k) {
+        capacity = k; arr = new int[k];
+    }
+    public boolean enQueue(int value) {
+        if (isFull()) return false;
+        rear = (rear + 1) % capacity;
+        arr[rear] = value; size++; return true;
+    }
+    public boolean deQueue() {
+        if (isEmpty()) return false;
+        front = (front + 1) % capacity; size--; return true;
+    }
+    public int Front() { return isEmpty() ? -1 : arr[front]; }
+    public int Rear() { return isEmpty() ? -1 : arr[rear]; }
+    public boolean isEmpty() { return size == 0; }
+    public boolean isFull() { return size == capacity; }
+}""",
+            codePython: """
+class MyCircularQueue:
+    def __init__(self, k: int):
+        self.arr = [0] * k
+        self.capacity = k
+        self.front = 0
+        self.rear = -1
+        self.size = 0
+    def enQueue(self, value: int) -> bool:
+        if self.isFull(): return False
+        self.rear = (self.rear + 1) % self.capacity
+        self.arr[self.rear] = value
+        self.size += 1
+        return True
+    def deQueue(self) -> bool:
+        if self.isEmpty(): return False
+        self.front = (self.front + 1) % self.capacity
+        self.size -= 1
+        return True
+    def Front(self) -> int: return -1 if self.isEmpty() else self.arr[self.front]
+    def Rear(self) -> int: return -1 if self.isEmpty() else self.arr[self.rear]
+    def isEmpty(self) -> bool: return self.size == 0
+    def isFull(self) -> bool: return self.size == self.capacity""",
+            codeJs: """
+class MyCircularQueue {
+    constructor(k) {
+        this.arr = new Array(k);
+        this.capacity = k;
+        this.front = 0; this.rear = -1; this.size = 0;
+    }
+    enQueue(value) {
+        if (this.isFull()) return false;
+        this.rear = (this.rear + 1) % this.capacity;
+        this.arr[this.rear] = value;
+        this.size++; return true;
+    }
+    deQueue() {
+        if (this.isEmpty()) return false;
+        this.front = (this.front + 1) % this.capacity;
+        this.size--; return true;
+    }
+    Front() { return this.isEmpty() ? -1 : this.arr[this.front]; }
+    Rear() { return this.isEmpty() ? -1 : this.arr[this.rear]; }
+    isEmpty() { return this.size === 0; }
+    isFull() { return this.size === this.capacity; }
+}""",
+            descriptionEn: "Design a Circular Queue of fixed capacity K that reuses empty memory slots efficiently.",
+            descriptionBn: "নির্দিষ্ট K সাইজের সার্কুলার কিউ তৈরি করুন যা মেমোরির খালি স্লটগুলো দক্ষভাবে পুনর্ব্যবহার করে।",
+            sampleInputs: ["enQueue(1), enQueue(2), enQueue(3), deQueue(), enQueue(4)"],
+            sampleOutputs: ["Front: 2", "Rear: 4"],
+          ),
+          DsaProblem(
+            id: "q-3",
+            title: "3. First Non-Repeating Character in a Stream",
+            category: "Queue Stream Pattern",
+            keyIdeaEn: "Track character frequencies in a map and push characters to queue. While queue is non-empty and front character frequency > 1, pop from queue.",
+            keyIdeaBn: "অক্ষরের ফ্রিকোয়েন্সি ম্যাপে রাখুন এবং কিউতে এনকিউ করুন। `freq[q.front()] > 1` হলে পপ করে ডুপ্লিকেট রিমুভ করুন।",
+            codeCpp: """
+string firstNonRepeating(string s) {
+    unordered_map<char, int> freq;
+    queue<char> q;
+    string res = "";
+    for (char c : s) {
+        freq[c]++;
+        q.push(c);
+        while (!q.empty() && freq[q.front()] > 1) {
+            q.pop();
+        }
+        res += q.empty() ? '#' : q.front();
+    }
+    return res;
+}""",
+            codeJava: """
+public String firstNonRepeating(String s) {
+    Map<Character, Integer> freq = new HashMap<>();
+    Queue<Character> q = new ArrayDeque<>();
+    StringBuilder res = new StringBuilder();
+    for (char c : s.toCharArray()) {
+        freq.put(c, freq.getOrDefault(c, 0) + 1);
+        q.offer(c);
+        while (!q.isEmpty() && freq.get(q.peek()) > 1) {
+            q.poll();
+        }
+        res.append(q.isEmpty() ? '#' : q.peek());
+    }
+    return res.toString();
+}""",
+            codePython: """
+def firstNonRepeating(s: str) -> str:
+    freq = {}
+    q = deque()
+    res = []
+    for c in s:
+        freq[c] = freq.get(c, 0) + 1
+        q.append(c)
+        while q and freq[q[0]] > 1:
+            q.popleft()
+        res.append(q[0] if q else '#')
+    return "".join(res)""",
+            codeJs: """
+function firstNonRepeating(s) {
+    const freq = {};
+    const q = [];
+    let res = "";
+    for (let c of s) {
+        freq[c] = (freq[c] || 0) + 1;
+        q.push(c);
+        while (q.length > 0 && freq[q[0]] > 1) {
+            q.shift();
+        }
+        res += q.length === 0 ? '#' : q[0];
+    }
+    return res;
+}""",
+            descriptionEn: "Find the first non-repeating character at each insertion in a character stream.",
+            descriptionBn: "একটি ইনপুট ক্যারেক্টার স্ট্রিম থেকে প্রতিটি ধাপে প্রথম অনাবৃত্ত (First Non-Repeating) বর্ণটি বের করুন।",
+            sampleInputs: ["stream = \"aabccxb\""],
+            sampleOutputs: ["result = \"a#bccxb\""],
+          ),
+          DsaProblem(
+            id: "q-4",
+            title: "4. Sliding Window Maximum (Monotonic Deque)",
+            category: "Monotonic Deque Pattern",
+            keyIdeaEn: "Maintain a Deque storing indices in decreasing order of array elements. Pop smaller element indices from back and out-of-window indices from front.",
+            keyIdeaBn: "মনোটোনিক ডিক্রিজিং Deque ব্যবহার করুন। উইন্ডোর বাইরের ইনডেক্স ফ্রন্ট থেকে বাদ দিন এবং ছোট মানগুলোর ইনডেক্স ব্যাক থেকে রিমুভ করুন।",
+            codeCpp: """
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    deque<int> dq;
+    vector<int> res;
+    for (int i = 0; i < nums.size(); i++) {
+        if (!dq.empty() && dq.front() == i - k) dq.pop_front();
+        while (!dq.empty() && nums[dq.back()] < nums[i]) dq.pop_back();
+        dq.push_back(i);
+        if (i >= k - 1) res.push_back(nums[dq.front()]);
+    }
+    return res;
+}""",
+            codeJava: """
+public int[] maxSlidingWindow(int[] nums, int k) {
+    Deque<Integer> dq = new ArrayDeque<>();
+    int[] res = new int[nums.length - k + 1];
+    int idx = 0;
+    for (int i = 0; i < nums.length; i++) {
+        if (!dq.isEmpty() && dq.peekFirst() == i - k) dq.pollFirst();
+        while (!dq.isEmpty() && nums[dq.peekLast()] < nums[i]) dq.pollLast();
+        dq.offerLast(i);
+        if (i >= k - 1) res[idx++] = nums[dq.peekFirst()];
+    }
+    return res;
+}""",
+            codePython: """
+def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
+    dq = deque()
+    res = []
+    for i, num in enumerate(nums):
+        if dq and dq[0] == i - k:
+            dq.popleft()
+        while dq and nums[dq[-1]] < num:
+            dq.pop()
+        dq.append(i)
+        if i >= k - 1:
+            res.append(nums[dq[0]])
+    return res""",
+            codeJs: """
+function maxSlidingWindow(nums, k) {
+    const dq = [];
+    const res = [];
+    for (let i = 0; i < nums.length; i++) {
+        if (dq.length > 0 && dq[0] === i - k) dq.shift();
+        while (dq.length > 0 && nums[dq[dq.length - 1]] < nums[i]) {
+            dq.pop();
+        }
+        dq.push(i);
+        if (i >= k - 1) res.push(nums[dq[0]]);
+    }
+    return res;
+}""",
+            descriptionEn: "Find the maximum value in each sliding window of size K moving from left to right across an array.",
+            descriptionBn: "K আকারের প্রতি স্লাইডিং উইন্ডোতে সর্বোচ্চ সংখ্যাটি Monotonic Deque ব্যবহার করে O(N) টাইমে বের করুন।",
+            sampleInputs: ["nums = [1,3,-1,-3,5,3,6,7], k = 3"],
+            sampleOutputs: ["result = [3, 3, 5, 5, 6, 7]"],
+          ),
+        ],
+        commonMistakesEn: [
+          {
+            "title": "1. Using Vector/List `shift()` / `remove(0)` in Loops (Hidden O(N²))",
+            "desc": "Calling `list.remove(0)` or `arr.shift()` in a loop causes hidden O(N) element shifting, leading to O(N²) quadratic time."
+          },
+          {
+            "title": "2. Circular Queue Modulo Wrap Bug",
+            "desc": "Forgetting modulo math `(rear + 1) % capacity` and incrementing `rear++` beyond array capacity."
+          },
+          {
+            "title": "3. Queue Underflow Exception",
+            "desc": "Invoking `q.front()` or `q.pop()` on an empty queue without checking `q.empty()`."
+          },
+          {
+            "title": "4. Monotonic Deque Index Mismatch",
+            "desc": "Storing element values instead of element indices in Deque, making window boundary check (`i - k`) impossible."
+          }
+        ],
+        commonMistakesBn: [
+          {
+            "title": "১. লুপে লিস্টের ফ্রন্ট থেকে ডিলিটে O(N²) সময় নষ্ট",
+            "desc": "লুপের ভেতর `list.remove(0)` বা `shift()` ব্যবহার করলে এলিমেন্ট শিফটিং এর জন্য O(N²) সময় নষ্ট হয়।"
+          },
+          {
+            "title": "২. সার্কুলার কিউ মডিউলো বাউন্ড ভুল",
+            "desc": "` (rear + 1) % capacity` না করে সরাসরি `rear++` বাড়িয়ে মেমোরি বাউন্ডের বাইরে চলে যাওয়া।"
+          },
+          {
+            "title": "৩. কিউ আন্ডারফ্লো এক্সেপশন",
+            "desc": "খালি কিউতে `q.front()` বা `q.pop()` ডিকিউ করার চেষ্টা করা।"
+          },
+          {
+            "title": "৪. মনোটোনিক Deque এ ইনডেক্সের বদলে ভ্যালু স্টোর করা",
+            "desc": "Deque এ ইনডেক্স না রেখে মান রাখলে উইন্ডো বাউন্ডারি (`i - k`) ভেরিফাই করা অসম্ভব হয়ে পড়ে।"
+          }
+        ],
+        roadmapStepsEn: [
+          {
+            "step": "Step 1",
+            "title": "Understand FIFO (First-In, First-Out) Pipeline Discipline",
+            "desc": "Master queue front/rear pointers, FIFO order, and pipeline memory behavior."
+          },
+          {
+            "step": "Step 2",
+            "title": "Master Basic Queue Operations & Implementations",
+            "desc": "Master enqueue O(1), dequeue O(1), front O(1), and array/linked-list queue implementations."
+          },
+          {
+            "step": "Step 3",
+            "title": "Master Circular Queue Modulo Index Math",
+            "desc": "Learn `(i + 1) % capacity` modulo index wrapping for fixed-size ring buffers."
+          },
+          {
+            "step": "Step 4",
+            "title": "Master Queue Stream Processing & Double-Ended Queue (Deque)",
+            "desc": "Learn stream processing, first non-repeating character, and bidirectional Deque operations."
+          },
+          {
+            "step": "Step 5",
+            "title": "Master Monotonic Deque Pattern (Sliding Window)",
+            "desc": "Learn monotonic decreasing deque for Sliding Window Maximum in O(N) time."
+          }
+        ],
+        roadmapStepsBn: [
+          {
+            "step": "ধাপ ১",
+            "title": "FIFO (ফার্স্ট-ইন, ফার্স্ট-আউট) পাইপলাইন নীতি",
+            "desc": "কিউ ফ্রন্ট/রিয়ার পয়েন্টার, FIFO অর্ডার এবং পাইপলাইন মেমোরি আচরণ বোঝা।"
+          },
+          {
+            "step": "ধাপ ২",
+            "title": "কিউ অপারেশন ও অ্যারে/লিস্ট ইমপ্লিমেন্টেশন",
+            "desc": "এনকিউ O(1), ডিকিউ O(1), ফ্রন্ট O(1) এবং কিউ ডেটা স্ট্রাকচার তৈরি।"
+          },
+          {
+            "step": "ধাপ ৩",
+            "title": "সার্কুলার কিউ মডিউলো ইনডেক্স সূত্র",
+            "desc": "` (i + 1) % capacity` সূত্রের মাধ্যমে ফিক্সড-সাইজ সার্কুলার কিউ সলভ করা।"
+          },
+          {
+            "step": "ধাপ ৪",
+            "title": "কিউ স্ট্রিম প্রসেসিং ও Double-Ended Queue (Deque)",
+            "desc": "অনাবৃত্ত ক্যারেক্টার স্ট্রিম এবং দ্বিমুখী Deque দিয়ে ফ্রন্ট/রিয়ার অপারেশন শেখা।"
+          },
+          {
+            "step": "ধাপ ৫",
+            "title": "মনোটোনিক Deque প্যাটার্ন (Sliding Window Maximum)",
+            "desc": "মনোটোনিক ডিক্রিজিং Deque দিয়ে স্লাইডিং উইন্ডো সর্বোচ্চ মান O(N) এ নির্ণয়।"
+          }
+        ],
       ),
 
       // 5. HASH TABLE & HASH MAP
@@ -1486,6 +1972,23 @@ function nextGreaterElement(arr) {
         icon: Icons.grid_view_outlined,
         themeColor: const Color(0xFFEC4899),
         descriptionEn: "A Hash Table is an associative dictionary mapping keys to array indices using a Hash Function.",
+        descriptionBn: "হ্যাশ টেবিল হলো একটি কী-ভ্যালু ডিকশনারি যা হ্যাশ ফাংশন দিয়ে ইনডেক্সিং করে।",
+        keyConceptsEn: ["O(1) Average Lookup", "Collision Handling"],
+        keyConceptsBn: ["O(1) গড়ে সমাধান", "কলিশন হ্যান্ডলিং"],
+        multiDimCodeTemplates: {
+          "Hash Map (Key-Value)": {
+            "C++": "unordered_map<string, int> mp;",
+            "Java": "Map<String, Integer> map = new HashMap<>();",
+            "Python": "mp = {}",
+            "JavaScript": "const map = new Map();"
+          }
+        },
+        basicProblems: [],
+        commonMistakesEn: [],
+        commonMistakesBn: [],
+        roadmapStepsEn: [],
+        roadmapStepsBn: [],
+      ),
         descriptionBn: "হ্যাশ টেবিল হলো একটি কী-ভ্যালু ডিকশনারি যা হ্যাশ ফাংশন দিয়ে ইনডেক্সিং করে।",
         keyConceptsEn: ["O(1) Average Lookup", "Collision Handling"],
         keyConceptsBn: ["O(1) গড়ে সমাধান", "কলিশন হ্যান্ডলিং"],
