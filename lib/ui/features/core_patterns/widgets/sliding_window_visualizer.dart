@@ -340,13 +340,13 @@ class _SlidingWindowVisualizerState extends State<SlidingWindowVisualizer> {
           width: double.infinity,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppTheme.accentFuchsia.withOpacity(0.15),
+            color: AppTheme.accentPink.withOpacity(0.15),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppTheme.accentFuchsia),
+            border: Border.all(color: AppTheme.accentPink),
           ),
           child: Text(
             widget.isEnglish ? step.explanationEn : step.explanationBn,
-            style: const TextStyle(color: AppTheme.accentFuchsia, fontWeight: FontWeight.bold, fontSize: 13),
+            style: const TextStyle(color: AppTheme.accentPink, fontWeight: FontWeight.bold, fontSize: 13),
           ),
         ),
         const SizedBox(height: 16),
@@ -385,7 +385,7 @@ class _SlidingWindowVisualizerState extends State<SlidingWindowVisualizer> {
       child: ChoiceChip(
         label: Text(label),
         selected: isSelected,
-        selectedColor: AppTheme.accentFuchsia,
+        selectedColor: AppTheme.accentPink,
         backgroundColor: AppTheme.surfaceDark,
         labelStyle: TextStyle(
           color: isSelected ? Colors.white : AppTheme.textSecondary,
@@ -422,9 +422,9 @@ class _SlidingWindowVisualizerState extends State<SlidingWindowVisualizer> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             margin: const EdgeInsets.symmetric(vertical: 1),
             decoration: BoxDecoration(
-              color: isHighlighted ? AppTheme.accentFuchsia.withOpacity(0.25) : Colors.transparent,
+              color: isHighlighted ? AppTheme.accentPink.withOpacity(0.25) : Colors.transparent,
               borderRadius: BorderRadius.circular(6),
-              border: isHighlighted ? Border.all(color: AppTheme.accentFuchsia) : null,
+              border: isHighlighted ? Border.all(color: AppTheme.accentPink) : null,
             ),
             child: Row(
               children: [
@@ -484,7 +484,7 @@ class _SlidingWindowVisualizerState extends State<SlidingWindowVisualizer> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text("Current Metric: ${step.currentMetric}", style: const TextStyle(color: AppTheme.accentFuchsia, fontWeight: FontWeight.bold, fontSize: 13)),
+              Text("Current Metric: ${step.currentMetric}", style: const TextStyle(color: AppTheme.accentPink, fontWeight: FontWeight.bold, fontSize: 13)),
               Text("Best Metric: ${step.bestMetric == 99 ? 'INF' : step.bestMetric}", style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 13)),
             ],
           ),
@@ -508,13 +508,13 @@ class _SlidingWindowVisualizerState extends State<SlidingWindowVisualizer> {
                   height: 65,
                   margin: const EdgeInsets.symmetric(horizontal: 3),
                   decoration: BoxDecoration(
-                    color: inWindow ? AppTheme.accentFuchsia : AppTheme.surfaceDark,
+                    color: inWindow ? AppTheme.accentPink : AppTheme.surfaceDark,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: (isLeft || isRight) ? Colors.white : (inWindow ? AppTheme.accentFuchsia : const Color(0xFF1E293B)),
+                      color: (isLeft || isRight) ? Colors.white : (inWindow ? AppTheme.accentPink : const Color(0xFF1E293B)),
                       width: (isLeft || isRight) ? 2.5 : 1,
                     ),
-                    boxShadow: inWindow ? [BoxShadow(color: AppTheme.accentFuchsia.withOpacity(0.5), blurRadius: 8)] : [],
+                    boxShadow: inWindow ? [BoxShadow(color: AppTheme.accentPink.withOpacity(0.5), blurRadius: 8)] : [],
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
