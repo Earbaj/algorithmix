@@ -300,7 +300,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
         p.title.contains("Permutations II") ||
         p.title.contains("Combination Sum II") ||
         p.title.contains("Palindrome Partitioning") ||
-        p.title.contains("Letter Case Permutation");
+        p.title.contains("Letter Case Permutation") ||
+        p.title.contains("N-Queens");
 
     return InkWell(
       onTap: () {
@@ -328,6 +329,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
           Navigator.of(context).pushNamed(AppRoutes.palindromePartitioningDetail);
         } else if (p.title.contains("Letter Case Permutation")) {
           Navigator.of(context).pushNamed(AppRoutes.letterCasePermutationDetail);
+        } else if (p.title.contains("N-Queens")) {
+          Navigator.of(context).pushNamed(AppRoutes.nQueensDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
