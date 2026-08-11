@@ -294,7 +294,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
         p.title.contains("Generate Parentheses") ||
         p.title.contains("Letter Combinations") ||
         p.title.contains("Permutations") ||
-        p.title.contains("Binary Tree Paths");
+        p.title.contains("Binary Tree Paths") ||
+        p.title.contains("Word Search");
 
     return InkWell(
       onTap: () {
@@ -310,6 +311,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
           Navigator.of(context).pushNamed(AppRoutes.permutationsDetail);
         } else if (p.title.contains("Binary Tree Paths")) {
           Navigator.of(context).pushNamed(AppRoutes.binaryTreePathsDetail);
+        } else if (p.title.contains("Word Search")) {
+          Navigator.of(context).pushNamed(AppRoutes.wordSearchDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),

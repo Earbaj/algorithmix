@@ -33,6 +33,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/generate_parentheses
 import 'package:algorithmix/ui/features/core_patterns/views/letter_combinations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/permutations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/binary_tree_paths_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/word_search_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -104,6 +105,7 @@ class AppRoutes {
   static const String letterCombinationsDetail = '/letter-combinations-detail';
   static const String permutationsDetail = '/permutations-detail';
   static const String binaryTreePathsDetail = '/binary-tree-paths-detail';
+  static const String wordSearchDetail = '/word-search-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -169,6 +171,7 @@ class AppRoutes {
       letterCombinationsDetail: (context) => const LetterCombinationsDetailScreen(),
       permutationsDetail: (context) => const PermutationsDetailScreen(),
       binaryTreePathsDetail: (context) => const BinaryTreePathsDetailScreen(),
+      wordSearchDetail: (context) => const WordSearchDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
