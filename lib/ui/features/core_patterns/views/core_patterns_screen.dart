@@ -115,6 +115,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 21) {
       // Graph Traversal dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.graphTraversalDetail);
+    } else if (pattern.id == 22) {
+      // Trie (Prefix Tree) dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.trieDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }

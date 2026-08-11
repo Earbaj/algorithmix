@@ -23,6 +23,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/dp_detail_screen.dar
 import 'package:algorithmix/ui/features/core_patterns/views/topological_sort_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/union_find_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/graph_traversal_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/trie_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -84,6 +85,7 @@ class AppRoutes {
   static const String topologicalSortDetail = '/topological-sort-detail';
   static const String unionFindDetail = '/union-find-detail';
   static const String graphTraversalDetail = '/graph-traversal-detail';
+  static const String trieDetail = '/trie-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -139,6 +141,7 @@ class AppRoutes {
       topologicalSortDetail: (context) => const TopologicalSortDetailScreen(),
       unionFindDetail: (context) => const UnionFindDetailScreen(),
       graphTraversalDetail: (context) => const GraphTraversalDetailScreen(),
+      trieDetail: (context) => const TrieDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
