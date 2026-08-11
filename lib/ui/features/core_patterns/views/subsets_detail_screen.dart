@@ -57,10 +57,14 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
   // Code Language Selector
   String _selectedCodeLang = "C++";
 
+  // Tab 2 Tree Level Selector
+  int _selectedTreeLevel = -1; // -1 for All Levels
+
   // Practice Mode state
   int _practiceIndex = 0;
   List<int> _practicePath = [];
   List<List<int>> _practiceResults = [];
+  List<String> _practiceHistory = [];
   String _userFeedbackEn = "Choose whether to INCLUDE or EXCLUDE current element!";
   String _userFeedbackBn = "বর্তমান উপাদানটি সাবসেটে রাখবেন নাকি বাদ দেবেন সিদ্ধান্ত নিন!";
   bool _practiceSolved = false;
@@ -118,7 +122,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
           .map((e) => int.parse(e))
           .toList();
       if (parsed.isEmpty) parsed = [1, 2, 3];
-      if (parsed.length > 5) parsed = parsed.sublist(0, 5); // Limit for clean visualization
+      if (parsed.length > 4) parsed = parsed.sublist(0, 4); // Limit for clean visualization
       _currentArray = parsed;
     } catch (_) {
       _currentArray = [1, 2, 3];
@@ -130,6 +134,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
     _practiceIndex = 0;
     _practicePath = [];
     _practiceResults = [];
+    _practiceHistory = [];
     _practiceSolved = false;
     _userFeedbackEn = "Choose whether to INCLUDE or EXCLUDE current element!";
     _userFeedbackBn = "বর্তমান উপাদানটি সাবসেটে রাখবেন নাকি বাদ দেবেন সিদ্ধান্ত নিন!";
@@ -250,31 +255,58 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
     setState(() {
       if (include) {
         _practicePath.add(currNum);
-        _userFeedbackEn = "✅ Included $currNum! Path = [${_practicePath.join(', ')}]. Moving to next element.";
-        _userFeedbackBn = "✅ $currNum সাবসেটে যোগ করা হলো! Path = [${_practicePath.join(', ')}]।";
+        _practiceHistory.add("INCLUDE ($currNum)");
+        _userFeedbackEn = "✅ Included $currNum! Current Path = [${_practicePath.join(', ')}].";
+        _userFeedbackBn = "✅ $currNum সাবসেটে যোগ করা হলো! বর্তমান Path = [${_practicePath.join(', ')}]।";
       } else {
-        _userFeedbackEn = "⚡ Excluded $currNum! Path = [${_practicePath.join(', ')}]. Moving to next element.";
-        _userFeedbackBn = "⚡ $currNum বাদ দেওয়া হলো! Path = [${_practicePath.join(', ')}]।";
+        _practiceHistory.add("EXCLUDE ($currNum)");
+        _userFeedbackEn = "⚡ Excluded $currNum! Current Path = [${_practicePath.join(', ')}].";
+        _userFeedbackBn = "⚡ $currNum বাদ দেওয়া হলো! বর্তমান Path = [${_practicePath.join(', ')}]।";
       }
 
       _practiceIndex++;
 
       if (_practiceIndex == _currentArray.length) {
-        _practiceResults.add(List.from(_practicePath));
-        _userFeedbackEn = "🎉 Subset [${_practicePath.join(', ')}] recorded! Total collected: ${_practiceResults.length} subsets.";
-        _userFeedbackBn = "🎉 সাবসেট [${_practicePath.join(', ')}] সংরক্ষিত! মোট সংগৃহীত: ${_practiceResults.length} টি সাবসেট।";
+        // Check if subset already exists
+        List<int> newSubset = List.from(_practicePath);
+        bool exists = _practiceResults.any((s) => s.length == newSubset.length && List.generate(s.length, (i) => s[i] == newSubset[i]).every((b) => b));
         
-        // Reset for next subset creation
+        if (!exists) {
+          _practiceResults.add(newSubset);
+          _userFeedbackEn = "🎉 New Subset [${newSubset.join(', ')}] Discovered! (${_practiceResults.length} / ${1 << _currentArray.length})";
+          _userFeedbackBn = "🎉 নতুন সাবসেট [${newSubset.join(', ')}] সংরক্ষিত! (${_practiceResults.length} / ${1 << _currentArray.length})";
+        } else {
+          _userFeedbackEn = "ℹ️ Subset [${newSubset.join(', ')}] was already collected. Explore other branches!";
+          _userFeedbackBn = "ℹ️ সাবসেট [${newSubset.join(', ')}] ইতিমধ্যেই সংগৃহীত হয়েছে। অন্য চয়েস ট্রাই করুন!";
+        }
+
+        // Reset for next branch
         _practiceIndex = 0;
         _practicePath = [];
 
         if (_practiceResults.length == (1 << _currentArray.length)) {
           _practiceSolved = true;
-          _userFeedbackEn = "🏆 MASTERED! You generated all ${1 << _currentArray.length} subsets of power set!";
+          _userFeedbackEn = "🏆 CONGRATULATIONS! You generated all ${1 << _currentArray.length} subsets of power set!";
           _userFeedbackBn = "🏆 দারুণ! আপনি পাওয়ার সেটের সবকটি ${1 << _currentArray.length} টি সাবসেট বানিয়ে ফেলেছেন!";
         }
       }
     });
+  }
+
+  void _undoPracticeMove() {
+    if (_practiceIndex > 0) {
+      setState(() {
+        _practiceIndex--;
+        if (_practiceHistory.isNotEmpty) {
+          final lastAction = _practiceHistory.removeLast();
+          if (lastAction.startsWith("INCLUDE") && _practicePath.isNotEmpty) {
+            _practicePath.removeLast();
+          }
+        }
+        _userFeedbackEn = "↩️ Undid last move. Back to index $_practiceIndex. Path = [${_practicePath.join(', ')}].";
+        _userFeedbackBn = "↩️ পূর্ববর্তী ধাপ বাতিল করা হলো। ইনডেক্স $_practiceIndex এ ফিরে এসেছেন।";
+      });
+    }
   }
 
   @override
@@ -483,7 +515,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEnglish ? "Binary Decision Tree Animation (Visual Guide)" : "বাইনারি চয়েস ট্রি ভিজ্যুয়াল গাইড",
+              _isEnglish ? "Binary Decision Tree Expansion (Visual Guide)" : "বাইনারি চয়েস ট্রি ভিজ্যুয়াল গাইড",
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 8),
@@ -493,39 +525,82 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
                   : "কোড ছাড়া সহজে বুঝুন কীভাবে প্রতিটি উপাদান রেখে বা না রেখে ২ⁿ টি সাবসেট তৈরি হয়।",
               style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
 
-            // Step 1 Diagram Box
-            _buildVisualStepBox(
-              "Step 1: Root Node (Empty Subset [])",
-              "Start at idx = 0 with path = []. Two options ahead: Include 1 OR Exclude 1.",
-              Icons.account_tree,
-              AppTheme.accentNeonCyan,
+            // Tree Level Filter Chips
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _buildTreeLevelChip(-1, _isEnglish ? "All Tree Levels" : "সব লেভেল"),
+                  _buildTreeLevelChip(0, "Level 0: Start []"),
+                  _buildTreeLevelChip(1, "Level 1: Choice '1'"),
+                  _buildTreeLevelChip(2, "Level 2: Choice '2'"),
+                  _buildTreeLevelChip(3, "Level 3: Choice '3'"),
+                ],
+              ),
             ),
-            const SizedBox(height: 12),
-            _buildVisualStepBox(
-              "Step 2: Branch Level 1 (Element '1')",
-              "• Option A (Include 1): path becomes [1]\n• Option B (Exclude 1): path remains []",
-              Icons.alt_route,
-              AppTheme.accentAmber,
-            ),
-            const SizedBox(height: 12),
-            _buildVisualStepBox(
-              "Step 3: Branch Level 2 (Element '2')",
-              "• From [1] -> Branch to [1, 2] and [1]\n• From []  -> Branch to [2] and []",
-              Icons.fork_right,
-              AppTheme.accentPurple,
-            ),
-            const SizedBox(height: 12),
-            _buildVisualStepBox(
-              "Step 4: Reach Leaf Nodes (Base Case Saved Subsets)",
-              "All 2³ = 8 leaf nodes are saved to result: [], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]!",
-              Icons.check_circle_outline,
-              AppTheme.accentGreen,
-            ),
+            const SizedBox(height: 16),
+
+            // Level Step Cards
+            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 0)
+              _buildVisualStepBox(
+                "Step 1: Root Node (Empty Subset [])",
+                "Start at idx = 0 with path = []. Two options ahead: Include 1 OR Exclude 1.",
+                Icons.account_tree,
+                AppTheme.accentNeonCyan,
+              ),
+            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 0) const SizedBox(height: 12),
+
+            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 1)
+              _buildVisualStepBox(
+                "Step 2: Branch Level 1 (Element '1')",
+                "• Option A (Include 1): path becomes [1]\n• Option B (Exclude 1): path remains []",
+                Icons.alt_route,
+                AppTheme.accentAmber,
+              ),
+            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 1) const SizedBox(height: 12),
+
+            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 2)
+              _buildVisualStepBox(
+                "Step 3: Branch Level 2 (Element '2')",
+                "• From [1] -> Branch to [1, 2] and [1]\n• From []  -> Branch to [2] and []",
+                Icons.fork_right,
+                AppTheme.accentPurple,
+              ),
+            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 2) const SizedBox(height: 12),
+
+            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 3)
+              _buildVisualStepBox(
+                "Step 4: Reach Leaf Nodes (Base Case Saved Subsets)",
+                "All 2³ = 8 leaf nodes are saved to result: [], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]!",
+                Icons.check_circle_outline,
+                AppTheme.accentGreen,
+              ),
             const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTreeLevelChip(int level, String label) {
+    final isSelected = _selectedTreeLevel == level;
+    return Padding(
+      padding: const EdgeInsets.only(right: 6),
+      child: ChoiceChip(
+        label: Text(label),
+        selected: isSelected,
+        selectedColor: AppTheme.accentPurple,
+        backgroundColor: AppTheme.surfaceDark,
+        labelStyle: TextStyle(
+          color: isSelected ? Colors.white : AppTheme.textSecondary,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          fontSize: 12,
+        ),
+        onSelected: (selected) {
+          if (selected) setState(() => _selectedTreeLevel = level);
+        },
       ),
     );
   }
@@ -643,6 +718,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
   Widget _buildPracticeTab() {
     final hPadding = Responsive.horizontalPadding(context);
     final currNum = _practiceIndex < _currentArray.length ? _currentArray[_practiceIndex] : null;
+    final totalTargetCount = 1 << _currentArray.length;
 
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
@@ -661,7 +737,45 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
                   : "প্রতিটি উপাদান অন্তর্ভুক্ত করবেন নাকি বাদ দেবেন সিদ্ধান্ত নিয়ে নিজে পাওয়ার সেট তৈরি করুন!",
               style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
+
+            // Progress Score Bar
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceDark,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.4)),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _isEnglish ? "Progress: ${_practiceResults.length} / $totalTargetCount Subsets" : "অগ্রগতি: ${_practiceResults.length} / $totalTargetCount টি সাবসেট",
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
+                      Text(
+                        "${((_practiceResults.length / totalTargetCount) * 100).toInt()}%",
+                        style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: LinearProgressIndicator(
+                      value: _practiceResults.length / totalTargetCount,
+                      backgroundColor: AppTheme.primaryDark,
+                      valueColor: const AlwaysStoppedAnimation<Color>(AppTheme.accentGreen),
+                      minHeight: 8,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
 
             // Feedback Banner
             Container(
@@ -681,13 +795,13 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
 
-            // Decision Buttons
+            // Decision Buttons & Undo
             if (!_practiceSolved && currNum != null) ...[
               Text(
-                _isEnglish ? "Element at index $_practiceIndex: [$currNum]" : "ইনডেক্স $_practiceIndex এর উপাদান: [$currNum]",
-                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 15),
+                _isEnglish ? "Decision for nums[$_practiceIndex] = [$currNum]:" : "nums[$_practiceIndex] = [$currNum] এর জন্য সিদ্ধান্ত:",
+                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
               ),
               const SizedBox(height: 12),
               Row(
@@ -704,7 +818,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
                       onPressed: () => _handlePracticeDecision(true),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
@@ -719,15 +833,25 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
+              if (_practiceIndex > 0)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton.icon(
+                    icon: const Icon(Icons.undo, size: 16, color: AppTheme.accentAmber),
+                    label: Text(_isEnglish ? "Undo Move" : "ধাপ বাতিল", style: const TextStyle(color: AppTheme.accentAmber, fontSize: 12)),
+                    onPressed: _undoPracticeMove,
+                  ),
+                ),
             ],
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
 
-            // Collected Subsets Display
+            // Collected Subsets Grid
             Text(
               _isEnglish
-                  ? "Collected Subsets (${_practiceResults.length} / ${1 << _currentArray.length}):"
-                  : "সংগৃহীত সাবসেটসমূহ (${_practiceResults.length} / ${1 << _currentArray.length}):",
+                  ? "Collected Subsets (${_practiceResults.length} / $totalTargetCount):"
+                  : "সংগৃহীত সাবসেটসমূহ (${_practiceResults.length} / $totalTargetCount):",
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
             ),
             const SizedBox(height: 10),
@@ -747,6 +871,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
                     children: _practiceResults.map((subset) {
                       return Chip(
                         backgroundColor: AppTheme.surfaceDark,
+                        avatar: const Icon(Icons.check_circle, color: AppTheme.accentGreen, size: 16),
                         label: Text(
                           "[${subset.join(', ')}]",
                           style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
@@ -859,6 +984,20 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
   }
 
   Widget _buildSubsetsCanvas(SubsetsStep step) {
+    Color decisionColor = AppTheme.accentPurple;
+    String decisionLabel = "INIT";
+
+    if (step.decision == "include") {
+      decisionColor = AppTheme.accentGreen;
+      decisionLabel = "➕ INCLUDE";
+    } else if (step.decision == "exclude") {
+      decisionColor = AppTheme.accentPink;
+      decisionLabel = "↩️ EXCLUDE";
+    } else if (step.decision == "base_case") {
+      decisionColor = AppTheme.accentAmber;
+      decisionLabel = "🎉 BASE CASE";
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -872,8 +1011,16 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Current Index: [${step.index}]", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13)),
-              Text("Stack Depth: [${step.callStackDepth}]", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 13)),
+              Text("Index: [${step.index}]", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                decoration: BoxDecoration(
+                  color: decisionColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: decisionColor),
+                ),
+                child: Text(decisionLabel, style: TextStyle(color: decisionColor, fontWeight: FontWeight.bold, fontSize: 11)),
+              ),
             ],
           ),
           const SizedBox(height: 14),
