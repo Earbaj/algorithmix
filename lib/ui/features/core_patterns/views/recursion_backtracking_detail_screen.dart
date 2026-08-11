@@ -291,7 +291,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
   Widget _buildProblemCard(RecursionBacktrackingProblem p, Color diffColor) {
     final isClickable = p.title.contains("Subsets") ||
         p.title.contains("Combination Sum") ||
-        p.title.contains("Generate Parentheses");
+        p.title.contains("Generate Parentheses") ||
+        p.title.contains("Letter Combinations");
 
     return InkWell(
       onTap: () {
@@ -301,6 +302,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
           Navigator.of(context).pushNamed(AppRoutes.combinationSumDetail);
         } else if (p.title.contains("Generate Parentheses")) {
           Navigator.of(context).pushNamed(AppRoutes.generateParenthesesDetail);
+        } else if (p.title.contains("Letter Combinations")) {
+          Navigator.of(context).pushNamed(AppRoutes.letterCombinationsDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
