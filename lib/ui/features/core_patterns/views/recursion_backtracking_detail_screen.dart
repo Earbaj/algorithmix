@@ -289,10 +289,14 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
   }
 
   Widget _buildProblemCard(RecursionBacktrackingProblem p, Color diffColor) {
+    final isClickable = p.title.contains("Subsets") || p.title.contains("Combination Sum");
+
     return InkWell(
       onTap: () {
         if (p.title.contains("Subsets")) {
           Navigator.of(context).pushNamed(AppRoutes.subsetsDetail);
+        } else if (p.title.contains("Combination Sum")) {
+          Navigator.of(context).pushNamed(AppRoutes.combinationSumDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
@@ -303,8 +307,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
           color: AppTheme.surfaceDark,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: p.title.contains("Subsets") ? AppTheme.accentNeonCyan : const Color(0xFF1E293B),
-            width: p.title.contains("Subsets") ? 1.5 : 1.0,
+            color: isClickable ? AppTheme.accentNeonCyan : const Color(0xFF1E293B),
+            width: isClickable ? 1.5 : 1.0,
           ),
         ),
         child: Column(
@@ -320,7 +324,7 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
                         p.title,
                         style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14),
                       ),
-                      if (p.title.contains("Subsets")) ...[
+                      if (isClickable) ...[
                         const SizedBox(width: 6),
                         const Icon(Icons.open_in_new, color: AppTheme.accentNeonCyan, size: 14),
                       ],
