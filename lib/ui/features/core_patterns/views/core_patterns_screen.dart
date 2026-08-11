@@ -124,6 +124,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 24) {
       // Monotonic Stack dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.monotonicStackDetail);
+    } else if (pattern.id == 25) {
+      // Prefix Sum dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.prefixSumDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
