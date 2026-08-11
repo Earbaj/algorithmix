@@ -27,6 +27,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/trie_detail_screen.d
 import 'package:algorithmix/ui/features/core_patterns/views/bit_manipulation_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/monotonic_stack_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/prefix_sum_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/subsets_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -92,6 +93,7 @@ class AppRoutes {
   static const String bitManipulationDetail = '/bit-manipulation-detail';
   static const String monotonicStackDetail = '/monotonic-stack-detail';
   static const String prefixSumDetail = '/prefix-sum-detail';
+  static const String subsetsDetail = '/subsets-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -151,6 +153,7 @@ class AppRoutes {
       bitManipulationDetail: (context) => const BitManipulationDetailScreen(),
       monotonicStackDetail: (context) => const MonotonicStackDetailScreen(),
       prefixSumDetail: (context) => const PrefixSumDetailScreen(),
+      subsetsDetail: (context) => const SubsetsDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
