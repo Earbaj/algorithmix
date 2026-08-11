@@ -598,9 +598,9 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
             ),
             const SizedBox(height: 20),
 
-            if (_animationModelIndex == 0) _buildDecisionTreeModel(),
-            if (_animationModelIndex == 1) _buildTargetScaleModel(),
-            if (_animationModelIndex == 2) _buildMultiplierModel(),
+            if (_animationModelIndex == 0) _buildRecursionTreeModel(),
+            if (_animationModelIndex == 1) _buildCurrentStackModel(),
+            if (_animationModelIndex == 2) _buildTargetCountdownModel(),
 
             const SizedBox(height: 24),
           ],
@@ -630,7 +630,8 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
     );
   }
 
-  Widget _buildDecisionTreeModel() {
+  // MODEL 1: Recursion Tree (Color Coded Decision Branches)
+  Widget _buildRecursionTreeModel() {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -642,30 +643,127 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _isEnglish ? "Backtracking Decision Tree with Pruning" : "ছাঁটাই সহ ব্যাকট্র্যাকিং ডিসিশন ট্রি",
+            _isEnglish ? "1. Recursion Tree with Color-Coded Branches" : "১. কালার কোডেড রিকার্সন চয়েস ট্রি",
             style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
           ),
           const SizedBox(height: 6),
           Text(
             _isEnglish
-                ? "Watch how candidate '2' is reused multiple times: [2] ➔ [2, 2] ➔ [2, 2, 3] = 7 (Target Met)!"
-                : "উপাদান '2' কীভাবে একাধিকবার ব্যবহৃত হয় দেখুন: [2] ➔ [2, 2] ➔ [2, 2, 3] = 7 (টার্গেট অর্জিত)!",
+                ? "Understand how decision branches expand and backtrack based on color-coded states."
+                : "কালার কোডের ওপর ভিত্তি করে ব্রাঞ্চ কীভাবে ছড়ায় এবং ব্যাকট্র্যাক করে তা পর্যবেক্ষণ করুন।",
             style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
           ),
+          const SizedBox(height: 14),
+
+          // Color Legend Banner
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildLegendChip("🟡 Exploring (< Target)", AppTheme.accentAmber),
+                _buildLegendChip("🔴 Exceeded (> Target)", AppTheme.accentPink),
+                _buildLegendChip("🟢 Success (== Target)", AppTheme.accentGreen),
+              ],
+            ),
+          ),
           const SizedBox(height: 16),
-          _buildVisualStepBox("Branch 1: Reuse '2' (Sum = 2)", "path = [2]. Next choice: Reuse '2' or Skip to '3'.", Icons.alt_route, AppTheme.accentAmber),
+
+          // Root Node
+          _buildTreeNodeBox("Root Node: ∅ (Sum = 0)", "Start empty path = []. Next candidate to evaluate: 2.", Icons.account_tree, AppTheme.accentNeonCyan),
           const SizedBox(height: 10),
-          _buildVisualStepBox("Branch 2: Reuse '2' again (Sum = 4)", "path = [2, 2]. Sum is 4 < 7. Continue building path.", Icons.account_tree, AppTheme.accentPurple),
+
+          // Branch 1 (Yellow Exploring)
+          _buildTreeNodeBox("Branch [2]: Push 2 ➔ Sum = 2 (< 7)", "🟡 Exploring: Sum 2 is valid. Option to reuse '2' again.", Icons.alt_route, AppTheme.accentAmber),
           const SizedBox(height: 10),
-          _buildVisualStepBox("Branch 3: Add '3' (Sum = 7 Target Met 🎉)", "path = [2, 2, 3]. Sum = 7 == 7! Valid combination saved!", Icons.check_circle_outline, AppTheme.accentGreen),
+
+          // Branch 2 (Yellow Exploring)
+          _buildTreeNodeBox("Branch [2, 2]: Push 2 ➔ Sum = 4 (< 7)", "🟡 Exploring: Sum 4 is valid. Option to reuse '2' again.", Icons.alt_route, AppTheme.accentAmber),
           const SizedBox(height: 10),
-          _buildVisualStepBox("Branch 4: Direct '7' (Sum = 7 Target Met 🎉)", "path = [7]. Sum = 7 == 7! Second unique combination saved!", Icons.stars, AppTheme.accentGreen),
+
+          // Branch 3 (Red Exceeded & Backtrack)
+          _buildTreeNodeBox("Branch [2, 2, 2, 2]: Push 2 ➔ Sum = 8 (> 7)", "🔴 Exceeded & Backtrack: Sum 8 > 7! Prune branch and pop last 2.", Icons.error_outline, AppTheme.accentPink),
+          const SizedBox(height: 10),
+
+          // Branch 4 (Green Target Met)
+          _buildTreeNodeBox("Branch [2, 2, 3]: Push 3 ➔ Sum = 7 (== 7)", "🟢 Target Met 🎉: Sum = 7! Valid combination [2, 2, 3] saved to results list.", Icons.check_circle_outline, AppTheme.accentGreen),
+          const SizedBox(height: 10),
+
+          // Branch 5 (Green Target Met)
+          _buildTreeNodeBox("Branch [7]: Direct Push 7 ➔ Sum = 7 (== 7)", "🟢 Target Met 🎉: Sum = 7! Second unique combination [7] saved.", Icons.stars, AppTheme.accentGreen),
         ],
       ),
     );
   }
 
-  Widget _buildTargetScaleModel() {
+  Widget _buildLegendChip(String label, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color),
+      ),
+      child: Text(label, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 11)),
+    );
+  }
+
+  Widget _buildTreeNodeBox(String title, String desc, IconData icon, Color color) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceDark,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color, width: 1.5),
+        boxShadow: [BoxShadow(color: color.withOpacity(0.15), blurRadius: 6)],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            radius: 16,
+            backgroundColor: color.withOpacity(0.2),
+            child: Icon(icon, color: color, size: 18),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 13)),
+                const SizedBox(height: 4),
+                Text(desc, style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12, height: 1.3)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // MODEL 2: The Current Stack (Push / Pop Array Memory Animation)
+  Widget _buildCurrentStackModel() {
+    final stackSteps = [
+      {"action": "Push 2", "stack": [2], "sum": 2, "state": "valid", "msg": "Push 2 ➔ path = [2] (Sum = 2)"},
+      {"action": "Push 2", "stack": [2, 2], "sum": 4, "state": "valid", "msg": "Push 2 ➔ path = [2, 2] (Sum = 4)"},
+      {"action": "Push 2", "stack": [2, 2, 2], "sum": 6, "state": "valid", "msg": "Push 2 ➔ path = [2, 2, 2] (Sum = 6)"},
+      {"action": "Push 2 ❌", "stack": [2, 2, 2, 2], "sum": 8, "state": "exceeded", "msg": "Push 2 ➔ path = [2, 2, 2, 2] (Sum 8 > 7)! EXCEEDED TARGET!"},
+      {"action": "Pop 2 ↩️", "stack": [2, 2, 2], "sum": 6, "state": "pop", "msg": "Pop 2 (Backtrack) ➔ Revert path to [2, 2, 2]"},
+      {"action": "Pop 2 ↩️", "stack": [2, 2], "sum": 4, "state": "pop", "msg": "Pop 2 (Backtrack) ➔ Revert path to [2, 2]"},
+      {"action": "Push 3 🎉", "stack": [2, 2, 3], "sum": 7, "state": "success", "msg": "Push 3 ➔ path = [2, 2, 3] (Sum 7 == 7)! TARGET MET!"},
+    ];
+
+    final currentStackStep = stackSteps[_currentStepIndex.clamp(0, stackSteps.length - 1)];
+    final List<int> stackList = currentStackStep["stack"] as List<int>;
+    final int sumVal = currentStackStep["sum"] as int;
+    final String stateStr = currentStackStep["state"] as String;
+    final String msgStr = currentStackStep["msg"] as String;
+
+    Color stateColor = AppTheme.accentNeonCyan;
+    if (stateStr == "exceeded") stateColor = AppTheme.accentPink;
+    if (stateStr == "pop") stateColor = AppTheme.accentAmber;
+    if (stateStr == "success") stateColor = AppTheme.accentGreen;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -677,35 +775,81 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _isEnglish ? "Target Sum Scale (Dynamic Balance Meter)" : "টার্গেট সাম স্কেল (ডাইনামিক সাম মিটার)",
+            _isEnglish ? "2. The Current Stack (Push / Pop Memory Array)" : "২. স্ট্যাক মেমোরি মডেল (Push / Pop অ্যানিমেশন)",
             style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
           ),
+          const SizedBox(height: 6),
+          Text(
+            _isEnglish
+                ? "Physical stack box showing elements pushing into memory array and popping out on backtrack."
+                : "অ্যালগরিদম সংখ্যা নিলে স্ট্যাক বাক্সে কীভাবে Push হয় এবং ব্যাকট্র্যাক করলে কীভাবে Pop হয় তা দেখুন।",
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+          ),
           const SizedBox(height: 16),
+
+          // Status Banner
           Container(
-            padding: const EdgeInsets.all(14),
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: stateColor.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: stateColor),
+            ),
+            child: Text(msgStr, style: TextStyle(color: stateColor, fontWeight: FontWeight.bold, fontSize: 12)),
+          ),
+          const SizedBox(height: 16),
+
+          // Physical Stack Memory Container Box
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             decoration: BoxDecoration(
               color: AppTheme.surfaceDark,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppTheme.accentGreen),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: stateColor, width: 2),
+              boxShadow: [BoxShadow(color: stateColor.withOpacity(0.2), blurRadius: 10)],
             ),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Current Combination: [2, 2, 3]", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
-                    const Text("Sum = 7 / 7", style: TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 14)),
-                  ],
+                Text(
+                  "Physical Stack Array Container: [ ${stackList.join(' , ')} ]",
+                  style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 10),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: const LinearProgressIndicator(
-                    value: 1.0,
-                    backgroundColor: AppTheme.primaryDark,
-                    valueColor: AlwaysStoppedAnimation<Color>(AppTheme.accentGreen),
-                    minHeight: 10,
+                const SizedBox(height: 14),
+
+                // Animated Stack Block Cards
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: stackList.isEmpty
+                        ? [const Text("[ EMPTY STACK ]", style: TextStyle(color: AppTheme.textMuted, fontSize: 13))]
+                        : stackList.map((val) {
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: stateColor.withOpacity(0.25),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: stateColor, width: 2),
+                              ),
+                              child: Text(
+                                "$val",
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                              ),
+                            );
+                          }).toList(),
                   ),
+                ),
+                const SizedBox(height: 14),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Current Stack Sum: ", style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
+                    Text("$sumVal / 7", style: TextStyle(color: stateColor, fontWeight: FontWeight.bold, fontSize: 15)),
+                  ],
                 ),
               ],
             ),
@@ -715,7 +859,37 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
     );
   }
 
-  Widget _buildMultiplierModel() {
+  // MODEL 3: Target Countdown Subtraction (7 -> 5 -> 3 -> 0)
+  Widget _buildTargetCountdownModel() {
+    final countdownPaths = [
+      {
+        "title": "Path A: 7 ➔ 5 ➔ 3 ➔ 0 (Target Hit 0 🎉)",
+        "steps": [
+          {"target": 7, "sub": 0, "rem": 7, "state": "start"},
+          {"target": 7, "sub": 2, "rem": 5, "state": "valid"},
+          {"target": 5, "sub": 2, "rem": 3, "state": "valid"},
+          {"target": 3, "sub": 3, "rem": 0, "state": "success"},
+        ],
+        "statusEn": "🎉 Target Hit 0! Valid Combination [2, 2, 3] Found!",
+        "statusBn": "🎉 অবশিষ্ট মান 0! ভ্যালিড কম্বিনেশন [2, 2, 3] সংগৃহীত!",
+      },
+      {
+        "title": "Path B: 7 ➔ 5 ➔ 3 ➔ 1 ➔ -1 (Negative Target 🔴)",
+        "steps": [
+          {"target": 7, "sub": 0, "rem": 7, "state": "start"},
+          {"target": 7, "sub": 2, "rem": 5, "state": "valid"},
+          {"target": 5, "sub": 2, "rem": 3, "state": "valid"},
+          {"target": 3, "sub": 2, "rem": 1, "state": "valid"},
+          {"target": 1, "sub": 2, "rem": -1, "state": "exceeded"},
+        ],
+        "statusEn": "🔴 Remaining is Negative (-1)! Branch Pruned and Backtracked.",
+        "statusBn": "🔴 অবশিষ্ট মান ঋণাত্মক (-1)! ব্রাঞ্চ বাতিল করে ব্যাকট্র্যাক করা হয়েছে।",
+      },
+    ];
+
+    final pathData = countdownPaths[_animationModelIndex == 2 ? 0 : 1];
+    final stepsList = pathData["steps"] as List<Map<String, dynamic>>;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -727,23 +901,69 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _isEnglish ? "Candidate Multiplier Formula" : "ক্যান্ডিডেট গুণক সূত্র",
+            _isEnglish ? "3. Target Countdown Subtraction (7 ➔ 5 ➔ 3 ➔ 0)" : "৩. টার্গেট সাবট্রাকশন কাউন্টডাউন (৭ ➔ ৫ ➔ ৩ ➔ ০)",
             style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 6),
+          Text(
+            _isEnglish
+                ? "Subtractions from target: 7 ➔ -2 = 5 ➔ -2 = 3 ➔ -3 = 0 (Success hit 0)."
+                : "টার্গেট থেকে প্রতিটি নির্বাচিত সংখ্যা বিয়োগ করে অবশিষ্ট মান ০ এ পৌঁছানোর ভিজ্যুয়াল প্রদর্শন।",
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+          ),
+          const SizedBox(height: 16),
+
+          // Big Equation Banner
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
               color: AppTheme.surfaceDark,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppTheme.accentPurple),
+              border: Border.all(color: AppTheme.accentGreen),
             ),
             child: const Text(
-              "(2 × 2) + (3 × 1) = 4 + 3 = 7 (Target 🎉)",
-              style: TextStyle(fontFamily: 'monospace', fontSize: 15, fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
+              "7  ➔  -2  ➔  5  ➔  -2  ➔  3  ➔  -3  ➔  0  (Success 🎉)",
+              style: TextStyle(fontFamily: 'monospace', fontSize: 14, fontWeight: FontWeight.bold, color: AppTheme.accentGreen),
               textAlign: TextAlign.center,
             ),
+          ),
+          const SizedBox(height: 16),
+
+          // Subtraction Steps Chain
+          Column(
+            children: stepsList.map((step) {
+              final subVal = step["sub"] as int;
+              final remVal = step["rem"] as int;
+              final state = step["state"] as String;
+
+              Color stepColor = AppTheme.accentNeonCyan;
+              if (state == "exceeded") stepColor = AppTheme.accentPink;
+              if (state == "success") stepColor = AppTheme.accentGreen;
+
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceDark,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: stepColor),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      subVal == 0 ? "Start Target: $remVal" : "Subtract -$subVal from target",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                    Text(
+                      "Remaining Target: [$remVal]",
+                      style: TextStyle(color: stepColor, fontWeight: FontWeight.bold, fontSize: 13),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),
