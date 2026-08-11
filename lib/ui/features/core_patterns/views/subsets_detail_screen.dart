@@ -57,8 +57,19 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
   // Code Language Selector
   String _selectedCodeLang = "C++";
 
-  // Tab 2 Tree Level Selector
+  // Tab 2 Animation Model Selector (0: Hasse Diagram, 1: Binary Tree, 2: Bitmask Slider)
+  int _animationModelIndex = 0;
+
+  // Hasse Diagram State
+  String? _selectedHasseNode;
+  Set<String> _highlightedHasseSubsets = {};
+
+  // Binary Decision Tree State
   int _selectedTreeLevel = -1; // -1 for All Levels
+  String? _selectedTreeLeafPath;
+
+  // Bitmask Slider State (0 to 7)
+  double _bitmaskSliderVal = 5.0;
 
   // Practice Mode state
   int _practiceIndex = 0;
@@ -74,6 +85,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
     _rebuildSteps();
+    _selectHasseNode("{a, b}");
   }
 
   @override
@@ -247,6 +259,41 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
     }
   }
 
+  // Hasse Diagram Logic: Highlight all subset descendants of selected node
+  void _selectHasseNode(String nodeLabel) {
+    Set<String> subsets = {};
+
+    // Parse elements in nodeLabel
+    Set<String> selectedChars = {};
+    if (nodeLabel.contains('a')) selectedChars.add('a');
+    if (nodeLabel.contains('b')) selectedChars.add('b');
+    if (nodeLabel.contains('c')) selectedChars.add('c');
+
+    List<String> allHasseNodes = [
+      "{a, b, c}",
+      "{a, b}", "{a, c}", "{b, c}",
+      "{a}", "{b}", "{c}",
+      "∅"
+    ];
+
+    for (String node in allHasseNodes) {
+      Set<String> nodeChars = {};
+      if (node.contains('a')) nodeChars.add('a');
+      if (node.contains('b')) nodeChars.add('b');
+      if (node.contains('c')) nodeChars.add('c');
+
+      // Check if nodeChars is a subset of selectedChars
+      if (selectedChars.containsAll(nodeChars)) {
+        subsets.add(node);
+      }
+    }
+
+    setState(() {
+      _selectedHasseNode = nodeLabel;
+      _highlightedHasseSubsets = subsets;
+    });
+  }
+
   void _handlePracticeDecision(bool include) {
     if (_practiceSolved || _practiceIndex >= _currentArray.length) return;
 
@@ -267,7 +314,6 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
       _practiceIndex++;
 
       if (_practiceIndex == _currentArray.length) {
-        // Check if subset already exists
         List<int> newSubset = List.from(_practicePath);
         bool exists = _practiceResults.any((s) => s.length == newSubset.length && List.generate(s.length, (i) => s[i] == newSubset[i]).every((b) => b));
         
@@ -504,7 +550,7 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
     );
   }
 
-  // TAB 2: Code-Free Animation
+  // TAB 2: Code-Free Animation (3 Interactive Visual Models requested by User)
   Widget _buildCodeFreeAnimationTab() {
     final hPadding = Responsive.horizontalPadding(context);
 
@@ -515,68 +561,36 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEnglish ? "Binary Decision Tree Expansion (Visual Guide)" : "বাইনারি চয়েস ট্রি ভিজ্যুয়াল গাইড",
+              _isEnglish ? "Power Set Visual Models (Concept Explanations)" : "পাওয়ার সেট ভিজ্যুয়াল মডেলসমূহ (কোডহীন গাইড)",
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             Text(
               _isEnglish
-                  ? "Understand how 2ⁿ subsets are constructed by taking or skipping each element step-by-step."
-                  : "কোড ছাড়া সহজে বুঝুন কীভাবে প্রতিটি উপাদান রেখে বা না রেখে ২ⁿ টি সাবসেট তৈরি হয়।",
+                  ? "Explore 3 interactive models (Hasse Lattice, Decision Tree, Bitmask Slider) for set S = {a, b, c} (2³ = 8 Subsets)."
+                  : "সেট S = {a, b, c} এর ২³ = ৮টি সাবসেট ৩টি ইন্টারঅ্যাক্টিভ মডেলে (হাসি ডায়াগ্রাম, ডিসিশন ট্রি, বিটমাস্ক স্লাইডার) পর্যবেক্ষণ করুন।",
               style: const TextStyle(color: AppTheme.textSecondary, fontSize: 13),
             ),
             const SizedBox(height: 16),
 
-            // Tree Level Filter Chips
+            // Model Switcher Segmented Control
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _buildTreeLevelChip(-1, _isEnglish ? "All Tree Levels" : "সব লেভেল"),
-                  _buildTreeLevelChip(0, "Level 0: Start []"),
-                  _buildTreeLevelChip(1, "Level 1: Choice '1'"),
-                  _buildTreeLevelChip(2, "Level 2: Choice '2'"),
-                  _buildTreeLevelChip(3, "Level 3: Choice '3'"),
+                  _buildAnimationModelChip(0, _isEnglish ? "1. 🕸️ Hasse Diagram (Lattice)" : "১. 🕸️ হাসি ডায়াগ্রাম (Lattice)"),
+                  _buildAnimationModelChip(1, _isEnglish ? "2. 🌳 Binary Decision Tree" : "২. 🌳 বাইনারি ডিসিশন ট্রি"),
+                  _buildAnimationModelChip(2, _isEnglish ? "3. 🎚️ Bitmasking Slider" : "৩. 🎚️ বিটমাস্কিং স্লাইডার"),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
-            // Level Step Cards
-            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 0)
-              _buildVisualStepBox(
-                "Step 1: Root Node (Empty Subset [])",
-                "Start at idx = 0 with path = []. Two options ahead: Include 1 OR Exclude 1.",
-                Icons.account_tree,
-                AppTheme.accentNeonCyan,
-              ),
-            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 0) const SizedBox(height: 12),
+            // Render selected visual model
+            if (_animationModelIndex == 0) _buildHasseDiagramModel(),
+            if (_animationModelIndex == 1) _buildBinaryDecisionTreeModel(),
+            if (_animationModelIndex == 2) _buildBitmaskSliderModel(),
 
-            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 1)
-              _buildVisualStepBox(
-                "Step 2: Branch Level 1 (Element '1')",
-                "• Option A (Include 1): path becomes [1]\n• Option B (Exclude 1): path remains []",
-                Icons.alt_route,
-                AppTheme.accentAmber,
-              ),
-            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 1) const SizedBox(height: 12),
-
-            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 2)
-              _buildVisualStepBox(
-                "Step 3: Branch Level 2 (Element '2')",
-                "• From [1] -> Branch to [1, 2] and [1]\n• From []  -> Branch to [2] and []",
-                Icons.fork_right,
-                AppTheme.accentPurple,
-              ),
-            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 2) const SizedBox(height: 12),
-
-            if (_selectedTreeLevel == -1 || _selectedTreeLevel == 3)
-              _buildVisualStepBox(
-                "Step 4: Reach Leaf Nodes (Base Case Saved Subsets)",
-                "All 2³ = 8 leaf nodes are saved to result: [], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]!",
-                Icons.check_circle_outline,
-                AppTheme.accentGreen,
-              ),
             const SizedBox(height: 24),
           ],
         ),
@@ -584,10 +598,10 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
     );
   }
 
-  Widget _buildTreeLevelChip(int level, String label) {
-    final isSelected = _selectedTreeLevel == level;
+  Widget _buildAnimationModelChip(int index, String label) {
+    final isSelected = _animationModelIndex == index;
     return Padding(
-      padding: const EdgeInsets.only(right: 6),
+      padding: const EdgeInsets.only(right: 8),
       child: ChoiceChip(
         label: Text(label),
         selected: isSelected,
@@ -599,7 +613,401 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
           fontSize: 12,
         ),
         onSelected: (selected) {
-          if (selected) setState(() => _selectedTreeLevel = level);
+          if (selected) setState(() => _animationModelIndex = index);
+        },
+      ),
+    );
+  }
+
+  // MODEL 1: Hasse Diagram (Lattice Structure Pyramid)
+  Widget _buildHasseDiagramModel() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _isEnglish ? "Hasse Diagram (Lattice Pyramid)" : "হাসি ডায়াগ্রাম (ল্যাটিস পিরামিড)",
+                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              if (_selectedHasseNode != null)
+                TextButton(
+                  onPressed: () => setState(() {
+                    _selectedHasseNode = null;
+                    _highlightedHasseSubsets.clear();
+                  }),
+                  child: Text(_isEnglish ? "Reset Selection" : "রিসেট", style: const TextStyle(color: AppTheme.accentPink, fontSize: 12)),
+                ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _isEnglish
+                ? "Tap any node (e.g. {a, b}) to highlight all its valid subset descendants below!"
+                : "যেকোনো নোডে (যেমন {a, b}) ট্যাপ করলে তার অধীনে থাকা সমস্ত সাবসেট হাইলাইট হয়ে যাবে!",
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+          ),
+          const SizedBox(height: 20),
+
+          // Selected Node Status Banner
+          if (_selectedHasseNode != null)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: AppTheme.accentGreen.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppTheme.accentGreen),
+              ),
+              child: Text(
+                _isEnglish
+                    ? "Tapped Node [$_selectedHasseNode] ➔ Valid Subsets below: ${_highlightedHasseSubsets.join(', ')}"
+                    : "সিলেক্ট করা নোড [$_selectedHasseNode] ➔ এর অধীনস্থ সাবসেটসমূহ: ${_highlightedHasseSubsets.join(', ')}",
+                style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+            ),
+
+          // Level 3 (Top Level)
+          Center(child: _buildHasseNodeCard("{a, b, c}", Level: 3)),
+          const SizedBox(height: 12),
+          const Center(child: Icon(Icons.keyboard_double_arrow_down, color: AppTheme.textMuted, size: 18)),
+          const SizedBox(height: 12),
+
+          // Level 2
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildHasseNodeCard("{a, b}", Level: 2),
+              _buildHasseNodeCard("{a, c}", Level: 2),
+              _buildHasseNodeCard("{b, c}", Level: 2),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Center(child: Icon(Icons.keyboard_double_arrow_down, color: AppTheme.textMuted, size: 18)),
+          const SizedBox(height: 12),
+
+          // Level 1
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildHasseNodeCard("{a}", Level: 1),
+              _buildHasseNodeCard("{b}", Level: 1),
+              _buildHasseNodeCard("{c}", Level: 1),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Center(child: Icon(Icons.keyboard_double_arrow_down, color: AppTheme.textMuted, size: 18)),
+          const SizedBox(height: 12),
+
+          // Level 0 (Bottom)
+          Center(child: _buildHasseNodeCard("∅", Level: 0)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHasseNodeCard(String nodeLabel, {required int Level}) {
+    final isSelected = _selectedHasseNode == nodeLabel;
+    final isDescendant = _highlightedHasseSubsets.contains(nodeLabel);
+
+    Color bgColor = AppTheme.surfaceDark;
+    Color borderColor = const Color(0xFF1E293B);
+    Color textColor = Colors.white;
+
+    if (isSelected) {
+      bgColor = AppTheme.accentNeonCyan.withOpacity(0.3);
+      borderColor = AppTheme.accentNeonCyan;
+      textColor = AppTheme.accentNeonCyan;
+    } else if (isDescendant) {
+      bgColor = AppTheme.accentGreen.withOpacity(0.2);
+      borderColor = AppTheme.accentGreen;
+      textColor = AppTheme.accentGreen;
+    }
+
+    return InkWell(
+      onTap: () => _selectHasseNode(nodeLabel),
+      borderRadius: BorderRadius.circular(10),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: borderColor, width: (isSelected || isDescendant) ? 2 : 1),
+          boxShadow: isSelected
+              ? [BoxShadow(color: AppTheme.accentNeonCyan.withOpacity(0.4), blurRadius: 10)]
+              : isDescendant
+                  ? [BoxShadow(color: AppTheme.accentGreen.withOpacity(0.3), blurRadius: 8)]
+                  : null,
+        ),
+        child: Text(
+          nodeLabel,
+          style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 13),
+        ),
+      ),
+    );
+  }
+
+  // MODEL 2: Binary Decision Tree Model
+  Widget _buildBinaryDecisionTreeModel() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _isEnglish ? "Binary Decision Tree (Recursion Path)" : "বাইনারি ডিসিশন ট্রি (রিকার্সন পথ)",
+            style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _isEnglish
+                ? "Every element has 2 branches: Include (Right) vs Exclude (Left). Tap any leaf node to trace its full path!"
+                : "প্রতিটি উপাদানের জন্য ২টি পথ: Include (ডানদিকে) এবং Exclude (বামদিকে)। ট্যাপ করে পুরো রিকার্সন পাথ দেখুন!",
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+          ),
+          const SizedBox(height: 16),
+
+          // Tree Level Filter Chips
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _buildTreeLevelChip(-1, _isEnglish ? "All Tree Levels" : "সব লেভেল"),
+                _buildTreeLevelChip(0, "Level 0: Root []"),
+                _buildTreeLevelChip(1, "Level 1: Choice 'a'"),
+                _buildTreeLevelChip(2, "Level 2: Choice 'b'"),
+                _buildTreeLevelChip(3, "Level 3: Choice 'c'"),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          if (_selectedTreeLevel == -1 || _selectedTreeLevel == 0)
+            _buildVisualStepBox(
+              "Level 0: Root Node (Empty Subset [])",
+              "Start with path = []. Next element to evaluate: 'a'.",
+              Icons.account_tree,
+              AppTheme.accentNeonCyan,
+            ),
+          if (_selectedTreeLevel == -1 || _selectedTreeLevel == 0) const SizedBox(height: 10),
+
+          if (_selectedTreeLevel == -1 || _selectedTreeLevel == 1)
+            _buildVisualStepBox(
+              "Level 1: Decision on Element 'a'",
+              "• Include 'a' ➔ path = [a]\n• Exclude 'a' ➔ path = []",
+              Icons.alt_route,
+              AppTheme.accentAmber,
+            ),
+          if (_selectedTreeLevel == -1 || _selectedTreeLevel == 1) const SizedBox(height: 10),
+
+          if (_selectedTreeLevel == -1 || _selectedTreeLevel == 2)
+            _buildVisualStepBox(
+              "Level 2: Decision on Element 'b'",
+              "• From [a] ➔ Branch to [a, b] and [a]\n• From [] ➔ Branch to [b] and []",
+              Icons.fork_right,
+              AppTheme.accentPurple,
+            ),
+          if (_selectedTreeLevel == -1 || _selectedTreeLevel == 2) const SizedBox(height: 10),
+
+          if (_selectedTreeLevel == -1 || _selectedTreeLevel == 3)
+            _buildVisualStepBox(
+              "Level 3: Decision on Element 'c' (8 Leaf Subsets)",
+              "Leaf Nodes: [a,b,c], [a,b], [a,c], [a], [b,c], [b], [c], []",
+              Icons.check_circle_outline,
+              AppTheme.accentGreen,
+            ),
+        ],
+      ),
+    );
+  }
+
+  // MODEL 3: Binary Bitmasking Slider Model
+  Widget _buildBitmaskSliderModel() {
+    int val = _bitmaskSliderVal.round();
+    String binary = val.toRadixString(2).padLeft(3, '0');
+
+    bool hasA = (val & 4) != 0; // Bit 2 (100)
+    bool hasB = (val & 2) != 0; // Bit 1 (010)
+    bool hasC = (val & 1) != 0; // Bit 0 (001)
+
+    List<String> activeElements = [];
+    if (hasA) activeElements.add("a");
+    if (hasB) activeElements.add("b");
+    if (hasC) activeElements.add("c");
+
+    String subsetText = activeElements.isEmpty ? "∅ (Empty set)" : "{${activeElements.join(', ')}}";
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _isEnglish ? "Binary Bitmasking Slider (000 to 111)" : "বাইনারি বিটমাস্কিং স্লাইডার (000 থেকে 111)",
+            style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            _isEnglish
+                ? "Every subset corresponds to a 3-bit binary integer from 0 (000) to 7 (111). Drag the slider to watch bits toggle!"
+                : "পাওয়ার সেটের প্রতিটি সাবসেট ০ (000) থেকে ৭ (111) পর্যন্ত বাইনারি সংখ্যার সমতুল্য। স্লাইডার টেনে বিট টগল দেখুন!",
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+          ),
+          const SizedBox(height: 16),
+
+          // Interactive Bitmask Cards (a, b, c)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildBitBox("a", "Bit 2 (4's place)", hasA),
+              _buildBitBox("b", "Bit 1 (2's place)", hasB),
+              _buildBitBox("c", "Bit 0 (1's place)", hasC),
+            ],
+          ),
+          const SizedBox(height: 20),
+
+          // Live Output Status Box
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceDark,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppTheme.accentGreen),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Decimal Value: [$val]", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13)),
+                    Text("Binary Bitmask: [$binary₂]", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "Active Subset: $subsetText",
+                  style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Slider
+          Text(
+            _isEnglish ? "Drag Slider (0 to 7):" : "স্লাইডার টানুন (০ থেকে ৭):",
+            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+          Slider(
+            value: _bitmaskSliderVal,
+            min: 0,
+            max: 7,
+            divisions: 7,
+            activeColor: AppTheme.accentNeonCyan,
+            inactiveColor: AppTheme.surfaceDark,
+            label: "$val ($binary)",
+            onChanged: (newVal) {
+              setState(() => _bitmaskSliderVal = newVal);
+            },
+          ),
+          const SizedBox(height: 10),
+
+          // Preset Quick Buttons
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                const Text("Presets: ", style: TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+                _buildBitmaskPresetChip("000 (∅)", 0),
+                _buildBitmaskPresetChip("100 ({a})", 4),
+                _buildBitmaskPresetChip("101 ({a, c})", 5),
+                _buildBitmaskPresetChip("111 ({a, b, c})", 7),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBitBox(String char, String bitLabel, bool isOn) {
+    return Column(
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          width: 60,
+          height: 65,
+          decoration: BoxDecoration(
+            color: isOn ? AppTheme.accentGreen.withOpacity(0.25) : AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: isOn ? AppTheme.accentGreen : const Color(0xFF1E293B), width: isOn ? 2 : 1),
+            boxShadow: isOn ? [BoxShadow(color: AppTheme.accentGreen.withOpacity(0.4), blurRadius: 10)] : null,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                char,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: isOn ? Colors.white : AppTheme.textMuted,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                decoration: BoxDecoration(
+                  color: isOn ? AppTheme.accentGreen : Colors.transparent,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  isOn ? "1 [ON]" : "0 [OFF]",
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    color: isOn ? AppTheme.primaryDark : AppTheme.textMuted,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(bitLabel, style: const TextStyle(color: AppTheme.textMuted, fontSize: 9)),
+      ],
+    );
+  }
+
+  Widget _buildBitmaskPresetChip(String label, double val) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 6),
+      child: ActionChip(
+        backgroundColor: const Color(0xFF090D16),
+        label: Text(label, style: const TextStyle(color: AppTheme.accentNeonCyan, fontSize: 11)),
+        onPressed: () {
+          setState(() => _bitmaskSliderVal = val);
         },
       ),
     );
