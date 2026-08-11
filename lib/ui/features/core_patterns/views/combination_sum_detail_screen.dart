@@ -630,7 +630,7 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
     );
   }
 
-  // MODEL 1: Recursion Tree (Color Coded Decision Branches)
+  // MODEL 1: Recursion Tree (Color Coded Visual Tree Graph Diagram)
   Widget _buildRecursionTreeModel() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -642,15 +642,25 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            _isEnglish ? "1. Recursion Tree with Color-Coded Branches" : "১. কালার কোডেড রিকার্সন চয়েস ট্রি",
-            style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _isEnglish ? "1. Recursion Tree Graph Diagram" : "১. রিকার্সন চয়েস ট্রি গ্রাফ ডায়াগ্রাম",
+                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              if (_selectedTreeNodePath != null)
+                TextButton(
+                  onPressed: () => setState(() => _selectedTreeNodePath = null),
+                  child: Text(_isEnglish ? "Reset Selection" : "রিসেট", style: const TextStyle(color: AppTheme.accentPink, fontSize: 12)),
+                ),
+            ],
           ),
           const SizedBox(height: 6),
           Text(
             _isEnglish
-                ? "Understand how decision branches expand and backtrack based on color-coded states."
-                : "কালার কোডের ওপর ভিত্তি করে ব্রাঞ্চ কীভাবে ছড়ায় এবং ব্যাকট্র্যাক করে তা পর্যবেক্ষণ করুন।",
+                ? "Interactive Tree Diagram for candidates = [2, 3, 6, 7], target = 7. Tap any node to highlight!"
+                : "ক্যান্ডিডেট = [2, 3, 6, 7], টার্গেট = 7 এর রিয়েল ট্রি গ্রাফ। যেকোনো নোডে ট্যাপ করে স্টেট পরীক্ষা করুন!",
             style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
           ),
           const SizedBox(height: 14),
@@ -660,37 +670,144 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildLegendChip("🟡 Exploring (< Target)", AppTheme.accentAmber),
-                _buildLegendChip("🔴 Exceeded (> Target)", AppTheme.accentPink),
-                _buildLegendChip("🟢 Success (== Target)", AppTheme.accentGreen),
+                _buildLegendChip("🟡 Exploring (< 7)", AppTheme.accentAmber),
+                _buildLegendChip("🔴 Exceeded (> 7)", AppTheme.accentPink),
+                _buildLegendChip("🟢 Success (== 7)", AppTheme.accentGreen),
               ],
             ),
           ),
           const SizedBox(height: 16),
 
-          // Root Node
-          _buildTreeNodeBox("Root Node: ∅ (Sum = 0)", "Start empty path = []. Next candidate to evaluate: 2.", Icons.account_tree, AppTheme.accentNeonCyan),
-          const SizedBox(height: 10),
+          // Selected Node Status Banner
+          if (_selectedTreeNodePath != null) ...[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: AppTheme.accentPurple.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppTheme.accentNeonCyan),
+              ),
+              child: Text(
+                _isEnglish
+                    ? "Selected Tree Node: [$_selectedTreeNodePath]"
+                    : "সিলেক্ট করা ট্রি নোড: [$_selectedTreeNodePath]",
+                style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+            ),
+          ],
 
-          // Branch 1 (Yellow Exploring)
-          _buildTreeNodeBox("Branch [2]: Push 2 ➔ Sum = 2 (< 7)", "🟡 Exploring: Sum 2 is valid. Option to reuse '2' again.", Icons.alt_route, AppTheme.accentAmber),
-          const SizedBox(height: 10),
+          // Visual Tree Diagram Canvas (Tree Graph with connecting branch lines)
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Level 0: Root
+                _buildVisualTreeNode("Root: ∅", "sum=0", AppTheme.accentNeonCyan, level: 0, path: "∅"),
 
-          // Branch 2 (Yellow Exploring)
-          _buildTreeNodeBox("Branch [2, 2]: Push 2 ➔ Sum = 4 (< 7)", "🟡 Exploring: Sum 4 is valid. Option to reuse '2' again.", Icons.alt_route, AppTheme.accentAmber),
-          const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
+                ),
 
-          // Branch 3 (Red Exceeded & Backtrack)
-          _buildTreeNodeBox("Branch [2, 2, 2, 2]: Push 2 ➔ Sum = 8 (> 7)", "🔴 Exceeded & Backtrack: Sum 8 > 7! Prune branch and pop last 2.", Icons.error_outline, AppTheme.accentPink),
-          const SizedBox(height: 10),
+                // Level 1: Choice [2] and Choice [7]
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildVisualTreeNode("├── Branch [2]", "sum=2", AppTheme.accentAmber, level: 1, path: "2"),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 45),
+                          child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
+                        ),
+                        // Level 2 under [2]
+                        _buildVisualTreeNode("│   ├── Branch [2, 2]", "sum=4", AppTheme.accentAmber, level: 2, path: "2, 2"),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 70),
+                          child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
+                        ),
+                        // Level 3 under [2, 2]
+                        _buildVisualTreeNode("│   │   ├── Branch [2, 2, 2]", "sum=6", AppTheme.accentAmber, level: 3, path: "2, 2, 2"),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 95),
+                          child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
+                        ),
+                        // Level 4 under [2, 2, 2] -> Exceeded (Red)
+                        _buildVisualTreeNode("│   │   │   └── Leaf [2, 2, 2, 2]", "sum=8 🔴 (> 7)", AppTheme.accentPink, level: 4, path: "2, 2, 2, 2"),
+                        const SizedBox(height: 8),
 
-          // Branch 4 (Green Target Met)
-          _buildTreeNodeBox("Branch [2, 2, 3]: Push 3 ➔ Sum = 7 (== 7)", "🟢 Target Met 🎉: Sum = 7! Valid combination [2, 2, 3] saved to results list.", Icons.check_circle_outline, AppTheme.accentGreen),
-          const SizedBox(height: 10),
+                        // Level 3 under [2, 2] -> Success (Green)
+                        _buildVisualTreeNode("│   │   └── Leaf [2, 2, 3]", "sum=7 🟢 (== 7)", AppTheme.accentGreen, level: 3, path: "2, 2, 3"),
+                      ],
+                    ),
+                    const SizedBox(width: 24),
 
-          // Branch 5 (Green Target Met)
-          _buildTreeNodeBox("Branch [7]: Direct Push 7 ➔ Sum = 7 (== 7)", "🟢 Target Met 🎉: Sum = 7! Second unique combination [7] saved.", Icons.stars, AppTheme.accentGreen),
+                    // Choice [7] -> Success (Green)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildVisualTreeNode("└── Leaf [7]", "sum=7 🟢 (== 7)", AppTheme.accentGreen, level: 1, path: "7"),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildVisualTreeNode(String label, String sumText, Color color, {required int level, required String path}) {
+    final isSelected = _selectedTreeNodePath == path;
+
+    return InkWell(
+      onTap: () => setState(() => _selectedTreeNodePath = path),
+      borderRadius: BorderRadius.circular(10),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 3),
+        decoration: BoxDecoration(
+          color: isSelected ? color.withOpacity(0.35) : AppTheme.surfaceDark,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: isSelected ? Colors.white : color, width: isSelected ? 2 : 1.2),
+          boxShadow: isSelected
+              ? [BoxShadow(color: color.withOpacity(0.5), blurRadius: 10)]
+              : [BoxShadow(color: color.withOpacity(0.15), blurRadius: 4)],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'monospace',
+                fontSize: 12,
+                color: isSelected ? Colors.white : color,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: color),
+              ),
+              child: Text(
+                sumText,
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: isSelected ? Colors.white : color),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
