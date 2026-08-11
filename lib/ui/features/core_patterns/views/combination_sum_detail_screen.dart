@@ -725,64 +725,96 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
             ),
           ],
 
-          // Visual Tree Diagram Canvas (Tree Graph with connecting branch lines)
+          // Top-to-Bottom Visual Tree Diagram Canvas
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Level 0: Root
-                _buildVisualTreeNode("Root: ∅", "sum=0", AppTheme.accentNeonCyan, level: 0, path: "∅"),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xFF060911),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFF1E293B)),
+              ),
+              child: Column(
+                children: [
+                  // LEVEL 0: ROOT
+                  _buildTopToBottomNodeCard("Root: ∅", "sum = 0", AppTheme.accentNeonCyan, "∅"),
+                  const SizedBox(height: 4),
+                  _buildVerticalLine(),
 
-                const Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
-                ),
+                  // LEVEL 1 BRANCHES
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Branch 1: [2]
+                      Column(
+                        children: [
+                          _buildTopToBottomNodeCard("[ 2 ]", "sum = 2 🟡", AppTheme.accentAmber, "2"),
+                          const SizedBox(height: 4),
+                          _buildVerticalLine(),
 
-                // Level 1: Choice [2] and Choice [7]
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildVisualTreeNode("├── Branch [2]", "sum=2", AppTheme.accentAmber, level: 1, path: "2"),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 45),
-                          child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
-                        ),
-                        // Level 2 under [2]
-                        _buildVisualTreeNode("│   ├── Branch [2, 2]", "sum=4", AppTheme.accentAmber, level: 2, path: "2, 2"),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 70),
-                          child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
-                        ),
-                        // Level 3 under [2, 2]
-                        _buildVisualTreeNode("│   │   ├── Branch [2, 2, 2]", "sum=6", AppTheme.accentAmber, level: 3, path: "2, 2, 2"),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 95),
-                          child: Text("│", style: TextStyle(color: AppTheme.textMuted, fontSize: 16, fontWeight: FontWeight.bold)),
-                        ),
-                        // Level 4 under [2, 2, 2] -> Exceeded (Red)
-                        _buildVisualTreeNode("│   │   │   └── Leaf [2, 2, 2, 2]", "sum=8 🔴 (> 7)", AppTheme.accentPink, level: 4, path: "2, 2, 2, 2"),
-                        const SizedBox(height: 8),
+                          // LEVEL 2 UNDER [2]
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Branch [2, 2]
+                              Column(
+                                children: [
+                                  _buildTopToBottomNodeCard("[ 2, 2 ]", "sum = 4 🟡", AppTheme.accentAmber, "2, 2"),
+                                  const SizedBox(height: 4),
+                                  _buildVerticalLine(),
 
-                        // Level 3 under [2, 2] -> Success (Green)
-                        _buildVisualTreeNode("│   │   └── Leaf [2, 2, 3]", "sum=7 🟢 (== 7)", AppTheme.accentGreen, level: 3, path: "2, 2, 3"),
-                      ],
-                    ),
-                    const SizedBox(width: 24),
+                                  // LEVEL 3 UNDER [2, 2]
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Branch [2, 2, 2]
+                                      Column(
+                                        children: [
+                                          _buildTopToBottomNodeCard("[ 2, 2, 2 ]", "sum = 6 🟡", AppTheme.accentAmber, "2, 2, 2"),
+                                          const SizedBox(height: 4),
+                                          _buildVerticalLine(),
 
-                    // Choice [7] -> Success (Green)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildVisualTreeNode("└── Leaf [7]", "sum=7 🟢 (== 7)", AppTheme.accentGreen, level: 1, path: "7"),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                                          // LEVEL 4 UNDER [2, 2, 2] -> EXCEEDED 8
+                                          _buildTopToBottomNodeCard("[ 2, 2, 2, 2 ]", "sum = 8 🔴", AppTheme.accentPink, "2, 2, 2, 2"),
+                                        ],
+                                      ),
+                                      const SizedBox(width: 16),
+
+                                      // Branch [2, 2, 3] -> SUCCESS 7 🎉
+                                      Column(
+                                        children: [
+                                          _buildTopToBottomNodeCard("[ 2, 2, 3 ]", "sum = 7 🟢", AppTheme.accentGreen, "2, 2, 3"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(width: 16),
+
+                              // Branch [2, 3]
+                              Column(
+                                children: [
+                                  _buildTopToBottomNodeCard("[ 2, 3 ]", "sum = 5 🟡", AppTheme.accentAmber, "2, 3"),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 30),
+
+                      // Branch 2: [7] -> SUCCESS 7 🎉
+                      Column(
+                        children: [
+                          _buildTopToBottomNodeCard("[ 7 ]", "sum = 7 🟢", AppTheme.accentGreen, "7"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -790,37 +822,35 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
     );
   }
 
-  Widget _buildVisualTreeNode(String label, String sumText, Color color, {required int level, required String path}) {
+  Widget _buildTopToBottomNodeCard(String title, String sumText, Color color, String path) {
     final isSelected = _selectedTreeNodePath == path;
 
     return InkWell(
       onTap: () => setState(() => _selectedTreeNodePath = path),
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(12),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        margin: const EdgeInsets.symmetric(vertical: 3),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected ? color.withOpacity(0.35) : AppTheme.surfaceDark,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: isSelected ? Colors.white : color, width: isSelected ? 2 : 1.2),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: isSelected ? Colors.white : color, width: isSelected ? 2.2 : 1.4),
           boxShadow: isSelected
-              ? [BoxShadow(color: color.withOpacity(0.5), blurRadius: 10)]
-              : [BoxShadow(color: color.withOpacity(0.15), blurRadius: 4)],
+              ? [BoxShadow(color: color.withOpacity(0.6), blurRadius: 12)]
+              : [BoxShadow(color: color.withOpacity(0.18), blurRadius: 6)],
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Column(
           children: [
             Text(
-              label,
+              title,
               style: TextStyle(
                 fontFamily: 'monospace',
-                fontSize: 12,
-                color: isSelected ? Colors.white : color,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
+                color: isSelected ? Colors.white : color,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(height: 3),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
@@ -830,12 +860,20 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
               ),
               child: Text(
                 sumText,
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: isSelected ? Colors.white : color),
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: isSelected ? Colors.white : color),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildVerticalLine() {
+    return Container(
+      width: 2,
+      height: 18,
+      color: AppTheme.accentPurple.withOpacity(0.6),
     );
   }
 
