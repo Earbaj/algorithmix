@@ -677,7 +677,33 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
               ],
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
+
+          // Mobile Swipe Hint Badge
+          if (Responsive.isMobile(context))
+            Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppTheme.accentPurple.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.swipe, color: AppTheme.accentNeonCyan, size: 14),
+                  const SizedBox(width: 6),
+                  Text(
+                    _isEnglish
+                        ? "Swipe horizontally to explore full tree graph structure 👈👉"
+                        : "মোবাইলে ডানে-বামে স্লাইড করে সম্পূর্ণ ট্রি স্ট্রাকচার দেখুন 👈👉",
+                    style: const TextStyle(color: AppTheme.accentNeonCyan, fontSize: 11, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 8),
 
           // Selected Node Status Banner
           if (_selectedTreeNodePath != null) ...[
