@@ -64,6 +64,7 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
 
   // Tab 2 Animation Model Selector (0: Decision Tree, 1: Target Balance Scale, 2: Candidate Multiplier)
   int _animationModelIndex = 0;
+  String? _selectedTreeNodePath;
 
   // Practice Mode State
   int _practiceIndex = 0;
