@@ -112,6 +112,9 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
     } else if (pattern.id == 20) {
       // Union Find dedicated screen
       Navigator.of(context).pushNamed(AppRoutes.unionFindDetail);
+    } else if (pattern.id == 21) {
+      // Graph Traversal dedicated screen
+      Navigator.of(context).pushNamed(AppRoutes.graphTraversalDetail);
     } else {
       PatternDetailModal.show(context, pattern);
     }
