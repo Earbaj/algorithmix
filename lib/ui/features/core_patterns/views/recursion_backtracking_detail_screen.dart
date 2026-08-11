@@ -295,11 +295,14 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
         p.title.contains("Letter Combinations") ||
         p.title.contains("Permutations") ||
         p.title.contains("Binary Tree Paths") ||
-        p.title.contains("Word Search");
+        p.title.contains("Word Search") ||
+        p.title.contains("Subsets II");
 
     return InkWell(
       onTap: () {
-        if (p.title.contains("Subsets")) {
+        if (p.title.contains("Subsets II")) {
+          Navigator.of(context).pushNamed(AppRoutes.subsetsIIDetail);
+        } else if (p.title.contains("Subsets")) {
           Navigator.of(context).pushNamed(AppRoutes.subsetsDetail);
         } else if (p.title.contains("Combination Sum")) {
           Navigator.of(context).pushNamed(AppRoutes.combinationSumDetail);
