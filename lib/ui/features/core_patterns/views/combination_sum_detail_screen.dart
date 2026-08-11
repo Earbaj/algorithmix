@@ -632,85 +632,128 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
     );
   }
 
-  // MODEL 1: Recursion Tree (Complete Step-by-Step Interactive Tree Graph Engine)
+  // MODEL 1: Step-by-Step Backtracking Flowcard Engine
   Widget _buildRecursionTreeModel() {
-    final treeStepData = [
+    final stepFlowData = [
       {
         "step": 1,
-        "activeNode": "∅",
-        "statusEn": "Step 1: Start at Root Node (Path = [], Sum = 0). Next: Evaluate candidate '2'.",
-        "statusBn": "ধাপ ১: রুট নোডে রিকার্সন শুরু (Path = [], Sum = 0)। ক্যান্ডিডেট '2' নির্বাচন করা হলো।",
-        "revealed": {"∅"},
+        "path": [],
+        "sum": 0,
+        "badge": "INIT",
+        "badgeColor": AppTheme.accentNeonCyan,
+        "titleEn": "Step 1: Start Recursion at Root Node",
+        "titleBn": "ধাপ ১: রুট নোডে রিকার্সন শুরু",
+        "descEn": "Path is empty []. Target is 7. First candidate to evaluate is 2.",
+        "descBn": "Path এখন ফাঁকা []। টার্গেট 7। প্রথম টেস্ট করা ক্যান্ডিডেট 2।",
       },
       {
         "step": 2,
-        "activeNode": "2",
-        "statusEn": "Step 2: Push '2' ➔ Path = [2], Sum = 2 (< 7 🟡 Exploring). Next: Reuse '2' again.",
-        "statusBn": "ধাপ ২: '2' গ্রহণ ➔ Path = [2], Sum = 2 (< 7 🟡 Exploring)। পরবর্তী: পুনরায় '2' ব্যবহার।",
-        "revealed": {"∅", "2"},
+        "path": [2],
+        "sum": 2,
+        "badge": "➕ REUSE (2)",
+        "badgeColor": AppTheme.accentAmber,
+        "titleEn": "Step 2: Push candidate '2' into path",
+        "titleBn": "ধাপ ২: ক্যান্ডিডেট '2' পাঠে যোগ করা হলো",
+        "descEn": "Path = [2], Sum = 2 (< 7 🟡 Valid). Since elements can be reused, test '2' again.",
+        "descBn": "Path = [2], Sum = 2 (< 7 🟡 ভ্যালিড)। উপাদান পুনর্নবীকরণযোগ্য হওয়ায় আবারও '2' চেষ্টা করো।",
       },
       {
         "step": 3,
-        "activeNode": "2, 2",
-        "statusEn": "Step 3: Push '2' ➔ Path = [2, 2], Sum = 4 (< 7 🟡 Exploring). Next: Reuse '2' again.",
-        "statusBn": "ধাপ ৩: '2' গ্রহণ ➔ Path = [2, 2], Sum = 4 (< 7 🟡 Exploring)। পরবর্তী: পুনরায় '2' ব্যবহার।",
-        "revealed": {"∅", "2", "2, 2"},
+        "path": [2, 2],
+        "sum": 4,
+        "badge": "➕ REUSE (2)",
+        "badgeColor": AppTheme.accentAmber,
+        "titleEn": "Step 3: Push candidate '2' again",
+        "titleBn": "ধাপ ৩: আবারও ক্যান্ডিডেট '2' যোগ করা হলো",
+        "descEn": "Path = [2, 2], Sum = 4 (< 7 🟡 Valid). Continue reusing candidate '2'.",
+        "descBn": "Path = [2, 2], Sum = 4 (< 7 🟡 ভ্যালিড)। ক্যান্ডিডেট '2' যোগ করা চালিয়ে যাও।",
       },
       {
         "step": 4,
-        "activeNode": "2, 2, 2",
-        "statusEn": "Step 4: Push '2' ➔ Path = [2, 2, 2], Sum = 6 (< 7 🟡 Exploring). Next: Reuse '2' again.",
-        "statusBn": "ধাপ ৪: '2' গ্রহণ ➔ Path = [2, 2, 2], Sum = 6 (< 7 🟡 Exploring)। পরবর্তী: পুনরায় '2' ব্যবহার।",
-        "revealed": {"∅", "2", "2, 2", "2, 2, 2"},
+        "path": [2, 2, 2],
+        "sum": 6,
+        "badge": "➕ REUSE (2)",
+        "badgeColor": AppTheme.accentAmber,
+        "titleEn": "Step 4: Push candidate '2' third time",
+        "titleBn": "ধাপ ৪: তৃতীয়বার ক্যান্ডিডেট '2' যোগ করা হলো",
+        "descEn": "Path = [2, 2, 2], Sum = 6 (< 7 🟡 Valid). Continue reusing candidate '2'.",
+        "descBn": "Path = [2, 2, 2], Sum = 6 (< 7 🟡 ভ্যালিড)। আরও একটি '2' টেস্ট করো।",
       },
       {
         "step": 5,
-        "activeNode": "2, 2, 2, 2",
-        "statusEn": "Step 5: Push '2' ➔ Path = [2, 2, 2, 2], Sum = 8 (> 7 🔴 EXCEEDED!). Backtracking!",
-        "statusBn": "ধাপ ৫: '2' গ্রহণ ➔ Path = [2, 2, 2, 2], Sum = 8 (> 7 🔴 টার্গেট অতিক্রান্ত!)। ব্যাকট্র্যাক!",
-        "revealed": {"∅", "2", "2, 2", "2, 2, 2", "2, 2, 2, 2"},
+        "path": [2, 2, 2, 2],
+        "sum": 8,
+        "badge": "❌ EXCEEDED (> 7)",
+        "badgeColor": AppTheme.accentPink,
+        "titleEn": "Step 5: Push candidate '2' fourth time",
+        "titleBn": "ধাপ ৫: চতুর্থবার ক্যান্ডিডেট '2' যোগ করা হলো",
+        "descEn": "Path = [2, 2, 2, 2], Sum = 8 (> 7 🔴 EXCEEDED!). Pruning branch & Backtracking!",
+        "descBn": "Path = [2, 2, 2, 2], Sum = 8 (> 7 🔴 টার্গেট অতিক্রান্ত!)। ব্রাঞ্চ ছাঁটাই ও ব্যাকট্র্যাক!",
       },
       {
         "step": 6,
-        "activeNode": "2, 2, 2",
-        "statusEn": "Step 6: Backtrack ↩️ Pop last '2' ➔ Reverted to [2, 2, 2] (sum=6). Next: Try candidate '3'.",
-        "statusBn": "ধাপ ৬: ব্যাকট্র্যাক ↩️ শেষ '2' বাদ ➔ [2, 2, 2] এ ফেরত। পরবর্তী ক্যান্ডিডেট '3' পরীক্ষা।",
-        "revealed": {"∅", "2", "2, 2", "2, 2, 2", "2, 2, 2, 2"},
+        "path": [2, 2, 2],
+        "sum": 6,
+        "badge": "↩️ BACKTRACK (Pop 2)",
+        "badgeColor": AppTheme.accentAmber,
+        "titleEn": "Step 6: Backtrack (Pop last '2')",
+        "titleBn": "ধাপ ৬: ব্যাকট্র্যাক (শেষ '2' বাদ)",
+        "descEn": "Removed last 2. Path reverted to [2, 2, 2] (sum = 6). Next: Move to candidate '3'.",
+        "descBn": "শেষ ২ বাদ। Path পুনর্বহাল [2, 2, 2] (Sum = 6)। পরবর্তী ক্যান্ডিডেট '3' এ যাও।",
       },
       {
         "step": 7,
-        "activeNode": "2, 2, 3",
-        "statusEn": "Step 7: Push '3' ➔ Path = [2, 2, 3], Sum = 7 (== 7 🟢 TARGET MET 🎉!). Combination Saved!",
-        "statusBn": "ধাপ ৭: '3' যোগ ➔ Path = [2, 2, 3], Sum = 7 (== 7 🟢 টার্গেট অর্জিত 🎉!)। কম্বিনেশন সংরক্ষিত!",
-        "revealed": {"∅", "2", "2, 2", "2, 2, 2", "2, 2, 2, 2", "2, 2, 3"},
+        "path": [2, 2, 3],
+        "sum": 7,
+        "badge": "🎉 TARGET MET (7 == 7)",
+        "badgeColor": AppTheme.accentGreen,
+        "titleEn": "Step 7: Push candidate '3'",
+        "titleBn": "ধাপ ৭: ক্যান্ডিডেট '3' যোগ করা হলো",
+        "descEn": "Path = [2, 2, 3], Sum = 7 (== 7 🟢 TARGET MET!). Saved valid combination [2, 2, 3]!",
+        "descBn": "Path = [2, 2, 3], Sum = 7 (== 7 🟢 টার্গেট অর্জিত!)। কম্বিনেশন [2, 2, 3] সংরক্ষিত!",
       },
       {
         "step": 8,
-        "activeNode": "2, 3",
-        "statusEn": "Step 8: Backtrack ↩️ Back to Path = [2, 3], Sum = 5 (< 7 🟡 Exploring). Next: Try '3'.",
-        "statusBn": "ধাপ ৮: ব্যাকট্র্যাক ↩️ Path = [2, 3] এ ফেরত, Sum = 5 (< 7 🟡 Exploring)। পরবর্তী: '3' পরীক্ষা।",
-        "revealed": {"∅", "2", "2, 2", "2, 2, 2", "2, 2, 2, 2", "2, 2, 3", "2, 3"},
+        "path": [2, 3],
+        "sum": 5,
+        "badge": "↩️ BACKTRACK (Pop 3)",
+        "badgeColor": AppTheme.accentAmber,
+        "titleEn": "Step 8: Backtrack to Path = [2, 3]",
+        "titleBn": "ধাপ ৮: ব্যাকট্র্যাক করে Path = [2, 3] এ ফেরত",
+        "descEn": "Path = [2, 3], Sum = 5 (< 7 🟡 Valid). Explore next candidate options.",
+        "descBn": "Path = [2, 3], Sum = 5 (< 7 🟡 ভ্যালিড)। পরবর্তী ক্যান্ডিডেট অনুসন্ধান করো।",
       },
       {
         "step": 9,
-        "activeNode": "7",
-        "statusEn": "Step 9: Explore Root Branch '7' ➔ Path = [7], Sum = 7 (== 7 🟢 TARGET MET 🎉!). Saved [7].",
-        "statusBn": "ধাপ ৯: রুট ব্রাঞ্চ '7' পরীক্ষা ➔ Path = [7], Sum = 7 (== 7 🟢 টার্গেট অর্জিত 🎉!)। কম্বিনেশন সংরক্ষিত।",
-        "revealed": {"∅", "2", "2, 2", "2, 2, 2", "2, 2, 2, 2", "2, 2, 3", "2, 3", "7"},
+        "path": [7],
+        "sum": 7,
+        "badge": "🎉 TARGET MET (7 == 7)",
+        "badgeColor": AppTheme.accentGreen,
+        "titleEn": "Step 9: Direct Push candidate '7'",
+        "titleBn": "ধাপ ৯: সরাসরি ক্যান্ডিডেট '7' যোগ করা হলো",
+        "descEn": "Path = [7], Sum = 7 (== 7 🟢 TARGET MET!). Saved second combination [7]!",
+        "descBn": "Path = [7], Sum = 7 (== 7 🟢 টার্গেট অর্জিত!)। দ্বিতীয় কম্বিনেশন [7] সংরক্ষিত!",
       },
       {
         "step": 10,
-        "activeNode": "FINISHED",
-        "statusEn": "🎉 Step 10: Complete Subtree Traversal Finished! Total 2 Unique Combinations: [[2, 2, 3], [7]]",
-        "statusBn": "🎉 ধাপ ১০: ব্যাকট্র্যাকিং সম্পূর্ণ! মোট ২টি অনন্য কম্বিনেশন অর্জিত: [[2, 2, 3], [7]]",
-        "revealed": {"∅", "2", "2, 2", "2, 2, 2", "2, 2, 2, 2", "2, 2, 3", "2, 3", "7"},
+        "path": [],
+        "sum": 0,
+        "badge": "🏆 FINISHED",
+        "badgeColor": AppTheme.accentGreen,
+        "titleEn": "Step 10: Backtracking Traversal Complete!",
+        "titleBn": "ধাপ ১০: ব্যাকট্র্যাকিং সম্পুর্ণ সম্পন্ন!",
+        "descEn": "Found total 2 unique combinations: [[2, 2, 3], [7]] for target = 7.",
+        "descBn": "টার্গেট 7 এর জন্য মোট ২টি অনন্য কম্বিনেশন অর্জিত: [[2, 2, 3], [7]]।",
       },
     ];
 
-    final currentStep = treeStepData[_treeStepIndex.clamp(0, treeStepData.length - 1)];
-    final String activePathNode = currentStep["activeNode"] as String;
-    final Set<String> revealedNodes = currentStep["revealed"] as Set<String>;
-    final String statusMsg = _isEnglish ? (currentStep["statusEn"] as String) : (currentStep["statusBn"] as String);
+    final currentStep = stepFlowData[_treeStepIndex.clamp(0, stepFlowData.length - 1)];
+    final List<int> currentPath = (currentStep["path"] as List).cast<int>();
+    final int currentSum = currentStep["sum"] as int;
+    final String badgeText = currentStep["badge"] as String;
+    final Color badgeColor = currentStep["badgeColor"] as Color;
+    final String stepTitle = _isEnglish ? (currentStep["titleEn"] as String) : (currentStep["titleBn"] as String);
+    final String stepDesc = _isEnglish ? (currentStep["descEn"] as String) : (currentStep["descBn"] as String);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -726,11 +769,11 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _isEnglish ? "1. Complete Step-by-Step Tree Graph Engine" : "১. সম্পূর্ণ স্টেপ-বাই-স্টেপ ট্রি গ্রাফ ইঞ্জিন",
+                _isEnglish ? "1. Step-by-Step Backtracking Flowcard" : "১. স্টেপ-বাই-স্টেপ ব্যাকট্র্যাকিং গাইড",
                 style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
               ),
               Text(
-                "Step ${_treeStepIndex + 1} / ${treeStepData.length}",
+                "Step ${_treeStepIndex + 1} / ${stepFlowData.length}",
                 style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
               ),
             ],
@@ -738,131 +781,80 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
           const SizedBox(height: 6),
           Text(
             _isEnglish
-                ? "Watch how recursion expands step-by-step and backtracks when target is exceeded!"
-                : "ধাপে ধাপে কীভাবে রিকার্সন প্রসারিত হয় এবং টার্গেট ছাড়ালে ব্যাকট্র্যাক করে তা স্টেপার দিয়ে দেখুন!",
+                ? "Follow the algorithm step-by-step to understand how candidates are pushed, evaluated, and backtracked."
+                : "অ্যালগরিদম কীভাবে ক্যান্ডিডেট নির্বাচন করে, পরীক্ষা করে এবং ব্যাকট্র্যাক করে তা ধাপে ধাপে পর্যবেক্ষণ করুন।",
             style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
 
-          // Active Step Explanation Banner
+          // Active Step Card
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppTheme.accentPurple.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppTheme.accentNeonCyan),
+              color: AppTheme.surfaceDark,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: badgeColor, width: 2),
+              boxShadow: [BoxShadow(color: badgeColor.withOpacity(0.2), blurRadius: 10)],
             ),
-            child: Text(
-              statusMsg,
-              style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12, height: 1.3),
-            ),
-          ),
-          const SizedBox(height: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(stepTitle, style: TextStyle(color: badgeColor, fontWeight: FontWeight.bold, fontSize: 14)),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: badgeColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: badgeColor),
+                      ),
+                      child: Text(badgeText, style: TextStyle(color: badgeColor, fontWeight: FontWeight.bold, fontSize: 11)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
 
-          // Top-to-Bottom Complete Visual Tree Canvas
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-              decoration: BoxDecoration(
-                color: const Color(0xFF060911),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFF1E293B)),
-              ),
-              child: Column(
-                children: [
-                  // LEVEL 0: ROOT
-                  if (revealedNodes.contains("∅"))
-                    _buildStepTreeNodeCard("Root: ∅", "sum = 0", AppTheme.accentNeonCyan, "∅", activePathNode),
-                  const SizedBox(height: 4),
-                  if (revealedNodes.contains("2") || revealedNodes.contains("7")) _buildVerticalLine(),
-
-                  // LEVEL 1 BRANCHES
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Branch 1: [2]
-                      if (revealedNodes.contains("2"))
-                        Column(
-                          children: [
-                            _buildStepTreeNodeCard("[ 2 ]", "sum = 2 🟡", AppTheme.accentAmber, "2", activePathNode),
-                            const SizedBox(height: 4),
-                            if (revealedNodes.contains("2, 2") || revealedNodes.contains("2, 3")) _buildVerticalLine(),
-
-                            // LEVEL 2 UNDER [2]
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Branch [2, 2]
-                                if (revealedNodes.contains("2, 2"))
-                                  Column(
-                                    children: [
-                                      _buildStepTreeNodeCard("[ 2, 2 ]", "sum = 4 🟡", AppTheme.accentAmber, "2, 2", activePathNode),
-                                      const SizedBox(height: 4),
-                                      if (revealedNodes.contains("2, 2, 2") || revealedNodes.contains("2, 2, 3")) _buildVerticalLine(),
-
-                                      // LEVEL 3 UNDER [2, 2]
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          // Branch [2, 2, 2]
-                                          if (revealedNodes.contains("2, 2, 2"))
-                                            Column(
-                                              children: [
-                                                _buildStepTreeNodeCard("[ 2, 2, 2 ]", "sum = 6 🟡", AppTheme.accentAmber, "2, 2, 2", activePathNode),
-                                                const SizedBox(height: 4),
-                                                if (revealedNodes.contains("2, 2, 2, 2")) _buildVerticalLine(),
-
-                                                // LEVEL 4 UNDER [2, 2, 2] -> EXCEEDED 8
-                                                if (revealedNodes.contains("2, 2, 2, 2"))
-                                                  _buildStepTreeNodeCard("[ 2, 2, 2, 2 ]", "sum = 8 🔴", AppTheme.accentPink, "2, 2, 2, 2", activePathNode),
-                                              ],
-                                            ),
-                                          const SizedBox(width: 16),
-
-                                          // Branch [2, 2, 3] -> SUCCESS 7 🎉
-                                          if (revealedNodes.contains("2, 2, 3"))
-                                            Column(
-                                              children: [
-                                                _buildStepTreeNodeCard("[ 2, 2, 3 ]", "sum = 7 🟢", AppTheme.accentGreen, "2, 2, 3", activePathNode),
-                                              ],
-                                            ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                const SizedBox(width: 16),
-
-                                // Branch [2, 3]
-                                if (revealedNodes.contains("2, 3"))
-                                  Column(
-                                    children: [
-                                      _buildStepTreeNodeCard("[ 2, 3 ]", "sum = 5 🟡", AppTheme.accentAmber, "2, 3", activePathNode),
-                                    ],
-                                  ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      const SizedBox(width: 30),
-
-                      // Branch 2: [7] -> SUCCESS 7 🎉
-                      if (revealedNodes.contains("7"))
-                        Column(
-                          children: [
-                            _buildStepTreeNodeCard("[ 7 ]", "sum = 7 🟢", AppTheme.accentGreen, "7", activePathNode),
-                          ],
-                        ),
-                    ],
+                // Path & Sum Meter
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Active Path (path):", style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+                    Text("Sum = $currentSum / 7", style: TextStyle(color: badgeColor, fontWeight: FontWeight.bold, fontSize: 13)),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF090D16),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: badgeColor.withOpacity(0.5)),
                   ),
-                ],
-              ),
+                  child: Text(
+                    "[ ${currentPath.join(' , ')} ]",
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: badgeColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                Text(stepDesc, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.4)),
+              ],
             ),
           ),
           const SizedBox(height: 16),
 
-          // Interactive Tree Stepper Control Bar
+          // Stepper Control Bar
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
@@ -880,17 +872,41 @@ class _CombinationSumDetailScreenState extends State<CombinationSumDetailScreen>
                       onPressed: _treeStepIndex > 0 ? () => setState(() => _treeStepIndex--) : null,
                     ),
                     IconButton(
+                      icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow, color: AppTheme.accentNeonCyan, size: 22),
+                      onPressed: () {
+                        setState(() => _isPlaying = !_isPlaying);
+                        if (_isPlaying) {
+                          _timer = Timer.periodic(const Duration(milliseconds: 1500), (t) {
+                            if (_treeStepIndex < stepFlowData.length - 1) {
+                              setState(() => _treeStepIndex++);
+                            } else {
+                              t.cancel();
+                              setState(() => _isPlaying = false);
+                            }
+                          });
+                        } else {
+                          _timer?.cancel();
+                        }
+                      },
+                    ),
+                    IconButton(
                       icon: const Icon(Icons.skip_next, color: Colors.white, size: 20),
-                      onPressed: _treeStepIndex < treeStepData.length - 1 ? () => setState(() => _treeStepIndex++) : null,
+                      onPressed: _treeStepIndex < stepFlowData.length - 1 ? () => setState(() => _treeStepIndex++) : null,
                     ),
                     IconButton(
                       icon: const Icon(Icons.refresh, color: AppTheme.accentNeonCyan, size: 20),
-                      onPressed: () => setState(() => _treeStepIndex = 0),
+                      onPressed: () {
+                        _timer?.cancel();
+                        setState(() {
+                          _isPlaying = false;
+                          _treeStepIndex = 0;
+                        });
+                      },
                     ),
                   ],
                 ),
                 Text(
-                  "Tree Step ${_treeStepIndex + 1} / ${treeStepData.length}",
+                  "Step ${_treeStepIndex + 1} / ${stepFlowData.length}",
                   style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
                 ),
               ],
