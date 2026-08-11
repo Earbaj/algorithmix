@@ -296,7 +296,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
         p.title.contains("Permutations") ||
         p.title.contains("Binary Tree Paths") ||
         p.title.contains("Word Search") ||
-        p.title.contains("Subsets II");
+        p.title.contains("Subsets II") ||
+        p.title.contains("Permutations II");
 
     return InkWell(
       onTap: () {
@@ -310,6 +311,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
           Navigator.of(context).pushNamed(AppRoutes.generateParenthesesDetail);
         } else if (p.title.contains("Letter Combinations")) {
           Navigator.of(context).pushNamed(AppRoutes.letterCombinationsDetail);
+        } else if (p.title.contains("Permutations II")) {
+          Navigator.of(context).pushNamed(AppRoutes.permutationsIIDetail);
         } else if (p.title.contains("Permutations")) {
           Navigator.of(context).pushNamed(AppRoutes.permutationsDetail);
         } else if (p.title.contains("Binary Tree Paths")) {
