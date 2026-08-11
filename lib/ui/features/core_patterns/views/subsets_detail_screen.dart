@@ -757,6 +757,27 @@ class _SubsetsDetailScreenState extends State<SubsetsDetailScreen>
     );
   }
 
+  Widget _buildTreeLevelChip(int level, String label) {
+    final isSelected = _selectedTreeLevel == level;
+    return Padding(
+      padding: const EdgeInsets.only(right: 6),
+      child: ChoiceChip(
+        label: Text(label),
+        selected: isSelected,
+        selectedColor: AppTheme.accentPurple,
+        backgroundColor: AppTheme.surfaceDark,
+        labelStyle: TextStyle(
+          color: isSelected ? Colors.white : AppTheme.textSecondary,
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          fontSize: 12,
+        ),
+        onSelected: (selected) {
+          if (selected) setState(() => _selectedTreeLevel = level);
+        },
+      ),
+    );
+  }
+
   // MODEL 2: Binary Decision Tree Model
   Widget _buildBinaryDecisionTreeModel() {
     return Container(
