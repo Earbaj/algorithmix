@@ -290,7 +290,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
         p.title.contains("Find All Anagrams") ||
         p.title.contains("Permutation in String") ||
         p.title.contains("Grumpy Bookstore Owner") ||
-        p.title.contains("Longest Substring Without Repeating");
+        p.title.contains("Longest Substring Without Repeating") ||
+        p.title.contains("Longest Repeating Character Replacement");
 
     return InkWell(
       onTap: () {
@@ -312,6 +313,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
           Navigator.of(context).pushNamed(AppRoutes.grumpyBookstoreOwnerDetail);
         } else if (p.title.contains("Longest Substring Without Repeating")) {
           Navigator.of(context).pushNamed(AppRoutes.longestSubstringWithoutRepeatingDetail);
+        } else if (p.title.contains("Longest Repeating Character Replacement")) {
+          Navigator.of(context).pushNamed(AppRoutes.longestRepeatingReplacementDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),

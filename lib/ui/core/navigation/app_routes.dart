@@ -53,6 +53,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/find_anagrams_detail
 import 'package:algorithmix/ui/features/core_patterns/views/permutation_in_string_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/grumpy_bookstore_owner_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/longest_substring_without_repeating_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/longest_repeating_replacement_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -144,6 +145,7 @@ class AppRoutes {
   static const String permutationInStringDetail = '/permutation-in-string-detail';
   static const String grumpyBookstoreOwnerDetail = '/grumpy-bookstore-owner-detail';
   static const String longestSubstringWithoutRepeatingDetail = '/longest-substring-without-repeating-detail';
+  static const String longestRepeatingReplacementDetail = '/longest-repeating-replacement-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -229,6 +231,7 @@ class AppRoutes {
       permutationInStringDetail: (context) => const PermutationInStringDetailScreen(),
       grumpyBookstoreOwnerDetail: (context) => const GrumpyBookstoreOwnerDetailScreen(),
       longestSubstringWithoutRepeatingDetail: (context) => const LongestSubstringWithoutRepeatingDetailScreen(),
+      longestRepeatingReplacementDetail: (context) => const LongestRepeatingReplacementDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
