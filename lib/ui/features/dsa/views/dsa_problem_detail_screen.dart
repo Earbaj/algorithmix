@@ -18,6 +18,18 @@ import 'visualizers/matrix_transpose_practice_quiz.dart';
 import 'visualizers/tensor_sum_animated_visualizer.dart';
 import 'visualizers/tensor_sum_execution_debugger.dart';
 import 'visualizers/tensor_sum_practice_quiz.dart';
+import 'visualizers/reverse_singly_linked_list_animated_visualizer.dart';
+import 'visualizers/reverse_singly_linked_list_execution_debugger.dart';
+import 'visualizers/reverse_singly_linked_list_practice_quiz.dart';
+import 'visualizers/find_middle_node_animated_visualizer.dart';
+import 'visualizers/find_middle_node_execution_debugger.dart';
+import 'visualizers/find_middle_node_practice_quiz.dart';
+import 'visualizers/reverse_doubly_linked_list_animated_visualizer.dart';
+import 'visualizers/reverse_doubly_linked_list_execution_debugger.dart';
+import 'visualizers/reverse_doubly_linked_list_practice_quiz.dart';
+import 'visualizers/detect_cycle_linked_list_animated_visualizer.dart';
+import 'visualizers/detect_cycle_linked_list_execution_debugger.dart';
+import 'visualizers/detect_cycle_linked_list_practice_quiz.dart';
 
 class DsaProblemDetailScreen extends StatefulWidget {
   final DsaProblem problem;
@@ -308,6 +320,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "ll-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseSinglyLinkedListAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: FindMiddleNodeAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseDoublyLinkedListAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: DetectCycleLinkedListAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -439,6 +483,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "ll-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseSinglyLinkedListExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: FindMiddleNodeExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseDoublyLinkedListExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: DetectCycleLinkedListExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -525,6 +601,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         padding: EdgeInsets.all(hPadding),
         child: SingleChildScrollView(
           child: TensorSumPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseSinglyLinkedListPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: FindMiddleNodePracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseDoublyLinkedListPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "ll-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: DetectCycleLinkedListPracticeQuiz(isEnglish: _isEnglish),
         ),
       );
     }

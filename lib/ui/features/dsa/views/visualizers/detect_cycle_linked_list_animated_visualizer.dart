@@ -1,0 +1,351 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:algorithmix/ui/core/theme/app_theme.dart';
+
+class DetectCycleLinkedListAnimatedVisualizer extends StatefulWidget {
+  final bool isEnglish;
+
+  const DetectCycleLinkedListAnimatedVisualizer({
+    super.key,
+    required this.isEnglish,
+  });
+
+  @override
+  State<DetectCycleLinkedListAnimatedVisualizer> createState() =>
+      _DetectCycleLinkedListAnimatedVisualizerState();
+}
+
+class LLStepData {
+  final int slowVal;
+  final int fastVal;
+  final bool isCycleDetected;
+  final String titleEn;
+  final String titleBn;
+  final String explanationEn;
+  final String explanationBn;
+
+  const LLStepData({
+    required this.slowVal,
+    required this.fastVal,
+    required this.isCycleDetected,
+    required this.titleEn,
+    required this.titleBn,
+    required this.explanationEn,
+    required this.explanationBn,
+  });
+}
+
+class _DetectCycleLinkedListAnimatedVisualizerState
+    extends State<DetectCycleLinkedListAnimatedVisualizer> {
+  final List<int> _nodes = const [1, 2, 3, 4]; // 4 points back to 2
+
+  int _currentStepIndex = 0;
+  bool _isPlaying = false;
+  Timer? _timer;
+
+  late final List<LLStepData> _steps;
+
+  @override
+  void initState() {
+    super.initState();
+    _steps = const [
+      LLStepData(
+        slowVal: 1,
+        fastVal: 1,
+        isCycleDetected: false,
+        titleEn: "1. Initialization",
+        titleBn: "১. সূচনা (Initialization)",
+        explanationEn: "Linked List contains a cycle: Node 4 -> Node 2. Initialize slow = head (1), fast = head (1).",
+        explanationBn: "লিঙ্কড লিস্টে সাইকেল বিদ্যমান: Node 4 -> Node 2। slow = Node 1, fast = Node 1 সূচনা করি।",
+      ),
+      LLStepData(
+        slowVal: 2,
+        fastVal: 3,
+        isCycleDetected: false,
+        titleEn: "2. Step 1: slow +1, fast +2",
+        titleBn: "২. ধাপ ১: slow ১ ধাপ, fast ২ ধাপ সরান",
+        explanationEn: "slow moves to Node 2. fast moves to Node 3.",
+        explanationBn: "slow ১ ধাপ এগিয়ে Node 2 এ এবং fast ২ ধাপ এগিয়ে Node 3 এ যায়।",
+      ),
+      LLStepData(
+        slowVal: 3,
+        fastVal: 2,
+        isCycleDetected: false,
+        titleEn: "3. Step 2: fast wraps around cycle (Node 4 -> Node 2)",
+        titleBn: "৩. ধাপ ২: fast সাইকেল ঘুরে নোড 2 এ পৌঁছাল",
+        explanationEn: "slow moves to Node 3. fast moves from 3 to 4, then wraps around cycle to Node 2!",
+        explanationBn: "slow ১ ধাপ এগিয়ে Node 3 এ। fast ৪ পার হয়ে সাইকেলের মাধ্যমে ঘুরিয়া Node 2 এ পৌঁছাল!",
+      ),
+      LLStepData(
+        slowVal: 4,
+        fastVal: 4,
+        isCycleDetected: true,
+        titleEn: "4. Cycle Detected! (slow == fast) 🎉",
+        titleBn: "৪. সাইকেল শনাক্ত হয়েছে! (slow == fast) 🎉",
+        explanationEn: "slow moves to Node 4. fast moves 2 steps (Node 3 -> Node 4). Both pointers meet at Node 4! Return TRUE!",
+        explanationBn: "slow এবং fast উভয় পয়েন্টার Node 4 এ মিলিত হয়েছে (slow == fast)! সাইকেল শনাক্তকরণ সফল! রিটার্ন TRUE!",
+      ),
+    ];
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _togglePlay() {
+    setState(() => _isPlaying = !_isPlaying);
+    if (_isPlaying) {
+      _timer = Timer.periodic(const Duration(milliseconds: 1500), (timer) {
+        if (_currentStepIndex < _steps.length - 1) {
+          setState(() => _currentStepIndex++);
+        } else {
+          _timer?.cancel();
+          setState(() => _isPlaying = false);
+        }
+      });
+    } else {
+      _timer?.cancel();
+    }
+  }
+
+  void _nextStep() {
+    if (_currentStepIndex < _steps.length - 1) {
+      setState(() => _currentStepIndex++);
+    }
+  }
+
+  void _prevStep() {
+    if (_currentStepIndex > 0) {
+      setState(() => _currentStepIndex--);
+    }
+  }
+
+  void _reset() {
+    _timer?.cancel();
+    setState(() {
+      _isPlaying = false;
+      _currentStepIndex = 0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final step = _steps[_currentStepIndex];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppTheme.accentNeonCyan.withOpacity(0.12),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.5)),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.sync_problem, color: AppTheme.accentNeonCyan, size: 24),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.isEnglish ? step.titleEn : step.titleBn,
+                      style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      widget.isEnglish ? step.explanationEn : step.explanationBn,
+                      style: const TextStyle(color: Colors.white, fontSize: 12, height: 1.3),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Visual Canvas
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF1E293B)),
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildLegendItem("slow (+1)", AppTheme.accentGreen),
+                  const SizedBox(width: 20),
+                  _buildLegendItem("fast (+2)", Colors.purpleAccent),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(_nodes.length, (idx) {
+                    final val = _nodes[idx];
+                    final isSlow = step.slowVal == val;
+                    final isFast = step.fastVal == val;
+                    final isCollision = step.isCycleDetected && isSlow && isFast;
+
+                    return Row(
+                      children: [
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (isSlow) _buildBadge("slow", AppTheme.accentGreen),
+                                if (isFast) _buildBadge("fast", Colors.purpleAccent),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: isCollision
+                                    ? Colors.redAccent.withOpacity(0.35)
+                                    : (isSlow
+                                        ? AppTheme.accentGreen.withOpacity(0.2)
+                                        : (isFast ? Colors.purpleAccent.withOpacity(0.2) : const Color(0xFF1E293B))),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: isCollision
+                                      ? Colors.redAccent
+                                      : (isSlow ? AppTheme.accentGreen : (isFast ? Colors.purpleAccent : const Color(0xFF334155))),
+                                  width: isCollision ? 3 : (isSlow || isFast ? 2 : 1),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "$val",
+                                  style: TextStyle(
+                                    color: isCollision ? Colors.redAccent : Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text("Node $val", style: const TextStyle(color: AppTheme.textMuted, fontSize: 10)),
+                          ],
+                        ),
+                        if (idx < _nodes.length - 1)
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: Icon(Icons.arrow_forward, color: AppTheme.accentNeonCyan, size: 20),
+                          )
+                        else
+                          // Cycle Loop-back Arrow
+                          Container(
+                            padding: const EdgeInsets.only(left: 6),
+                            child: const Row(
+                              children: [
+                                Icon(Icons.replay_circle_filled_outlined, color: Colors.redAccent, size: 24),
+                                SizedBox(width: 4),
+                                Text("Cycle to Node 2", style: TextStyle(color: Colors.redAccent, fontSize: 10, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                      ],
+                    );
+                  }),
+                ),
+              ),
+              const SizedBox(height: 14),
+              Text(
+                widget.isEnglish ? "Floyd's Cycle Detection: Fast & Slow pointers meet inside loop" : "ফ্লয়েডের সাইকেল ডিটেকশন: লুপের ভেতরে ফাস্ট ও স্লো পয়েন্টারের মিলন",
+                style: const TextStyle(color: AppTheme.textMuted, fontSize: 11, fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+
+        _buildControls(),
+      ],
+    );
+  }
+
+  Widget _buildLegendItem(String label, Color color) {
+    return Row(
+      children: [
+        Container(width: 10, height: 10, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+        const SizedBox(width: 4),
+        Text(label, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
+
+  Widget _buildBadge(String label, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      margin: const EdgeInsets.symmetric(horizontal: 2),
+      decoration: BoxDecoration(color: color.withOpacity(0.2), borderRadius: BorderRadius.circular(6), border: Border.all(color: color)),
+      child: Text(label, style: TextStyle(color: color, fontSize: 9, fontWeight: FontWeight.bold)),
+    );
+  }
+
+  Widget _buildControls() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceDark,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFF334155)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.replay, color: Colors.white70),
+            onPressed: _reset,
+            tooltip: widget.isEnglish ? "Reset" : "রিসেট",
+          ),
+          IconButton(
+            icon: const Icon(Icons.skip_previous, color: Colors.white),
+            onPressed: _currentStepIndex > 0 ? _prevStep : null,
+            tooltip: widget.isEnglish ? "Previous Step" : "আগের স্টেপ",
+          ),
+          ElevatedButton.icon(
+            onPressed: _togglePlay,
+            icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
+            label: Text(_isPlaying
+                ? (widget.isEnglish ? "Pause" : "পজ করুন")
+                : (widget.isEnglish ? "Auto Play" : "অটো প্লে")),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.accentNeonCyan,
+              foregroundColor: AppTheme.primaryDark,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.skip_next, color: Colors.white),
+            onPressed: _currentStepIndex < _steps.length - 1 ? _nextStep : null,
+            tooltip: widget.isEnglish ? "Next Step" : "পরের স্টেপ",
+          ),
+          Text(
+            "${_currentStepIndex + 1}/${_steps.length}",
+            style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+}
