@@ -168,9 +168,9 @@ class _ArrayVisualizerWidgetState extends State<ArrayVisualizerWidget> {
           ),
           child: Row(
             children: [
-              _buildModeTab(0, "1D Array / List", Icons.view_column_outlined),
-              _buildModeTab(1, "2D Matrix / Grid", Icons.grid_on_outlined),
-              _buildModeTab(2, "3D Tensor / Cube", Icons.view_in_ar_outlined),
+              _buildModeTab(0, "1D Array", Icons.view_column_outlined),
+              _buildModeTab(1, "2D Matrix", Icons.grid_on_outlined),
+              _buildModeTab(2, "3D Tensor", Icons.view_in_ar_outlined),
             ],
           ),
         ),
@@ -264,7 +264,7 @@ class _ArrayVisualizerWidgetState extends State<ArrayVisualizerWidget> {
 
         // 1D Memory Canvas
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: const Color(0xFF090D16),
             borderRadius: BorderRadius.circular(18),
@@ -292,50 +292,135 @@ class _ArrayVisualizerWidgetState extends State<ArrayVisualizerWidget> {
               ),
               const SizedBox(height: 20),
 
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(_capacity1D, (i) {
-                    final isAllocated = i < _elements1D.length;
-                    final isHl = i == _highlighted1D;
-                    final hexAddr = "0x7FF${(1000 + i * 4).toRadixString(16).toUpperCase()}";
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  // Base design width = 375
+                  final scale = (constraints.maxWidth / 375).clamp(0.8, 1.5);
 
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: const EdgeInsets.only(right: 10),
-                      width: 68,
-                      height: 88,
-                      decoration: BoxDecoration(
-                        color: !isAllocated
-                            ? Colors.transparent
-                            : (isHl ? AppTheme.accentAmber : AppTheme.surfaceDark),
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: !isAllocated ? AppTheme.textMuted.withOpacity(0.4) : (isHl ? Colors.white : AppTheme.accentNeonCyan),
-                          width: isHl ? 2.5 : 1.5,
-                        ),
+                  final cardWidth = 68 * scale;
+                  final cardHeight = 80 * scale;
+
+                  final addressFontSize = (9 * scale).clamp(8.0, 13.0);
+                  final valueFontSize = (18 * scale).clamp(16.0, 28.0);
+                  final indexFontSize = (10 * scale).clamp(9.0, 14.0);
+
+                  final cardMargin = 10 * scale;
+
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: List.generate(
+                        _capacity1D,
+                            (i) {
+                          final isAllocated = i < _elements1D.length;
+                          final isHl = i == _highlighted1D;
+
+                          final hexAddr =
+                              "0x7FF${(1000 + i * 4).toRadixString(16).toUpperCase()}";
+
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+
+                            margin: EdgeInsets.only(
+                              right: cardMargin,
+                            ),
+
+                            width: cardWidth,
+                            height: cardHeight,
+
+                            decoration: BoxDecoration(
+                              color: !isAllocated
+                                  ? Colors.transparent
+                                  : (isHl
+                                  ? AppTheme.accentAmber
+                                  : AppTheme.surfaceDark),
+
+                              borderRadius: BorderRadius.circular(
+                                14 * scale,
+                              ),
+
+                              border: Border.all(
+                                color: !isAllocated
+                                    ? AppTheme.textMuted.withOpacity(0.4)
+                                    : (isHl
+                                    ? Colors.white
+                                    : AppTheme.accentNeonCyan),
+
+                                width: isHl
+                                    ? 2.5 * scale
+                                    : 1.5 * scale,
+                              ),
+                            ),
+
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 2 * scale,
+                                ),
+                                // Memory address
+                                Text(
+                                  hexAddr,
+                                  style: TextStyle(
+                                    fontSize: addressFontSize,
+                                    color: isHl
+                                        ? AppTheme.primaryDark
+                                        : AppTheme.textMuted,
+                                    fontFamily: 'monospace',
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: 4 * scale,
+                                ),
+
+                                // Value
+                                Text(
+                                  isAllocated
+                                      ? "${_elements1D[i]}"
+                                      : "-",
+                                  style: TextStyle(
+                                    fontSize: valueFontSize,
+                                    fontWeight: FontWeight.bold,
+                                    color: !isAllocated
+                                        ? AppTheme.textMuted
+                                        : (isHl
+                                        ? AppTheme.primaryDark
+                                        : Colors.white),
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: 4 * scale,
+                                ),
+
+                                // Index
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 6 * scale,
+                                    vertical: 2 * scale,
+                                  ),
+
+                                  child: Text(
+                                    "[$i]",
+                                    style: TextStyle(
+                                      fontSize: indexFontSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: isHl
+                                          ? Colors.white
+                                          : AppTheme.accentNeonCyan,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(hexAddr, style: TextStyle(fontSize: 9, color: isHl ? AppTheme.primaryDark : AppTheme.textMuted, fontFamily: 'monospace')),
-                          const SizedBox(height: 6),
-                          Text(
-                            isAllocated ? "${_elements1D[i]}" : "-",
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: !isAllocated ? AppTheme.textMuted : (isHl ? AppTheme.primaryDark : Colors.white)),
-                          ),
-                          const SizedBox(height: 6),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                            decoration: BoxDecoration(color: isHl ? Colors.black26 : AppTheme.primaryDark, borderRadius: BorderRadius.circular(6)),
-                            child: Text("[$i]", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: isHl ? Colors.white : AppTheme.accentNeonCyan)),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                ),
-              ),
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),
