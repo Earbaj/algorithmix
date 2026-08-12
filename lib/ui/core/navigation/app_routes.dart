@@ -60,6 +60,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/fruit_into_baskets_d
 import 'package:algorithmix/ui/features/core_patterns/views/subarray_product_less_than_k_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/get_equal_substrings_within_budget_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/count_nice_subarrays_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/minimum_window_substring_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -158,6 +159,7 @@ class AppRoutes {
   static const String subarrayProductLessThanKDetail = '/subarray-product-less-than-k-detail';
   static const String getEqualSubstringsWithinBudgetDetail = '/get-equal-substrings-within-budget-detail';
   static const String countNiceSubarraysDetail = '/count-nice-subarrays-detail';
+  static const String minimumWindowSubstringDetail = '/minimum-window-substring-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -250,6 +252,7 @@ class AppRoutes {
       subarrayProductLessThanKDetail: (context) => const SubarrayProductLessThanKDetailScreen(),
       getEqualSubstringsWithinBudgetDetail: (context) => const GetEqualSubstringsWithinBudgetDetailScreen(),
       countNiceSubarraysDetail: (context) => const CountNiceSubarraysDetailScreen(),
+      minimumWindowSubstringDetail: (context) => const MinimumWindowSubstringDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
