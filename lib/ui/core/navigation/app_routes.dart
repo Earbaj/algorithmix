@@ -62,6 +62,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/get_equal_substrings
 import 'package:algorithmix/ui/features/core_patterns/views/count_nice_subarrays_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/minimum_window_substring_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/sliding_window_maximum_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/concatenation_all_words_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -162,6 +163,7 @@ class AppRoutes {
   static const String countNiceSubarraysDetail = '/count-nice-subarrays-detail';
   static const String minimumWindowSubstringDetail = '/minimum-window-substring-detail';
   static const String slidingWindowMaximumDetail = '/sliding-window-maximum-detail';
+  static const String concatenationAllWordsDetail = '/concatenation-all-words-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -256,6 +258,7 @@ class AppRoutes {
       countNiceSubarraysDetail: (context) => const CountNiceSubarraysDetailScreen(),
       minimumWindowSubstringDetail: (context) => const MinimumWindowSubstringDetailScreen(),
       slidingWindowMaximumDetail: (context) => const SlidingWindowMaximumDetailScreen(),
+      concatenationAllWordsDetail: (context) => const ConcatenationAllWordsDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),

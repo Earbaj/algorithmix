@@ -299,7 +299,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
         p.title.contains("Get Equal Substrings Within Budget") ||
         p.title.contains("Count Number of Nice Subarrays") ||
         p.title.contains("Minimum Window Substring") ||
-        p.title.contains("Sliding Window Maximum");
+        p.title.contains("Sliding Window Maximum") ||
+        p.title.contains("Substring with Concatenation of All Words");
 
     return InkWell(
       onTap: () {
@@ -339,6 +340,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
           Navigator.of(context).pushNamed(AppRoutes.minimumWindowSubstringDetail);
         } else if (p.title.contains("Sliding Window Maximum")) {
           Navigator.of(context).pushNamed(AppRoutes.slidingWindowMaximumDetail);
+        } else if (p.title.contains("Substring with Concatenation of All Words")) {
+          Navigator.of(context).pushNamed(AppRoutes.concatenationAllWordsDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
