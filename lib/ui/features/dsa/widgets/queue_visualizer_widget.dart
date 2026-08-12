@@ -359,34 +359,37 @@ class _QueueVisualizerWidgetState extends State<QueueVisualizerWidget> {
             ],
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(_circularCapacity, (i) {
-              final val = _circBuffer[i];
-              final isHead = i == _circHead && _circSize > 0;
-              final isTail = i == _circTail && _circSize > 0;
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(_circularCapacity, (i) {
+                final val = _circBuffer[i];
+                final isHead = i == _circHead && _circSize > 0;
+                final isTail = i == _circTail && _circSize > 0;
 
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: 60,
-                height: 75,
-                decoration: BoxDecoration(
-                  color: isHead
-                      ? AppTheme.accentGreen
-                      : (isTail ? AppTheme.accentAmber : AppTheme.surfaceDark),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: (isHead || isTail) ? Colors.white : AppTheme.textMuted.withOpacity(0.4)),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(isHead ? "HEAD" : (isTail ? "TAIL" : "[$i]"), style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: (isHead || isTail) ? AppTheme.primaryDark : AppTheme.textMuted)),
-                    const SizedBox(height: 4),
-                    Text(val != null ? "$val" : "-", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: (isHead || isTail) ? AppTheme.primaryDark : AppTheme.textMuted)),
-                  ],
-                ),
-              );
-            }),
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: 60,
+                  height: 75,
+                  decoration: BoxDecoration(
+                    color: isHead
+                        ? AppTheme.accentGreen
+                        : (isTail ? AppTheme.accentAmber : AppTheme.surfaceDark),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: (isHead || isTail) ? Colors.white : AppTheme.textMuted.withOpacity(0.4)),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(isHead ? "HEAD" : (isTail ? "TAIL" : "[$i]"), style: TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: (isHead || isTail) ? AppTheme.primaryDark : AppTheme.textMuted)),
+                      const SizedBox(height: 4),
+                      Text(val != null ? "$val" : "-", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: (isHead || isTail) ? AppTheme.primaryDark : AppTheme.textMuted)),
+                    ],
+                  ),
+                );
+              }),
+            ),
           ),
         ],
       ),
