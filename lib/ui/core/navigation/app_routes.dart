@@ -46,6 +46,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/restore_ip_addresses
 import 'package:algorithmix/ui/features/core_patterns/views/remove_invalid_parentheses_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/max_average_subarray_i_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/contains_duplicate_ii_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/defuse_the_bomb_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -130,6 +131,7 @@ class AppRoutes {
   static const String removeInvalidParenthesesDetail = '/remove-invalid-parentheses-detail';
   static const String maxAverageSubarrayIDetail = '/max-average-subarray-i-detail';
   static const String containsDuplicateIIDetail = '/contains-duplicate-ii-detail';
+  static const String defuseTheBombDetail = '/defuse-the-bomb-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -208,6 +210,7 @@ class AppRoutes {
       removeInvalidParenthesesDetail: (context) => const RemoveInvalidParenthesesDetailScreen(),
       maxAverageSubarrayIDetail: (context) => const MaxAverageSubarrayIDetailScreen(),
       containsDuplicateIIDetail: (context) => const ContainsDuplicateIIDetailScreen(),
+      defuseTheBombDetail: (context) => const DefuseTheBombDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),

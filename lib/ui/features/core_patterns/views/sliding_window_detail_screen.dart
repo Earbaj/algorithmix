@@ -283,7 +283,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
 
   Widget _buildProblemCard(SlidingWindowProblem p, Color diffColor) {
     final isClickable = p.title.contains("Maximum Average Subarray I") ||
-        p.title.contains("Contains Duplicate II");
+        p.title.contains("Contains Duplicate II") ||
+        p.title.contains("Defuse the Bomb");
 
     return InkWell(
       onTap: () {
@@ -291,6 +292,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
           Navigator.of(context).pushNamed(AppRoutes.maxAverageSubarrayIDetail);
         } else if (p.title.contains("Contains Duplicate II")) {
           Navigator.of(context).pushNamed(AppRoutes.containsDuplicateIIDetail);
+        } else if (p.title.contains("Defuse the Bomb")) {
+          Navigator.of(context).pushNamed(AppRoutes.defuseTheBombDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
