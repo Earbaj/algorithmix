@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:algorithmix/domain/models/sliding_window_data.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
+import 'package:algorithmix/ui/core/navigation/app_routes.dart';
 import '../widgets/sliding_window_visualizer.dart';
 
 class SlidingWindowDetailScreen extends StatefulWidget {
@@ -281,57 +282,78 @@ int minSubArrayLen(int target, vector<int>& nums) {
   }
 
   Widget _buildProblemCard(SlidingWindowProblem p, Color diffColor) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFF1E293B)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  p.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: diffColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: diffColor),
-                ),
-                child: Text(p.difficulty, style: TextStyle(color: diffColor, fontSize: 10, fontWeight: FontWeight.bold)),
-              ),
-            ],
+    final isClickable = p.title.contains("Maximum Average Subarray I");
+
+    return InkWell(
+      onTap: () {
+        if (p.title.contains("Maximum Average Subarray I")) {
+          Navigator.of(context).pushNamed(AppRoutes.maxAverageSubarrayIDetail);
+        }
+      },
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceDark,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isClickable ? AppTheme.accentNeonCyan.withOpacity(0.5) : const Color(0xFF1E293B),
+            width: isClickable ? 1.5 : 1.0,
           ),
-          const SizedBox(height: 6),
-          Text(
-            _isEnglish ? p.keyIdeaEn : p.keyIdeaBn,
-            style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12, height: 1.4),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 6,
-            children: p.companyTags.map((tag) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppTheme.accentPurple.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(6),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text(
+                        p.title,
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14),
+                      ),
+                      if (isClickable) ...[
+                        const SizedBox(width: 6),
+                        const Icon(Icons.open_in_new, color: AppTheme.accentNeonCyan, size: 14),
+                      ],
+                    ],
+                  ),
                 ),
-                child: Text(tag, style: const TextStyle(color: AppTheme.accentNeonCyan, fontSize: 10, fontWeight: FontWeight.bold)),
-              );
-            }).toList(),
-          ),
-        ],
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: diffColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: diffColor),
+                  ),
+                  child: Text(p.difficulty, style: TextStyle(color: diffColor, fontSize: 10, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Text(
+              _isEnglish ? p.keyIdeaEn : p.keyIdeaBn,
+              style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12, height: 1.4),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 6,
+              children: p.companyTags.map((tag) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentPurple.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(tag, style: const TextStyle(color: AppTheme.accentNeonCyan, fontSize: 10, fontWeight: FontWeight.bold)),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
