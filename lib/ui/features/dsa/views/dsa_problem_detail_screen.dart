@@ -6,6 +6,8 @@ import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 import 'visualizers/visualizer_shared.dart';
 import 'visualizers/debug_array_step.dart';
+import 'visualizers/min_max_animated_visualizer.dart';
+import 'visualizers/min_max_execution_debugger.dart';
 
 class DsaProblemDetailScreen extends StatefulWidget {
   final DsaProblem problem;
@@ -264,6 +266,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   // ─── TAB 2: Step Visualizer ──────────────────────────────────────────────────
 
   Widget _buildVisualizerTab(double hPadding) {
+    if (widget.problem.id == "arr-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MinMaxAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+
     final step = _currentSteps[_currentStepIndex];
 
     return ResponsiveCenter(
@@ -362,6 +373,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   // ─── TAB 4: Line-by-Line Execution Debugger ──────────────────────────────────
 
   Widget _buildDebuggerTab(double hPadding) {
+    if (widget.problem.id == "arr-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MinMaxExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+
     final step = _currentSteps[_currentStepIndex];
 
     return ResponsiveCenter(
