@@ -50,6 +50,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/defuse_the_bomb_deta
 import 'package:algorithmix/ui/features/core_patterns/views/minimum_recolors_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/distinct_substrings_three_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/find_anagrams_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/permutation_in_string_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -138,6 +139,7 @@ class AppRoutes {
   static const String minimumRecolorsDetail = '/minimum-recolors-detail';
   static const String distinctSubstringsThreeDetail = '/distinct-substrings-three-detail';
   static const String findAnagramsDetail = '/find-anagrams-detail';
+  static const String permutationInStringDetail = '/permutation-in-string-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -220,6 +222,7 @@ class AppRoutes {
       minimumRecolorsDetail: (context) => const MinimumRecolorsDetailScreen(),
       distinctSubstringsThreeDetail: (context) => const DistinctSubstringsThreeDetailScreen(),
       findAnagramsDetail: (context) => const FindAnagramsDetailScreen(),
+      permutationInStringDetail: (context) => const PermutationInStringDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),

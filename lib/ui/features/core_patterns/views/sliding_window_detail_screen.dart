@@ -287,7 +287,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
         p.title.contains("Defuse the Bomb") ||
         p.title.contains("Minimum Recolors") ||
         p.title.contains("Substrings of Size Three") ||
-        p.title.contains("Find All Anagrams");
+        p.title.contains("Find All Anagrams") ||
+        p.title.contains("Permutation in String");
 
     return InkWell(
       onTap: () {
@@ -303,6 +304,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
           Navigator.of(context).pushNamed(AppRoutes.distinctSubstringsThreeDetail);
         } else if (p.title.contains("Find All Anagrams")) {
           Navigator.of(context).pushNamed(AppRoutes.findAnagramsDetail);
+        } else if (p.title.contains("Permutation in String")) {
+          Navigator.of(context).pushNamed(AppRoutes.permutationInStringDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
