@@ -304,7 +304,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
         p.title.contains("N-Queens") ||
         p.title.contains("Sudoku Solver") ||
         p.title.contains("Target Sum") ||
-        p.title.contains("Restore IP Addresses");
+        p.title.contains("Restore IP Addresses") ||
+        p.title.contains("Remove Invalid Parentheses");
 
     return InkWell(
       onTap: () {
@@ -340,6 +341,8 @@ bool solveGridDFS(int r, int c, vector<vector<char>>& board) {
           Navigator.of(context).pushNamed(AppRoutes.targetSumDetail);
         } else if (p.title.contains("Restore IP Addresses")) {
           Navigator.of(context).pushNamed(AppRoutes.restoreIPAddressesDetail);
+        } else if (p.title.contains("Remove Invalid Parentheses")) {
+          Navigator.of(context).pushNamed(AppRoutes.removeInvalidParenthesesDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
