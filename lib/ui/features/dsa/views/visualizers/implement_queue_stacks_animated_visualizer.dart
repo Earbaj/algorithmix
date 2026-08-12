@@ -188,13 +188,18 @@ class _ImplementQueueStacksAnimatedVisualizerState
           ),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildStackBucket("stIn (Enqueue Rear ➡️)", step.stIn, AppTheme.accentAmber),
-                  const Icon(Icons.arrow_forward, color: AppTheme.accentNeonCyan, size: 24),
-                  _buildStackBucket("stOut (Dequeue Front ➡️)", step.stOut, AppTheme.accentGreen),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildStackBucket("stIn (Enqueue Rear ➡️)", step.stIn, AppTheme.accentAmber),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_forward, color: AppTheme.accentNeonCyan, size: 24),
+                    const SizedBox(width: 8),
+                    _buildStackBucket("stOut (Dequeue Front ➡️)", step.stOut, AppTheme.accentGreen),
+                  ],
+                ),
               ),
               const SizedBox(height: 14),
               Text(

@@ -271,12 +271,16 @@ class _ImplementQueueStacksExecutionDebuggerState
             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildBucket("stIn", step.stIn, AppTheme.accentAmber),
-              _buildBucket("stOut", step.stOut, AppTheme.accentGreen),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildBucket("stIn", step.stIn, AppTheme.accentAmber),
+                const SizedBox(width: 16),
+                _buildBucket("stOut", step.stOut, AppTheme.accentGreen),
+              ],
+            ),
           ),
         ],
       ),
