@@ -30,6 +30,18 @@ import 'visualizers/reverse_doubly_linked_list_practice_quiz.dart';
 import 'visualizers/detect_cycle_linked_list_animated_visualizer.dart';
 import 'visualizers/detect_cycle_linked_list_execution_debugger.dart';
 import 'visualizers/detect_cycle_linked_list_practice_quiz.dart';
+import 'visualizers/valid_parentheses_animated_visualizer.dart';
+import 'visualizers/valid_parentheses_execution_debugger.dart';
+import 'visualizers/valid_parentheses_practice_quiz.dart';
+import 'visualizers/min_stack_animated_visualizer.dart';
+import 'visualizers/min_stack_execution_debugger.dart';
+import 'visualizers/min_stack_practice_quiz.dart';
+import 'visualizers/evaluate_rpn_animated_visualizer.dart';
+import 'visualizers/evaluate_rpn_execution_debugger.dart';
+import 'visualizers/evaluate_rpn_practice_quiz.dart';
+import 'visualizers/next_greater_element_animated_visualizer.dart';
+import 'visualizers/next_greater_element_execution_debugger.dart';
+import 'visualizers/next_greater_element_practice_quiz.dart';
 
 class DsaProblemDetailScreen extends StatefulWidget {
   final DsaProblem problem;
@@ -352,6 +364,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "st-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ValidParenthesesAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MinStackAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: EvaluateRpnAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: NextGreaterElementAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -515,6 +559,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "st-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ValidParenthesesExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MinStackExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: EvaluateRpnExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: NextGreaterElementExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -633,6 +709,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         padding: EdgeInsets.all(hPadding),
         child: SingleChildScrollView(
           child: DetectCycleLinkedListPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ValidParenthesesPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MinStackPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: EvaluateRpnPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "st-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: NextGreaterElementPracticeQuiz(isEnglish: _isEnglish),
         ),
       );
     }
