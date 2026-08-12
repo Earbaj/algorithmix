@@ -51,6 +51,17 @@ class _TensorSumExecutionDebuggerState extends State<TensorSumExecutionDebugger>
     "}",
   ];
 
+  final List<List<List<int>>> _tensor = const [
+    [
+      [1, 2],
+      [3, 4]
+    ], // Depth 0 (sum = 10)
+    [
+      [5, 6],
+      [7, 8]
+    ], // Depth 1 (sum = 26)
+  ];
+
   int _currentStepIndex = 0;
   bool _isPlaying = false;
   Timer? _timer;
@@ -202,6 +213,9 @@ class _TensorSumExecutionDebuggerState extends State<TensorSumExecutionDebugger>
         _buildCodeHighlightBox(step.activeLineIndex),
         const SizedBox(height: 16),
 
+        _buildTensorCanvas(step),
+        const SizedBox(height: 16),
+
         _buildVariableWatchPanel(step),
         const SizedBox(height: 16),
 
@@ -270,6 +284,111 @@ class _TensorSumExecutionDebuggerState extends State<TensorSumExecutionDebugger>
             ),
           );
         }),
+      ),
+    );
+  }
+
+  Widget _buildTensorCanvas(DebuggerStepData step) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.isEnglish ? "3D Tensor Memory Volume Canvas" : "৩D টেনসর মেমোরি ভলিউম ক্যানভাস",
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+              Text(
+                "Accumulated Total: ${step.total}",
+                style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(_tensor.length, (dIdx) {
+                final isLayerActive = step.d == dIdx;
+                final layerMatrix = _tensor[dIdx];
+
+                return Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: isLayerActive ? AppTheme.accentNeonCyan.withOpacity(0.15) : const Color(0xFF1E293B),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isLayerActive ? AppTheme.accentNeonCyan : const Color(0xFF334155),
+                      width: isLayerActive ? 2 : 1,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        "Layer d = $dIdx",
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: isLayerActive ? AppTheme.accentNeonCyan : AppTheme.textSecondary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Column(
+                        children: List.generate(layerMatrix.length, (rIdx) {
+                          return Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: List.generate(layerMatrix[rIdx].length, (cIdx) {
+                              final val = layerMatrix[rIdx][cIdx];
+                              final isCellActive = isLayerActive && (step.r == rIdx && step.c == cIdx);
+
+                              return Container(
+                                margin: const EdgeInsets.all(2),
+                                width: 32,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  color: isCellActive
+                                      ? AppTheme.accentGreen.withOpacity(0.4)
+                                      : (isLayerActive ? AppTheme.accentNeonCyan.withOpacity(0.2) : const Color(0xFF090D16)),
+                                  borderRadius: BorderRadius.circular(6),
+                                  border: Border.all(
+                                    color: isCellActive
+                                        ? AppTheme.accentGreen
+                                        : (isLayerActive ? AppTheme.accentNeonCyan : const Color(0xFF334155)),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "$val",
+                                    style: TextStyle(
+                                      color: isCellActive ? AppTheme.accentGreen : (isLayerActive ? Colors.white : Colors.white70),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          );
+                        }),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }
