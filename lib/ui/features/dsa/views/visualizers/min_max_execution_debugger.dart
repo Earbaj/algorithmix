@@ -172,7 +172,7 @@ class _MinMaxExecutionDebuggerState extends State<MinMaxExecutionDebugger> {
         maxVal: 99,
         conditionText: "i++ -> i = 4; (4 < 5) -> TRUE",
         explanationEn: "Line 3: Increment i++ -> i = 4. Condition 4 < 5 is TRUE.",
-        explanationBn: "<ctrl42>লাইন ৩: লুপ ইনক্রিমেন্ট i++ -> i = 4। শর্ত 4 < 5 সত্য (TRUE)।",
+        explanationBn: "লাইন ৩: লুপ ইনক্রিমেন্ট i++ -> i = 4। শর্ত 4 < 5 সত্য (TRUE)।",
       ),
       DebuggerStepData(
         activeLineIndex: 3,
@@ -291,6 +291,10 @@ class _MinMaxExecutionDebuggerState extends State<MinMaxExecutionDebugger> {
         _buildCodeHighlightBox(step.activeLineIndex),
         const SizedBox(height: 16),
 
+        // Array Memory State Canvas
+        _buildArrayCanvas(step),
+        const SizedBox(height: 16),
+
         // Variable Watcher & State Inspector Panel
         _buildVariableWatchPanel(step),
         const SizedBox(height: 16),
@@ -361,6 +365,111 @@ class _MinMaxExecutionDebuggerState extends State<MinMaxExecutionDebugger> {
             ),
           );
         }),
+      ),
+    );
+  }
+
+  Widget _buildArrayCanvas(DebuggerStepData step) {
+    final currentI = step.i;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.isEnglish ? "Array Memory & Index Pointer Canvas" : "অ্যারে মেমোরি ও ইন্ডেক্স পয়েন্টার ক্যানভাস",
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+              if (currentI != null && currentI < _array.length)
+                Text(
+                  "i = $currentI (arr[$currentI] = ${_array[currentI]})",
+                  style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
+                ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(_array.length, (idx) {
+                final val = _array[idx];
+                final isCurrentIndex = currentI == idx;
+                final isMinVal = step.minVal == val;
+                final isMaxVal = step.maxVal == val;
+
+                Color borderColor = const Color(0xFF334155);
+                Color bgColor = const Color(0xFF1E293B);
+
+                if (isCurrentIndex) {
+                  borderColor = AppTheme.accentNeonCyan;
+                  bgColor = AppTheme.accentNeonCyan.withOpacity(0.2);
+                } else if (isMinVal) {
+                  borderColor = AppTheme.accentGreen;
+                  bgColor = AppTheme.accentGreen.withOpacity(0.15);
+                } else if (isMaxVal) {
+                  borderColor = AppTheme.accentAmber;
+                  bgColor = AppTheme.accentAmber.withOpacity(0.15);
+                }
+
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  width: 56,
+                  height: 68,
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: borderColor, width: isCurrentIndex ? 2.5 : 1.5),
+                    boxShadow: isCurrentIndex
+                        ? [BoxShadow(color: AppTheme.accentNeonCyan.withOpacity(0.3), blurRadius: 8)]
+                        : [],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "[$idx]",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: isCurrentIndex ? AppTheme.accentNeonCyan : AppTheme.textSecondary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        "$val",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: isCurrentIndex
+                              ? Colors.white
+                              : isMinVal
+                                  ? AppTheme.accentGreen
+                                  : isMaxVal
+                                      ? AppTheme.accentAmber
+                                      : Colors.white70,
+                        ),
+                      ),
+                      if (isCurrentIndex)
+                        const Icon(Icons.arrow_drop_up, color: AppTheme.accentNeonCyan, size: 14),
+                    ],
+                  ),
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }
