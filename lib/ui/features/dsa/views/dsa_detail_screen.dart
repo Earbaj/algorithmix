@@ -78,7 +78,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           tabAlignment: TabAlignment.start,
           padding: EdgeInsets.zero,
           tabs: [
-            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
+            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? 'Basic Problems' : 'বেসিক প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
@@ -151,6 +151,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
               _buildStackComplexitySection(),
             ] else if (widget.topic.id == 204) ...[
               _buildQueueComplexitySection(),
+            ] else if (widget.topic.id == 205) ...[
+              _buildHashMapComplexitySection(),
             ] else ...[
               Container(
                 padding: const EdgeInsets.all(18),
@@ -194,8 +196,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             // Core Characteristics
             Text(
               _isEnglish
-                  ? (widget.topic.id == 202 ? "🔑 Core Characteristics & Pointer Mechanics" : (widget.topic.id == 203 ? "🔑 Core Characteristics & LIFO Mechanism" : (widget.topic.id == 204 ? "🔑 Core Characteristics & FIFO Pipeline" : "🔑 Core Characteristics & Multi-Dimensional Layouts")))
-                  : (widget.topic.id == 202 ? "🔑 মূল বৈশিষ্ট্য ও পয়েন্টার মেকানিক্স" : (widget.topic.id == 203 ? "🔑 মূল বৈশিষ্ট্য ও LIFO মেকানিজম" : (widget.topic.id == 204 ? "🔑 মূল বৈশিষ্ট্য ও FIFO পাইপলাইন" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি লেআউট"))),
+                  ? (widget.topic.id == 202 ? "🔑 Core Characteristics & Pointer Mechanics" : (widget.topic.id == 203 ? "🔑 Core Characteristics & LIFO Mechanism" : (widget.topic.id == 204 ? "🔑 Core Characteristics & FIFO Pipeline" : (widget.topic.id == 205 ? "🔑 Core Characteristics & Hashing Mechanism" : "🔑 Core Characteristics & Multi-Dimensional Layouts"))))
+                  : (widget.topic.id == 202 ? "🔑 মূল বৈশিষ্ট্য ও পয়েন্টার মেকানিক্স" : (widget.topic.id == 203 ? "🔑 মূল বৈশিষ্ট্য ও LIFO মেকানিজম" : (widget.topic.id == 204 ? "🔑 মূল বৈশিষ্ট্য ও FIFO পাইপলাইন" : (widget.topic.id == 205 ? "🔑 মূল বৈশিষ্ট্য ও হ্যাশিং মেকানিজম" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি লেআউট")))),
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -222,8 +224,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             // Multi-Dimension & Language Code Switcher
             Text(
               _isEnglish
-                  ? (widget.topic.id == 202 ? "💻 Node Data Structures (Singly & Doubly Nodes)" : (widget.topic.id == 203 ? "💻 Stack Implementations (Array & Monotonic)" : (widget.topic.id == 204 ? "💻 Queue & Deque Implementations" : "💻 Code Examples (1D, 2D Grid & 3D Cube)")))
-                  : (widget.topic.id == 202 ? "💻 নোড ডেটা স্ট্রাকচার (Singly ও Doubly নোড)" : (widget.topic.id == 203 ? "💻 স্ট্যাক ইমপ্লিমেন্টেশন (অ্যারে ও মনোটোনিক)" : (widget.topic.id == 204 ? "💻 কিউ ও Deque ইমপ্লিমেন্টেশন" : "💻 কোড উদাহরণ (১D, ২D ম্যাট্রিক্স ও ৩D কিউব)"))),
+                  ? (widget.topic.id == 202 ? "💻 Node Data Structures (Singly & Doubly Nodes)" : (widget.topic.id == 203 ? "💻 Stack Implementations (Array & Monotonic)" : (widget.topic.id == 204 ? "💻 Queue & Deque Implementations" : (widget.topic.id == 205 ? "💻 Hash Map & Hash Set Implementations" : "💻 Code Examples (1D, 2D Grid & 3D Cube)"))))
+                  : (widget.topic.id == 202 ? "💻 নোড ডেটা স্ট্রাকচার (Singly ও Doubly নোড)" : (widget.topic.id == 203 ? "💻 স্ট্যাক ইমপ্লিমেন্টেশন (অ্যারে ও মনোটোনিক)" : (widget.topic.id == 204 ? "💻 কিউ ও Deque ইমপ্লিমেন্টেশন" : (widget.topic.id == 205 ? "💻 হ্যাশ ম্যাপ ও হ্যাশ সেট ইমপ্লিমেন্টেশন" : "💻 কোড উদাহরণ (১D, ২D ম্যাট্রিক্স ও ৩D কিউব)")))),
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -699,6 +701,131 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                         _buildTableCell(_isEnglish ? "BFS, CPU Task Scheduling" : "BFS গ্রাফ, প্রসেস শিডিউলিং", color: AppTheme.accentAmber),
                         _buildTableCell(_isEnglish ? "Sliding Window Max, Palindromes" : "স্লাইডিং উইন্ডো, প্যালেইনড্রোম", color: AppTheme.accentNeonCyan),
                         _buildTableCell(_isEnglish ? "Recursion, Call Stack, Undo" : "কল স্ট্যাক, রিকার্শন, ব্র্যাকেট", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHashMapComplexitySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.grid_view_outlined, color: AppTheme.accentPink, size: 22),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Hash Table Operations Complexity Metrics" : "হ্যাশ টেবিল ও হ্যাশ ম্যাপের জটিলতা মেট্রিক্স",
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 16),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildComplexityBadge(_isEnglish ? "Average Lookup/Put" : "গড় সময় (Lookup/Put)", "O(1)", AppTheme.accentGreen),
+                  _buildComplexityBadge(_isEnglish ? "Worst Case (Collision)" : "সবচেয়ে খারাপ সময়", "O(N)", AppTheme.accentAmber),
+                  _buildComplexityBadge(_isEnglish ? "Space Complexity" : "স্পেস জটিলতা", "O(N)", AppTheme.accentNeonCyan),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Comparison Table Card (Hash Map vs Tree Map vs Direct Array Index)
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF1E293B)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.table_chart_outlined, color: AppTheme.accentPink, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Hash Map vs Tree Map (BST) vs Array Comparison" : "হ্যাশ ম্যাপ বনাম ট্রি ম্যাপ বনাম অ্যারে তুলনা",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Table(
+                  defaultColumnWidth: const IntrinsicColumnWidth(),
+                  border: TableBorder.all(color: const Color(0xFF1E293B), width: 1, borderRadius: BorderRadius.circular(8)),
+                  children: [
+                    TableRow(
+                      decoration: const BoxDecoration(color: Color(0xFF1E293B)),
+                      children: [
+                        _buildTableHeaderCell(_isEnglish ? "Property / Feature" : "বৈশিষ্ট্য / মেকানিজম"),
+                        _buildTableHeaderCell("Hash Map (Hash Table)"),
+                        _buildTableHeaderCell("Tree Map (Red-Black BST)"),
+                        _buildTableHeaderCell("Array Indexing"),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Lookup / Search Time" : "খোজা বা Lookup সময়", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(1) Average" : "গড়ে O(1)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(log N) Guaranteed" : "সর্বদা O(log N)", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "O(1) by integer index" : "ইনডেক্স দিয়ে O(1)", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Key Ordering" : "কী বা চাবির ক্রমানুসার", isBold: true),
+                        _buildTableCell(_isEnglish ? "Unordered / Random" : "অবিন্যস্ত (Unordered)", color: Colors.redAccent),
+                        _buildTableCell(_isEnglish ? "Strictly Sorted Keys" : "সর্টেড বা সাজানো", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "Sequential Indices 0..N-1" : "ধারাবাহিক ০..N-1", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Underlying Data Structure" : "অভ্যন্তরীণ অবকাঠামো", isBold: true),
+                        _buildTableCell(_isEnglish ? "Bucket Array + Chaining/Probing" : "বাকেট অ্যারে + চেইনিং", color: AppTheme.accentPink),
+                        _buildTableCell(_isEnglish ? "Self-Balancing Red-Black Tree" : "ব্যালেন্সড বাইনারি ট্রি", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "Contiguous Memory Block" : "ধারাবাহিক মেমোরি ব্লক", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Best Use Cases" : "সেরা ব্যবহার ক্ষেত্র", isBold: true),
+                        _buildTableCell(_isEnglish ? "Frequency Count, Two Sum O(1)" : "ফ্রিকোয়েন্সি, টু-সাম, ক্যাশ", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "Range Queries, Sorted Map" : "রেঞ্জ কোয়েরি, সর্টেড কী", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "Direct Dense Index Access" : "ঘন ইনডেক্স এক্সেস", color: AppTheme.accentAmber),
                       ],
                     ),
                   ],

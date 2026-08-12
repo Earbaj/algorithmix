@@ -236,32 +236,35 @@ class _HashTableVisualizerWidgetState extends State<HashTableVisualizerWidget> {
 
               if (_selectedTypeMode == 1)
                 // Linear Probing Canvas
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(_capacity, (i) {
-                    final entry = _probingBuckets[i];
-                    final isHl = i == _highlightedBucketIndex;
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(_capacity, (i) {
+                      final entry = _probingBuckets[i];
+                      final isHl = i == _highlightedBucketIndex;
 
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: 65,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: isHl ? AppTheme.accentPink : AppTheme.surfaceDark,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: isHl ? Colors.white : AppTheme.accentPink.withOpacity(0.5), width: isHl ? 2.5 : 1),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Slot [$i]", style: TextStyle(fontSize: 9, color: isHl ? Colors.white : AppTheme.textMuted)),
-                          const SizedBox(height: 4),
-                          Text(entry != null ? entry.key : "-", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: isHl ? Colors.white : Colors.white70)),
-                          Text(entry != null ? ":${entry.value}" : "", style: TextStyle(fontSize: 10, color: isHl ? Colors.white70 : AppTheme.accentPink)),
-                        ],
-                      ),
-                    );
-                  }),
+                      return Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: 65,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: isHl ? AppTheme.accentPink : AppTheme.surfaceDark,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: isHl ? Colors.white : AppTheme.accentPink.withOpacity(0.5), width: isHl ? 2.5 : 1),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Slot [$i]", style: TextStyle(fontSize: 9, color: isHl ? Colors.white : AppTheme.textMuted)),
+                            const SizedBox(height: 4),
+                            Text(entry != null ? entry.key : "-", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: isHl ? Colors.white : Colors.white70)),
+                            Text(entry != null ? ":${entry.value}" : "", style: TextStyle(fontSize: 10, color: isHl ? Colors.white70 : AppTheme.accentPink)),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
                 )
               else
                 // Chaining / Set Bucket Rows
