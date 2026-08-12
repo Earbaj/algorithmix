@@ -285,7 +285,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
     final isClickable = p.title.contains("Maximum Average Subarray I") ||
         p.title.contains("Contains Duplicate II") ||
         p.title.contains("Defuse the Bomb") ||
-        p.title.contains("Minimum Recolors");
+        p.title.contains("Minimum Recolors") ||
+        p.title.contains("Substrings of Size Three");
 
     return InkWell(
       onTap: () {
@@ -297,6 +298,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
           Navigator.of(context).pushNamed(AppRoutes.defuseTheBombDetail);
         } else if (p.title.contains("Minimum Recolors")) {
           Navigator.of(context).pushNamed(AppRoutes.minimumRecolorsDetail);
+        } else if (p.title.contains("Substrings of Size Three")) {
+          Navigator.of(context).pushNamed(AppRoutes.distinctSubstringsThreeDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),

@@ -48,6 +48,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/max_average_subarray
 import 'package:algorithmix/ui/features/core_patterns/views/contains_duplicate_ii_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/defuse_the_bomb_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/minimum_recolors_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/distinct_substrings_three_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -134,6 +135,7 @@ class AppRoutes {
   static const String containsDuplicateIIDetail = '/contains-duplicate-ii-detail';
   static const String defuseTheBombDetail = '/defuse-the-bomb-detail';
   static const String minimumRecolorsDetail = '/minimum-recolors-detail';
+  static const String distinctSubstringsThreeDetail = '/distinct-substrings-three-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -214,6 +216,7 @@ class AppRoutes {
       containsDuplicateIIDetail: (context) => const ContainsDuplicateIIDetailScreen(),
       defuseTheBombDetail: (context) => const DefuseTheBombDetailScreen(),
       minimumRecolorsDetail: (context) => const MinimumRecolorsDetailScreen(),
+      distinctSubstringsThreeDetail: (context) => const DistinctSubstringsThreeDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
