@@ -51,6 +51,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/minimum_recolors_det
 import 'package:algorithmix/ui/features/core_patterns/views/distinct_substrings_three_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/find_anagrams_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/permutation_in_string_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/grumpy_bookstore_owner_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -140,6 +141,7 @@ class AppRoutes {
   static const String distinctSubstringsThreeDetail = '/distinct-substrings-three-detail';
   static const String findAnagramsDetail = '/find-anagrams-detail';
   static const String permutationInStringDetail = '/permutation-in-string-detail';
+  static const String grumpyBookstoreOwnerDetail = '/grumpy-bookstore-owner-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -223,6 +225,7 @@ class AppRoutes {
       distinctSubstringsThreeDetail: (context) => const DistinctSubstringsThreeDetailScreen(),
       findAnagramsDetail: (context) => const FindAnagramsDetailScreen(),
       permutationInStringDetail: (context) => const PermutationInStringDetailScreen(),
+      grumpyBookstoreOwnerDetail: (context) => const GrumpyBookstoreOwnerDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
