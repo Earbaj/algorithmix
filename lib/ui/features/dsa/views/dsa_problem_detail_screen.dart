@@ -8,6 +8,7 @@ import 'visualizers/visualizer_shared.dart';
 import 'visualizers/debug_array_step.dart';
 import 'visualizers/min_max_animated_visualizer.dart';
 import 'visualizers/min_max_execution_debugger.dart';
+import 'visualizers/min_max_practice_quiz.dart';
 
 class DsaProblemDetailScreen extends StatefulWidget {
   final DsaProblem problem;
@@ -438,6 +439,15 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
   // ─── TAB 5: Practice & Test Runner ──────────────────────────────────────────
 
   Widget _buildPracticeTab(double hPadding) {
+    if (widget.problem.id == "arr-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MinMaxPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+
     return ResponsiveCenter(
       padding: EdgeInsets.all(hPadding),
       child: SingleChildScrollView(
