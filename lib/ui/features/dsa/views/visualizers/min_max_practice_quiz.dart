@@ -266,7 +266,7 @@ class _MinMaxPracticeQuizState extends State<MinMaxPracticeQuiz> {
                 child: GestureDetector(
                   onTap: () => setState(() => _activeSubTab = 0),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                     decoration: BoxDecoration(
                       color: _activeSubTab == 0 ? AppTheme.accentGreen.withOpacity(0.2) : Colors.transparent,
                       borderRadius: BorderRadius.circular(10),
@@ -275,14 +275,18 @@ class _MinMaxPracticeQuizState extends State<MinMaxPracticeQuiz> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.playlist_add_check, color: AppTheme.accentGreen, size: 18),
-                        const SizedBox(width: 6),
-                        Text(
-                          widget.isEnglish ? "Automated Test Suite" : "অটোমেটেড টেস্ট কেস রানার",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: _activeSubTab == 0 ? AppTheme.accentGreen : AppTheme.textSecondary,
+                        const Icon(Icons.playlist_add_check, color: AppTheme.accentGreen, size: 16),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            widget.isEnglish ? "Automated Test Suite" : "অটোমেটেড টেস্ট রানার",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: _activeSubTab == 0 ? AppTheme.accentGreen : AppTheme.textSecondary,
+                            ),
                           ),
                         ),
                       ],
@@ -290,11 +294,12 @@ class _MinMaxPracticeQuizState extends State<MinMaxPracticeQuiz> {
                   ),
                 ),
               ),
+              const SizedBox(width: 4),
               Expanded(
                 child: GestureDetector(
                   onTap: () => setState(() => _activeSubTab = 1),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                     decoration: BoxDecoration(
                       color: _activeSubTab == 1 ? AppTheme.accentPurple.withOpacity(0.2) : Colors.transparent,
                       borderRadius: BorderRadius.circular(10),
@@ -303,14 +308,18 @@ class _MinMaxPracticeQuizState extends State<MinMaxPracticeQuiz> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.quiz_outlined, color: AppTheme.accentPurple, size: 18),
-                        const SizedBox(width: 6),
-                        Text(
-                          widget.isEnglish ? "Concept Mastery Quiz" : "কনসেপ্ট মাস্টার কুইজ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: _activeSubTab == 1 ? AppTheme.accentPurple : AppTheme.textSecondary,
+                        const Icon(Icons.quiz_outlined, color: AppTheme.accentPurple, size: 16),
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            widget.isEnglish ? "Concept Mastery Quiz" : "কনসেপ্ট মাস্টার কুইজ",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: _activeSubTab == 1 ? AppTheme.accentPurple : AppTheme.textSecondary,
+                            ),
                           ),
                         ),
                       ],
@@ -348,10 +357,13 @@ class _MinMaxPracticeQuizState extends State<MinMaxPracticeQuiz> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.isEnglish ? "Interactive Test Runner" : "ইনটারেক্টিভ টেস্ট রানার",
-                    style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 16),
+                  Expanded(
+                    child: Text(
+                      widget.isEnglish ? "Interactive Test Runner" : "ইনটারেক্টিভ টেস্ট রানার",
+                      style: const TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   ElevatedButton.icon(
                     onPressed: _isRunningTests ? null : _runTestSuite,
                     icon: _isRunningTests
@@ -361,10 +373,12 @@ class _MinMaxPracticeQuizState extends State<MinMaxPracticeQuiz> {
                       _isRunningTests
                           ? (widget.isEnglish ? "Testing..." : "টেস্ট হচ্ছে...")
                           : (widget.isEnglish ? "Run All Tests" : "সব টেস্ট কেস রান করুন"),
+                      style: const TextStyle(fontSize: 12),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.accentGreen,
                       foregroundColor: AppTheme.primaryDark,
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                   ),
@@ -480,21 +494,23 @@ class _MinMaxPracticeQuizState extends State<MinMaxPracticeQuiz> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.isEnglish ? "Min & Max Concept Mastery Quiz" : "মিন ও ম্যাক্স কনসেপ্ট মাস্টার কুইজ",
-                    style: const TextStyle(color: AppTheme.accentPurple, fontWeight: FontWeight.bold, fontSize: 15),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    widget.isEnglish
-                        ? "Answered: $answeredCount / $totalQ"
-                        : "উত্তর প্রদান: $answeredCount / $totalQ",
-                    style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.isEnglish ? "Min & Max Concept Mastery Quiz" : "মিন ও ম্যাক্স কনসেপ্ট মাস্টার কুইজ",
+                      style: const TextStyle(color: AppTheme.accentPurple, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      widget.isEnglish
+                          ? "Answered: $answeredCount / $totalQ"
+                          : "উত্তর প্রদান: $answeredCount / $totalQ",
+                      style: const TextStyle(color: AppTheme.textSecondary, fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
               Row(
                 children: [
