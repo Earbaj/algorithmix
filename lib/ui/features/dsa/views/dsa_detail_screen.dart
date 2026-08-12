@@ -520,9 +520,11 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 children: [
                   const Icon(Icons.table_chart_outlined, color: AppTheme.accentGreen, size: 20),
                   const SizedBox(width: 8),
-                  Text(
-                    _isEnglish ? "Stack (LIFO) vs Queue (FIFO) vs Array" : "স্ট্যাক (LIFO) বনাম কিউ (FIFO) বনাম অ্যারে তুলনা",
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Stack (LIFO) vs Queue (FIFO) vs Array" : "স্ট্যাক (LIFO) বনাম কিউ (FIFO) বনাম অ্যারে তুলনা",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
                   ),
                 ],
               ),
@@ -643,9 +645,11 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 children: [
                   const Icon(Icons.table_chart_outlined, color: AppTheme.accentAmber, size: 20),
                   const SizedBox(width: 8),
-                  Text(
-                    _isEnglish ? "Queue (FIFO) vs Deque vs Stack (LIFO) Comparison" : "কিউ (FIFO) বনাম Deque বনাম স্ট্যাক (LIFO) তুলনা",
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Queue (FIFO) vs Deque vs Stack (LIFO) Comparison" : "কিউ (FIFO) বনাম Deque বনাম স্ট্যাক (LIFO) তুলনা",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
                   ),
                 ],
               ),
