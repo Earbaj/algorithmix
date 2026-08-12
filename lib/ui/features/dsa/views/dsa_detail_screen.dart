@@ -78,7 +78,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           tabAlignment: TabAlignment.start,
           padding: EdgeInsets.zero,
           tabs: [
-            Tab(text: _isEnglish ? 'Concept & Code (1D/2D/3D)' : 'ধারণা ও কোড (১D/২D/৩D)'),
+            Tab(text: _isEnglish ? (widget.topic.id == 202 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? 'Basic Problems' : 'বেসিক প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
@@ -145,47 +145,53 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             const SizedBox(height: 20),
 
             // Complexity Matrix Box
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceDark,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.timer_outlined, color: AppTheme.accentAmber, size: 22),
-                      const SizedBox(width: 8),
-                      Text(
-                        _isEnglish ? "Complexity Metrics (1D, 2D, 3D)" : "টাইম ও স্পেস জটিলতা (১D, ২D, ৩D)",
-                        style: TextStyle(
-                          fontSize: Responsive.sp(context, 16),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+            if (widget.topic.id == 202) ...[
+              _buildLinkedListComplexitySection(),
+            ] else ...[
+              Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceDark,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.timer_outlined, color: AppTheme.accentAmber, size: 22),
+                        const SizedBox(width: 8),
+                        Text(
+                          _isEnglish ? "Complexity Metrics (1D, 2D, 3D)" : "টাইম ও স্পেস জটিলতা (১D, ২D, ৩D)",
+                          style: TextStyle(
+                            fontSize: Responsive.sp(context, 16),
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildComplexityBadge(_isEnglish ? "1D Access" : "১D এক্সেস", "O(1)", AppTheme.accentGreen),
-                      _buildComplexityBadge(_isEnglish ? "2D Space" : "২D স্পেস", "O(R×C)", AppTheme.accentNeonCyan),
-                      _buildComplexityBadge(_isEnglish ? "3D Space" : "৩D স্পেস", "O(D×R×C)", AppTheme.accentPink),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildComplexityBadge(_isEnglish ? "1D Access" : "১D এক্সেস", "O(1)", AppTheme.accentGreen),
+                        _buildComplexityBadge(_isEnglish ? "2D Space" : "২D স্পেস", "O(R×C)", AppTheme.accentNeonCyan),
+                        _buildComplexityBadge(_isEnglish ? "3D Space" : "৩D স্পেস", "O(D×R×C)", AppTheme.accentPink),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
             const SizedBox(height: 24),
 
             // Core Characteristics
             Text(
-              _isEnglish ? "🔑 Core Characteristics & Multi-Dimensional Layouts" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি লেআউট",
+              _isEnglish
+                  ? (widget.topic.id == 202 ? "🔑 Core Characteristics & Pointer Mechanics" : "🔑 Core Characteristics & Multi-Dimensional Layouts")
+                  : (widget.topic.id == 202 ? "🔑 মূল বৈশিষ্ট্য ও পয়েন্টার মেকানিক্স" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি লেআউট"),
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -211,7 +217,9 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
 
             // Multi-Dimension & Language Code Switcher
             Text(
-              _isEnglish ? "💻 Code Examples (1D, 2D Grid & 3D Cube)" : "💻 কোড উদাহরণ (১D, ২D ম্যাট্রিক্স ও ৩D কিউব)",
+              _isEnglish
+                  ? (widget.topic.id == 202 ? "💻 Node Data Structures (Singly & Doubly Nodes)" : "💻 Code Examples (1D, 2D Grid & 3D Cube)")
+                  : (widget.topic.id == 202 ? "💻 নোড ডেটা স্ট্রাকচার (Singly ও Doubly নোড)" : "💻 কোড উদাহরণ (১D, ২D ম্যাট্রিক্স ও ৩D কিউব)"),
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -281,6 +289,169 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             ),
             const SizedBox(height: 24),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLinkedListComplexitySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.speed_outlined, color: AppTheme.accentAmber, size: 22),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Linked List Time & Space Metrics" : "লিঙ্কড লিস্ট টাইম ও স্পেস মেট্রিক্স",
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 16),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildComplexityBadge(_isEnglish ? "Head Insert/Delete" : "হেড ইনসার্ট/ডিলেট", "O(1)", AppTheme.accentGreen),
+                  _buildComplexityBadge(_isEnglish ? "Search / Access" : "সার্চ / এক্সেস", "O(N)", AppTheme.accentAmber),
+                  _buildComplexityBadge(_isEnglish ? "Node Space Overhead" : "পয়েন্টার ওভারহেড", "O(1) per node", AppTheme.accentNeonCyan),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Comparison Table Card (Array vs Singly vs Doubly)
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF1E293B)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.table_chart_outlined, color: AppTheme.accentPurple, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    _isEnglish ? "Array vs Singly vs Doubly Linked List" : "অ্যারে বনাম Singly বনাম Doubly লিঙ্কড লিস্ট তুলনা",
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Table(
+                  defaultColumnWidth: const IntrinsicColumnWidth(),
+                  border: TableBorder.all(color: const Color(0xFF1E293B), width: 1, borderRadius: BorderRadius.circular(8)),
+                  children: [
+                    TableRow(
+                      decoration: const BoxDecoration(color: Color(0xFF1E293B)),
+                      children: [
+                        _buildTableHeaderCell(_isEnglish ? "Property / Operation" : "বৈশিষ্ট্য / অপারেশন"),
+                        _buildTableHeaderCell("Array"),
+                        _buildTableHeaderCell("Singly Linked List"),
+                        _buildTableHeaderCell("Doubly Linked List"),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Memory Allocation" : "মেমোরি সংস্থান", isBold: true),
+                        _buildTableCell(_isEnglish ? "Contiguous Block" : "পরপর মেমোরি ব্লক", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "Non-contiguous Heap" : "আলাদা হিপ মেমোরি", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Non-contiguous Heap" : "আলাদা হিপ মেমোরি", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Access by Index i" : "ইনডেক্স দিয়ে সরাসরি এক্সেস", isBold: true),
+                        _buildTableCell("O(1) Instant", color: AppTheme.accentGreen),
+                        _buildTableCell("O(N) Sequential", color: Colors.redAccent),
+                        _buildTableCell("O(N) Sequential", color: Colors.redAccent),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Head Insert / Delete" : "শুরুতে ইনসার্ট / ডিলেট", isBold: true),
+                        _buildTableCell("O(N) (Shift all)", color: Colors.redAccent),
+                        _buildTableCell("O(1) Instant", color: AppTheme.accentGreen),
+                        _buildTableCell("O(1) Instant", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Tail Deletion" : "শেষে ডিলেট করা", isBold: true),
+                        _buildTableCell("O(1)", color: AppTheme.accentGreen),
+                        _buildTableCell("O(N) (Need prev)", color: Colors.redAccent),
+                        _buildTableCell("O(1) with tail ptr", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Traversal Direction" : "ট্রাভার্সাল দিক", isBold: true),
+                        _buildTableCell("Bi-directional", color: AppTheme.accentNeonCyan),
+                        _buildTableCell("Unidirectional (next)", color: AppTheme.accentAmber),
+                        _buildTableCell("Bi-directional (prev/next)", color: AppTheme.accentNeonCyan),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Pointer Space Overhead" : "অতিরিক্ত পয়েন্টার মেমোরি", isBold: true),
+                        _buildTableCell("0 Extra Pointers", color: AppTheme.accentGreen),
+                        _buildTableCell("1 Pointer (next)", color: AppTheme.accentAmber),
+                        _buildTableCell("2 Pointers (prev, next)", color: Colors.purpleAccent),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTableHeaderCell(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Text(
+        text,
+        style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
+      ),
+    );
+  }
+
+  Widget _buildTableCell(String text, {bool isBold = false, Color color = Colors.white70}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: isBold ? Colors.white : color,
+          fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+          fontSize: 12,
         ),
       ),
     );
