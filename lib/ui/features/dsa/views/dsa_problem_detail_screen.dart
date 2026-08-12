@@ -9,6 +9,15 @@ import 'visualizers/debug_array_step.dart';
 import 'visualizers/min_max_animated_visualizer.dart';
 import 'visualizers/min_max_execution_debugger.dart';
 import 'visualizers/min_max_practice_quiz.dart';
+import 'visualizers/reverse_array_animated_visualizer.dart';
+import 'visualizers/reverse_array_execution_debugger.dart';
+import 'visualizers/reverse_array_practice_quiz.dart';
+import 'visualizers/matrix_transpose_animated_visualizer.dart';
+import 'visualizers/matrix_transpose_execution_debugger.dart';
+import 'visualizers/matrix_transpose_practice_quiz.dart';
+import 'visualizers/tensor_sum_animated_visualizer.dart';
+import 'visualizers/tensor_sum_execution_debugger.dart';
+import 'visualizers/tensor_sum_practice_quiz.dart';
 
 class DsaProblemDetailScreen extends StatefulWidget {
   final DsaProblem problem;
@@ -275,6 +284,30 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "arr-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseArrayAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "arr-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MatrixTransposeAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "arr-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: TensorSumAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -382,6 +415,30 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "arr-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseArrayExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "arr-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MatrixTransposeExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "arr-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: TensorSumExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -444,6 +501,30 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         padding: EdgeInsets.all(hPadding),
         child: SingleChildScrollView(
           child: MinMaxPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "arr-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReverseArrayPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "arr-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: MatrixTransposePracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "arr-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: TensorSumPracticeQuiz(isEnglish: _isEnglish),
         ),
       );
     }
