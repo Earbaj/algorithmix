@@ -295,7 +295,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
         p.title.contains("Minimum Size Subarray Sum") ||
         p.title.contains("Max Consecutive Ones III") ||
         p.title.contains("Fruit Into Baskets") ||
-        p.title.contains("Subarray Product Less Than K");
+        p.title.contains("Subarray Product Less Than K") ||
+        p.title.contains("Get Equal Substrings Within Budget");
 
     return InkWell(
       onTap: () {
@@ -327,6 +328,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
           Navigator.of(context).pushNamed(AppRoutes.fruitIntoBasketsDetail);
         } else if (p.title.contains("Subarray Product Less Than K")) {
           Navigator.of(context).pushNamed(AppRoutes.subarrayProductLessThanKDetail);
+        } else if (p.title.contains("Get Equal Substrings Within Budget")) {
+          Navigator.of(context).pushNamed(AppRoutes.getEqualSubstringsWithinBudgetDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),
