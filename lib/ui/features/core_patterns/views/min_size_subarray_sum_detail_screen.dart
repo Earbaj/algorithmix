@@ -325,7 +325,7 @@ class _MinSizeSubarraySumDetailScreenState
 
     for (int r = 0; r <= _practiceRight; r++) {
       sum += _nums[r];
-      while (sum >= target) {
+      while (sum >= _target) {
         if (r == _practiceRight) expectedShrink = true;
         int len = r - l + 1;
         if (len < minL) {
