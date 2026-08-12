@@ -2021,7 +2021,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
           tabs: [
             Tab(text: _isEnglish ? '📘 Problem Description' : '📘 সমস্যা বিবরণী'),
             Tab(text: _isEnglish ? '⚡ Step Visualizer' : '⚡ স্টেপ ভিজ্যুয়ালাইজার'),
-            Tab(text: _isEnglish ? '💻 Multi-Language Code' : '💻 সমাধান কোড'),
+            Tab(text: _isEnglish ? '💻 Solution Code' : '💻 সমাধান কোড'),
             Tab(text: _isEnglish ? '💡 Practice & Test' : '💡 প্র্যাকটিস ও টেস্ট'),
           ],
         ),
@@ -2147,8 +2147,6 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
             if (isMobile)
               Column(
                 children: [
-                  _buildCodeSnippetWithHighlight(_currentCodeLines, step.activeLineIndex),
-                  const SizedBox(height: 16),
                   _buildVisualizerBox(step),
                 ],
               )
@@ -2156,8 +2154,6 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(child: _buildCodeSnippetWithHighlight(_currentCodeLines, step.activeLineIndex)),
-                  const SizedBox(width: 16),
                   Expanded(child: _buildVisualizerBox(step)),
                 ],
               ),
@@ -2370,7 +2366,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
           // Inspector Header Info
           if (step.minVal != null || step.maxVal != null) ...[
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 if (step.minVal != null)
                   Text(
@@ -2384,7 +2380,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
                   ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 10),
           ],
 
           // Dedicated Trie Canvas (tr-1, tr-2, tr-3, tr-4)
@@ -2588,6 +2584,7 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
                   return Row(
                     children: [
                       Container(
+                        margin: EdgeInsets.only(right: 10),
                         width: isLinkedList ? 58 : 52,
                         height: 65,
                         decoration: BoxDecoration(
