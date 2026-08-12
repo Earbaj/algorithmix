@@ -78,7 +78,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           tabAlignment: TabAlignment.start,
           padding: EdgeInsets.zero,
           tabs: [
-            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
+            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? 'Basic Problems' : 'বেসিক প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
@@ -149,6 +149,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
               _buildLinkedListComplexitySection(),
             ] else if (widget.topic.id == 203) ...[
               _buildStackComplexitySection(),
+            ] else if (widget.topic.id == 204) ...[
+              _buildQueueComplexitySection(),
             ] else ...[
               Container(
                 padding: const EdgeInsets.all(18),
@@ -192,8 +194,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             // Core Characteristics
             Text(
               _isEnglish
-                  ? (widget.topic.id == 202 ? "🔑 Core Characteristics & Pointer Mechanics" : (widget.topic.id == 203 ? "🔑 Core Characteristics & LIFO Mechanism" : "🔑 Core Characteristics & Multi-Dimensional Layouts"))
-                  : (widget.topic.id == 202 ? "🔑 মূল বৈশিষ্ট্য ও পয়েন্টার মেকানিক্স" : (widget.topic.id == 203 ? "🔑 মূল বৈশিষ্ট্য ও LIFO মেকানিজম" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি লেআউট")),
+                  ? (widget.topic.id == 202 ? "🔑 Core Characteristics & Pointer Mechanics" : (widget.topic.id == 203 ? "🔑 Core Characteristics & LIFO Mechanism" : (widget.topic.id == 204 ? "🔑 Core Characteristics & FIFO Pipeline" : "🔑 Core Characteristics & Multi-Dimensional Layouts")))
+                  : (widget.topic.id == 202 ? "🔑 মূল বৈশিষ্ট্য ও পয়েন্টার মেকানিক্স" : (widget.topic.id == 203 ? "🔑 মূল বৈশিষ্ট্য ও LIFO মেকানিজম" : (widget.topic.id == 204 ? "🔑 মূল বৈশিষ্ট্য ও FIFO পাইপলাইন" : "🔑 মূল বৈশিষ্ট্য ও মেমোরি লেআউট"))),
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -220,8 +222,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             // Multi-Dimension & Language Code Switcher
             Text(
               _isEnglish
-                  ? (widget.topic.id == 202 ? "💻 Node Data Structures (Singly & Doubly Nodes)" : (widget.topic.id == 203 ? "💻 Stack Implementations (Array & Monotonic)" : "💻 Code Examples (1D, 2D Grid & 3D Cube)"))
-                  : (widget.topic.id == 202 ? "💻 নোড ডেটা স্ট্রাকচার (Singly ও Doubly নোড)" : (widget.topic.id == 203 ? "💻 স্ট্যাক ইমপ্লিমেন্টেশন (অ্যারে ও মনোটোনিক)" : "💻 কোড উদাহরণ (১D, ২D ম্যাট্রিক্স ও ৩D কিউব)")),
+                  ? (widget.topic.id == 202 ? "💻 Node Data Structures (Singly & Doubly Nodes)" : (widget.topic.id == 203 ? "💻 Stack Implementations (Array & Monotonic)" : (widget.topic.id == 204 ? "💻 Queue & Deque Implementations" : "💻 Code Examples (1D, 2D Grid & 3D Cube)")))
+                  : (widget.topic.id == 202 ? "💻 নোড ডেটা স্ট্রাকচার (Singly ও Doubly নোড)" : (widget.topic.id == 203 ? "💻 স্ট্যাক ইমপ্লিমেন্টেশন (অ্যারে ও মনোটোনিক)" : (widget.topic.id == 204 ? "💻 কিউ ও Deque ইমপ্লিমেন্টেশন" : "💻 কোড উদাহরণ (১D, ২D ম্যাট্রিক্স ও ৩D কিউব)"))),
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 12),
@@ -570,6 +572,129 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                         _buildTableCell(_isEnglish ? "Recursion, Call Stack, Undo" : "কল স্ট্যাক, রিকার্শন, ব্র্যাকেট", color: AppTheme.accentGreen),
                         _buildTableCell(_isEnglish ? "BFS, Task Scheduling, Print Buffer" : "BFS গ্রাফ, প্রসেস শিডিউলিং", color: AppTheme.accentNeonCyan),
                         _buildTableCell(_isEnglish ? "Direct Lookup Tables" : "ডাইরেক্ট লুকআপ টেবিল", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQueueComplexitySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.swap_horizontal_circle_outlined, color: AppTheme.accentAmber, size: 22),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Queue (FIFO) & Deque Operations Complexity" : "কিউ (FIFO) ও Deque অপারেশনস জটিলতা",
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 16),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildComplexityBadge(_isEnglish ? "Enqueue / Dequeue" : "এনকিউ / ডিকিউ", "O(1)", AppTheme.accentGreen),
+                  _buildComplexityBadge(_isEnglish ? "Front / Peek" : "ফ্রন্ট (Front) দেখা", "O(1)", AppTheme.accentNeonCyan),
+                  _buildComplexityBadge(_isEnglish ? "Search Element" : "এলিমেন্ট খোজা", "O(N)", AppTheme.accentAmber),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Comparison Table Card (Queue vs Deque vs Stack vs Array)
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF1E293B)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.table_chart_outlined, color: AppTheme.accentAmber, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    _isEnglish ? "Queue (FIFO) vs Deque vs Stack (LIFO) Comparison" : "কিউ (FIFO) বনাম Deque বনাম স্ট্যাক (LIFO) তুলনা",
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Table(
+                  defaultColumnWidth: const IntrinsicColumnWidth(),
+                  border: TableBorder.all(color: const Color(0xFF1E293B), width: 1, borderRadius: BorderRadius.circular(8)),
+                  children: [
+                    TableRow(
+                      decoration: const BoxDecoration(color: Color(0xFF1E293B)),
+                      children: [
+                        _buildTableHeaderCell(_isEnglish ? "Property / Operation" : "বৈশিষ্ট্য / অপারেশন"),
+                        _buildTableHeaderCell("Queue (FIFO)"),
+                        _buildTableHeaderCell("Deque (Double-Ended)"),
+                        _buildTableHeaderCell("Stack (LIFO)"),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Access Principle" : "এক্সেস নীতি", isBold: true),
+                        _buildTableCell(_isEnglish ? "FIFO (First In First Out)" : "FIFO (ফার্স্ট-ইন ফার্স্ট-আউট)", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Double-Ended (Front & Rear)" : "উভয় প্রান্ত (Front ও Rear)", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "LIFO (Last In First Out)" : "LIFO (লাস্ট-ইন ফার্স্ট-আউট)", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Insertion Point" : "এলিমেন্ট যোগ করার স্থান", isBold: true),
+                        _buildTableCell(_isEnglish ? "REAR end only O(1)" : "কেবল REAR প্রান্তে O(1)", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Both Front & Rear O(1)" : "Front ও Rear উভয়ে O(1)", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "TOP end only O(1)" : "কেবল TOP প্রান্তে O(1)", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Deletion Point" : "এলিমেন্ট মোছার স্থান", isBold: true),
+                        _buildTableCell(_isEnglish ? "FRONT head only O(1)" : "কেবল FRONT প্রান্তে O(1)", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Both Front & Rear O(1)" : "Front ও Rear উভয়ে O(1)", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "TOP end only O(1)" : "কেবল TOP প্রান্তে O(1)", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Primary Use Cases" : "প্রধান ব্যবহার ক্ষেত্র", isBold: true),
+                        _buildTableCell(_isEnglish ? "BFS, CPU Task Scheduling" : "BFS গ্রাফ, প্রসেস শিডিউলিং", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Sliding Window Max, Palindromes" : "স্লাইডিং উইন্ডো, প্যালেইনড্রোম", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "Recursion, Call Stack, Undo" : "কল স্ট্যাক, রিকার্শন, ব্র্যাকেট", color: AppTheme.accentGreen),
                       ],
                     ),
                   ],
