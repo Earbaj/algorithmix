@@ -294,7 +294,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
         p.title.contains("Longest Repeating Character Replacement") ||
         p.title.contains("Minimum Size Subarray Sum") ||
         p.title.contains("Max Consecutive Ones III") ||
-        p.title.contains("Fruit Into Baskets");
+        p.title.contains("Fruit Into Baskets") ||
+        p.title.contains("Subarray Product Less Than K");
 
     return InkWell(
       onTap: () {
@@ -324,6 +325,8 @@ int minSubArrayLen(int target, vector<int>& nums) {
           Navigator.of(context).pushNamed(AppRoutes.maxConsecutiveOnesIIIDetail);
         } else if (p.title.contains("Fruit Into Baskets")) {
           Navigator.of(context).pushNamed(AppRoutes.fruitIntoBasketsDetail);
+        } else if (p.title.contains("Subarray Product Less Than K")) {
+          Navigator.of(context).pushNamed(AppRoutes.subarrayProductLessThanKDetail);
         }
       },
       borderRadius: BorderRadius.circular(14),

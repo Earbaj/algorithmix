@@ -57,6 +57,7 @@ import 'package:algorithmix/ui/features/core_patterns/views/longest_repeating_re
 import 'package:algorithmix/ui/features/core_patterns/views/min_size_subarray_sum_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/max_consecutive_ones_iii_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/fruit_into_baskets_detail_screen.dart';
+import 'package:algorithmix/ui/features/core_patterns/views/subarray_product_less_than_k_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/time_space_complexity_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/asymptotic_notations_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/complexity_classes_detail_screen.dart';
@@ -152,6 +153,7 @@ class AppRoutes {
   static const String minSizeSubarraySumDetail = '/min-size-subarray-sum-detail';
   static const String maxConsecutiveOnesIIIDetail = '/max-consecutive-ones-iii-detail';
   static const String fruitIntoBasketsDetail = '/fruit-into-baskets-detail';
+  static const String subarrayProductLessThanKDetail = '/subarray-product-less-than-k-detail';
   static const String twoSumII = '/two-sum-ii';
   static const String validPalindrome = '/valid-palindrome';
   static const String reverseString = '/reverse-string';
@@ -241,6 +243,7 @@ class AppRoutes {
       minSizeSubarraySumDetail: (context) => const MinSizeSubarraySumDetailScreen(),
       maxConsecutiveOnesIIIDetail: (context) => const MaxConsecutiveOnesIIIDetailScreen(),
       fruitIntoBasketsDetail: (context) => const FruitIntoBasketsDetailScreen(),
+      subarrayProductLessThanKDetail: (context) => const SubarrayProductLessThanKDetailScreen(),
       twoSumII: (context) => const TwoSumIIDetailScreen(),
       validPalindrome: (context) => const ValidPalindromeDetailScreen(),
       reverseString: (context) => const ReverseStringDetailScreen(),
