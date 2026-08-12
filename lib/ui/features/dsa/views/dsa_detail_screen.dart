@@ -337,7 +337,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _isEnglish ? "📋 Fundamental Array Practice Problems" : "📋 বেসিক অ্যারে প্র্যাকটিস প্রবলেমস",
+              _isEnglish ? "Fundamental Array Practice Problems" : "বেসিক অ্যারে প্র্যাকটিস প্রবলেমস",
               style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 16),
@@ -393,16 +393,6 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
             children: [
               Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: widget.topic.themeColor.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
-                    ),
-                    child: Text(problem.category, style: TextStyle(fontSize: 10, color: widget.topic.themeColor, fontWeight: FontWeight.bold)),
-                  ),
-                  const SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       problem.title,
@@ -418,8 +408,18 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
               ),
               const SizedBox(height: 12),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: widget.topic.themeColor.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+                    ),
+                    child: Text(problem.category, style: TextStyle(fontSize: 10, color: widget.topic.themeColor, fontWeight: FontWeight.bold)),
+                  ),
+                  const SizedBox(width: 10),
                   Text(_isEnglish ? "View Solution & Code 🚀" : "সমাধান ও কোড দেখুন 🚀", style: TextStyle(color: widget.topic.themeColor, fontSize: 12, fontWeight: FontWeight.bold)),
                 ],
               ),
@@ -442,15 +442,9 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                const Icon(Icons.warning_amber_rounded, color: Color(0xFFEF4444), size: 24),
-                const SizedBox(width: 8),
-                Text(
-                  _isEnglish ? "⚠️ Common Array Mistakes & Pitfalls" : "⚠️ অ্যারের সাধারণ ভুলসমূহ",
-                  style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ],
+            Text(
+              _isEnglish ? "Common Array Mistakes & Pitfalls" : "অ্যারের সাধারণ ভুলসমূহ",
+              style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 16),
 
@@ -461,7 +455,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 decoration: BoxDecoration(
                   color: AppTheme.surfaceDark,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: const Color(0xFFEF4444).withOpacity(0.4)),
+                  border: Border.all(color: const Color(0xFF334155)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -479,18 +473,11 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 ),
               );
             }),
-            const SizedBox(height: 28),
-
+            const SizedBox(height: 14),
             // Step-by-Step Learning Roadmap
-            Row(
-              children: [
-                const Icon(Icons.alt_route_rounded, color: AppTheme.accentNeonCyan, size: 24),
-                const SizedBox(width: 8),
-                Text(
-                  _isEnglish ? "🎯 Step-by-Step Mastery Roadmap" : "🎯 রোডম্যাপ (ধাপে ধাপে শেখার উপায়)",
-                  style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ],
+            Text(
+              _isEnglish ? "Step-by-Step Mastery Roadmap" : "রোডম্যাপ (ধাপে ধাপে শেখার উপায়)",
+              style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: Colors.white),
             ),
             const SizedBox(height: 16),
 
@@ -506,18 +493,6 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: widget.topic.themeColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        step["step"]!,
-                        style: TextStyle(color: widget.topic.themeColor, fontWeight: FontWeight.bold, fontSize: 12),
-                      ),
-                    ),
-                    const SizedBox(width: 14),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
