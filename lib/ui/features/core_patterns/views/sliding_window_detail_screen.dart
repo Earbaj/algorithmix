@@ -40,18 +40,13 @@ class _SlidingWindowDetailScreenState extends State<SlidingWindowDetailScreen>
         centerTitle: true,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: TextButton.icon(
+            padding: const EdgeInsets.all(12),
+            child: TextButton(
               style: TextButton.styleFrom(
                 backgroundColor: AppTheme.accentPurple.withOpacity(0.2),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
-              icon: Icon(
-                Icons.language,
-                color: _isEnglish ? AppTheme.accentNeonCyan : AppTheme.accentPink,
-                size: 18,
-              ),
-              label: Text(
+              child: Text(
                 _isEnglish ? 'EN' : 'BN',
                 style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
@@ -359,34 +354,14 @@ int minSubArrayLen(int target, vector<int>& nums) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Text(
-                        p.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14),
-                      ),
-                      if (isClickable) ...[
-                        const SizedBox(width: 6),
-                        const Icon(Icons.open_in_new, color: AppTheme.accentNeonCyan, size: 14),
-                      ],
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: diffColor.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: diffColor),
-                  ),
-                  child: Text(p.difficulty, style: TextStyle(color: diffColor, fontSize: 10, fontWeight: FontWeight.bold)),
-                ),
-              ],
-            ),
+          Text(
+          p.title,
+          style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 14),
+          maxLines: 2,
+        ),
             const SizedBox(height: 6),
             Text(
               _isEnglish ? p.keyIdeaEn : p.keyIdeaBn,
