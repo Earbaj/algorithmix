@@ -88,17 +88,12 @@ class _AmortizedComplexityDetailScreenState
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: TextButton.icon(
+            child: TextButton(
               style: TextButton.styleFrom(
                 backgroundColor: AppTheme.accentPurple.withOpacity(0.2),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              icon: Icon(
-                Icons.language,
-                color: _isEnglish ? AppTheme.accentNeonCyan : AppTheme.accentPink,
-                size: Responsive.sp(context, 18),
-              ),
-              label: Text(
+              child: Text(
                 _isEnglish ? 'EN' : 'BN',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,

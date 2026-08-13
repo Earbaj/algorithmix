@@ -480,17 +480,12 @@ class _ReverseSinglyLinkedListExecutionDebuggerState
             onPressed: _currentStepIndex > 0 ? _prevStep : null,
             tooltip: widget.isEnglish ? "Previous Line" : "আগের লাইন",
           ),
-          ElevatedButton.icon(
-            onPressed: _togglePlay,
+          IconButton(
             icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-            label: Text(_isPlaying
+            onPressed: _togglePlay,
+            tooltip: _isPlaying
                 ? (widget.isEnglish ? "Pause" : "পজ করুন")
-                : (widget.isEnglish ? "Auto Debug" : "অটো ডিবাগ")),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.accentPink,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
+                : (widget.isEnglish ? "Auto Debug" : "অটো ডিবাগ"),
           ),
           IconButton(
             icon: const Icon(Icons.skip_next, color: Colors.white),
