@@ -188,8 +188,8 @@ class _LinkedListVisualizerWidgetState extends State<LinkedListVisualizerWidget>
                       // Node Card
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        width: 80,
-                        height: 60,
+                        width: 75,
+                        height: 55,
                         decoration: BoxDecoration(
                           color: isHl ? AppTheme.accentAmber : AppTheme.surfaceDark,
                           borderRadius: BorderRadius.circular(14),

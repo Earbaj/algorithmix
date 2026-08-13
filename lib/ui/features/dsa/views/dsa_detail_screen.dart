@@ -1463,7 +1463,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                     child: Text(problem.category, style: TextStyle(fontSize: 10, color: widget.topic.themeColor, fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(width: 10),
-                  Text(_isEnglish ? "View Solution & Code 🚀" : "সমাধান ও কোড দেখুন 🚀", style: TextStyle(color: widget.topic.themeColor, fontSize: 12, fontWeight: FontWeight.bold)),
+                  Text(_isEnglish ? "View Details 🚀" : "ডিটেইলস দেখুন 🚀", style: TextStyle(color: widget.topic.themeColor, fontSize: 12, fontWeight: FontWeight.bold)),
                 ],
               ),
             ],
