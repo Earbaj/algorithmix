@@ -328,7 +328,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      _isEnglish ? "Linked List Time & Space Metrics" : "লিঙ্কড লিস্ট টাইম ও স্পেস মেট্রিক্স",
+                      _isEnglish ? "Linked List & Floyd's Fast/Slow Pointers Metrics" : "লিঙ্কড লিস্ট ও ফ্লয়েডস ফাস্ট/স্লো পয়েন্টার মেট্রিক্স",
                       style: TextStyle(
                         fontSize: Responsive.sp(context, 16),
                         fontWeight: FontWeight.bold,
@@ -339,20 +339,24 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                 ],
               ),
               const SizedBox(height: 14),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildComplexityBadge(_isEnglish ? "Head Insert/Delete" : "হেড ইনসার্ট/ডিলেট", "O(1)", AppTheme.accentGreen),
-                  _buildComplexityBadge(_isEnglish ? "Search / Access" : "সার্চ / এক্সেস", "O(N)", AppTheme.accentAmber),
-                  _buildComplexityBadge(_isEnglish ? "Node Space Overhead" : "পয়েন্টার ওভারহেড", "O(1) per node", AppTheme.accentNeonCyan),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildComplexityBadge(_isEnglish ? "Head Insert/Delete" : "হেড ইনসার্ট/ডিলেট", "O(1)", AppTheme.accentGreen),
+                    const SizedBox(width: 10),
+                    _buildComplexityBadge(_isEnglish ? "Floyd's Cycle Detect" : "ফ্লয়েড সাইকেল ডিটেক্ট", "O(N) Time | O(1) Space", AppTheme.accentNeonCyan),
+                    const SizedBox(width: 10),
+                    _buildComplexityBadge(_isEnglish ? "Fast/Slow Middle Node" : "মিডল নোড নির্ণয়", "O(N) Time | O(1) Space", AppTheme.accentPurple),
+                  ],
+                ),
               ),
             ],
           ),
         ),
         const SizedBox(height: 16),
 
-        // Comparison Table Card (Array vs Singly vs Doubly)
+        // Comparison Table Card (Array vs Singly vs Doubly vs Fast & Slow Pointers)
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -368,7 +372,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                   const Icon(Icons.table_chart_outlined, color: AppTheme.accentPurple, size: 20),
                   const SizedBox(width: 8),
                   Text(
-                    _isEnglish ? "Array vs Singly vs Doubly Linked List" : "অ্যারে বনাম Singly বনাম Doubly লিঙ্কড লিস্ট তুলনা",
+                    _isEnglish ? "Array vs Singly LL vs Fast & Slow Pointers (Floyd's)" : "অ্যারে বনাম Singly LL বনাম ফাস্ট ও স্লো পয়েন্টার তুলনা",
                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
                   ),
                 ],
@@ -386,55 +390,31 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                         _buildTableHeaderCell(_isEnglish ? "Property / Operation" : "বৈশিষ্ট্য / অপারেশন"),
                         _buildTableHeaderCell("Array"),
                         _buildTableHeaderCell("Singly Linked List"),
-                        _buildTableHeaderCell("Doubly Linked List"),
+                        _buildTableHeaderCell("Fast & Slow Pointers (Floyd's)"),
                       ],
                     ),
                     TableRow(
                       children: [
-                        _buildTableCell(_isEnglish ? "Memory Allocation" : "মেমোরি সংস্থান", isBold: true),
-                        _buildTableCell(_isEnglish ? "Contiguous Block" : "পরপর মেমোরি ব্লক", color: AppTheme.accentGreen),
-                        _buildTableCell(_isEnglish ? "Non-contiguous Heap" : "আলাদা হিপ মেমোরি", color: AppTheme.accentAmber),
-                        _buildTableCell(_isEnglish ? "Non-contiguous Heap" : "আলাদা হিপ মেমোরি", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Cycle Detection Strategy" : "সাইকেল নির্ণয়ের কৌশল", isBold: true),
+                        _buildTableCell(_isEnglish ? "N/A (Fixed size)" : "এন/এ", color: AppTheme.textMuted),
+                        _buildTableCell(_isEnglish ? "O(N) Hash Set Space" : "হ্যাশ সেটে O(N) স্পেস", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "O(1) Memory Space (meet at cycle)" : "O(1) স্পেস (লুপে মিলিত হয়)", color: AppTheme.accentGreen),
                       ],
                     ),
                     TableRow(
                       children: [
-                        _buildTableCell(_isEnglish ? "Access by Index i" : "ইনডেক্স দিয়ে সরাসরি এক্সেস", isBold: true),
-                        _buildTableCell("O(1) Instant", color: AppTheme.accentGreen),
-                        _buildTableCell("O(N) Sequential", color: Colors.redAccent),
-                        _buildTableCell("O(N) Sequential", color: Colors.redAccent),
+                        _buildTableCell(_isEnglish ? "Middle Node Finding" : "মিডল নোড খোঁজার উপায়", isBold: true),
+                        _buildTableCell("O(1) Index [len/2]", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "2 Passes (Length count + Walk)" : "২বার ট্রাভার্সাল (দৈর্ঘ্য+ওয়াক)", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "1 Pass (slow=1 step, fast=2 steps)" : "১ পাস (slow ১ ধাপ, fast ২ ধাপ)", color: AppTheme.accentGreen),
                       ],
                     ),
                     TableRow(
                       children: [
-                        _buildTableCell(_isEnglish ? "Head Insert / Delete" : "শুরুতে ইনসার্ট / ডিলেট", isBold: true),
-                        _buildTableCell("O(N) (Shift all)", color: Colors.redAccent),
-                        _buildTableCell("O(1) Instant", color: AppTheme.accentGreen),
-                        _buildTableCell("O(1) Instant", color: AppTheme.accentGreen),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        _buildTableCell(_isEnglish ? "Tail Deletion" : "শেষে ডিলেট করা", isBold: true),
-                        _buildTableCell("O(1)", color: AppTheme.accentGreen),
-                        _buildTableCell("O(N) (Need prev)", color: Colors.redAccent),
-                        _buildTableCell("O(1) with tail ptr", color: AppTheme.accentGreen),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        _buildTableCell(_isEnglish ? "Traversal Direction" : "ট্রাভার্সাল দিক", isBold: true),
-                        _buildTableCell("Bi-directional", color: AppTheme.accentNeonCyan),
-                        _buildTableCell("Unidirectional (next)", color: AppTheme.accentAmber),
-                        _buildTableCell("Bi-directional (prev/next)", color: AppTheme.accentNeonCyan),
-                      ],
-                    ),
-                    TableRow(
-                      children: [
-                        _buildTableCell(_isEnglish ? "Pointer Space Overhead" : "অতিরিক্ত পয়েন্টার মেমোরি", isBold: true),
+                        _buildTableCell(_isEnglish ? "Memory Space Overhead" : "অতিরিক্ত মেমোরি খরচ", isBold: true),
                         _buildTableCell("0 Extra Pointers", color: AppTheme.accentGreen),
-                        _buildTableCell("1 Pointer (next)", color: AppTheme.accentAmber),
-                        _buildTableCell("2 Pointers (prev, next)", color: Colors.purpleAccent),
+                        _buildTableCell("O(N) Hash Set / Nodes", color: Colors.redAccent),
+                        _buildTableCell("O(1) Auxiliary (2 pointers)", color: AppTheme.accentGreen),
                       ],
                     ),
                   ],
