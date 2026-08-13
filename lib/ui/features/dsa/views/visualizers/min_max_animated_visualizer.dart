@@ -370,17 +370,12 @@ class _MinMaxAnimatedVisualizerState extends State<MinMaxAnimatedVisualizer> {
             onPressed: _currentStepIndex > 0 ? _prevStep : null,
             tooltip: widget.isEnglish ? "Previous Step" : "আগের স্টেপ",
           ),
-          ElevatedButton.icon(
-            onPressed: _togglePlay,
+          IconButton(
             icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-            label: Text(_isPlaying
+            onPressed: _togglePlay,
+            tooltip: _isPlaying
                 ? (widget.isEnglish ? "Pause" : "পজ করুন")
-                : (widget.isEnglish ? "Auto Play" : "অটো প্লে")),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.accentNeonCyan,
-              foregroundColor: AppTheme.primaryDark,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
+                : (widget.isEnglish ? "Auto Play" : "অটো প্লে"),
           ),
           IconButton(
             icon: const Icon(Icons.skip_next, color: Colors.white),

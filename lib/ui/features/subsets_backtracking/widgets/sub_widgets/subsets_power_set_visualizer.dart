@@ -1,0 +1,363 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'package:algorithmix/ui/core/utils/responsive.dart';
+
+class SubsetsStep {
+  final List<int> currentPath;
+  final int activeIndex;
+  final int activeLineIndex;
+  final List<List<int>> generatedSubsets;
+  final String explanationEn;
+  final String explanationBn;
+
+  const SubsetsStep({
+    required this.currentPath,
+    required this.activeIndex,
+    required this.activeLineIndex,
+    required this.generatedSubsets,
+    required this.explanationEn,
+    required this.explanationBn,
+  });
+}
+
+class SubsetsPowerSetVisualizer extends StatefulWidget {
+  final bool isEnglish;
+
+  const SubsetsPowerSetVisualizer({super.key, required this.isEnglish});
+
+  @override
+  State<SubsetsPowerSetVisualizer> createState() => _SubsetsPowerSetVisualizerState();
+}
+
+class _SubsetsPowerSetVisualizerState extends State<SubsetsPowerSetVisualizer> {
+  int _currentStepIndex = 0;
+  bool _isPlaying = false;
+  Timer? _timer;
+
+  final List<String> _codeLines = const [
+    "void backtrack(int start, vector<int>& nums, vector<int>& curr, vector<vector<int>>& res) {",
+    "    res.push_back(curr); // Add subset candidate to result",
+    "    for (int i = start; i < nums.size(); i++) {",
+    "        curr.push_back(nums[i]);            // 1. Make Choice",
+    "        backtrack(i + 1, nums, curr, res);   // 2. Recurse next index",
+    "        curr.pop_back();                    // 3. Undo Choice (Backtrack!)",
+    "    }",
+    "}",
+  ];
+
+  final List<SubsetsStep> _steps = const [
+    SubsetsStep(
+      currentPath: [],
+      activeIndex: 0,
+      activeLineIndex: 1,
+      generatedSubsets: [[]],
+      explanationEn: "Line 2: Empty subset [] pushed to result list. Result = [[]].",
+      explanationBn: "লাইন ২: ফাঁকা সাবসেট [] রেজাল্ট লিস্টে যোগ করা হলো। রেজাল্ট = [[]] ।",
+    ),
+    SubsetsStep(
+      currentPath: [1],
+      activeIndex: 0,
+      activeLineIndex: 3,
+      generatedSubsets: [[]],
+      explanationEn: "Line 4: Choose nums[0] = 1 -> curr = [1]. Recurse backtrack(1).",
+      explanationBn: "লাইন ৪: nums[0] = 1 নির্বাচন করা হলো -> curr = [1]।",
+    ),
+    SubsetsStep(
+      currentPath: [1],
+      activeIndex: 0,
+      activeLineIndex: 1,
+      generatedSubsets: [[], [1]],
+      explanationEn: "Line 2: Subset [1] pushed to result list. Result = [[], [1]].",
+      explanationBn: "লাইন ২: সাবসেট [1] রেজাল্ট লিস্টে যোগ করা হলো। রেজাল্ট = [[], [1]]।",
+    ),
+    SubsetsStep(
+      currentPath: [1, 2],
+      activeIndex: 1,
+      activeLineIndex: 3,
+      generatedSubsets: [[], [1]],
+      explanationEn: "Line 4: Choose nums[1] = 2 -> curr = [1, 2]. Recurse backtrack(2).",
+      explanationBn: "লাইন ৪: nums[1] = 2 নির্বাচন করা হলো -> curr = [1, 2]।",
+    ),
+    SubsetsStep(
+      currentPath: [1, 2],
+      activeIndex: 1,
+      activeLineIndex: 1,
+      generatedSubsets: [[], [1], [1, 2]],
+      explanationEn: "Line 2: Subset [1, 2] pushed to result list. Result = [[], [1], [1, 2]].",
+      explanationBn: "লাইন ২: সাবসেট [1, 2] রেজাল্ট লিস্টে যোগ করা হলো।",
+    ),
+    SubsetsStep(
+      currentPath: [1],
+      activeIndex: 1,
+      activeLineIndex: 5,
+      generatedSubsets: [[], [1], [1, 2]],
+      explanationEn: "Line 6: Undo Choice! curr.pop_back() removes 2 -> curr = [1].",
+      explanationBn: "লাইন ৬: চয়েস বাতিল! curr.pop_back() দিয়ে 2 রিমুভ -> curr = [1]।",
+    ),
+    SubsetsStep(
+      currentPath: [2],
+      activeIndex: 1,
+      activeLineIndex: 3,
+      generatedSubsets: [[], [1], [1, 2], [2]],
+      explanationEn: "Line 4: Backtrack complete to root loop. Choose nums[1] = 2 -> curr = [2].",
+      explanationBn: "লাইন ৪: ব্যাকট্র্যাক শেষে লুপে ২ নির্বাচন -> curr = [2]।",
+    ),
+    SubsetsStep(
+      currentPath: [],
+      activeIndex: 2,
+      activeLineIndex: 7,
+      generatedSubsets: [[], [1], [1, 2], [2]],
+      explanationEn: "🎉 Line 8: Power Set Complete! All 2^N subsets generated!",
+      explanationBn: "🎉 লাইন ৮: পাওয়ার সেট সম্পন্ন! সবকটি সাবসেট তৈরি শেষ!",
+    ),
+  ];
+
+  void _togglePlay() {
+    setState(() => _isPlaying = !_isPlaying);
+    if (_isPlaying) {
+      _timer = Timer.periodic(const Duration(milliseconds: 1400), (timer) {
+        if (_currentStepIndex < _steps.length - 1) {
+          setState(() => _currentStepIndex++);
+        } else {
+          _timer?.cancel();
+          setState(() => _isPlaying = false);
+        }
+      });
+    } else {
+      _timer?.cancel();
+    }
+  }
+
+  void _nextStep() {
+    if (_currentStepIndex < _steps.length - 1) {
+      setState(() => _currentStepIndex++);
+    }
+  }
+
+  void _prevStep() {
+    if (_currentStepIndex > 0) {
+      setState(() => _currentStepIndex--);
+    }
+  }
+
+  void _reset() {
+    _timer?.cancel();
+    setState(() {
+      _isPlaying = false;
+      _currentStepIndex = 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final step = _steps[_currentStepIndex];
+    final isMobile = Responsive.isMobile(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: step.activeLineIndex == 7 ? AppTheme.accentGreen.withOpacity(0.15) : AppTheme.accentNeonCyan.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: step.activeLineIndex == 7 ? AppTheme.accentGreen : AppTheme.accentNeonCyan),
+          ),
+          child: Text(
+            widget.isEnglish ? step.explanationEn : step.explanationBn,
+            style: TextStyle(
+              color: step.activeLineIndex == 7 ? AppTheme.accentGreen : AppTheme.accentNeonCyan,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        if (isMobile)
+          Column(
+            children: [
+              _buildCodeSnippetWithHighlight(_codeLines, step.activeLineIndex),
+              const SizedBox(height: 16),
+              _buildCanvas(step),
+            ],
+          )
+        else
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(child: _buildCodeSnippetWithHighlight(_codeLines, step.activeLineIndex)),
+              const SizedBox(width: 16),
+              Expanded(child: _buildCanvas(step)),
+            ],
+          ),
+
+        const SizedBox(height: 20),
+        _buildControlBar(),
+      ],
+    );
+  }
+
+  Widget _buildCodeSnippetWithHighlight(List<String> codeLines, int activeIndex) {
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(codeLines.length, (idx) {
+          final isHighlighted = idx == activeIndex;
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 250),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            margin: const EdgeInsets.symmetric(vertical: 1),
+            decoration: BoxDecoration(
+              color: isHighlighted ? AppTheme.accentPurple.withOpacity(0.25) : Colors.transparent,
+              borderRadius: BorderRadius.circular(6),
+              border: isHighlighted ? Border.all(color: AppTheme.accentPurple) : null,
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 24,
+                  child: Text(
+                    "${idx + 1}",
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      fontSize: 11,
+                      color: isHighlighted ? AppTheme.accentNeonCyan : const Color(0xFF64748B),
+                      fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                ),
+                if (isHighlighted)
+                  const Padding(
+                    padding: EdgeInsets.only(right: 6),
+                    child: Icon(Icons.arrow_right_alt, color: AppTheme.accentNeonCyan, size: 14),
+                  )
+                else
+                  const SizedBox(width: 20),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      codeLines[idx],
+                      style: TextStyle(
+                        fontFamily: 'monospace',
+                        fontSize: 12,
+                        color: isHighlighted ? Colors.white : const Color(0xFF38BDF8),
+                        fontWeight: isHighlighted ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildCanvas(SubsetsStep step) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: const Color(0xFF090D16),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF1E293B)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Current Decision Path [curr]: [${step.currentPath.join(', ')}]", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 13)),
+              Text("Subsets Count: [${step.generatedSubsets.length}]", style: const TextStyle(color: AppTheme.accentAmber, fontWeight: FontWeight.bold, fontSize: 13)),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const Text("Generated Power Set Output:", style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceDark,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: AppTheme.accentPurple.withOpacity(0.4)),
+            ),
+            child: Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: step.generatedSubsets.map((sub) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentPurple.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppTheme.accentPurple),
+                  ),
+                  child: Text("[${sub.join(', ')}]", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildControlBar() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppTheme.primaryDark,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppTheme.textMuted.withOpacity(0.4)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.skip_previous, color: Colors.white),
+                onPressed: _currentStepIndex > 0 ? _prevStep : null,
+              ),
+              IconButton(
+                icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow, color: AppTheme.accentNeonCyan),
+                onPressed: _togglePlay,
+              ),
+              IconButton(
+                icon: const Icon(Icons.skip_next, color: Colors.white),
+                onPressed: _currentStepIndex < _steps.length - 1 ? _nextStep : null,
+              ),
+              IconButton(
+                icon: const Icon(Icons.refresh, color: AppTheme.accentNeonCyan),
+                onPressed: _reset,
+              ),
+            ],
+          ),
+          Text(
+            widget.isEnglish
+                ? "Step ${_currentStepIndex + 1} of ${_steps.length}"
+                : "ধাপ ${_currentStepIndex + 1} / ${_steps.length}",
+            style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+}
