@@ -2,131 +2,34 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
+import 'cycle_detection_visualizer.dart';
 
-class FastSlowStep {
-  final int slow;
-  final int fast;
-  final int activeLineIndex;
-  final List<int> nodeValues;
-  final bool hasCollision;
-  final String explanationEn;
-  final String explanationBn;
-
-  const FastSlowStep({
-    required this.slow,
-    required this.fast,
-    required this.activeLineIndex,
-    required this.nodeValues,
-    this.hasCollision = false,
-    required this.explanationEn,
-    required this.explanationBn,
-  });
-}
-
-class FastSlowPointersVisualizer extends StatefulWidget {
+class MiddleNodeVisualizer extends StatefulWidget {
   final bool isEnglish;
 
-  const FastSlowPointersVisualizer({super.key, required this.isEnglish});
+  const MiddleNodeVisualizer({super.key, required this.isEnglish});
 
   @override
-  State<FastSlowPointersVisualizer> createState() => _FastSlowPointersVisualizerState();
+  State<MiddleNodeVisualizer> createState() => _MiddleNodeVisualizerState();
 }
 
-class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer> {
-  int _selectedTemplateIndex = 0;
+class _MiddleNodeVisualizerState extends State<MiddleNodeVisualizer> {
   int _currentStepIndex = 0;
   bool _isPlaying = false;
   Timer? _timer;
 
-  final List<List<String>> _codeTemplates = const [
-    // Template 1: Linked List Cycle Detection
-    [
-      "bool hasCycle(ListNode *head) {",
-      "    if (!head || !head->next) return false;",
-      "    ListNode *slow = head, *fast = head;",
-      "    while (fast != nullptr && fast->next != nullptr) {",
-      "        slow = slow->next;       // 1 step",
-      "        fast = fast->next->next; // 2 steps",
-      "        if (slow == fast) return true; // COLLISION!",
-      "    }",
-      "    return false;",
-      "}",
-    ],
-    // Template 2: Middle of the Linked List
-    [
-      "ListNode* middleNode(ListNode* head) {",
-      "    ListNode *slow = head, *fast = head;",
-      "    while (fast != nullptr && fast->next != nullptr) {",
-      "        slow = slow->next;       // 1 step",
-      "        fast = fast->next->next; // 2 steps",
-      "    }",
-      "    return slow; // Middle Node!",
-      "}",
-    ],
-    // Template 3: Cycle Entry Node Discovery (LeetCode 142)
-    [
-      "ListNode *detectCycle(ListNode *head) {",
-      "    ListNode *slow = head, *fast = head;",
-      "    while (fast && fast->next) {",
-      "        slow = slow->next; fast = fast->next->next;",
-      "        if (slow == fast) {",
-      "            slow = head; // Reset slow to head",
-      "            while (slow != fast) {",
-      "                slow = slow->next; fast = fast->next; // 1 step each",
-      "            }",
-      "            return slow; // Cycle Entry Node!",
-      "        }",
-      "    }",
-      "    return nullptr;",
-      "}",
-    ],
+  final List<String> _codeLines = const [
+    "ListNode* middleNode(ListNode* head) {",
+    "    ListNode *slow = head, *fast = head;",
+    "    while (fast != nullptr && fast->next != nullptr) {",
+    "        slow = slow->next;       // 1 step",
+    "        fast = fast->next->next; // 2 steps",
+    "    }",
+    "    return slow; // Middle Node!",
+    "}",
   ];
 
-  final List<FastSlowStep> _template1Steps = const [
-    FastSlowStep(
-      slow: 0,
-      fast: 0,
-      activeLineIndex: 2,
-      nodeValues: [3, 2, 0, 4], // Cycle exists: 4 points back to index 1 (val 2)
-      explanationEn: "Line 3: Set slow = head (Node 3) and fast = head (Node 3). Cycle exists: 4 -> 2.",
-      explanationBn: "লাইন ৩: slow = head (নোড 3) এবং fast = head (নোড 3) সূচনা। লিঙ্কড লিস্টে ৩->২->০->৪->২ সাইকেল রয়েছে।",
-    ),
-    FastSlowStep(
-      slow: 0,
-      fast: 0,
-      activeLineIndex: 3,
-      nodeValues: [3, 2, 0, 4],
-      explanationEn: "Line 4: Check while (fast != null && fast->next != null) -> TRUE.",
-      explanationBn: "লাইন ৪: শর্ত চেক fast এবং fast->next নাল নয় -> সত্য।",
-    ),
-    FastSlowStep(
-      slow: 1,
-      fast: 2,
-      activeLineIndex: 4,
-      nodeValues: [3, 2, 0, 4],
-      explanationEn: "Line 5: Advance slow 1 step -> Node 2. Advance fast 2 steps -> Node 0.",
-      explanationBn: "লাইন ৫: slow ১ ধাপ এগিয়ে নোড 2 এ গেল। fast ২ ধাপ এগিয়ে নোড 0 এ গেল।",
-    ),
-    FastSlowStep(
-      slow: 2,
-      fast: 1,
-      activeLineIndex: 5,
-      nodeValues: [3, 2, 0, 4],
-      explanationEn: "Line 6: Advance slow 1 step -> Node 0. Advance fast 2 steps (4 -> 2) -> Node 2.",
-      explanationBn: "লাইন ৬: slow ১ ধাপ এগোলো (নোড 0)। fast সাইকেলের কারণে লাফ দিয়ে নোড 2 এ গেল।",
-    ),
-    FastSlowStep(
-      slow: 3,
-      fast: 3,
-      activeLineIndex: 6,
-      nodeValues: [3, 2, 0, 4],
-      hasCollision: true,
-      explanationEn: "🎉 Line 7: COLLISION DETECTED! slow == fast at Node 4! Return TRUE!",
-      explanationBn: "🎉 লাইন ৭: কোলাইশন শনাক্ত! Node 4 এ slow == fast! সাইকেল বিদ্যমান! Return TRUE!",
-    ),
-  ];
-
-  final List<FastSlowStep> _template2Steps = const [
+  final List<FastSlowStep> _steps = const [
     FastSlowStep(
       slow: 0,
       fast: 0,
@@ -162,41 +65,11 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
     ),
   ];
 
-  final List<FastSlowStep> _template3Steps = const [
-    FastSlowStep(
-      slow: 3,
-      fast: 3,
-      activeLineIndex: 4,
-      nodeValues: [3, 2, 0, 4],
-      explanationEn: "Line 5: Collision occurred at Node 4! Reset slow = head (Node 3). Keep fast at Node 4.",
-      explanationBn: "লাইন ৫: কোলাইশন নোড 4 এ ঘটেছে! slow = head (নোড 3) রিসেট করা হলো। fast কে নোড 4 এ রাখা হলো।",
-    ),
-    FastSlowStep(
-      slow: 1,
-      fast: 1,
-      activeLineIndex: 7,
-      nodeValues: [3, 2, 0, 4],
-      hasCollision: true,
-      explanationEn: "🎉 Line 8: Advance slow & fast 1 step together! They meet at Node 2! CYCLE ENTRY NODE = 2!",
-      explanationBn: "🎉 লাইন ৮: slow ও fast উভয়কেই ১ ধাপ করে চালানো হলো! নোড 2 এ তাদের মিলন ঘটল! সাইকেল শুরুর নোড = 2!",
-    ),
-  ];
-
-  List<FastSlowStep> get _currentSteps {
-    if (_selectedTemplateIndex == 1) return _template2Steps;
-    if (_selectedTemplateIndex == 2) return _template3Steps;
-    return _template1Steps;
-  }
-
-  List<String> get _currentCodeLines {
-    return _codeTemplates[_selectedTemplateIndex];
-  }
-
   void _togglePlay() {
     setState(() => _isPlaying = !_isPlaying);
     if (_isPlaying) {
       _timer = Timer.periodic(const Duration(milliseconds: 1400), (timer) {
-        if (_currentStepIndex < _currentSteps.length - 1) {
+        if (_currentStepIndex < _steps.length - 1) {
           setState(() => _currentStepIndex++);
         } else {
           _timer?.cancel();
@@ -209,7 +82,7 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
   }
 
   void _nextStep() {
-    if (_currentStepIndex < _currentSteps.length - 1) {
+    if (_currentStepIndex < _steps.length - 1) {
       setState(() => _currentStepIndex++);
     }
   }
@@ -236,26 +109,12 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
 
   @override
   Widget build(BuildContext context) {
-    final step = _currentSteps[_currentStepIndex];
+    final step = _steps[_currentStepIndex];
     final isMobile = Responsive.isMobile(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Template Selector Chips
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _buildTemplateChip(0, widget.isEnglish ? "Cycle Detection (Floyd)" : "সাইকেল ডিটেকশন"),
-              _buildTemplateChip(1, widget.isEnglish ? "Middle of Linked List" : "মিডল নোড নির্ণয়"),
-              _buildTemplateChip(2, widget.isEnglish ? "Find Cycle Entry Node" : "সাইকেল শুরুর নোড"),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Status Log Banner
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(14),
@@ -274,12 +133,10 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
           ),
         ),
         const SizedBox(height: 16),
-
-        // Code Snippet + Visualizer Box Layout
         if (isMobile)
           Column(
             children: [
-              _buildCodeSnippetWithHighlight(_currentCodeLines, step.activeLineIndex),
+              _buildCodeSnippetWithHighlight(_codeLines, step.activeLineIndex),
               const SizedBox(height: 16),
               _buildFastSlowCanvas(step),
             ],
@@ -288,44 +145,14 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: _buildCodeSnippetWithHighlight(_currentCodeLines, step.activeLineIndex)),
+              Expanded(child: _buildCodeSnippetWithHighlight(_codeLines, step.activeLineIndex)),
               const SizedBox(width: 16),
               Expanded(child: _buildFastSlowCanvas(step)),
             ],
           ),
-
         const SizedBox(height: 20),
-
-        // Controls Bar
         _buildControlBar(),
       ],
-    );
-  }
-
-  Widget _buildTemplateChip(int index, String label) {
-    final isSelected = _selectedTemplateIndex == index;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: ChoiceChip(
-        label: Text(label),
-        selected: isSelected,
-        selectedColor: AppTheme.accentPink,
-        backgroundColor: AppTheme.surfaceDark,
-        labelStyle: TextStyle(
-          color: isSelected ? Colors.white : AppTheme.textSecondary,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-        ),
-        onSelected: (selected) {
-          if (selected) {
-            _timer?.cancel();
-            setState(() {
-              _selectedTemplateIndex = index;
-              _currentStepIndex = 0;
-              _isPlaying = false;
-            });
-          }
-        },
-      ),
     );
   }
 
@@ -412,9 +239,7 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
             ],
           ),
           const SizedBox(height: 16),
-
-          // Linked List Node Pipeline
-          const Text("Linked List Nodes & Collision Tracker:", style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
+          const Text("Linked List Nodes & Middle Tracker:", style: TextStyle(color: AppTheme.textSecondary, fontSize: 12)),
           const SizedBox(height: 12),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -453,7 +278,7 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            isBoth ? "BOTH!" : (isSlow ? "SLOW" : (isFast ? "FAST" : "[$i]")),
+                            isBoth ? "BOTH!" : (isSlow ? "MID" : (isFast ? "FAST" : "[$i]")),
                             style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold, color: (isSlow || isFast) ? AppTheme.primaryDark : AppTheme.textMuted),
                           ),
                         ],
@@ -497,7 +322,7 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
               ),
               IconButton(
                 icon: const Icon(Icons.skip_next, color: Colors.white),
-                onPressed: _currentStepIndex < _currentSteps.length - 1 ? _nextStep : null,
+                onPressed: _currentStepIndex < _steps.length - 1 ? _nextStep : null,
               ),
               IconButton(
                 icon: const Icon(Icons.refresh, color: AppTheme.accentNeonCyan),
@@ -507,8 +332,8 @@ class _FastSlowPointersVisualizerState extends State<FastSlowPointersVisualizer>
           ),
           Text(
             widget.isEnglish
-                ? "Step ${_currentStepIndex + 1} of ${_currentSteps.length}"
-                : "ধাপ ${_currentStepIndex + 1} / ${_currentSteps.length}",
+                ? "Step ${_currentStepIndex + 1} of ${_steps.length}"
+                : "ধাপ ${_currentStepIndex + 1} / ${_steps.length}",
             style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
           ),
         ],

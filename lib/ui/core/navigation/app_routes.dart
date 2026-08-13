@@ -7,8 +7,8 @@ import 'package:algorithmix/ui/features/core_patterns/views/core_patterns_screen
 import 'package:algorithmix/ui/features/core_patterns/views/two_pointers_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/recursion_backtracking_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/sliding_window_detail_screen.dart';
-import 'package:algorithmix/ui/features/core_patterns/views/fast_slow_pointers_detail_screen.dart';
-import 'package:algorithmix/ui/features/core_patterns/views/merge_intervals_detail_screen.dart';
+import 'package:algorithmix/ui/features/fast_slow_pointers/views/fast_slow_pointers_detail_screen.dart';
+import 'package:algorithmix/ui/features/merge_intervals/views/merge_intervals_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/cyclic_sort_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/inplace_reversal_detail_screen.dart';
 import 'package:algorithmix/ui/features/core_patterns/views/tree_bfs_detail_screen.dart';

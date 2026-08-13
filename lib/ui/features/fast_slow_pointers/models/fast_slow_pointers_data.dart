@@ -39,7 +39,7 @@ class FastSlowPointersData {
     } else {
       return {
         "title": "Fast & Slow Pointers — সম্পূর্ণ গাইড (C++ ও FAANG ফোকাস)",
-        "summary": "Fast and Slow Pointers (কচ্ছপ ও খরগোশ অ্যালগরিদম) হলো দুটি পয়েন্টার ভিন্ন গতিতে (slow ১ ধাপ, fast ২ ধাপ) লিঙ্কড লিস্ট বা অ্যারেতে চালনা করা। চক্র (Cycle) থাকলে fast পয়েন্টার ঘুর এসে slow এর সাথে মিলিত (Collide) হবে।",
+        "summary": "Fast and Slow Pointers (কচ্ছপ ও খরগোশ অ্যালগরিদম) হলো দুটি পয়েন্টার ভিন্ন গতিতে (slow ১ ধাপ, fast ২ ধাপ) লিঙ্কড লিস্ট বা অ্যারেতে চালনা করা। চক্র (Cycle) থাকলে fast পয়েন্টার ঘুরে এসে slow এর সাথে মিলিত (Collide) হবে।",
         "whenToUseTitle": "কখন বুঝবা Fast & Slow Pointers লাগবে?",
         "whenToUse1": "মেমোরি সেভ করে (O(1) স্পেস) লিঙ্কড লিস্ট বা অ্যারেতে সাইকেল শনাক্ত করা।",
         "whenToUse2": "লিঙ্কড লিস্টের কোন নোড থেকে সাইকেল শুরু হয়েছে (Cycle Entry) বের করা।",
