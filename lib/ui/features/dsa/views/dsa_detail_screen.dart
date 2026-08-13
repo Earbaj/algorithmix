@@ -367,15 +367,18 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.table_chart_outlined, color: AppTheme.accentPurple, size: 20),
-                  const SizedBox(width: 8),
-                  Text(
-                    _isEnglish ? "Array vs Singly LL vs Fast & Slow Pointers (Floyd's)" : "অ্যারে বনাম Singly LL বনাম ফাস্ট ও স্লো পয়েন্টার তুলনা",
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-                  ),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    const Icon(Icons.table_chart_outlined, color: AppTheme.accentPurple, size: 20),
+                    const SizedBox(width: 8),
+                    Text(
+                      _isEnglish ? "Array vs Singly LL vs Fast & Slow Pointers (Floyd's)" : "অ্যারে বনাম Singly LL বনাম ফাস্ট ও স্লো পয়েন্টার তুলনা",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 12),
               SingleChildScrollView(
