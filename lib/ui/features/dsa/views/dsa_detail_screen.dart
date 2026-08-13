@@ -78,7 +78,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           tabAlignment: TabAlignment.start,
           padding: EdgeInsets.zero,
           tabs: [
-            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 || widget.topic.id == 208 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 || widget.topic.id == 208 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
+            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 || widget.topic.id == 208 || widget.topic.id == 209 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 || widget.topic.id == 208 || widget.topic.id == 209 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? 'Basic Problems' : 'বেসিক প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
@@ -159,6 +159,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
               _buildHeapComplexitySection(),
             ] else if (widget.topic.id == 208) ...[
               _buildGraphComplexitySection(),
+            ] else if (widget.topic.id == 209) ...[
+              _buildTrieComplexitySection(),
             ] else ...[
               Container(
                 padding: const EdgeInsets.all(18),
@@ -832,6 +834,131 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                         _buildTableCell(_isEnglish ? "Array of Dynamic Vectors (`adj[u]`)" : "ডাইনামিক ভেক্টর অ্যারে", color: AppTheme.accentGreen),
                         _buildTableCell(_isEnglish ? "2D Flat Matrix (`matrix[V][V]`)" : "২D ফ্ল্যাট গ্রিড ম্যাট্রিক্স", color: AppTheme.accentAmber),
                         _buildTableCell(_isEnglish ? "Array of Tuples (`(u, v, w)`)" : "এজ টুপলের তালিকা", color: AppTheme.accentNeonCyan),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTrieComplexitySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.sort_by_alpha_outlined, color: Color(0xFFA855F7), size: 22),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Trie Search & Prefix Lookup Complexity Metrics" : "ট্রাই সার্চ ও প্রিফিক্স জটিলতা মেট্রিক্স",
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 16),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildComplexityBadge(_isEnglish ? "Insert / Search" : "ইনসার্ট / সার্চ", "O(L)", AppTheme.accentGreen),
+                  _buildComplexityBadge(_isEnglish ? "StartsWith Prefix" : "প্রিফিক্স চেক", "O(L)", AppTheme.accentNeonCyan),
+                  _buildComplexityBadge(_isEnglish ? "Space Complexity" : "মেমোরি স্পেস", "O(N×L×26)", AppTheme.accentAmber),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Comparison Table Card (Trie vs Hash Set vs BST vs Array)
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF1E293B)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.table_chart_outlined, color: Color(0xFFA855F7), size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Trie (Prefix Tree) vs Hash Set vs BST Comparison" : "ট্রাই (Prefix Tree) বনাম হ্যাশ সেট বনাম BST তুলনা",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Table(
+                  defaultColumnWidth: const IntrinsicColumnWidth(),
+                  border: TableBorder.all(color: const Color(0xFF1E293B), width: 1, borderRadius: BorderRadius.circular(8)),
+                  children: [
+                    TableRow(
+                      decoration: const BoxDecoration(color: Color(0xFF1E293B)),
+                      children: [
+                        _buildTableHeaderCell(_isEnglish ? "Property / Feature" : "বৈশিষ্ট্য / মেকানিজম"),
+                        _buildTableHeaderCell("Trie (Prefix Tree)"),
+                        _buildTableHeaderCell("Hash Set (`std::unordered_set`)"),
+                        _buildTableHeaderCell("Binary Search Tree (BST)"),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Search Exact Word" : "হুবহু শব্দ অনুসন্ধান", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(L) Word length bound" : "অক্ষরের সংখ্যায় O(L)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(L) Hash calculation" : "হ্যাশ ডাইজেস্টে O(L)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(L × log N) String cmp" : "স্ট্রিং তুলনায় O(L log N)", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Find All Words with Prefix 'app'" : "প্রিফিক্স 'app' দিয়ে শব্দ খোজ", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(L + K) Instant tree sub-walk" : "ইনস্ট্যান্ট ওয়ান O(L + K)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(N × L) Full set iteration" : "ফুল সেট স্ক্যানে O(N × L)", color: Colors.redAccent),
+                        _buildTableCell(_isEnglish ? "O(N × L) Scan subtrees" : "সাব-ট্রি স্ক্যানে O(N × L)", color: Colors.redAccent),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Wildcard / Auto-Complete" : "অটো-কমপ্লিট / ডট ('.') সার্চ", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(L) DFS N-ary Branching" : "N-আকার ব্রাঞ্চিংয়ে O(L)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "Not Supported (Requires Regex)" : "সরাসরি সম্ভব নয়", color: Colors.redAccent),
+                        _buildTableCell(_isEnglish ? "Complex Inorder Traversal" : "ইন-অর্ডার ট্রাভার্সাল", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Underlying Node Structure" : "অভ্যন্তরীণ নোড অবকাঠামো", isBold: true),
+                        _buildTableCell(_isEnglish ? "`TrieNode* children[26]`" : "২৬ চাইল্ড পয়েন্টার অ্যারে", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "Bucketed Hash Table" : "হ্যাশ টেবিল কন্টেইনার", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Binary Node (`left, right`)" : "বাইনারি নোড (বাম, ডান)", color: AppTheme.accentNeonCyan),
                       ],
                     ),
                   ],

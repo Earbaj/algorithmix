@@ -102,6 +102,18 @@ import 'visualizers/num_islands_practice_quiz.dart';
 import 'visualizers/detect_cycle_graph_animated_visualizer.dart';
 import 'visualizers/detect_cycle_graph_execution_debugger.dart';
 import 'visualizers/detect_cycle_graph_practice_quiz.dart';
+import 'visualizers/implement_trie_animated_visualizer.dart';
+import 'visualizers/implement_trie_execution_debugger.dart';
+import 'visualizers/implement_trie_practice_quiz.dart';
+import 'visualizers/add_search_words_animated_visualizer.dart';
+import 'visualizers/add_search_words_execution_debugger.dart';
+import 'visualizers/add_search_words_practice_quiz.dart';
+import 'visualizers/replace_words_animated_visualizer.dart';
+import 'visualizers/replace_words_execution_debugger.dart';
+import 'visualizers/replace_words_practice_quiz.dart';
+import 'visualizers/word_search_two_animated_visualizer.dart';
+import 'visualizers/word_search_two_execution_debugger.dart';
+import 'visualizers/word_search_two_practice_quiz.dart';
 
 class DsaProblemDetailScreen extends StatefulWidget {
   final DsaProblem problem;
@@ -616,6 +628,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "tr-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ImplementTrieAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: AddSearchWordsAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReplaceWordsAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: WordSearchTwoAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -971,6 +1015,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "tr-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ImplementTrieExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: AddSearchWordsExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReplaceWordsExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: WordSearchTwoExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -1281,6 +1357,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         padding: EdgeInsets.all(hPadding),
         child: SingleChildScrollView(
           child: DetectCycleGraphPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ImplementTriePracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: AddSearchWordsPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ReplaceWordsPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "tr-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: WordSearchTwoPracticeQuiz(isEnglish: _isEnglish),
         ),
       );
     }
