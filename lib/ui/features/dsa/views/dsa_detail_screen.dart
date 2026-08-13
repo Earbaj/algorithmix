@@ -78,7 +78,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           tabAlignment: TabAlignment.start,
           padding: EdgeInsets.zero,
           tabs: [
-            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
+            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? 'Basic Problems' : 'বেসিক প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
@@ -153,6 +153,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
               _buildQueueComplexitySection(),
             ] else if (widget.topic.id == 205) ...[
               _buildHashMapComplexitySection(),
+            ] else if (widget.topic.id == 206) ...[
+              _buildBstComplexitySection(),
             ] else ...[
               Container(
                 padding: const EdgeInsets.all(18),
@@ -701,6 +703,131 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                         _buildTableCell(_isEnglish ? "BFS, CPU Task Scheduling" : "BFS গ্রাফ, প্রসেস শিডিউলিং", color: AppTheme.accentAmber),
                         _buildTableCell(_isEnglish ? "Sliding Window Max, Palindromes" : "স্লাইডিং উইন্ডো, প্যালেইনড্রোম", color: AppTheme.accentNeonCyan),
                         _buildTableCell(_isEnglish ? "Recursion, Call Stack, Undo" : "কল স্ট্যাক, রিকার্শন, ব্র্যাকেট", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBstComplexitySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.account_tree_outlined, color: AppTheme.accentNeonCyan, size: 22),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Binary Search Tree Operations Complexity Metrics" : "বাইনারি সার্চ ট্রি জটিলতা মেট্রিক্স",
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 16),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildComplexityBadge(_isEnglish ? "Search / Insert (Avg)" : "গড় সময় (Search/Insert)", "O(log N)", AppTheme.accentGreen),
+                  _buildComplexityBadge(_isEnglish ? "Worst Case (Skewed)" : "সবচেয়ে খারাপ সময় (Skewed)", "O(N)", AppTheme.accentAmber),
+                  _buildComplexityBadge(_isEnglish ? "Call Stack Space" : "কল স্ট্যাক স্পেস", "O(H)", AppTheme.accentNeonCyan),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Comparison Table Card (BST vs Sorted Array vs Binary Heap vs Hash Map)
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF1E293B)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.table_chart_outlined, color: AppTheme.accentNeonCyan, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "BST vs Sorted Array vs Binary Heap vs Hash Map Comparison" : "BST বনাম সর্টেড অ্যারে বনাম হিপ বনাম হ্যাশ ম্যাপ তুলনা",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Table(
+                  defaultColumnWidth: const IntrinsicColumnWidth(),
+                  border: TableBorder.all(color: const Color(0xFF1E293B), width: 1, borderRadius: BorderRadius.circular(8)),
+                  children: [
+                    TableRow(
+                      decoration: const BoxDecoration(color: Color(0xFF1E293B)),
+                      children: [
+                        _buildTableHeaderCell(_isEnglish ? "Property / Feature" : "বৈশিষ্ট্য / মেকানিজম"),
+                        _buildTableHeaderCell("Binary Search Tree (BST)"),
+                        _buildTableHeaderCell("Sorted Array (Binary Search)"),
+                        _buildTableHeaderCell("Hash Map (Hash Table)"),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Lookup / Search Time" : "খোজা বা Lookup সময়", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(log N) Average" : "গড়ে O(log N)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(log N) Guaranteed" : "সর্বদা O(log N)", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "O(1) Average" : "গড়ে O(1)", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Dynamic Insertion Time" : "ডাইনামিক ইনসার্ট সময়", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(log N) without shifting" : "শিফটিং ছাড়া O(log N)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(N) due to element shift" : "শিফটিং এর কারণে O(N)", color: Colors.redAccent),
+                        _buildTableCell(_isEnglish ? "O(1) Average" : "গড়ে O(1)", color: AppTheme.accentAmber),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Sorted Traversal Cost" : "সর্টেড ক্রমানুসার প্রিন্ট", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(N) Inorder Walk" : "Inorder লুপে O(N)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(N) Linear Scan" : "লিনিয়ার স্ক্যান O(N)", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "O(N log N) requires sort" : "সর্ট ছাড়া সম্ভব নয়", color: Colors.redAccent),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Underlying Data Structure" : "অভ্যন্তরীণ অবকাঠামো", isBold: true),
+                        _buildTableCell(_isEnglish ? "Left/Right Pointer Nodes" : "পয়েন্টার নোড ট্রিপ্লেট", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "Contiguous Memory Block" : "ধারাবাহিক মেমোরি ব্লক", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Bucket Array + Chaining" : "বাকেট অ্যারে + চেইনিং", color: AppTheme.accentPink),
                       ],
                     ),
                   ],

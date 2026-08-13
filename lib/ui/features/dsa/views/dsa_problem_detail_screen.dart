@@ -66,6 +66,18 @@ import 'visualizers/group_anagrams_practice_quiz.dart';
 import 'visualizers/subarray_sum_k_animated_visualizer.dart';
 import 'visualizers/subarray_sum_k_execution_debugger.dart';
 import 'visualizers/subarray_sum_k_practice_quiz.dart';
+import 'visualizers/search_bst_animated_visualizer.dart';
+import 'visualizers/search_bst_execution_debugger.dart';
+import 'visualizers/search_bst_practice_quiz.dart';
+import 'visualizers/insert_bst_animated_visualizer.dart';
+import 'visualizers/insert_bst_execution_debugger.dart';
+import 'visualizers/insert_bst_practice_quiz.dart';
+import 'visualizers/validate_bst_animated_visualizer.dart';
+import 'visualizers/validate_bst_execution_debugger.dart';
+import 'visualizers/validate_bst_practice_quiz.dart';
+import 'visualizers/lca_bst_animated_visualizer.dart';
+import 'visualizers/lca_bst_execution_debugger.dart';
+import 'visualizers/lca_bst_practice_quiz.dart';
 
 class DsaProblemDetailScreen extends StatefulWidget {
   final DsaProblem problem;
@@ -484,6 +496,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "bst-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: SearchBstAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: InsertBstAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ValidateBstAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: LcaBstAnimatedVisualizer(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -743,6 +787,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         ),
       );
     }
+    if (widget.problem.id == "bst-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: SearchBstExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: InsertBstExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ValidateBstExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: LcaBstExecutionDebugger(isEnglish: _isEnglish),
+        ),
+      );
+    }
 
     final step = _currentSteps[_currentStepIndex];
 
@@ -957,6 +1033,38 @@ class _DsaProblemDetailScreenState extends State<DsaProblemDetailScreen>
         padding: EdgeInsets.all(hPadding),
         child: SingleChildScrollView(
           child: SubarraySumKPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-1") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: SearchBstPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-2") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: InsertBstPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-3") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: ValidateBstPracticeQuiz(isEnglish: _isEnglish),
+        ),
+      );
+    }
+    if (widget.problem.id == "bst-4") {
+      return ResponsiveCenter(
+        padding: EdgeInsets.all(hPadding),
+        child: SingleChildScrollView(
+          child: LcaBstPracticeQuiz(isEnglish: _isEnglish),
         ),
       );
     }
