@@ -45,17 +45,12 @@ class FloydsCycleControlsWidget extends StatelessWidget {
             onPressed: onPrev,
             tooltip: isEnglish ? "Previous Step" : "আগের স্টেপ",
           ),
-          ElevatedButton.icon(
-            onPressed: onTogglePlay,
+          IconButton(
             icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-            label: Text(isPlaying
+            onPressed: onTogglePlay,
+            tooltip: isPlaying
                 ? (isEnglish ? "Pause" : "পজ করুন")
-                : (isEnglish ? "Auto Play" : "অটো প্লে")),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.accentNeonCyan,
-              foregroundColor: AppTheme.primaryDark,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
+                : (isEnglish ? "Auto Play" : "অটো প্লে"),
           ),
           IconButton(
             icon: const Icon(Icons.skip_next, color: Colors.white),
