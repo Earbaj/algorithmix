@@ -78,7 +78,7 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
           tabAlignment: TabAlignment.start,
           padding: EdgeInsets.zero,
           tabs: [
-            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
+            Tab(text: _isEnglish ? (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 || widget.topic.id == 208 ? 'Concept & Code' : 'Concept & Code (1D/2D/3D)') : (widget.topic.id == 202 || widget.topic.id == 203 || widget.topic.id == 204 || widget.topic.id == 205 || widget.topic.id == 206 || widget.topic.id == 207 || widget.topic.id == 208 ? 'ধারণা ও কোড' : 'ধারণা ও কোড (১D/২D/৩D)')),
             Tab(text: _isEnglish ? 'Visualizer' : 'ভিজ্যুয়ালাইজার'),
             Tab(text: _isEnglish ? 'Basic Problems' : 'বেসিক প্রবলেমস'),
             Tab(text: _isEnglish ? 'Mistakes & Roadmap' : 'ভুল ও রোডম্যাপ'),
@@ -157,6 +157,8 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
               _buildBstComplexitySection(),
             ] else if (widget.topic.id == 207) ...[
               _buildHeapComplexitySection(),
+            ] else if (widget.topic.id == 208) ...[
+              _buildGraphComplexitySection(),
             ] else ...[
               Container(
                 padding: const EdgeInsets.all(18),
@@ -705,6 +707,131 @@ class _DsaDetailScreenState extends State<DsaDetailScreen>
                         _buildTableCell(_isEnglish ? "BFS, CPU Task Scheduling" : "BFS গ্রাফ, প্রসেস শিডিউলিং", color: AppTheme.accentAmber),
                         _buildTableCell(_isEnglish ? "Sliding Window Max, Palindromes" : "স্লাইডিং উইন্ডো, প্যালেইনড্রোম", color: AppTheme.accentNeonCyan),
                         _buildTableCell(_isEnglish ? "Recursion, Call Stack, Undo" : "কল স্ট্যাক, রিকার্শন, ব্র্যাকেট", color: AppTheme.accentGreen),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGraphComplexitySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppTheme.surfaceDark,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: widget.topic.themeColor.withOpacity(0.4)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.hub_outlined, color: Color(0xFF0284C7), size: 22),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Graph Operations & Memory Complexity Metrics" : "গ্রাফ ট্রাভার্সাল ও মেমোরি জটিলতা মেট্রিক্স",
+                      style: TextStyle(
+                        fontSize: Responsive.sp(context, 16),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildComplexityBadge(_isEnglish ? "BFS / DFS Search" : "BFS / DFS সময়", "O(V + E)", AppTheme.accentGreen),
+                  _buildComplexityBadge(_isEnglish ? "Adj List Space" : "অ্যাডজাসেন্সি লিস্ট", "O(V + E)", AppTheme.accentNeonCyan),
+                  _buildComplexityBadge(_isEnglish ? "Adj Matrix Space" : "অ্যাডজাসেন্সি ম্যাট্রিক্স", "O(V²)", AppTheme.accentAmber),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        // Comparison Table Card (Adjacency List vs Adjacency Matrix vs Edge List)
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF090D16),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFF1E293B)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.table_chart_outlined, color: Color(0xFF0284C7), size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      _isEnglish ? "Adjacency List vs Adjacency Matrix vs Edge List Comparison" : "অ্যাডজাসেন্সি লিস্ট বনাম ম্যাট্রিক্স বনাম এজ লিস্ট তুলনা",
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Table(
+                  defaultColumnWidth: const IntrinsicColumnWidth(),
+                  border: TableBorder.all(color: const Color(0xFF1E293B), width: 1, borderRadius: BorderRadius.circular(8)),
+                  children: [
+                    TableRow(
+                      decoration: const BoxDecoration(color: Color(0xFF1E293B)),
+                      children: [
+                        _buildTableHeaderCell(_isEnglish ? "Property / Feature" : "বৈশিষ্ট্য / মেকানিজম"),
+                        _buildTableHeaderCell("Adjacency List"),
+                        _buildTableHeaderCell("Adjacency Matrix"),
+                        _buildTableHeaderCell("Edge List"),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Space Complexity" : "মেমোরি স্পেস জটিলতা", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(V + E) Optimal for Sparse" : "স্পার্স গ্রাফে O(V + E)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(V²) Dense graph fit" : "ডেন্স গ্রাফে O(V²)", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "O(E) Minimal edges only" : "কেবল এজের ওয়ান O(E)", color: AppTheme.accentNeonCyan),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Check Edge (u, v)" : "(u, v) এজ সংযোগ চেক", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(degree(u)) Scan list" : "লিস্ট স্ক্যানে O(deg)", color: AppTheme.accentNeonCyan),
+                        _buildTableCell(_isEnglish ? "O(1) Instant matrix lookup" : "ম্যাট্রিক্সে ইনস্ট্যান্ট O(1)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(E) Full edge loop" : "ফুল এজ লুপে O(E)", color: Colors.redAccent),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Find All Neighbors of u" : "u এর সব প্রতিবেশী খোজা", isBold: true),
+                        _buildTableCell(_isEnglish ? "O(degree(u)) Direct access" : "সরাসরি লিস্টে O(deg)", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "O(V) Iterate entire row" : "রো স্ক্যান করে O(V)", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "O(E) Iterate all edges" : "সব এজ স্ক্যান ওয়ান O(E)", color: Colors.redAccent),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        _buildTableCell(_isEnglish ? "Underlying Data Structure" : "অভ্যন্তরীণ অবকাঠামো", isBold: true),
+                        _buildTableCell(_isEnglish ? "Array of Dynamic Vectors (`adj[u]`)" : "ডাইনামিক ভেক্টর অ্যারে", color: AppTheme.accentGreen),
+                        _buildTableCell(_isEnglish ? "2D Flat Matrix (`matrix[V][V]`)" : "২D ফ্ল্যাট গ্রিড ম্যাট্রিক্স", color: AppTheme.accentAmber),
+                        _buildTableCell(_isEnglish ? "Array of Tuples (`(u, v, w)`)" : "এজ টুপলের তালিকা", color: AppTheme.accentNeonCyan),
                       ],
                     ),
                   ],
