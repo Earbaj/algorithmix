@@ -19,6 +19,7 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
   List<PatternModel> _filteredPatterns = [];
   String _searchQuery = "";
   String _selectedCategory = "All";
+  bool _isVisible = false;
 
   @override
   void initState() {
@@ -142,67 +143,80 @@ class _CorePatternsScreenState extends State<CorePatternsScreen> {
       appBar: AppBar(
         title: const Text('25 Core Patterns'),
         centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: (){
+              setState(() {
+                _isVisible = !_isVisible;
+              });
+            },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: Icon(_isVisible ? Icons.filter_alt_off:Icons.filter_alt),
+              )),
+        ],
       ),
       body: Column(
         children: [
           // Search & Filter Box
-          Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: AppTheme.surfaceDark,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-            ),
-            child: ResponsiveCenter(
-              padding: EdgeInsets.all(hPadding < 20 ? 16 : hPadding),
-              child: Column(
-                children: [
-                  // Search Input
-                  TextField(
-                    onChanged: (val) {
-                      _searchQuery = val;
-                      _filterPatterns();
-                    },
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                      hintText: 'Search patterns (e.g. Dynamic Programming, Sliding Window)...',
-                      prefixIcon: Icon(Icons.search, color: AppTheme.accentNeonCyan),
+          if(_isVisible)...[
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: AppTheme.surfaceDark,
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+              ),
+              child: ResponsiveCenter(
+                padding: EdgeInsets.all(hPadding < 20 ? 16 : hPadding),
+                child: Column(
+                  children: [
+                    // Search Input
+                    TextField(
+                      onChanged: (val) {
+                        _searchQuery = val;
+                        _filterPatterns();
+                      },
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
+                        hintText: 'Search patterns (e.g. Dynamic Programming, Sliding Window)...',
+                        prefixIcon: Icon(Icons.search, color: AppTheme.accentNeonCyan),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
+                    const SizedBox(height: 12),
 
-                  // Category Chips
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: ["All", "Easy", "Medium", "Hard", "⭐ Hot"].map((category) {
-                        final isSelected = _selectedCategory == category;
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: FilterChip(
-                            label: Text(category),
-                            selected: isSelected,
-                            selectedColor: AppTheme.accentPurple,
-                            backgroundColor: AppTheme.primaryDark,
-                            labelStyle: TextStyle(
-                              color: isSelected ? Colors.white : AppTheme.textSecondary,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    // Category Chips
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: ["All", "Easy", "Medium", "Hard", "⭐ Hot"].map((category) {
+                          final isSelected = _selectedCategory == category;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: FilterChip(
+                              label: Text(category),
+                              selected: isSelected,
+                              selectedColor: AppTheme.accentPurple,
+                              backgroundColor: AppTheme.primaryDark,
+                              labelStyle: TextStyle(
+                                color: isSelected ? Colors.white : AppTheme.textSecondary,
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              ),
+                              onSelected: (selected) {
+                                setState(() {
+                                  _selectedCategory = category;
+                                  _filterPatterns();
+                                });
+                              },
                             ),
-                            onSelected: (selected) {
-                              setState(() {
-                                _selectedCategory = category;
-                                _filterPatterns();
-                              });
-                            },
-                          ),
-                        );
-                      }).toList(),
+                          );
+                        }).toList(),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-
+          ],
           // Count summary
           ResponsiveCenter(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
