@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
+import 'floyds_cycle_detection/floyds_cycle_canvas_widget.dart';
+import 'floyds_cycle_detection/floyds_cycle_controls_widget.dart';
+import 'floyds_cycle_detection/floyds_debugger_watch_widget.dart';
 
 class DetectCycleLinkedListExecutionDebugger extends StatefulWidget {
   final bool isEnglish;
@@ -199,13 +202,33 @@ class _DetectCycleLinkedListExecutionDebuggerState
         _buildCodeHighlightBox(step.activeLineIndex),
         const SizedBox(height: 16),
 
-        _buildPointerStateCanvas(step),
+        FloydsCycleCanvasWidget(
+          isEnglish: widget.isEnglish,
+          nodes: _initialNodes,
+          slowVal: step.slowVal,
+          fastVal: step.fastVal,
+          isCycleDetected: step.slowVal == step.fastVal && step.activeLineIndex == 5,
+        ),
         const SizedBox(height: 16),
 
-        _buildVariableWatchPanel(step),
+        FloydsDebuggerWatchWidget(
+          isEnglish: widget.isEnglish,
+          slowVal: step.slowVal,
+          fastVal: step.fastVal,
+          conditionText: step.conditionText,
+        ),
         const SizedBox(height: 16),
 
-        _buildControls(),
+        FloydsCycleControlsWidget(
+          isEnglish: widget.isEnglish,
+          currentStepIndex: _currentStepIndex,
+          totalSteps: _steps.length,
+          isPlaying: _isPlaying,
+          onReset: _reset,
+          onPrev: _currentStepIndex > 0 ? _prevStep : null,
+          onTogglePlay: _togglePlay,
+          onNext: _currentStepIndex < _steps.length - 1 ? _nextStep : null,
+        ),
       ],
     );
   }
@@ -270,217 +293,6 @@ class _DetectCycleLinkedListExecutionDebuggerState
             ),
           );
         }),
-      ),
-    );
-  }
-
-  Widget _buildPointerStateCanvas(DebuggerStepData step) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF090D16),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF1E293B)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.isEnglish ? "Cycle Detection Pointer Canvas" : "সাইকেল ডিটেকশন পয়েন্টার ক্যানভাস",
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-          ),
-          const SizedBox(height: 12),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ...List.generate(_initialNodes.length, (idx) {
-                  final val = _initialNodes[idx];
-                  final isSlow = step.slowVal == val;
-                  final isFast = step.fastVal == val;
-
-                  return Row(
-                    children: [
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              if (isSlow) _buildBadge("slow", AppTheme.accentGreen),
-                              if (isFast) _buildBadge("fast", Colors.purpleAccent),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Container(
-                            width: 44,
-                            height: 44,
-                            decoration: BoxDecoration(
-                              color: isSlow
-                                  ? AppTheme.accentGreen.withOpacity(0.3)
-                                  : (isFast ? Colors.purpleAccent.withOpacity(0.2) : const Color(0xFF1E293B)),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: isSlow
-                                    ? AppTheme.accentGreen
-                                    : (isFast ? Colors.purpleAccent : const Color(0xFF334155)),
-                              ),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "$val",
-                                style: TextStyle(
-                                  color: isSlow ? AppTheme.accentGreen : Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (idx < _initialNodes.length - 1)
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 6),
-                          child: Icon(Icons.arrow_forward, color: AppTheme.textMuted, size: 18),
-                        )
-                      else
-                        const Padding(
-                          padding: EdgeInsets.only(left: 4),
-                          child: Icon(Icons.replay_circle_filled_outlined, color: Colors.redAccent, size: 20),
-                        ),
-                    ],
-                  );
-                }),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBadge(String label, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      margin: const EdgeInsets.symmetric(horizontal: 2),
-      decoration: BoxDecoration(color: color.withOpacity(0.2), borderRadius: BorderRadius.circular(4), border: Border.all(color: color)),
-      child: Text(label, style: TextStyle(color: color, fontSize: 9, fontWeight: FontWeight.bold)),
-    );
-  }
-
-  Widget _buildVariableWatchPanel(DebuggerStepData step) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF090D16),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF1E293B)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.bug_report, color: AppTheme.accentPink, size: 18),
-              const SizedBox(width: 8),
-              Text(
-                widget.isEnglish ? "Pointer Watch Inspector" : "পয়েন্টার ওয়াচ ইন্সপেক্টর",
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 12,
-            runSpacing: 10,
-            children: [
-              _buildVariableBadge("slow ptr", "Node ${step.slowVal}", AppTheme.accentGreen),
-              _buildVariableBadge("fast ptr", "Node ${step.fastVal}", Colors.purpleAccent),
-            ],
-          ),
-          if (step.conditionText != null) ...[
-            const SizedBox(height: 14),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceDark,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppTheme.accentGreen),
-              ),
-              child: Text(
-                "Execution: ${step.conditionText}",
-                style: const TextStyle(fontFamily: 'monospace', fontWeight: FontWeight.bold, fontSize: 12, color: AppTheme.accentGreen),
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVariableBadge(String label, String value, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.6)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 2),
-          Text(value, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'monospace')),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildControls() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFF334155)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.replay, color: Colors.white70),
-            onPressed: _reset,
-            tooltip: widget.isEnglish ? "Reset" : "রিসেট",
-          ),
-          IconButton(
-            icon: const Icon(Icons.skip_previous, color: Colors.white),
-            onPressed: _currentStepIndex > 0 ? _prevStep : null,
-            tooltip: widget.isEnglish ? "Previous Line" : "আগের লাইন",
-          ),
-          ElevatedButton.icon(
-            onPressed: _togglePlay,
-            icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
-            label: Text(_isPlaying
-                ? (widget.isEnglish ? "Pause" : "পজ করুন")
-                : (widget.isEnglish ? "Auto Debug" : "অটো ডিবাগ")),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppTheme.accentPink,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.skip_next, color: Colors.white),
-            onPressed: _currentStepIndex < _steps.length - 1 ? _nextStep : null,
-            tooltip: widget.isEnglish ? "Next Line" : "পরের লাইন",
-          ),
-          Text(
-            "${_currentStepIndex + 1}/${_steps.length}",
-            style: const TextStyle(color: AppTheme.accentPink, fontWeight: FontWeight.bold, fontSize: 12),
-          ),
-        ],
       ),
     );
   }
