@@ -235,7 +235,7 @@ class _CycleDynamicVisualizerTabState extends State<CycleDynamicVisualizerTab> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.isEnglish ? '⚙️ Dynamic Custom Input Generator' : '⚙️ ডায়নামিক ইনপুট ও টেস্ট কেস',
+                    widget.isEnglish ? 'Dynamic Custom Input Generator' : 'ডায়নামিক ইনপুট ও টেস্ট কেস',
                     style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
                   ),
                   const SizedBox(height: 12),
@@ -358,12 +358,6 @@ class _CycleDynamicVisualizerTabState extends State<CycleDynamicVisualizerTab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Linked List View (pos: $_cyclePos)", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 14))),
-              if (step.isCollision)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: AppTheme.accentGreen.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                  child: const Text("🎉 COLLISION MATCH!", style: TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 12)),
-                ),
             ],
           ),
           const SizedBox(height: 16),
