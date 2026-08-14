@@ -196,25 +196,6 @@ class _RemoveDuplicatesCodeDebuggerTabState extends State<RemoveDuplicatesCodeDe
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceDark,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.4)),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.bug_report, color: AppTheme.accentNeonCyan, size: 24),
-                  const SizedBox(width: 8),
-                  Text(
-                    widget.isEnglish ? "Interactive Code Execution Debugger" : "ইন্টারঅ্যাক্টিভ কোড এক্সিকিউশন ডিবাগার",
-                    style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
 
             _buildNodeVisualizationBox(step),
             const SizedBox(height: 16),
@@ -376,13 +357,7 @@ class _RemoveDuplicatesCodeDebuggerTabState extends State<RemoveDuplicatesCodeDe
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(color: AppTheme.accentPurple.withOpacity(0.25), borderRadius: BorderRadius.circular(8)),
-                  child: Row(
-                    children: [
-                      Icon(Icons.copy, size: Responsive.sp(context, 13), color: AppTheme.accentNeonCyan),
-                      const SizedBox(width: 4),
-                      Text(widget.isEnglish ? "Copy" : "কপি", style: TextStyle(color: Colors.white, fontSize: Responsive.sp(context, 11.5), fontWeight: FontWeight.bold)),
-                    ],
-                  ),
+                  child: Icon(Icons.copy, size: Responsive.sp(context, 13), color: AppTheme.accentNeonCyan),
                 ),
               ),
             ],

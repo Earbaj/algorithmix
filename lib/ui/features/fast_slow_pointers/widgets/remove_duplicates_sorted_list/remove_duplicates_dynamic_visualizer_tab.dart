@@ -189,7 +189,7 @@ class _RemoveDuplicatesDynamicVisualizerTabState extends State<RemoveDuplicatesD
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.isEnglish ? '⚙️ Dynamic Custom Input & Test Cases' : '⚙️ ডায়নামিক ইনপুট ও টেস্ট কেস',
+                    widget.isEnglish ? 'Dynamic Custom Input & Test Cases' : 'ডায়নামিক ইনপুট ও টেস্ট কেস',
                     style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
                   ),
                   const SizedBox(height: 12),
