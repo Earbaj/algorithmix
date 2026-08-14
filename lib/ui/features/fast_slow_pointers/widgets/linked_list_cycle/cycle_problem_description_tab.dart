@@ -34,7 +34,7 @@ class CycleProblemDescriptionTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: AppTheme.accentGreen),
                   ),
-                  child: Text('🟢 Easy', style: TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: Responsive.sp(context, 12))),
+                  child: Text('Easy', style: TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: Responsive.sp(context, 12))),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -52,7 +52,7 @@ class CycleProblemDescriptionTab extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: AppTheme.accentPink),
                   ),
-                  child: Text('⭐ FAANG Top Pick', style: TextStyle(color: AppTheme.accentPink, fontWeight: FontWeight.bold, fontSize: Responsive.sp(context, 12))),
+                  child: Text('FAANG Top Pick', style: TextStyle(color: AppTheme.accentPink, fontWeight: FontWeight.bold, fontSize: Responsive.sp(context, 12))),
                 ),
               ],
             ),

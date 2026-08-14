@@ -94,13 +94,7 @@ class _MiddleSolutionCodeTabState extends State<MiddleSolutionCodeTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(_userSolved ? Icons.check_circle : Icons.extension_outlined, color: _userSolved ? AppTheme.accentGreen : AppTheme.accentAmber, size: Responsive.sp(context, 24)),
-                      const SizedBox(width: 8),
-                      Text(widget.isEnglish ? '🎮 Practice Mode: Solve It Yourself!' : '🎮 প্র্যাকটিস মোড: নিজে ট্রাই করুন!', style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
-                    ],
-                  ),
+                  Text(widget.isEnglish ? 'Practice Mode: Solve It Yourself!' : 'প্র্যাকটিস মোড: নিজে ট্রাই করুন!', style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
                   const SizedBox(height: 12),
                   Text(widget.isEnglish ? 'Current List: $_currentNodes' : 'বর্তমান লিস্ট: $_currentNodes', style: TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: Responsive.sp(context, 13))),
                   const SizedBox(height: 16),
@@ -156,26 +150,15 @@ class _MiddleSolutionCodeTabState extends State<MiddleSolutionCodeTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.isEnglish ? "Multi-Language Solution Code" : "বহুভাষী সমাধান কোড", style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
-                            const SizedBox(height: 4),
-                            Text(widget.isEnglish ? "Official optimal solution in C++, Java, Python & JavaScript." : "C++, Java, Python এবং JavaScript ভাষায় সলিউশন।", style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12))),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => setState(() => _showAnswer = !_showAnswer),
-                        style: ElevatedButton.styleFrom(backgroundColor: _showAnswer ? AppTheme.accentGreen : AppTheme.accentPink),
-                        child: Text(_showAnswer ? (widget.isEnglish ? "Hide Code" : "কোড লুকান") : (widget.isEnglish ? "Reveal Solution Code" : "কোড দেখুন"), style: TextStyle(fontSize: Responsive.sp(context, 13), fontWeight: FontWeight.bold)),
-                      ),
-                    ],
-                  ),
+                  Text(widget.isEnglish ? "Multi-Language Solution Code" : "বহুভাষী সমাধান কোড", style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
+                  const SizedBox(height: 4),
+                  Text(widget.isEnglish ? "Official optimal solution in C++, Java, Python & JavaScript." : "C++, Java, Python এবং JavaScript ভাষায় সলিউশন।", style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12))),
+                  const SizedBox(height: 4),
+                  ElevatedButton(
+                  onPressed: () => setState(() => _showAnswer = !_showAnswer),
+                  style: ElevatedButton.styleFrom(backgroundColor: _showAnswer ? AppTheme.accentGreen : AppTheme.accentPink),
+                  child: Text(_showAnswer ? (widget.isEnglish ? "Hide Code" : "কোড লুকান") : (widget.isEnglish ? "Reveal Solution Code" : "কোড দেখুন"), style: TextStyle(fontSize: Responsive.sp(context, 13), fontWeight: FontWeight.bold)),
+                ),
                   if (_showAnswer) ...[
                     const Divider(height: 28, color: Color(0xFF334155)),
                     Row(

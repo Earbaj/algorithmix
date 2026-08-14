@@ -88,35 +88,21 @@ class _MiddleCodeFreeGuideTabState extends State<MiddleCodeFreeGuideTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceDark,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.4)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.auto_awesome, color: AppTheme.accentNeonCyan, size: 24),
-                      const SizedBox(width: 8),
-                      Text(
-                        widget.isEnglish ? "Interactive Animated Concept Guide" : "ইন্টারঅ্যাক্টিভ অ্যানিমেটেড কনসেপ্ট গাইড",
-                        style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.isEnglish
-                        ? "Watch how Slow (🐢 1 step/sec) and Fast (🐇 2 steps/sec) move across the linked list. Since Fast moves at twice the speed of Slow, when Fast reaches the end, Slow naturally lands on the Middle Node!"
-                        : "দেখুন কিভাবে Slow (🐢 ১ ধাপ) এবং Fast (🐇 ২ ধাপ) পয়েন্টার লিঙ্কড লিস্ট দিয়ে যাচ্ছে। Fast এর গতি দ্বিগুণ হওয়ায়, Fast শেষে পৌঁছানো মাত্রই Slow সরাসরি মাঝের নোডে গিয়ে থামে!",
-                    style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 13.5), height: 1.5),
-                  ),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.isEnglish ? "Interactive Animated Concept Guide" : "ইন্টারঅ্যাক্টিভ অ্যানিমেটেড কনসেপ্ট গাইড",
+                  style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.isEnglish
+                      ? "Watch how Slow (🐢 1 step/sec) and Fast (🐇 2 steps/sec) move across the linked list. Since Fast moves at twice the speed of Slow, when Fast reaches the end, Slow naturally lands on the Middle Node!"
+                      : "দেখুন কিভাবে Slow (🐢 ১ ধাপ) এবং Fast (🐇 ২ ধাপ) পয়েন্টার লিঙ্কড লিস্ট দিয়ে যাচ্ছে। Fast এর গতি দ্বিগুণ হওয়ায়, Fast শেষে পৌঁছানো মাত্রই Slow সরাসরি মাঝের নোডে গিয়ে থামে!",
+                  style: TextStyle(color: AppTheme.textPrimary, fontSize: Responsive.sp(context, 13.5), height: 1.5),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
 
@@ -131,25 +117,14 @@ class _MiddleCodeFreeGuideTabState extends State<MiddleCodeFreeGuideTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Linked List Track: [10, 20, 30, 40, 50]",
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 14)),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.accentPurple.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          "Step ${_animGuideStep + 1} / 4",
-                          style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    "Linked List Track: [10, 20, 30, 40, 50]",
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 14)),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "Step ${_animGuideStep + 1} / 4",
+                    style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12),
                   ),
                   const SizedBox(height: 20),
 
@@ -248,7 +223,7 @@ class _MiddleCodeFreeGuideTabState extends State<MiddleCodeFreeGuideTab> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(color: AppTheme.surfaceDark, borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFF334155))),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
                     children: [
@@ -275,16 +250,6 @@ class _MiddleCodeFreeGuideTabState extends State<MiddleCodeFreeGuideTab> {
                         },
                       ),
                     ],
-                  ),
-                  ElevatedButton(
-                    onPressed: _toggleAnimGuidePlay,
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentPurple),
-                    child: Text(
-                      _isAnimGuidePlaying
-                          ? (widget.isEnglish ? "Pause Animation" : "পজ করুন")
-                          : (widget.isEnglish ? "Auto Play Animation" : "অ্যানিমেশন প্লে করুন"),
-                      style: TextStyle(fontSize: Responsive.sp(context, 12), fontWeight: FontWeight.bold),
-                    ),
                   ),
                 ],
               ),
