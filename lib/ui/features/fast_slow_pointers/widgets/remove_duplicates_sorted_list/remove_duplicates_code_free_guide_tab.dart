@@ -24,7 +24,6 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
   bool _isPlaying = false;
   Timer? _animTimer;
 
-  // Datasets for examples
   final List<int> _example1Nodes = [1, 1, 2];
   final List<int> _example2Nodes = [1, 1, 2, 3, 3];
 
@@ -41,7 +40,7 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
 
     int maxSteps = _simExample == 0 ? 3 : 5;
     if (_isPlaying) {
-      _animTimer = Timer.periodic(const Duration(milliseconds: 1800), (timer) {
+      _animTimer = Timer.periodic(const Duration(milliseconds: 1900), (timer) {
         if (_animStep < maxSteps) {
           setState(() {
             _animStep++;
@@ -70,10 +69,14 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
   Widget build(BuildContext context) {
     final hPadding = Responsive.horizontalPadding(context);
 
-    // Compute pointer states and current list state for step visualizer
-    List<int> currentNodes = [];
+    // Compute pointer states, skipped nodes, and step text
+    List<int> simNodes = _simExample == 0 ? _example1Nodes : _example2Nodes;
     int currIdx = 0;
-    int? bypassedIdx;
+    List<int> skippedIndices = [];
+    int? bypassFromIdx;
+    int? bypassToIdx;
+    String compareBadgeText = "";
+    Color compareBadgeColor = Colors.white;
     String stepTextEn = "";
     String stepTextBn = "";
     bool isFinished = false;
@@ -81,70 +84,100 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
     if (_simExample == 0) {
       // Example 1: [1, 1, 2]
       if (_animStep == 0) {
-        currentNodes = [1, 1, 2];
         currIdx = 0;
-        bypassedIdx = null;
-        stepTextEn = "Start: curr pointer at Node 0 [val: 1]. Next node is also 1 (Duplicate! 1 == 1).";
-        stepTextBn = "শুরু: curr পয়েন্টার নোড ০ [মান: ১] এ। পরের নোডও ১ (ডুপ্লিকেট! 1 == 1)।";
+        skippedIndices = [];
+        bypassFromIdx = null;
+        bypassToIdx = null;
+        compareBadgeText = "1 == 1 ➔ Duplicate Detected! ✂️";
+        compareBadgeColor = AppTheme.accentPink;
+        stepTextEn = "Start: curr pointer at Node 0 [val: 1]. Next node is also 1 (Duplicate!).";
+        stepTextBn = "শুরু: curr পয়েন্টার নোড ০ [মান: ১] এ। পরের নোডও ১ (ডুপ্লিকেট!)।";
       } else if (_animStep == 1) {
-        currentNodes = [1, 2];
         currIdx = 0;
-        bypassedIdx = 1;
-        stepTextEn = "Bypass Duplicate: curr.next = curr.next.next → Skipped duplicate Node [1]! List becomes [1, 2].";
-        stepTextBn = "ডুপ্লিকেট বাইপাস: curr.next = curr.next.next → ডুপ্লিকেট নোড ১ বাদ দেওয়া হলো! লিস্ট হলো [১, ২]।";
+        skippedIndices = [1];
+        bypassFromIdx = 0;
+        bypassToIdx = 2;
+        compareBadgeText = "curr.next = curr.next.next ➔ Node [1] ❌ SKIPPED";
+        compareBadgeColor = AppTheme.accentNeonCyan;
+        stepTextEn = "Bypass Duplicate: Set curr.next directly to Node 2 [val: 2]. Node 1 is ❌ SKIPPED!";
+        stepTextBn = "ডুপ্লিকেট বাইপাস: curr.next সরাসরি নোড ২ [মান: ২] এ যুক্ত করা হলো। নোড ১ ❌ স্কিপ করা হয়েছে!";
       } else if (_animStep == 2) {
-        currentNodes = [1, 2];
-        currIdx = 1;
-        bypassedIdx = null;
-        stepTextEn = "Advance Pointer: 1 != 2 → Move curr forward to Node [val: 2]. curr.next is null!";
-        stepTextBn = "পয়েন্টার অগ্রসর: 1 != 2 → curr ১ ধাপ এগিয়ে নোড [২] এ আসল। curr.next null!";
+        currIdx = 2; // move curr to node 2
+        skippedIndices = [1];
+        bypassFromIdx = null;
+        bypassToIdx = null;
+        compareBadgeText = "1 != 2 ➔ Unique! Advance curr 📍";
+        compareBadgeColor = AppTheme.accentPurple;
+        stepTextEn = "Advance Pointer: Move curr to Node 2 [val: 2]. curr.next is null → End of list!";
+        stepTextBn = "পয়েন্টার অগ্রসর: curr নোড ২ [মান: ২] এ এল। curr.next null → ট্রাভার্সাল শেষ!";
       } else {
-        currentNodes = [1, 2];
-        currIdx = 1;
-        bypassedIdx = null;
+        currIdx = 2;
+        skippedIndices = [1];
+        bypassFromIdx = null;
+        bypassToIdx = null;
         isFinished = true;
-        stepTextEn = "🎉 FINISHED! Duplicates removed. Output: [1, 2].";
-        stepTextBn = "🎉 শেষ! সকল ডুপ্লিকেট বাদ দেওয়া হয়েছে। আউটপুট: [১, ২]।";
+        compareBadgeText = "🎉 Output: [1, 2]";
+        compareBadgeColor = AppTheme.accentGreen;
+        stepTextEn = "🎉 FINISHED! Duplicate node 1 removed. Clean result list: [1, 2].";
+        stepTextBn = "🎉 শেষ! ডুপ্লিকেট নোড ১ রিমুভ করা হয়েছে। চূড়ান্ত লিঙ্কড লিস্ট: [১, ২]।";
       }
     } else {
       // Example 2: [1, 1, 2, 3, 3]
       if (_animStep == 0) {
-        currentNodes = [1, 1, 2, 3, 3];
         currIdx = 0;
-        bypassedIdx = null;
+        skippedIndices = [];
+        bypassFromIdx = null;
+        bypassToIdx = null;
+        compareBadgeText = "1 == 1 ➔ Duplicate Detected! ✂️";
+        compareBadgeColor = AppTheme.accentPink;
         stepTextEn = "Start: curr pointer at Node 0 [val: 1]. Next node is also 1 (Duplicate!).";
         stepTextBn = "শুরু: curr পয়েন্টার নোড ০ [মান: ১] এ। পরের নোডও ১ (ডুপ্লিকেট!)।";
       } else if (_animStep == 1) {
-        currentNodes = [1, 2, 3, 3];
         currIdx = 0;
-        bypassedIdx = 1;
-        stepTextEn = "Bypass First Duplicate: Skipped duplicate 1 node! List becomes [1, 2, 3, 3].";
-        stepTextBn = "প্রথম ডুপ্লিকেট বাইপাস: ২য় ১ নোড স্কিপ করা হলো! লিস্ট হলো [১, ২, ৩, ৩]।";
+        skippedIndices = [1];
+        bypassFromIdx = 0;
+        bypassToIdx = 2;
+        compareBadgeText = "curr.next = curr.next.next ➔ Node 1 ❌ SKIPPED";
+        compareBadgeColor = AppTheme.accentNeonCyan;
+        stepTextEn = "Bypass First Duplicate: Set curr.next to Node 2 [val: 2]. Node 1 is ❌ SKIPPED!";
+        stepTextBn = "প্রথম ডুপ্লিকেট বাইপাস: curr.next নোড ২ [মান: ২] এ যুক্ত হলো। নোড ১ ❌ স্কিপড!";
       } else if (_animStep == 2) {
-        currentNodes = [1, 2, 3, 3];
-        currIdx = 1;
-        bypassedIdx = null;
-        stepTextEn = "Advance Pointer: 1 != 2 → Move curr to Node [val: 2]. Next is 3 (2 != 3).";
-        stepTextBn = "পয়েন্টার অগ্রসর: 1 != 2 → curr নোড [২] এ আসল। পরেরটি ৩ (2 != 3)।";
+        currIdx = 2;
+        skippedIndices = [1];
+        bypassFromIdx = null;
+        bypassToIdx = null;
+        compareBadgeText = "1 != 2 ➔ Unique Node! Advance curr 📍";
+        compareBadgeColor = AppTheme.accentPurple;
+        stepTextEn = "Advance Pointer: Move curr to Node 2 [val: 2]. Next is Node 3 [val: 3] (2 != 3).";
+        stepTextBn = "পয়েন্টার অগ্রসর: curr নোড ২ [মান: ২] এ এল। পরেরটি নোড ৩ (2 != 3)।";
       } else if (_animStep == 3) {
-        currentNodes = [1, 2, 3, 3];
-        currIdx = 2;
-        bypassedIdx = null;
-        stepTextEn = "Advance Pointer: 2 != 3 → Move curr to Node [val: 3]. Next node is 3 (Duplicate!).";
-        stepTextBn = "পয়েন্টার অগ্রসর: 2 != 3 → curr নোড [৩] এ আসল। পরের নোডও ৩ (ডুপ্লিকেট!)।";
+        currIdx = 3;
+        skippedIndices = [1];
+        bypassFromIdx = null;
+        bypassToIdx = null;
+        compareBadgeText = "3 == 3 ➔ Duplicate Detected! ✂️";
+        compareBadgeColor = AppTheme.accentPink;
+        stepTextEn = "Advance Pointer: Move curr to Node 3 [val: 3]. Next node is also 3 (Duplicate!).";
+        stepTextBn = "পয়েন্টার অগ্রসর: curr নোড ৩ [মান: ৩] এ এল। পরের নোডও ৩ (ডুপ্লিকেট!)।";
       } else if (_animStep == 4) {
-        currentNodes = [1, 2, 3];
-        currIdx = 2;
-        bypassedIdx = 3;
-        stepTextEn = "Bypass Second Duplicate: curr.next = curr.next.next → Skipped duplicate 3 node!";
-        stepTextBn = "দ্বিতীয় ডুপ্লিকেট বাইপাস: ২য় ৩ নোড স্কিপ করা হলো! লিস্ট দাঁড়ালো [১, ২, ৩]।";
+        currIdx = 3;
+        skippedIndices = [1, 4];
+        bypassFromIdx = 3;
+        bypassToIdx = 5; // points to null (index 5)
+        compareBadgeText = "curr.next = curr.next.next ➔ Node 4 ❌ SKIPPED";
+        compareBadgeColor = AppTheme.accentNeonCyan;
+        stepTextEn = "Bypass Second Duplicate: Set curr.next to null! Node 4 is ❌ SKIPPED!";
+        stepTextBn = "দ্বিতীয় ডুপ্লিকেট বাইপাস: curr.next null এ সেট হলো! নোড ৪ ❌ স্কিপড!";
       } else {
-        currentNodes = [1, 2, 3];
-        currIdx = 2;
-        bypassedIdx = null;
+        currIdx = 3;
+        skippedIndices = [1, 4];
+        bypassFromIdx = null;
+        bypassToIdx = null;
         isFinished = true;
-        stepTextEn = "🎉 FINISHED! All duplicates removed cleanly. Output: [1, 2, 3].";
-        stepTextBn = "🎉 শেষ! সকল ডুপ্লিকেট সফলভাবে রিমুভ করা হয়েছে। আউটপুট: [১, ২, ৩]।";
+        compareBadgeText = "🎉 Output: [1, 2, 3]";
+        compareBadgeColor = AppTheme.accentGreen;
+        stepTextEn = "🎉 FINISHED! Both duplicate 1 and duplicate 3 removed. Clean result list: [1, 2, 3].";
+        stepTextBn = "🎉 শেষ! উভয় ডুপ্লিকেট ১ এবং ৩ রিমুভ করা হয়েছে। চূড়ান্ত লিঙ্কড লিস্ট: [১, ২, ৩]।";
       }
     }
 
@@ -170,7 +203,7 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
                 const SizedBox(height: 8),
                 Text(
                   widget.isEnglish
-                      ? "Examples: Remove duplicate elements from a sorted linked list in O(N) time and O(1) space. If curr.val == curr.next.val, change pointer: curr.next = curr.next.next!"
+                      ? "Examples: Remove duplicate elements from a sorted linked list in O(N) time and O(1) space. If curr.val == curr.next.val, change pointer: curr.next = curr.next.next to skip the duplicate!"
                       : "উদাহরণসমূহ: সর্টেড লিঙ্কড লিস্ট থেকে ডুপ্লিকেট নোড রিমুভ করুন। curr.val == curr.next.val হলে সরাসরি পরবর্তী নোড বাইপাস করুন (curr.next = curr.next.next)!",
                   style: TextStyle(
                     color: AppTheme.textPrimary,
@@ -181,7 +214,6 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
               ],
             ),
             const SizedBox(height: 24),
-
             // Section Title
             Row(
               children: [
@@ -206,14 +238,16 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
               inputDescBn: "head = [1, 1, 2]",
               outputResult: "[1, 2]",
               nodes: [1, 1, 2],
-              bypassFromIdx: 0,
-              bypassToIdx: 2,
-              explanationEn: "Output: [1, 2] — Node 1's next pointer is updated to skip duplicate node 1 and link directly to node 2.",
-              explanationBn: "আউটপুট: [1, 2] — ১ম নোড ১ এর পয়েন্টার ২য় নোড ১ কে স্কিপ করে সরাসরি নোড ২ এ যুক্ত হয়েছে।",
+              bypasses: [
+                _BypassInfo(fromIdx: 0, toIdx: 2, label: "curr.next = 2"),
+              ],
+              skippedIndices: [1],
+              explanationEn: "Output: [1, 2] — Node 1's next pointer is updated to skip duplicate node 1 (❌) and link directly to node 2.",
+              explanationBn: "আউটপুট: [1, 2] — ১ম নোড ১ এর পয়েন্টার ২য় নোড ১ (❌) কে স্কিপ করে সরাসরি নোড ২ এ যুক্ত হয়েছে।",
             ),
             const SizedBox(height: 20),
 
-            // EXAMPLE 2 CARD
+            // EXAMPLE 2 CARD (Enhanced with clear skipped cross marks & pointer updates)
             _buildExampleDiagramCard(
               context: context,
               title: "Example 2: Multiple Duplicate Pairs",
@@ -222,10 +256,13 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
               inputDescBn: "head = [1, 1, 2, 3, 3]",
               outputResult: "[1, 2, 3]",
               nodes: [1, 1, 2, 3, 3],
-              bypassFromIdx: 0,
-              bypassToIdx: 2,
-              explanationEn: "Output: [1, 2, 3] — Both duplicate node 1 and duplicate node 3 are bypassed cleanly.",
-              explanationBn: "আউটপুট: [1, 2, 3] — উভয় ডুপ্লিকেট নোড ১ এবং ডুপ্লিকেট নোড ৩ সফলভাবে বাইপাস করা হয়েছে।",
+              bypasses: [
+                _BypassInfo(fromIdx: 0, toIdx: 2, label: "curr.next = 2"),
+                _BypassInfo(fromIdx: 3, toIdx: 5, label: "curr.next = null"),
+              ],
+              skippedIndices: [1, 4],
+              explanationEn: "Output: [1, 2, 3] — Both duplicate node 1 (index 1 ❌) and duplicate node 3 (index 4 ❌) are bypassed cleanly by setting next pointers directly to target nodes.",
+              explanationBn: "আউটপুট: [1, 2, 3] — ১ম ডুপ্লিকেট নোড ১ (ইন্ডেক্স ১ ❌) এবং ২য় ডুপ্লিকেট নোড ৩ (ইন্ডেক্স ৪ ❌) সরাসরি পয়েন্টার আপডেট করে বাইপাস করা হয়েছে।",
             ),
             const SizedBox(height: 28),
 
@@ -310,17 +347,39 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
 
-                  // Visualizer Diagram Widget with Pointer
+                  // Status / Comparison Chip Badge
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: compareBadgeColor.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: compareBadgeColor),
+                    ),
+                    child: Text(
+                      compareBadgeText,
+                      style: TextStyle(
+                        color: compareBadgeColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: Responsive.sp(context, 13),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Visualizer Diagram Widget with Pointer & Cross Marks
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: RemoveDuplicatesLinkedListDiagram(
-                      nodes: currentNodes,
+                      nodes: simNodes,
                       currIdx: currIdx,
-                      bypassedIdx: bypassedIdx,
+                      skippedIndices: skippedIndices,
                       showPointer: true,
                       isFinished: isFinished,
+                      bypasses: (bypassFromIdx != null && bypassToIdx != null)
+                          ? [_BypassInfo(fromIdx: bypassFromIdx!, toIdx: bypassToIdx!, label: "curr.next ➔")]
+                          : [],
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -403,8 +462,8 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
     required String inputDescBn,
     required String outputResult,
     required List<int> nodes,
-    required int bypassFromIdx,
-    required int bypassToIdx,
+    required List<_BypassInfo> bypasses,
+    required List<int> skippedIndices,
     required String explanationEn,
     required String explanationBn,
   }) {
@@ -453,9 +512,9 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
             child: RemoveDuplicatesLinkedListDiagram(
               nodes: nodes,
               currIdx: null,
+              skippedIndices: skippedIndices,
               showPointer: false,
-              highlightBypassFromIdx: bypassFromIdx,
-              highlightBypassToIdx: bypassToIdx,
+              bypasses: bypasses,
             ),
           ),
           const SizedBox(height: 12),
@@ -474,44 +533,54 @@ class _RemoveDuplicatesCodeFreeGuideTabState extends State<RemoveDuplicatesCodeF
   }
 }
 
+class _BypassInfo {
+  final int fromIdx;
+  final int toIdx;
+  final String label;
+
+  _BypassInfo({
+    required this.fromIdx,
+    required this.toIdx,
+    required this.label,
+  });
+}
+
 // Custom Widget for rendering Linked List nodes, horizontal next arrows,
-// head pointer badge, curr pointer, overhead bypass curves, and null box.
+// head pointer badge, curr pointer, cross marks (❌) for skipped nodes, and null box.
 class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
   final List<int> nodes;
   final int? currIdx;
-  final int? bypassedIdx;
+  final List<int> skippedIndices;
   final bool showPointer;
   final bool isFinished;
-  final int? highlightBypassFromIdx;
-  final int? highlightBypassToIdx;
+  final List<_BypassInfo> bypasses;
 
   const RemoveDuplicatesLinkedListDiagram({
     super.key,
     required this.nodes,
     this.currIdx,
-    this.bypassedIdx,
+    this.skippedIndices = const [],
     this.showPointer = false,
     this.isFinished = false,
-    this.highlightBypassFromIdx,
-    this.highlightBypassToIdx,
+    this.bypasses = const [],
   });
 
   @override
   Widget build(BuildContext context) {
-    const double nodeW = 52.0;
+    const double nodeW = 54.0;
     const double nodeGap = 34.0;
-    const double topSpace = 40.0;
-    const double nodeH = 52.0;
+    const double topSpace = 44.0;
+    const double nodeH = 54.0;
 
     final double totalW = (nodes.length + 1) * (nodeW + nodeGap) + 20.0;
-    final double totalH = topSpace + nodeH + 34.0;
+    final double totalH = topSpace + nodeH + 38.0;
 
     return SizedBox(
-      width: math.max(totalW, 440.0),
+      width: math.max(totalW, 460.0),
       height: totalH,
       child: Stack(
         children: [
-          // Arrows & Bypass Curved Line using CustomPainter
+          // Arrows & Bypass Curved Lines using CustomPainter
           Positioned.fill(
             child: CustomPaint(
               painter: RemoveDuplicatesPainter(
@@ -520,8 +589,8 @@ class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
                 nodeGap: nodeGap,
                 topSpace: topSpace,
                 nodeHeight: nodeH,
-                bypassFromIdx: highlightBypassFromIdx ?? (bypassedIdx != null ? currIdx : null),
-                bypassToIdx: highlightBypassToIdx ?? (bypassedIdx != null ? bypassedIdx! + 1 : null),
+                bypasses: bypasses,
+                skippedIndices: skippedIndices,
               ),
             ),
           ),
@@ -532,17 +601,17 @@ class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
             final int val = nodes[idx];
 
             final bool isCurr = showPointer && currIdx == idx;
-            final bool isBypassed = bypassedIdx == idx;
+            final bool isSkipped = skippedIndices.contains(idx);
 
             Color boxBg = AppTheme.primaryDark;
             Color borderColor = const Color(0xFF334155);
 
-            if (isFinished) {
+            if (isSkipped) {
+              boxBg = AppTheme.accentPink.withOpacity(0.15);
+              borderColor = AppTheme.accentPink.withOpacity(0.6);
+            } else if (isFinished) {
               boxBg = AppTheme.accentGreen.withOpacity(0.35);
               borderColor = AppTheme.accentGreen;
-            } else if (isBypassed) {
-              boxBg = AppTheme.accentPink.withOpacity(0.25);
-              borderColor = AppTheme.accentPink;
             } else if (isCurr) {
               boxBg = AppTheme.accentNeonCyan.withOpacity(0.25);
               borderColor = AppTheme.accentNeonCyan;
@@ -555,34 +624,75 @@ class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
                 width: nodeW,
                 child: Column(
                   children: [
-                    Container(
-                      width: nodeW,
-                      height: nodeH,
-                      decoration: BoxDecoration(
-                        color: boxBg,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: borderColor, width: 2),
-                        boxShadow: [
-                          if (isFinished)
-                            BoxShadow(color: AppTheme.accentGreen.withOpacity(0.4), blurRadius: 10)
-                          else if (isCurr)
-                            BoxShadow(color: AppTheme.accentNeonCyan.withOpacity(0.3), blurRadius: 8)
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          '$val',
-                          style: TextStyle(
-                            fontSize: Responsive.sp(context, 18),
-                            fontWeight: FontWeight.bold,
-                            color: isFinished
-                                ? AppTheme.accentGreen
-                                : (isBypassed ? AppTheme.accentPink : Colors.white),
-                            decoration: isBypassed ? TextDecoration.lineThrough : null,
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: nodeW,
+                          height: nodeH,
+                          decoration: BoxDecoration(
+                            color: boxBg,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: borderColor, width: 2),
+                            boxShadow: [
+                              if (isFinished && !isSkipped)
+                                BoxShadow(color: AppTheme.accentGreen.withOpacity(0.4), blurRadius: 10)
+                              else if (isCurr)
+                                BoxShadow(color: AppTheme.accentNeonCyan.withOpacity(0.3), blurRadius: 8)
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              '$val',
+                              style: TextStyle(
+                                fontSize: Responsive.sp(context, 18),
+                                fontWeight: FontWeight.bold,
+                                color: isSkipped
+                                    ? AppTheme.accentPink
+                                    : (isFinished ? AppTheme.accentGreen : Colors.white),
+                                decoration: isSkipped ? TextDecoration.lineThrough : null,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+
+                        // Prominent Red Cross Overlay Badge if Skipped
+                        if (isSkipped)
+                          Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: Colors.black87,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: AppTheme.accentPink, width: 1.5),
+                            ),
+                            child: const Icon(
+                              Icons.close,
+                              color: AppTheme.accentPink,
+                              size: 20,
+                            ),
+                          ),
+                      ],
                     ),
+                    const SizedBox(height: 4),
+
+                    // Label under node
+                    if (isSkipped)
+                      Text(
+                        "❌ SKIPPED",
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 9.5),
+                          color: AppTheme.accentPink,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    else
+                      Text(
+                        "idx $idx",
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 9.5),
+                          color: AppTheme.textMuted,
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -592,7 +702,7 @@ class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
           // Head Badge above node 0
           Positioned(
             left: 16.0,
-            top: 6.0,
+            top: 10.0,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
@@ -614,7 +724,7 @@ class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
           if (showPointer && currIdx != null && currIdx! < nodes.length)
             Positioned(
               left: 16.0 + currIdx! * (nodeW + nodeGap),
-              top: topSpace + nodeH + 4.0,
+              top: topSpace + nodeH + 20.0,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
@@ -639,7 +749,7 @@ class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
             top: topSpace + 10.0,
             child: Container(
               width: 48,
-              height: 32,
+              height: 34,
               decoration: BoxDecoration(
                 color: Colors.redAccent.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(8),
@@ -664,15 +774,15 @@ class RemoveDuplicatesLinkedListDiagram extends StatelessWidget {
   }
 }
 
-// Custom Painter for drawing horizontal next arrows and overhead bypass curve line
+// Custom Painter for drawing horizontal next arrows and overhead bypass curves with target labels
 class RemoveDuplicatesPainter extends CustomPainter {
   final int nodeCount;
   final double nodeWidth;
   final double nodeGap;
   final double topSpace;
   final double nodeHeight;
-  final int? bypassFromIdx;
-  final int? bypassToIdx;
+  final List<_BypassInfo> bypasses;
+  final List<int> skippedIndices;
 
   RemoveDuplicatesPainter({
     required this.nodeCount,
@@ -680,15 +790,20 @@ class RemoveDuplicatesPainter extends CustomPainter {
     required this.nodeGap,
     required this.topSpace,
     required this.nodeHeight,
-    this.bypassFromIdx,
-    this.bypassToIdx,
+    required this.bypasses,
+    required this.skippedIndices,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final arrowPaint = Paint()
+    final normalArrowPaint = Paint()
       ..color = const Color(0xFF59B9B0)
-      ..strokeWidth = 3.0
+      ..strokeWidth = 2.5
+      ..style = PaintingStyle.stroke;
+
+    final skippedArrowPaint = Paint()
+      ..color = AppTheme.accentPink.withOpacity(0.5)
+      ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
     final fillPaint = Paint()
@@ -702,19 +817,25 @@ class RemoveDuplicatesPainter extends CustomPainter {
       double x1 = 16.0 + i * (nodeWidth + nodeGap) + nodeWidth;
       double x2 = 16.0 + (i + 1) * (nodeWidth + nodeGap);
 
-      canvas.drawLine(Offset(x1, yCenter), Offset(x2, yCenter), arrowPaint);
+      bool isLinkCut = skippedIndices.contains(i + 1) || skippedIndices.contains(i);
 
-      // Draw Arrowhead pointing right
-      Path tipPath = Path();
-      tipPath.moveTo(x2, yCenter);
-      tipPath.lineTo(x2 - 8, yCenter - 5);
-      tipPath.lineTo(x2 - 8, yCenter + 5);
-      tipPath.close();
-      canvas.drawPath(tipPath, fillPaint);
+      if (isLinkCut) {
+        // Draw dashed pink line representing cut link
+        _drawDashedLine(canvas, Offset(x1, yCenter), Offset(x2, yCenter), skippedArrowPaint);
+      } else {
+        canvas.drawLine(Offset(x1, yCenter), Offset(x2, yCenter), normalArrowPaint);
+        // Draw Arrowhead pointing right
+        Path tipPath = Path();
+        tipPath.moveTo(x2, yCenter);
+        tipPath.lineTo(x2 - 7, yCenter - 4);
+        tipPath.lineTo(x2 - 7, yCenter + 4);
+        tipPath.close();
+        canvas.drawPath(tipPath, fillPaint);
+      }
     }
 
-    // Draw Overhead Bypass Curved Arrow if duplicate is being bypassed
-    if (bypassFromIdx != null && bypassToIdx != null && bypassToIdx! <= nodeCount) {
+    // Draw Overhead Bypass Curved Arrows for each bypass action
+    for (final bypass in bypasses) {
       final bypassPaint = Paint()
         ..color = AppTheme.accentNeonCyan
         ..strokeWidth = 3.0
@@ -724,11 +845,11 @@ class RemoveDuplicatesPainter extends CustomPainter {
         ..color = AppTheme.accentNeonCyan
         ..style = PaintingStyle.fill;
 
-      double xStart = 16.0 + bypassFromIdx! * (nodeWidth + nodeGap) + nodeWidth / 2;
-      double xEnd = 16.0 + bypassToIdx! * (nodeWidth + nodeGap) + nodeWidth / 2;
+      double xStart = 16.0 + bypass.fromIdx * (nodeWidth + nodeGap) + nodeWidth / 2;
+      double xEnd = 16.0 + bypass.toIdx * (nodeWidth + nodeGap) + (bypass.toIdx >= nodeCount ? 24.0 : nodeWidth / 2);
 
       double yTopStart = topSpace;
-      double yCurveTop = yTopStart - 24.0;
+      double yCurveTop = yTopStart - 26.0;
 
       Path bypassPath = Path();
       bypassPath.moveTo(xStart, yTopStart);
@@ -747,14 +868,51 @@ class RemoveDuplicatesPainter extends CustomPainter {
       downArrow.lineTo(xEnd + 5, yTopStart - 10);
       downArrow.close();
       canvas.drawPath(downArrow, bypassFill);
+
+      // Draw label badge on top of curve
+      TextSpan span = TextSpan(
+        text: bypass.label,
+        style: const TextStyle(
+          color: AppTheme.accentNeonCyan,
+          fontWeight: FontWeight.bold,
+          fontSize: 10,
+          backgroundColor: Colors.black87,
+        ),
+      );
+      TextPainter tp = TextPainter(
+        text: span,
+        textDirection: TextDirection.ltr,
+      );
+      tp.layout();
+      double labelX = (xStart + xEnd) / 2 - tp.width / 2;
+      tp.paint(canvas, Offset(labelX, yCurveTop - 12));
+    }
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset p1, Offset p2, Paint paint) {
+    const double dashWidth = 5.0;
+    const double dashSpace = 4.0;
+    double distance = (p2 - p1).distance;
+    double dx = (p2.dx - p1.dx) / distance;
+    double dy = (p2.dy - p1.dy) / distance;
+
+    double currentDist = 0.0;
+    while (currentDist < distance) {
+      canvas.drawLine(
+        Offset(p1.dx + dx * currentDist, p1.dy + dy * currentDist),
+        Offset(p1.dx + dx * math.min(currentDist + dashWidth, distance), p1.dy + dy * math.min(currentDist + dashWidth, distance)),
+        paint,
+      );
+      currentDist += dashWidth + dashSpace;
     }
   }
 
   @override
   bool shouldRepaint(covariant RemoveDuplicatesPainter oldDelegate) {
     return oldDelegate.nodeCount != nodeCount ||
-        oldDelegate.bypassFromIdx != bypassFromIdx ||
-        oldDelegate.bypassToIdx != bypassToIdx;
+        oldDelegate.bypasses != bypasses ||
+        oldDelegate.skippedIndices != skippedIndices;
   }
 }
+
 
