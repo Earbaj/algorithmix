@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
+import 'package:simple_icons/simple_icons.dart';
 import '../../models/fast_slow_pointers_data.dart';
 import '../../views/linked_list_cycle_detail_screen.dart';
 import '../../views/middle_of_linked_list_detail_screen.dart';
@@ -126,7 +127,7 @@ class FastSlowProblemCardWidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            "🔥 HOT",
+                            "Popular",
                             style: TextStyle(
                               fontSize: Responsive.sp(context, 10),
                               fontWeight: FontWeight.bold,
@@ -138,24 +139,6 @@ class FastSlowProblemCardWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: diffColor.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    problem.difficulty,
-                    style: TextStyle(
-                      fontSize: Responsive.sp(context, 11),
-                      fontWeight: FontWeight.bold,
-                      color: diffColor,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 4),
-                const Icon(Icons.arrow_forward_ios, size: 14, color: AppTheme.textMuted),
               ],
             ),
             const SizedBox(height: 8),
@@ -178,13 +161,24 @@ class FastSlowProblemCardWidget extends StatelessWidget {
                     color: AppTheme.accentPurple.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: Text(
-                    "🏢 $company",
-                    style: TextStyle(
-                      fontSize: Responsive.sp(context, 11),
-                      color: AppTheme.accentPurple,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        getCompanyIcon(company),
+                        size: 14,
+                        color: AppTheme.accentPurple,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        company,
+                        style: TextStyle(
+                          fontSize: Responsive.sp(context, 11),
+                          color: AppTheme.accentPurple,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }).toList(),
@@ -193,5 +187,30 @@ class FastSlowProblemCardWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  IconData getCompanyIcon(String company) {
+    switch (company.toLowerCase()) {
+      case 'google':
+        return SimpleIcons.google;
+
+      case 'microsoft':
+        return SimpleIcons.mega;
+
+      case 'amazon':
+        return SimpleIcons.alamy;
+
+      case 'uber':
+        return SimpleIcons.unpkg;
+
+      case 'meta':
+        return SimpleIcons.meta;
+
+      case 'apple':
+        return SimpleIcons.apple;
+
+      default:
+        return Icons.business_outlined;
+    }
   }
 }
