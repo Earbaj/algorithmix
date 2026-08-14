@@ -100,13 +100,7 @@ class _HappySolutionCodeTabState extends State<HappySolutionCodeTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Icon(_userSolved ? Icons.check_circle : Icons.extension_outlined, color: _userSolved ? AppTheme.accentGreen : AppTheme.accentAmber, size: Responsive.sp(context, 24)),
-                      const SizedBox(width: 8),
-                      Text(widget.isEnglish ? '🎮 Practice Mode: Transform Digits Yourself!' : '🎮 প্র্যাকটিস মোড: নিজে রূপান্তর করুন!', style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
-                    ],
-                  ),
+                  Text(widget.isEnglish ? 'Practice Mode: Transform Digits Yourself!' : 'প্র্যাকটিস মোড: নিজে রূপান্তর করুন!', style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
                   const SizedBox(height: 12),
                   Text(widget.isEnglish ? 'Current Input n: $_n' : 'বর্তমান ইনপুট n: $_n', style: TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: Responsive.sp(context, 13))),
                   const SizedBox(height: 16),
@@ -161,45 +155,38 @@ class _HappySolutionCodeTabState extends State<HappySolutionCodeTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.isEnglish ? "Multi-Language Solution Code" : "বহুভাষী সমাধান কোড", style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
-                            const SizedBox(height: 4),
-                            Text(widget.isEnglish ? "Official optimal solution in C++, Java, Python & JavaScript." : "C++, Java, Python এবং JavaScript ভাষায় সলিউশন।", style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12))),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () => setState(() => _showAnswer = !_showAnswer),
-                        style: ElevatedButton.styleFrom(backgroundColor: _showAnswer ? AppTheme.accentGreen : AppTheme.accentPink),
-                        child: Text(_showAnswer ? (widget.isEnglish ? "Hide Code" : "কোড লুকান") : (widget.isEnglish ? "Reveal Solution Code" : "কোড দেখুন"), style: TextStyle(fontSize: Responsive.sp(context, 13), fontWeight: FontWeight.bold)),
-                      ),
-                    ],
+                  Text(widget.isEnglish ? "Multi-Language Solution Code" : "বহুভাষী সমাধান কোড", style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: Colors.white)),
+                  const SizedBox(height: 5),
+                  Text(widget.isEnglish ? "Official optimal solution in C++, Java, Python & JavaScript." : "C++, Java, Python এবং JavaScript ভাষায় সলিউশন।", style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 12))),
+                  const SizedBox(height: 5),
+                  ElevatedButton(
+                    onPressed: () => setState(() => _showAnswer = !_showAnswer),
+                    style: ElevatedButton.styleFrom(backgroundColor: _showAnswer ? AppTheme.accentGreen : AppTheme.accentPink),
+                    child: Text(_showAnswer ? (widget.isEnglish ? "Hide Code" : "কোড লুকান") : (widget.isEnglish ? "Reveal Solution Code" : "কোড দেখুন"), style: TextStyle(fontSize: Responsive.sp(context, 13), fontWeight: FontWeight.bold)),
                   ),
+                  const SizedBox(height: 5),
                   if (_showAnswer) ...[
                     const Divider(height: 28, color: Color(0xFF334155)),
-                    Row(
-                      children: ["C++", "Java", "Python", "JavaScript"].map((lang) {
-                        final isSel = _selectedCodeLang == lang;
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: ChoiceChip(
-                            label: Text(lang, style: TextStyle(fontSize: Responsive.sp(context, 12))),
-                            selected: isSel,
-                            selectedColor: AppTheme.accentPurple,
-                            backgroundColor: AppTheme.primaryDark,
-                            labelStyle: TextStyle(color: isSel ? Colors.white : AppTheme.textSecondary, fontWeight: isSel ? FontWeight.bold : FontWeight.normal),
-                            onSelected: (val) {
-                              if (val) setState(() { _selectedCodeLang = lang; });
-                            },
-                          ),
-                        );
-                      }).toList(),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: ["C++", "Java", "Python", "JavaScript"].map((lang) {
+                          final isSel = _selectedCodeLang == lang;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: ChoiceChip(
+                              label: Text(lang, style: TextStyle(fontSize: Responsive.sp(context, 12))),
+                              selected: isSel,
+                              selectedColor: AppTheme.accentPurple,
+                              backgroundColor: AppTheme.primaryDark,
+                              labelStyle: TextStyle(color: isSel ? Colors.white : AppTheme.textSecondary, fontWeight: isSel ? FontWeight.bold : FontWeight.normal),
+                              onSelected: (val) {
+                                if (val) setState(() { _selectedCodeLang = lang; });
+                              },
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
                     const SizedBox(height: 14),
                     _buildFullCodeSnippet(_selectedCodeLang),
@@ -324,11 +311,13 @@ bool isHappy(int n) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("$lang Solution Code", style: TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: Responsive.sp(context, 13))),
-              ElevatedButton.icon(
-                onPressed: () => _copyToClipboard(code, "$lang Solution"),
-                icon: Icon(Icons.copy_all, size: Responsive.sp(context, 14)),
-                label: Text(widget.isEnglish ? "Copy Code" : "কোড কপি করুন", style: TextStyle(fontSize: Responsive.sp(context, 12), fontWeight: FontWeight.bold)),
-                style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentPurple),
+              InkWell(
+                onTap: () => _copyToClipboard(code, "$lang Solution"),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(color: AppTheme.accentPurple.withOpacity(0.25), borderRadius: BorderRadius.circular(8)),
+                  child: Icon(Icons.copy, size: Responsive.sp(context, 13), color: AppTheme.accentNeonCyan),
+                ),
               ),
             ],
           ),
