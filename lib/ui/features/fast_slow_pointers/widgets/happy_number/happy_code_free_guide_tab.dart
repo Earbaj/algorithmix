@@ -88,35 +88,21 @@ class _HappyCodeFreeGuideTabState extends State<HappyCodeFreeGuideTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceDark,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.accentNeonCyan.withOpacity(0.4)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.auto_awesome, color: AppTheme.accentNeonCyan, size: 24),
-                      const SizedBox(width: 8),
-                      Text(
-                        widget.isEnglish ? "Interactive Animated Concept Guide" : "ইন্টারঅ্যাক্টিভ অ্যানিমেটেড কনসেপ্ট গাইড",
-                        style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.isEnglish
-                        ? "Watch how digit-square transformation flows. Slow pointer transforms digits once per step, while Fast transforms digits twice per step. If the sequence ends in 1, it is a Happy Number!"
-                        : "দেখুন কিভাবে অংকগুলোর বর্গের যোগফল রূপান্তর হয়। Slow প্রতি ধাপে ১ বার এবং Fast প্রতি ধাপে ২ বার ডিজিট স্কয়ার ট্রান্সফর্ম করে। ধারাটি ১ এ পৌঁছালে তা হ্যাপি নাম্বার!",
-                    style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 13.5), height: 1.5),
-                  ),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.isEnglish ? "Interactive Animated Concept Guide" : "ইন্টারঅ্যাক্টিভ অ্যানিমেটেড কনসেপ্ট গাইড",
+                  style: TextStyle(fontSize: Responsive.sp(context, 18), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.isEnglish
+                      ? "Watch how digit-square transformation flows. Slow pointer transforms digits once per step, while Fast transforms digits twice per step. If the sequence ends in 1, it is a Happy Number!"
+                      : "দেখুন কিভাবে অংকগুলোর বর্গের যোগফল রূপান্তর হয়। Slow প্রতি ধাপে ১ বার এবং Fast প্রতি ধাপে ২ বার ডিজিট স্কয়ার ট্রান্সফর্ম করে। ধারাটি ১ এ পৌঁছালে তা হ্যাপি নাম্বার!",
+                  style: TextStyle(color: AppTheme.textPrimary, fontSize: Responsive.sp(context, 13.5), height: 1.5),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
 
@@ -135,14 +121,10 @@ class _HappyCodeFreeGuideTabState extends State<HappyCodeFreeGuideTab> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Transformation Sequence: 19 -> 82 -> 68 -> 100 -> 1",
+                        "Transformation Sequence: \n19 -> 82 -> 68 -> 100 -> 1",
                         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 14)),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(color: AppTheme.accentPurple.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                        child: Text("Step ${_animGuideStep + 1} / 4", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12)),
-                      ),
+                      Text("Step ${_animGuideStep + 1} / 4", style: const TextStyle(color: AppTheme.accentNeonCyan, fontWeight: FontWeight.bold, fontSize: 12)),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -235,7 +217,7 @@ class _HappyCodeFreeGuideTabState extends State<HappyCodeFreeGuideTab> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(color: AppTheme.surfaceDark, borderRadius: BorderRadius.circular(14), border: Border.all(color: const Color(0xFF334155))),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
                     children: [
@@ -262,14 +244,6 @@ class _HappyCodeFreeGuideTabState extends State<HappyCodeFreeGuideTab> {
                         },
                       ),
                     ],
-                  ),
-                  ElevatedButton(
-                    onPressed: _toggleAnimGuidePlay,
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentPurple),
-                    child: Text(
-                      _isAnimGuidePlaying ? (widget.isEnglish ? "Pause Animation" : "পজ করুন") : (widget.isEnglish ? "Auto Play Animation" : "অ্যানিমেশন প্লে করুন"),
-                      style: TextStyle(fontSize: Responsive.sp(context, 12), fontWeight: FontWeight.bold),
-                    ),
                   ),
                 ],
               ),
