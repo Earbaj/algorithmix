@@ -1280,7 +1280,7 @@ class _TwoSumIIDetailScreenState extends State<TwoSumIIDetailScreen>
 
   /// Expanded & Ultra-Clear Line-by-Line Code Snippet Highlight Widget (Width 580px)
   Widget _buildCodeTraceWidget(int activeLine) {
-    final codeLines = const [
+    const codeLines = [
       "vector<int> twoSum(vector<int>& numbers, int target) {",
       "    int left = 0;",
       "    int right = numbers.size() - 1;",

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:algorithmix/ui/core/theme/app_theme.dart';
 import 'package:algorithmix/ui/core/utils/responsive.dart';
 import '../../models/fast_slow_pointers_data.dart';
+import '../../views/linked_list_cycle_detail_screen.dart';
+import '../../views/middle_of_linked_list_detail_screen.dart';
+import '../../views/happy_number_detail_screen.dart';
 
 class FastSlowProblemCardWidget extends StatelessWidget {
   final FastSlowPointersProblem problem;
@@ -15,103 +18,139 @@ class FastSlowProblemCardWidget extends StatelessWidget {
     required this.isEnglish,
   });
 
+  void _navigateToDetail(BuildContext context) {
+    if (problem.title == "Middle of the Linked List") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MiddleOfLinkedListDetailScreen(),
+        ),
+      );
+    } else if (problem.title == "Happy Number") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HappyNumberDetailScreen(),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LinkedListCycleDetailScreen(
+            problemTitle: problem.title,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceDark,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF1E293B)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Text(
-                      problem.title,
-                      style: TextStyle(
-                        fontSize: Responsive.sp(context, 15),
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    if (problem.isPopular) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppTheme.accentPink.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
+    return InkWell(
+      onTap: () => _navigateToDetail(context),
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceDark,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFF1E293B)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
                         child: Text(
-                          "🔥 HOT",
+                          problem.title,
                           style: TextStyle(
-                            fontSize: Responsive.sp(context, 10),
+                            fontSize: Responsive.sp(context, 15),
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.accentPink,
+                            color: Colors.white,
                           ),
                         ),
                       ),
+                      if (problem.isPopular) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppTheme.accentPink.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            "🔥 HOT",
+                            style: TextStyle(
+                              fontSize: Responsive.sp(context, 10),
+                              fontWeight: FontWeight.bold,
+                              color: AppTheme.accentPink,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: diffColor.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  problem.difficulty,
-                  style: TextStyle(
-                    fontSize: Responsive.sp(context, 11),
-                    fontWeight: FontWeight.bold,
-                    color: diffColor,
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
-            style: TextStyle(
-              fontSize: Responsive.sp(context, 13),
-              color: AppTheme.textSecondary,
-              height: 1.4,
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: diffColor.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    problem.difficulty,
+                    style: TextStyle(
+                      fontSize: Responsive.sp(context, 11),
+                      fontWeight: FontWeight.bold,
+                      color: diffColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 4),
+                const Icon(Icons.arrow_forward_ios, size: 14, color: AppTheme.textMuted),
+              ],
             ),
-          ),
-          const SizedBox(height: 10),
-          Wrap(
-            spacing: 6,
-            runSpacing: 4,
-            children: problem.companyTags.map((company) {
-              return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: AppTheme.accentPurple.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  "🏢 $company",
-                  style: TextStyle(
-                    fontSize: Responsive.sp(context, 11),
-                    color: AppTheme.accentPurple,
-                    fontWeight: FontWeight.w500,
+            const SizedBox(height: 8),
+            Text(
+              isEnglish ? problem.keyIdeaEn : problem.keyIdeaBn,
+              style: TextStyle(
+                fontSize: Responsive.sp(context, 13),
+                color: AppTheme.textSecondary,
+                height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 6,
+              runSpacing: 4,
+              children: problem.companyTags.map((company) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppTheme.accentPurple.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
+                  child: Text(
+                    "🏢 $company",
+                    style: TextStyle(
+                      fontSize: Responsive.sp(context, 11),
+                      color: AppTheme.accentPurple,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }

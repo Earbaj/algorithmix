@@ -24,7 +24,6 @@ class AppTheme {
         primary: accentPurple,
         secondary: accentNeonCyan,
         surface: surfaceDark,
-        background: primaryDark,
         error: Color(0xFFEF4444),
       ),
       appBarTheme: const AppBarTheme(

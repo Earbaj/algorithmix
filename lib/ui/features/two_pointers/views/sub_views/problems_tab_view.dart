@@ -51,7 +51,7 @@ class TwoPointersProblemsTabView extends StatelessWidget {
       children: [
         Text(title, style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: diffColor)),
         const SizedBox(height: 10),
-        ...problems.map((p) => TwoPointersProblemCardWidget(problem: p, diffColor: diffColor, isEnglish: isEnglish)).toList(),
+        ...problems.map((p) => TwoPointersProblemCardWidget(problem: p, diffColor: diffColor, isEnglish: isEnglish)),
       ],
     );
   }
