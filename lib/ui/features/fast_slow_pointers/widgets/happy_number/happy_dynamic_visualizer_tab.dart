@@ -199,7 +199,7 @@ class _HappyDynamicVisualizerTabState extends State<HappyDynamicVisualizerTab> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.isEnglish ? '⚙️ Dynamic Custom Input & Test Cases' : '⚙️ ডায়নামিক ইনপুট ও টেস্ট কেস',
+                    widget.isEnglish ? 'Dynamic Custom Input & Test Cases' : 'ডায়নামিক ইনপুট ও টেস্ট কেস',
                     style: TextStyle(fontSize: Responsive.sp(context, 16), fontWeight: FontWeight.bold, color: AppTheme.accentNeonCyan),
                   ),
                   const SizedBox(height: 12),
@@ -290,18 +290,6 @@ class _HappyDynamicVisualizerTabState extends State<HappyDynamicVisualizerTab> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Transformation State View", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: Responsive.sp(context, 14))),
-              if (step.isHappy)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: AppTheme.accentGreen.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                  child: const Text("🎉 HAPPY NUMBER (Sum=1)", style: TextStyle(color: AppTheme.accentGreen, fontWeight: FontWeight.bold, fontSize: 12)),
-                )
-              else if (step.isCycle)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: AppTheme.accentPink.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                  child: const Text("❌ UNHAPPY CYCLE", style: TextStyle(color: AppTheme.accentPink, fontWeight: FontWeight.bold, fontSize: 12)),
-                ),
             ],
           ),
           const SizedBox(height: 16),
