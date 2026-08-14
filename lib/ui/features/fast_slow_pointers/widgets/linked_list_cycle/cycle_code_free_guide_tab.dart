@@ -143,25 +143,20 @@ class _CycleCodeFreeGuideTabState extends State<CycleCodeFreeGuideTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.auto_awesome, color: AppTheme.accentNeonCyan, size: 24),
-                      const SizedBox(width: 8),
-                      Text(
-                        widget.isEnglish ? "Linked List Cycle Concept Guide" : "লিঙ্কড লিস্ট সাইকেল কনসেপ্ট গাইড",
-                        style: TextStyle(
-                          fontSize: Responsive.sp(context, 18),
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.accentNeonCyan,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    widget.isEnglish ? "Linked List Cycle Concept Guide" : "লিঙ্কড লিস্ট সাইকেল কনসেপ্ট গাইড",
+                    style: TextStyle(
+                      fontSize: Responsive.sp(context, 18),
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.accentNeonCyan,
+                    ),
+                    maxLines: 2,
                   ),
                   const SizedBox(height: 8),
                   Text(
                     widget.isEnglish
-                        ? "HelloInterview Guide Examples: Detect linked list cycles using Floyd's Tortoise & Hare Algorithm. Fast pointer moves 2 steps while Slow pointer moves 1 step."
-                        : "HelloInterview গাইড উদাহরণসমূহ: ফ্লয়েডের Tortoise & Hare অ্যালগরিদম ব্যবহার করে লিঙ্কড লিস্ট সাইকেল চিহ্নিত করুন। Fast পয়েন্টার ২ ধাপ এবং Slow পয়েন্টার ১ ধাপ অগ্রসর হয়।",
+                        ? "Hello Interview Guide Examples: Detect linked list cycles using Floyd's Tortoise & Hare Algorithm. Fast pointer moves 2 steps while Slow pointer moves 1 step."
+                        : "Hello Interview গাইড উদাহরণসমূহ: ফ্লয়েডের Tortoise & Hare অ্যালগরিদম ব্যবহার করে লিঙ্কড লিস্ট সাইকেল চিহ্নিত করুন। Fast পয়েন্টার ২ ধাপ এবং Slow পয়েন্টার ১ ধাপ অগ্রসর হয়।",
                     style: TextStyle(
                       color: AppTheme.textSecondary,
                       fontSize: Responsive.sp(context, 13.5),
@@ -179,7 +174,7 @@ class _CycleCodeFreeGuideTabState extends State<CycleCodeFreeGuideTab> {
                 const Icon(Icons.palette_outlined, color: AppTheme.accentPurple, size: 22),
                 const SizedBox(width: 8),
                 Text(
-                  widget.isEnglish ? "HelloInterview Examples" : "HelloInterview উদাহরণসমূহ",
+                  widget.isEnglish ? "Hello Interview Examples" : "Hello Interview উদাহরণসমূহ",
                   style: TextStyle(
                     fontSize: Responsive.sp(context, 18),
                     fontWeight: FontWeight.bold,
@@ -238,80 +233,71 @@ class _CycleCodeFreeGuideTabState extends State<CycleCodeFreeGuideTab> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        widget.isEnglish ? "Interactive Algorithm Step Visualizer" : "ইন্টারঅ্যাক্টিভ অ্যালগরিদম স্টেপ ভিজ্যুয়ালাইজার",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: Responsive.sp(context, 15),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.accentPurple.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          "Step ${_animStep + 1} / 4",
-                          style: const TextStyle(
-                            color: AppTheme.accentNeonCyan,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    widget.isEnglish ? "Interactive Algorithm Step Visualizer" : "ইন্টারঅ্যাক্টিভ অ্যালগরিদম স্টেপ ভিজ্যুয়ালাইজার",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: Responsive.sp(context, 15),
+                    ),
+                  ),
+                  Text(
+                    "Step ${_animStep + 1} / 4",
+                    style: const TextStyle(
+                      color: AppTheme.accentNeonCyan,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
                   ),
                   const SizedBox(height: 14),
 
                   // Example selector toggle
-                  Row(
-                    children: [
-                      Text(
-                        widget.isEnglish ? "Select Case: " : "কেস সিলেক্ট করুন: ",
-                        style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 13)),
-                      ),
-                      const SizedBox(width: 8),
-                      ChoiceChip(
-                        label: Text("Example 1 (Cycle)", style: TextStyle(fontSize: Responsive.sp(context, 12))),
-                        selected: _simExample == 0,
-                        selectedColor: AppTheme.accentNeonCyan.withOpacity(0.3),
-                        labelStyle: TextStyle(
-                          color: _simExample == 0 ? AppTheme.accentNeonCyan : Colors.white70,
-                          fontWeight: FontWeight.bold,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Text(
+                          widget.isEnglish ? "Select Case: " : "কেস সিলেক্ট করুন: ",
+                          style: TextStyle(color: AppTheme.textSecondary, fontSize: Responsive.sp(context, 13)),
                         ),
-                        onSelected: (val) {
-                          if (val) {
-                            setState(() {
-                              _simExample = 0;
-                              _resetAnimation();
-                            });
-                          }
-                        },
-                      ),
-                      const SizedBox(width: 8),
-                      ChoiceChip(
-                        label: Text("Example 2 (No Cycle)", style: TextStyle(fontSize: Responsive.sp(context, 12))),
-                        selected: _simExample == 1,
-                        selectedColor: AppTheme.accentPurple.withOpacity(0.3),
-                        labelStyle: TextStyle(
-                          color: _simExample == 1 ? AppTheme.accentPurple : Colors.white70,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(width: 8),
+                        ChoiceChip(
+                          label: Text("Example 1 (Cycle)", style: TextStyle(fontSize: Responsive.sp(context, 12))),
+                          selected: _simExample == 0,
+                          selectedColor: AppTheme.accentNeonCyan.withOpacity(0.3),
+                          labelStyle: TextStyle(
+                            color: _simExample == 0 ? AppTheme.accentNeonCyan : Colors.white70,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          onSelected: (val) {
+                            if (val) {
+                              setState(() {
+                                _simExample = 0;
+                                _resetAnimation();
+                              });
+                            }
+                          },
                         ),
-                        onSelected: (val) {
-                          if (val) {
-                            setState(() {
-                              _simExample = 1;
-                              _resetAnimation();
-                            });
-                          }
-                        },
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        ChoiceChip(
+                          label: Text("Example 2 (No Cycle)", style: TextStyle(fontSize: Responsive.sp(context, 12))),
+                          selected: _simExample == 1,
+                          selectedColor: AppTheme.accentPurple.withOpacity(0.3),
+                          labelStyle: TextStyle(
+                            color: _simExample == 1 ? AppTheme.accentPurple : Colors.white70,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          onSelected: (val) {
+                            if (val) {
+                              setState(() {
+                                _simExample = 1;
+                                _resetAnimation();
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 20),
 
@@ -392,16 +378,6 @@ class _CycleCodeFreeGuideTabState extends State<CycleCodeFreeGuideTab> {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: _togglePlay,
-                    style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentPurple),
-                    child: Text(
-                      _isPlaying
-                          ? (widget.isEnglish ? "Pause Animation" : "পজ করুন")
-                          : (widget.isEnglish ? "Auto Play Step Animation" : "অ্যানিমেশন প্লে করুন"),
-                      style: TextStyle(fontSize: Responsive.sp(context, 12), fontWeight: FontWeight.bold),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -438,34 +414,21 @@ class _CycleCodeFreeGuideTabState extends State<CycleCodeFreeGuideTab> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                widget.isEnglish ? title : titleBn,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.accentNeonCyan,
-                  fontSize: Responsive.sp(context, 14.5),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: statusColor),
-                ),
-                child: Text(
-                  "Output: $outputResult",
-                  style: TextStyle(
-                    color: statusColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: Responsive.sp(context, 12),
-                  ),
-                ),
-              ),
-            ],
+          Text(
+            widget.isEnglish ? title : titleBn,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppTheme.accentNeonCyan,
+              fontSize: Responsive.sp(context, 14.5),
+            ),
+          ),
+          Text(
+            "Output: $outputResult",
+            style: TextStyle(
+              color: statusColor,
+              fontWeight: FontWeight.bold,
+              fontSize: Responsive.sp(context, 12),
+            ),
           ),
           const SizedBox(height: 6),
           Text(
