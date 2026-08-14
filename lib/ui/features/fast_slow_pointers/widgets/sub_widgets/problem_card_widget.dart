@@ -6,6 +6,10 @@ import '../../views/linked_list_cycle_detail_screen.dart';
 import '../../views/middle_of_linked_list_detail_screen.dart';
 import '../../views/happy_number_detail_screen.dart';
 import '../../views/remove_duplicates_from_sorted_list_detail_screen.dart';
+import '../../views/palindrome_linked_list_detail_screen.dart';
+import '../../views/delete_node_in_linked_list_detail_screen.dart';
+import '../../views/swapping_nodes_in_linked_list_detail_screen.dart';
+import '../../views/intersection_of_two_linked_lists_detail_screen.dart';
 
 class FastSlowProblemCardWidget extends StatelessWidget {
   final FastSlowPointersProblem problem;
@@ -39,6 +43,34 @@ class FastSlowProblemCardWidget extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => const RemoveDuplicatesFromSortedListDetailScreen(),
+        ),
+      );
+    } else if (problem.title == "Palindrome Linked List") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const PalindromeLinkedListDetailScreen(),
+        ),
+      );
+    } else if (problem.title == "Delete Node in a Linked List") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const DeleteNodeInLinkedListDetailScreen(),
+        ),
+      );
+    } else if (problem.title == "Swapping Nodes in a Linked List") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SwappingNodesInLinkedListDetailScreen(),
+        ),
+      );
+    } else if (problem.title == "Intersection of Two Linked Lists") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const IntersectionOfTwoLinkedListsDetailScreen(),
         ),
       );
     } else {
