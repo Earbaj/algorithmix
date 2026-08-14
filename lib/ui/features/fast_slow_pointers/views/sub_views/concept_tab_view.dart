@@ -52,19 +52,13 @@ class FastSlowConceptTabView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.vpn_key_outlined, color: AppTheme.accentAmber, size: 22),
-                      const SizedBox(width: 8),
-                      Text(
-                        intro["whenToUseTitle"]!,
-                        style: TextStyle(
-                          fontSize: Responsive.sp(context, 16),
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    intro["whenToUseTitle"]!,
+                    style: TextStyle(
+                      fontSize: Responsive.sp(context, 16),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   _buildCheckPoint(intro["whenToUse1"]!),
