@@ -5,6 +5,7 @@ import '../../models/fast_slow_pointers_data.dart';
 import '../../views/linked_list_cycle_detail_screen.dart';
 import '../../views/middle_of_linked_list_detail_screen.dart';
 import '../../views/happy_number_detail_screen.dart';
+import '../../views/remove_duplicates_from_sorted_list_detail_screen.dart';
 
 class FastSlowProblemCardWidget extends StatelessWidget {
   final FastSlowPointersProblem problem;
@@ -31,6 +32,13 @@ class FastSlowProblemCardWidget extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => const HappyNumberDetailScreen(),
+        ),
+      );
+    } else if (problem.title == "Remove Duplicates from Sorted List") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RemoveDuplicatesFromSortedListDetailScreen(),
         ),
       );
     } else {
